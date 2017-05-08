@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <com.d.dmusic.view.DSLayout
+        android:id="@+id/dsl_ds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tl_title" />
+
+    <com.d.xrv.XRecyclerView
+        android:id="@+id/xrv_list"
+        style="@style/listview_style"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A1A">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/notification_icon" />
+
+    <LinearLayout
+        android:id="@+id/action"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_previous"
+            android:layout_width="38dp"
+            android:layout_height="64dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="18dp"
+            android:src="@drawable/notification_prev" />
+
+        <ImageView
+            android:id="@+id/iv_play_pause"
+            android:layout_width="38dp"
+            android:layout_height="64dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="18dp"
+            android:src="@drawable/notification_play" />
+
+        <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="38dp"
+            android:layout_height="64dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="18dp"
+            android:src="@drawable/notification_next" />
+
+        <ImageView
+            android:id="@+id/iv_quit"
+            android:layout_width="38dp"
+            android:layout_height="64dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="18dp"
+            android:src="@drawable/notification_quit" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_toLeftOf="@+id/action"
+        android:layout_toRightOf="@+id/image">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="FireFly"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_small" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="1dp"
+            android:singleLine="true"
+            android:text="Shawn McDonald"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_mini" />
+    </RelativeLayout>
+</RelativeLayout>

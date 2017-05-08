@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorLayout">
+        <attr name="tab_count" format="integer" />
+        <attr name="text_color" format="color" />
+        <attr name="indicator_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="DSLayout">
+        <attr name="adjustHeightT" format="dimension" />
+        <attr name="adjustHeightB" format="dimension" />
+        <attr name="ceterType">
+            <enum name="main" value="1" />
+            <enum name="local" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+            <flag name="top" value="4" />
+            <flag name="bottom" value="8" />
+        </attr>
+        <attr name="leftEdgeSwipeOffset" format="dimension" />
+        <attr name="rightEdgeSwipeOffset" format="dimension" />
+        <attr name="topEdgeSwipeOffset" format="dimension" />
+        <attr name="bottomEdgeSwipeOffset" format="dimension" />
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0" />
+            <enum name="pull_out" value="1" />
+        </attr>
+        <attr name="clickToClose" format="boolean" />
+    </declare-styleable>
+</resources>

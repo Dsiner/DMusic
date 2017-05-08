@@ -1,0 +1,207 @@
+package com.d.dmusic.mvp.presenter;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.view.View;
+
+import com.d.commen.mvp.MvpBasePresenter;
+import com.d.dmusic.model.AlbumModel;
+import com.d.dmusic.model.FolderModel;
+import com.d.dmusic.model.SingerModel;
+import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.mvp.view.ILMMusicView;
+import com.d.dmusic.utils.log.ULog;
+import com.d.dmusic.view.DSLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+/**
+ * LMMusicPresenter
+ * Created by D on 2017/4/30.
+ */
+public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
+
+    public LMMusicPresenter(Context context) {
+        super(context);
+    }
+
+    public void getSong(final int type) {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
+                if (list == null) {
+                    list = new ArrayList<MusicModel>();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        if (list.size() <= 0) {
+                            getView().setDSState(DSLayout.STATE_EMPTY);
+                        } else {
+                            getView().setDSState(View.GONE);
+                        }
+                        getView().setSong(list);
+                    }
+                });
+    }
+
+    public void getSinger() {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<SingerModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<SingerModel>> e) throws Exception {
+                List<SingerModel> list = new ArrayList<SingerModel>();
+                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY SINGER");
+                if (null != cursor && cursor.moveToFirst()) {
+                    do {
+                        int indexSinger = cursor.getColumnIndex("SINGER");
+                        int indexCount = cursor.getColumnIndex("COUNT(*)");
+                        if (indexSinger != -1 && indexCount != -1) {
+                            SingerModel model = new SingerModel();
+                            String singer = cursor.getString(indexSinger);
+                            int count = cursor.getInt(indexCount);
+                            model.singer = singer;
+                            model.count = count;
+                            list.add(model);
+                            ULog.v("Singer----" + "singer:" + singer + "-count:" + count);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<SingerModel>>() {
+                    @Override
+                    public void accept(@NonNull List<SingerModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        if (list.size() <= 0) {
+                            getView().setDSState(DSLayout.STATE_EMPTY);
+                        } else {
+                            getView().setDSState(View.GONE);
+                        }
+                        getView().setSinger(list);
+                    }
+                });
+    }
+
+    public void getAlbum() {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<AlbumModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<AlbumModel>> e) throws Exception {
+                List<AlbumModel> list = new ArrayList<AlbumModel>();
+                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ALBUM");
+                if (null != cursor && cursor.moveToFirst()) {
+                    do {
+                        int indexAlbum = cursor.getColumnIndex("ALBUM");
+                        int indexCount = cursor.getColumnIndex("COUNT(*)");
+                        if (indexAlbum != -1 && indexCount != -1) {
+                            AlbumModel albumModel = new AlbumModel();
+                            String album = cursor.getString(indexAlbum);
+                            int count = cursor.getInt(indexCount);
+                            albumModel.album = album;
+                            albumModel.count = count;
+                            list.add(albumModel);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<AlbumModel>>() {
+                    @Override
+                    public void accept(@NonNull List<AlbumModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        if (list.size() <= 0) {
+                            getView().setDSState(DSLayout.STATE_EMPTY);
+                        } else {
+                            getView().setDSState(View.GONE);
+                        }
+                        getView().setAlbum(list);
+                    }
+                });
+    }
+
+    public void getFolder() {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<FolderModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<FolderModel>> e) throws Exception {
+                List<FolderModel> list = new ArrayList<FolderModel>();
+                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY FOLDER");
+                if (null != cursor && cursor.moveToFirst()) {
+                    do {
+                        int indexFolder = cursor.getColumnIndex("FOLDER");
+                        int indexCount = cursor.getColumnIndex("COUNT(*)");
+                        if (indexFolder != -1 && indexCount != -1) {
+                            FolderModel model = new FolderModel();
+                            String folder = cursor.getString(indexFolder);
+                            int count = cursor.getInt(indexCount);
+                            model.folder = folder;
+                            model.count = count;
+                            list.add(model);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<FolderModel>>() {
+                    @Override
+                    public void accept(@NonNull List<FolderModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        if (list.size() <= 0) {
+                            getView().setDSState(DSLayout.STATE_EMPTY);
+                        } else {
+                            getView().setDSState(View.GONE);
+                        }
+                        getView().setFolder(list);
+                    }
+                });
+    }
+}

@@ -1,0 +1,80 @@
+<com.d.dmusic.module.swipelayout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sl_swipe"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    app:clickToClose="true"
+    app:leftEdgeSwipeOffset="0dp"
+    app:rightEdgeSwipeOffset="0dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#f7e79c"
+            android:gravity="center"
+            android:text="置顶"
+            android:textColor="@color/color_white" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#4cd964"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/color_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llyt_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:background="#FFA523"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="#FFA523"
+                android:scaleType="centerCrop"
+                android:src="@drawable/list_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_list_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="默认列表"
+                android:textColor="#000000"
+                android:textSize="@dimen/dimen_text_sub" />
+
+            <TextView
+                android:id="@+id/tv_song_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="0首"
+                android:textColor="#000000"
+                android:textSize="@dimen/dimen_text_sub" />
+        </LinearLayout>
+    </LinearLayout>
+</com.d.dmusic.module.swipelayout.SwipeLayout>
