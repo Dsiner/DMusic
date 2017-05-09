@@ -46,11 +46,12 @@
                     android:textSize="@dimen/dimen_text_sub" />
 
                 <TextView
+                    android:id="@+id/tv_local_all_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:singleLine="true"
-                    android:text="20首"
+                    android:text="--首"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/dimen_text_small" />
             </LinearLayout>
@@ -86,10 +87,11 @@
                     android:textSize="@dimen/dimen_text_sub" />
 
                 <TextView
+                    android:id="@+id/tv_collection_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:text="0首"
+                    android:text="--首"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/dimen_text_small" />
             </LinearLayout>

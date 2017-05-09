@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dimen_margin"
         android:layout_weight="1"
         android:src="@drawable/scan_phone_ok" />
 
@@ -18,11 +18,11 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
-        android:background="#ff0000"
+        android:background="@drawable/bg_corner_red"
         android:gravity="center"
         android:text="全盘扫描"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/dimen_text_main" />
 
     <Button
         android:id="@+id/btn_custom_scan"
@@ -31,10 +31,10 @@
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="15dp"
-        android:background="#ff0000"
+        android:layout_marginTop="@dimen/dimen_margin"
+        android:background="@drawable/bg_corner_red"
         android:gravity="center"
         android:text="自定义扫描"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/dimen_text_main" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import com.d.dmusic.module.greendao.db.SQLUtil;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.music.CustomListDao;
 import com.d.dmusic.module.greendao.music.CustomMusic0Dao;
+import com.d.dmusic.module.greendao.music.LocalAllMusicDao;
 import com.d.dmusic.module.greendao.music.Music;
 import com.d.dmusic.module.greendao.music.MusicDao;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
@@ -86,11 +87,11 @@ public class MusicDBUtil extends MusicDB {
     /**
      * 更新记录
      */
-    public void updateColleted(final String url, final int collected) {
+    public void updateColleted(final String url, final boolean isCollected) {
         final ContentValues value = new ContentValues();
         final String key = MusicDao.Properties.IsCollected.columnName;
         final String where = MusicDao.Properties.Url.columnName + " = ?";
-        value.put(key, collected);
+        value.put(key, isCollected);
         daoSession.runInTx(new Runnable() {
             @Override
             public void run() {
@@ -171,6 +172,18 @@ public class MusicDBUtil extends MusicDB {
         return list;
     }
 
+    public List<MusicModel> queryLocalAllBySinger(String singer) {
+        return daos[LOCAL_ALL_MUSIC].queryBuilder().where(LocalAllMusicDao.Properties.Singer.eq(singer)).list();
+    }
+
+    public List<MusicModel> queryLocalAllByAlbum(String album) {
+        return daos[LOCAL_ALL_MUSIC].queryBuilder().where(LocalAllMusicDao.Properties.Album.eq(album)).list();
+    }
+
+    public List<MusicModel> queryLocalAllByFolder(String folder) {
+        return daos[LOCAL_ALL_MUSIC].queryBuilder().where(LocalAllMusicDao.Properties.Folder.eq(folder)).list();
+    }
+
     /**
      * 插入一条自定义列表
      */
@@ -181,8 +194,8 @@ public class MusicDBUtil extends MusicDB {
     /**
      * CustomList表-更新歌曲数目
      */
-    public void updateCusListCount(int id, long count) {
-        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Id.eq(id)).list();
+    public void updateCusListCount(int type, long count) {
+        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
         if (list != null && list.size() > 0) {
             CustomList bean = list.get(0);
             bean.setSongCount(count);
@@ -193,8 +206,8 @@ public class MusicDBUtil extends MusicDB {
     /**
      * CustomList表-更新排序方式
      */
-    public void updateCusListSoryByType(int id, int sortBy) {
-        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Id.eq(id)).list();
+    public void updateCusListSoryByType(int type, int sortBy) {
+        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
         if (list != null && list.size() > 0) {
             CustomList bean = list.get(0);
             bean.sortBy = sortBy;
@@ -207,6 +220,13 @@ public class MusicDBUtil extends MusicDB {
      */
     public List<CustomList> queryAllCustomList() {
         return daos[CUSTOM_LIST].queryBuilder().orderAsc(CustomListDao.Properties.Seq).list();
+    }
+
+    /**
+     * CustomList表-获取自定义列表-排除当前列表Type
+     */
+    public List<CustomList> queryAllCustomList(int notType) {
+        return daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.notEq(notType)).list();
     }
 
     /**
@@ -254,7 +274,7 @@ public class MusicDBUtil extends MusicDB {
                     return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.TimeStamp).list();
                 case 2:
                     //按自定义
-                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.Seq).list();
+                    return daos[type].loadAll();
             }
         }
         return null;

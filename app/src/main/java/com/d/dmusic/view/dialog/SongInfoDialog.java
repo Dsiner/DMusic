@@ -17,7 +17,7 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
     private MusicModel model;
 
     public SongInfoDialog(Context context, MusicModel model) {
-        super(context, R.style.SongInfoDialog);
+        super(context);
         this.model = model;
         initInfo();
     }

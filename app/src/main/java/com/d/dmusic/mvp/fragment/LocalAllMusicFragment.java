@@ -10,6 +10,7 @@ import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
+import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.view.IndicatorLayout;
 import com.d.dmusic.view.TitleLayout;
 
@@ -85,14 +86,9 @@ public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implem
     }
 
     private void initTitle() {
-        Bundle bundle = getArguments();
-        String title = "Song";
-        if (bundle != null) {
-            type = bundle.getInt("type");
-            title = bundle.getString("title");
-        }
+        type = MusicDB.LOCAL_ALL_MUSIC;
         tlTitle.setType(type);
-        tlTitle.setText(R.id.tv_title_title, title);
+        tlTitle.setText(R.id.tv_title_title, "本地歌曲");
         tlTitle.setVisibility(R.id.iv_title_back, View.VISIBLE);
         tlTitle.setVisibility(R.id.iv_title_more, View.VISIBLE);
     }

@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.dmusic.R;
@@ -63,10 +65,18 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
     private void convert(final int position, final ItemViewHolder holder, final T item) {
         holder.tvSongName.setText(item.songName);
         holder.tvSinger.setText(item.singer);
+        holder.cbCheck.setChecked(item.isSortChecked);
+        holder.llytSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.isSortChecked = !item.isSortChecked;
+                holder.cbCheck.setChecked(item.isSortChecked);
+            }
+        });
         holder.ivHandler.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN && startDragListener != null) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN && getItemCount() > 1 && startDragListener != null) {
                     startDragListener.onStartDrag(holder);
                     return true;
                 }
@@ -105,12 +115,16 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
+        LinearLayout llytSelected;
+        CheckBox cbCheck;
         TextView tvSongName;
         TextView tvSinger;
         ImageView ivHandler;
 
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
+            llytSelected = (LinearLayout) itemView.findViewById(R.id.llyt_selected);
+            cbCheck = (CheckBox) itemView.findViewById(R.id.cb_check);
             tvSongName = (TextView) itemView.findViewById(R.id.tv_song_name);
             tvSinger = (TextView) itemView.findViewById(R.id.tv_singer);
             ivHandler = (ImageView) itemView.findViewById(R.id.iv_handler);
@@ -118,7 +132,7 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
+            itemView.setBackgroundColor(Color.GRAY);
         }
 
         @Override

@@ -5,14 +5,14 @@ import android.view.View;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.db.MusicDB;
-import com.d.dmusic.module.greendao.music.CollectionMusic;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
-import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.media.SyncUtil;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
+import com.d.dmusic.mvp.view.ISongView;
 import com.d.dmusic.utils.Util;
-import com.d.dmusic.view.dialog.AddToListDialog;
 import com.d.dmusic.view.dialog.SongInfoDialog;
+import com.d.dmusic.view.popup.AddToListPopup;
 import com.d.xrv.adapter.CommonAdapter;
 import com.d.xrv.adapter.CommonHolder;
 
@@ -21,10 +21,12 @@ import java.util.List;
 
 public class SongAdapter extends CommonAdapter<MusicModel> {
     private int type;// 列表标识
+    private ISongView listener;
 
-    public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type) {
+    public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type, ISongView listener) {
         super(context, datas, layoutId);
         this.type = type;
+        this.listener = listener;
     }
 
     public void setDatas(List<MusicModel> datas) {
@@ -75,15 +77,23 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onClick(View v) {
                 item.isCollected = !item.isCollected;
+                SyncUtil.upCollected(mContext.getApplicationContext(), type, item);//数据库操作
                 if (item.isCollected) {
-                    MusicDBUtil.getInstance(mContext).insertOrReplaceMusic(item.clone(new CollectionMusic()), MusicDB.COLLECTION_MUSIC);
                     //将下拉菜单收回
                     item.isChecked = false;
                     holder.setChecked(R.id.cb_more, false);
                     holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
                     holder.setText(R.id.tv_collect, "已收藏");
                 } else {
-                    holder.setText(R.id.tv_collect, "收藏");
+                    if (type == MusicDB.COLLECTION_MUSIC) {
+                        mDatas.remove(position);
+                        notifyDataSetChanged();
+                        if (listener != null) {
+                            listener.notifyDataCountChanged(mDatas.size());
+                        }
+                    } else {
+                        holder.setText(R.id.tv_collect, "收藏");
+                    }
                     Util.toast(mContext, "已取消收藏");
                 }
             }
@@ -93,7 +103,7 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             public void onClick(View v) {
                 List<MusicModel> list = new ArrayList<MusicModel>();
                 list.add(item);
-                new AddToListDialog(mContext, list, type).show();
+                new AddToListPopup(mContext, list, type).show();
             }
         });
         holder.setViewOnClickListener(R.id.llyt_info, new View.OnClickListener() {

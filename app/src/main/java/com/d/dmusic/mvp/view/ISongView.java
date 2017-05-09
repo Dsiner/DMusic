@@ -16,4 +16,6 @@ public interface ISongView extends MvpView {
      * 设置默认态显示
      */
     void setDSState(int state);
+
+    void notifyDataCountChanged(int count);
 }

@@ -41,8 +41,8 @@ public abstract class MusicDB extends AbstractDB<DaoMaster, DaoSession, MusicMod
     }
 
     private void initDaos() {
-        daos = new AbstractDao[TABLE_COUNT];
-        for (int i = 0; i < TABLE_COUNT; i++) {
+        daos = new AbstractDao[TABLE_INDEX_COUNT];
+        for (int i = 0; i < TABLE_INDEX_COUNT; i++) {
             if (i / 10 == 0) {
                 switch (i) {
                     case 1:
@@ -58,10 +58,8 @@ public abstract class MusicDB extends AbstractDB<DaoMaster, DaoSession, MusicMod
                         daos[i] = daoSession.getCustomListDao();
                         break;
                 }
-                continue;
-            }
-            if (i / 10 == 1) {
-                switch (i % 10) {
+            } else {
+                switch (i - 10) {
                     case 0:
                         daos[i] = daoSession.getCustomMusic0Dao();
                         break;

@@ -4,11 +4,15 @@ import android.content.Context;
 
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.dmusic.model.FileModel;
-import com.d.dmusic.module.greendao.music.LocalAllMusic;
+import com.d.dmusic.module.events.MusicModelEvent;
+import com.d.dmusic.module.greendao.db.MusicDB;
+import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.module.media.MusicFactory;
 import com.d.dmusic.mvp.view.IScanView;
 import com.d.dmusic.utils.fileutil.FileUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +28,6 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by D on 2017/4/30.
  */
-
 public class ScanPresenter extends MvpBasePresenter<IScanView> {
     public ScanPresenter(Context context) {
         super(context);
@@ -34,7 +37,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
         Observable.create(new ObservableOnSubscribe<List<FileModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<FileModel>> e) throws Exception {
-                List<FileModel> list = FileUtil.getFiles(path, true);
+                List<FileModel> list = FileUtil.getFiles(path, false);
                 if (list == null) {
                     list = new ArrayList<FileModel>();
                 }
@@ -45,7 +48,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 .subscribe(new Consumer<List<FileModel>>() {
                     @Override
                     public void accept(@NonNull List<FileModel> list) throws Exception {
-                        if (!isViewAttached() || list == null || list.size() <= 0) {
+                        if (!isViewAttached()) {
                             return;
                         }
                         getView().setDatas(list);
@@ -53,9 +56,42 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 });
     }
 
-    public void getMusics(final List<String> paths, int type) {
-        List<LocalAllMusic> list = (List<LocalAllMusic>) MusicFactory.createFactory(mContext, type).getMusic(paths);
-        MusicDBUtil.getInstance(mContext).deleteAll(type);
-        MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
+    public void getMusics(final List<String> paths, final int type) {
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(mContext, type).getMusic(paths);
+                MusicDBUtil.getInstance(mContext).deleteAll(type);
+                MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
+                MusicDBUtil.getInstance(mContext).updateCusListCount(type, list != null ? list.size() : 0);
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, 0);//默认按时间排序
+
+                //更新收藏字段
+                List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(MusicDB.COLLECTION_MUSIC);
+                MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(c, type), type);
+
+                if (list == null) {
+                    list = new ArrayList<MusicModel>();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        MusicModelEvent event = new MusicModelEvent(type, list);
+                        EventBus.getDefault().post(event);
+
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().closeLoading();
+                        getView().setMusics(list);
+                    }
+                });
     }
 }

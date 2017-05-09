@@ -20,12 +20,21 @@ public class AddToListAdapter extends CommonAdapter<CustomList> {
         super(context, datas, layoutId);
     }
 
+    public void setDatas(List<CustomList> datas) {
+        if (mDatas != null && datas != null) {
+            mDatas.clear();
+            mDatas.addAll(datas);
+        }
+    }
+
     @Override
-    public void convert(int position, CommonHolder holder, CustomList item) {
+    public void convert(int position, final CommonHolder holder, final CustomList item) {
         holder.setText(R.id.tv_list_name, item.listName);
         holder.setViewOnClickListener(R.id.llyt_selected, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                item.isChecked = !item.isChecked;
+                holder.setChecked(R.id.cb_check, item.isChecked);
             }
         });
     }

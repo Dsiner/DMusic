@@ -11,4 +11,8 @@ import java.util.List;
  */
 public interface IMainView extends MvpView {
     void setCustomList(List<CustomList> models);
+
+    void setLocalAllCount(int count);
+
+    void setCollectionCount(int count);
 }

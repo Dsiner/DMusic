@@ -25,9 +25,8 @@ import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.PlayOrPauseEvent;
 import com.d.dmusic.module.global.MusciCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
-import com.d.dmusic.module.greendao.music.CollectionMusic;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
-import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.media.SyncUtil;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.utils.StatusBarCompat;
@@ -78,6 +77,7 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
     private PlayQueuePopup queuePopup;
     private PlayerReceiver playerReceiver;
     private boolean isRegisterReceiver;// 是否注册了广播监听器
+    private int type = MusicDB.MUSIC;
 
     @OnClick({R.id.iv_back, R.id.ib_play_collect, R.id.ib_play_prev,
             R.id.ib_play_play_pause, R.id.ib_play_next, R.id.ib_play_queue})
@@ -88,7 +88,9 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
                 break;
             case R.id.ib_play_collect:
                 if (control != null && control.getCurModel() != null) {
-                    MusicDBUtil.getInstance(context).insertOrReplaceMusic(control.getCurModel().clone(new CollectionMusic()), MusicDB.COLLECTION_MUSIC);
+                    MusicModel item = control.getCurModel();
+                    item.isCollected = !item.isCollected;
+                    SyncUtil.upCollected(context.getApplicationContext(), type, item);
                 }
                 break;
             case R.id.ib_play_prev:

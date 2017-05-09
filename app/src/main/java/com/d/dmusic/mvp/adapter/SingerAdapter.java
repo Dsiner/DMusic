@@ -37,6 +37,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.singer);
                 bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
+                bundle.putInt("tab", 1);
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 

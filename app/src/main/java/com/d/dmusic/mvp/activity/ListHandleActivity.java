@@ -1,11 +1,8 @@
 package com.d.dmusic.mvp.activity;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,15 +17,17 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
+import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.global.MusciCst;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.itemtouchhelper.OnStartDragListener;
 import com.d.dmusic.module.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.dmusic.mvp.adapter.HandlerAdapter;
 import com.d.dmusic.utils.StatusBarCompat;
-import com.d.dmusic.view.dialog.AddToListDialog;
+import com.d.dmusic.view.popup.AddToListPopup;
 
-import java.lang.ref.WeakReference;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,97 +49,62 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
     LinearLayout llytAddToList;
     @Bind(R.id.llyt_delete)
     LinearLayout llytDelete;
-    @Bind(R.id.llyt_submit)
-    LinearLayout llytSubmit;
+    @Bind(R.id.llyt_revoke)
+    LinearLayout llytRevoke;
     @Bind(R.id.rv_list)
     RecyclerView rvList;
 
     private int type;
     private List<MusicModel> models;
     private HandlerAdapter adapter;
-    private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
-    private WeakHandler handler = new WeakHandler(this);
     private AlertDialog dialog;
 
     @OnClick({R.id.iv_title_back, R.id.tv_title_select_all, R.id.llyt_add_to_list,
-            R.id.llyt_delete, R.id.llyt_submit})
+            R.id.llyt_delete, R.id.llyt_revoke})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_title_back:
                 finish();
                 break;
             case R.id.tv_title_select_all:
-                if ((boolean) ivSelectAll.getTag()) {
-                    for (MusicModel model : models) {
-                        model.isChecked = !model.isChecked;
-                        adapter.notifyDataSetChanged();
-                    }
-                    ivSelectAll.setTag(false);
-                    ivSelectAll.setText("全选");
-                } else {
-                    for (MusicModel musicModel : models) {
-                        musicModel.isChecked = true;
-                        adapter.notifyDataSetChanged();
-                    }
-                    ivSelectAll.setTag(true);
-                    ivSelectAll.setText("反选");
+                final boolean isAll = !((boolean) ivSelectAll.getTag());
+                ivSelectAll.setTag(isAll);
+                for (MusicModel model : models) {
+                    model.isSortChecked = isAll || !model.isSortChecked;
                 }
+                ivSelectAll.setText(isAll ? "反选" : "全选");
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.llyt_add_to_list:
-                List<MusicModel> mlm = new ArrayList<MusicModel>();
+                List<MusicModel> list = new ArrayList<MusicModel>();
                 for (MusicModel musicModel : models) {
-                    if (musicModel.isChecked) {
-                        mlm.add(musicModel);
+                    if (musicModel.isSortChecked) {
+                        list.add(musicModel);
                     }
                 }
-                new AddToListDialog(this, mlm, type).show();
+                new AddToListPopup(this, list, type).show();
                 break;
             case R.id.llyt_delete:
                 dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
                 for (int i = models.size() - 1; i >= 0; i--) {
-                    if (models.get(i).isChecked) {
+                    if (models.get(i).isSortChecked) {
                         models.remove(i);
                     }
                 }
-                adapter.notifyDataSetChanged();
                 dialog.dismiss();
+                adapter.notifyDataSetChanged();
                 break;
-            case R.id.llyt_submit:
+            case R.id.llyt_revoke:
                 dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ContentValues valuesCustom = new ContentValues();
-                        valuesCustom.put("sortby", 3);
-//                        DataSupport.update(CustomList.class, valuesCustom, id);// 更新当前歌曲列表排序方式
-//                        CustomMusicFragment.sortBy = 3;// 以自定义方式排序
-                        handler.sendEmptyMessage(1);
-                    }
-                }).start();
-                break;
-        }
-    }
-
-    static class WeakHandler extends Handler {
-        WeakReference<ListHandleActivity> weakReference;
-
-        public WeakHandler(ListHandleActivity activity) {
-            weakReference = new WeakReference<ListHandleActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            ListHandleActivity theActivity = weakReference.get();
-            if (theActivity != null && !theActivity.isFinishing()) {
-                switch (msg.what) {
-                    case 1:
-                        theActivity.dialog.dismiss();
-                        theActivity.finish();
-                        break;
+                models.clear();
+                models.addAll(MusciCst.models);
+                for (MusicModel model : models) {
+                    model.isSortChecked = false;
                 }
-            }
-            super.handleMessage(msg);
+                dialog.dismiss();
+                adapter.notifyDataSetChanged();
+                break;
         }
     }
 
@@ -172,13 +136,14 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
     @Override
     protected void init() {
         ivSelectAll.setTag(false);
+        ivSelectAll.setText("全选");
 
-        /*********************** split line ****************************/
-        models = MusciCst.models;
+        models = new ArrayList<>();
+        models.addAll(MusciCst.models);
+
         adapter = new HandlerAdapter(this, models, R.layout.adapter_handler, this);
-        layoutManager = new LinearLayoutManager(this);//创建线性布局管理器（默认是垂直方向）
         rvList.setHasFixedSize(true);
-        rvList.setLayoutManager(layoutManager);//为RecyclerView指定布局管理对象
+        rvList.setLayoutManager(new LinearLayoutManager(this));//为RecyclerView指定布局管理对象
         rvList.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
@@ -189,6 +154,13 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         itemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void finish() {
+        MusicModelEvent event = new MusicModelEvent(type, models);
+        EventBus.getDefault().post(event);
+        super.finish();
     }
 
     @Override

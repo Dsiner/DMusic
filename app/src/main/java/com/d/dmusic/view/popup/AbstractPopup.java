@@ -1,5 +1,6 @@
 package com.d.dmusic.view.popup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.KeyEvent;
@@ -13,7 +14,7 @@ import android.widget.PopupWindow;
  * Created by D on 2017/4/29.
  */
 public abstract class AbstractPopup implements View.OnKeyListener {
-    protected Context context;
+    protected Context context;//must be Activity
     protected PopupWindow popupWindow;
     protected View rootView;
 
@@ -44,7 +45,7 @@ public abstract class AbstractPopup implements View.OnKeyListener {
      * 显示popupWindow
      */
     public void show() {
-        if (popupWindow != null && !popupWindow.isShowing()) {
+        if (popupWindow != null && !popupWindow.isShowing() && context != null && !((Activity) context).isFinishing()) {
             popupWindow.showAsDropDown(rootView);
         }
     }

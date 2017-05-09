@@ -93,7 +93,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llyt_submit"
+            android:id="@+id/llyt_revoke"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -108,7 +108,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提交操作"
+                android:text="撤销操作"
                 android:textColor="#000000"
                 android:textSize="12dp" />
         </LinearLayout>

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MusicFactory
  * Created by D on 2017/5/2.
  */
 public class MusicFactory {
@@ -137,6 +138,7 @@ public class MusicFactory {
         model.folder = info.url.substring(0, info.url.lastIndexOf("/"));
         //// TODO: @D new Thread 2017/5/7
         model.isCollected = false;
+        model.timeStamp = System.currentTimeMillis();
         add(model);
     }
 
