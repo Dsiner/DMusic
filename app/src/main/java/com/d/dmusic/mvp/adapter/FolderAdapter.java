@@ -40,6 +40,7 @@ public class FolderAdapter extends CommonAdapter<FolderModel> {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.folder);
                 bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
+                bundle.putInt("tab", 3);
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 

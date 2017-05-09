@@ -103,7 +103,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
                 break;
             case R.id.tv_ok:
                 if (insertNewList(etName.getText().toString())) {
-                    EventBus.getDefault().post(new RefreshEvent());
+                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST));
                     dismiss();
                 }
                 break;

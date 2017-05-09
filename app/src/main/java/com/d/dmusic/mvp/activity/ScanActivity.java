@@ -1,5 +1,6 @@
 package com.d.dmusic.mvp.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -49,7 +50,10 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
         ULog.v("type" + type);
         StatusBarCompat.compat(ScanActivity.this, 0xffff0000);//沉浸式状态栏
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
         scanFragment = new ScanFragment();
+        scanFragment.setArguments(bundle);
         replaceFragment(scanFragment);
         ivTitleBack.setOnClickListener(this);
     }
@@ -59,10 +63,6 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment).addToBackStack(null)
                 .commitAllowingStateLoss();
-    }
-
-    public int getType() {
-        return type;
     }
 
     @Override

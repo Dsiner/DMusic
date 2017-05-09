@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
@@ -37,8 +38,12 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     TitleLayout tlTitle;
     @Bind(R.id.llyt_local)
     LinearLayout llytLocal;// 本地音乐
+    @Bind(R.id.tv_local_all_count)
+    TextView tvLocalAllCount;// 本地歌曲数
     @Bind(R.id.llyt_collection)
     LinearLayout llytColletion;// 我的收藏
+    @Bind(R.id.tv_collection_count)
+    TextView tvCollectionCount;// 收藏歌曲数
     @Bind(R.id.lv_list)
     LRecyclerView lvList;
 
@@ -50,12 +55,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         switch (v.getId()) {
             case R.id.llyt_local:
                 //本地音乐
-                Bundle lb = new Bundle();
-                lb.putString("title", "本地歌曲");
-                lb.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
                 LocalAllMusicFragment lFragment = new LocalAllMusicFragment();
-                lFragment.setArguments(lb);
-
                 MainActivity.fManger.beginTransaction().replace(R.id.framement, lFragment)
                         .addToBackStack(null).commitAllowingStateLoss();
                 break;
@@ -111,10 +111,15 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.getCustomList();
+        mPresenter.getLocalAllCount();
+        mPresenter.getCollectionCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RefreshEvent event) {
+        if (event == null || event.event != RefreshEvent.SYNC_CUSTOM_LIST) {
+            return;
+        }
         mPresenter.getCustomList();
     }
 
@@ -122,6 +127,16 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void setCustomList(List<CustomList> models) {
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setLocalAllCount(int count) {
+        tvLocalAllCount.setText(count + "首");
+    }
+
+    @Override
+    public void setCollectionCount(int count) {
+        tvCollectionCount.setText(count + "首");
     }
 
     @Override

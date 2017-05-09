@@ -12,6 +12,7 @@
         android:layout_weight="1" />
 
     <LinearLayout
+        android:id="@+id/llyt_queue"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:background="@color/color_queque_bg"
@@ -44,31 +45,24 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_play_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:text="列表循环"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/dimen_text_sub" />
 
-                    <TextView
-                        android:id="@+id/tv_play_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="列表循环"
-                        android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_sub" />
-
-                    <TextView
-                        android:id="@+id/tv_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:gravity="center"
-                        android:text=" (227首)"
-                        android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text=" (227首)"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/dimen_text_small" />
             </LinearLayout>
 
             <TextView

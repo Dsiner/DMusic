@@ -8,8 +8,13 @@ import com.d.dmusic.R;
 import com.d.dmusic.model.AlbumModel;
 import com.d.dmusic.model.FolderModel;
 import com.d.dmusic.model.SingerModel;
+import com.d.dmusic.module.events.MusicModelEvent;
+import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.mvp.adapter.FolderAdapter;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ public class LMFolderFragment extends AbstractLMFragment {
         datas = new ArrayList<>();
         adapter = new FolderAdapter(context, datas, R.layout.adapter_folder);
         xrvList.showAsList();
+        xrvList.setCanRefresh(false);
+        xrvList.setCanLoadMore(false);
         xrvList.setAdapter(adapter);
         mPresenter.getFolder();
     }
@@ -61,5 +68,19 @@ public class LMFolderFragment extends AbstractLMFragment {
     @Override
     public void setDSState(int state) {
         dslDS.setState(state);
+    }
+
+    @Override
+    public void notifyDataCountChanged(int count) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MusicModelEvent event) {
+        if (event == null || getActivity() == null || getActivity().isFinishing()
+                || event.type != MusicDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
+            return;
+        }
+        mPresenter.getFolder();
     }
 }

@@ -1,6 +1,7 @@
 package com.d.dmusic.mvp.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.dmusic.module.greendao.music.CustomList;
@@ -46,6 +47,70 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                             return;
                         }
                         getView().setCustomList(list);
+                    }
+                });
+    }
+
+
+    public void getLocalAllCount() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT COUNT(*) FROM LOCAL_ALL_MUSIC");
+                Integer count = 0;
+                if (cursor != null && cursor.moveToFirst()) {
+                    int indexCount = cursor.getColumnIndex("COUNT(*)");
+                    if (indexCount != -1) {
+                        count = cursor.getInt(indexCount);
+                    }
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                e.onNext(count);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer count) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().setLocalAllCount(count);
+                    }
+                });
+    }
+
+
+    public void getCollectionCount() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT COUNT(*) FROM COLLECTION_MUSIC");
+                Integer count = 0;
+                if (cursor != null && cursor.moveToFirst()) {
+                    int indexCount = cursor.getColumnIndex("COUNT(*)");
+                    if (indexCount != -1) {
+                        count = cursor.getInt(indexCount);
+                    }
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                e.onNext(count);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer count) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().setCollectionCount(count);
                     }
                 });
     }

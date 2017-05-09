@@ -1,6 +1,7 @@
 package com.d.dmusic.mvp.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.d.commen.base.BaseFragment;
@@ -10,6 +11,8 @@ import com.d.dmusic.mvp.presenter.LMMusicPresenter;
 import com.d.dmusic.mvp.view.ILMMusicView;
 import com.d.dmusic.view.DSLayout;
 import com.d.xrv.XRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 
@@ -23,6 +26,7 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     XRecyclerView xrvList;
 
     protected boolean isVisibleToUser;
+    protected boolean isLazyLoaded;
     private boolean isPrepared;
 
     @Override
@@ -38,6 +42,12 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     @Override
     protected MvpView getMvpView() {
         return this;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -68,11 +78,18 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
             return;
         }
         isPrepared = false;//仅仅懒加载加载一次
+        isLazyLoaded = true;
         lazyLoad();
     }
 
     protected abstract void lazyLoad();
 
     protected void onInvisible() {
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

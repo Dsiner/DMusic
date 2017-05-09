@@ -26,6 +26,7 @@ public class MusicModel {
     public Long timeStamp;
 
     public boolean isChecked = false;//附加属性：是否选中
+    public boolean isSortChecked = false;//附加属性：是否选中
 
     public MusicModel() {
     }
@@ -50,6 +51,13 @@ public class MusicModel {
         this.timeStamp = timeStamp;
     }
 
+    /**
+     * 类型转换-数据浅拷贝
+     *
+     * @param list:原始拷贝数据
+     * @param type:目标数据类型
+     * @return ret:目标类型数据
+     */
     public static List<? extends MusicModel> clone(List<? extends MusicModel> list, int type) {
         if (list == null) {
             return null;
@@ -68,6 +76,13 @@ public class MusicModel {
         return ret;
     }
 
+    /**
+     * 类型转换-数据浅拷贝
+     *
+     * @param model:目标类型数据
+     * @param <T>:目标类型
+     * @return model
+     */
     public <T extends MusicModel> T clone(T model) {
         model.url = url;
         model.songName = songName;

@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llyt_list"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -21,7 +20,7 @@
             android:id="@+id/tv_list_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="默认列表" />
@@ -33,12 +32,16 @@
             android:gravity="center">
 
             <CheckBox
+                android:id="@+id/cb_check"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:background="@drawable/selector_toggle"
                 android:button="@null"
                 android:clickable="false"
+                android:focusable="false"
                 android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
+
+    <include layout="@layout/layout_line" />
 </LinearLayout>

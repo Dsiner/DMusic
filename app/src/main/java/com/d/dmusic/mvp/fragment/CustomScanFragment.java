@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,12 +15,16 @@ import com.d.commen.base.BaseFragment;
 import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.model.FileModel;
-import com.d.dmusic.mvp.activity.ScanActivity;
+import com.d.dmusic.module.events.MusicModelEvent;
+import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.mvp.adapter.DirAdapter;
 import com.d.dmusic.mvp.presenter.ScanPresenter;
 import com.d.dmusic.mvp.view.IScanView;
+import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.fileutil.FileUtil;
 import com.d.xrv.LRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -57,7 +62,6 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                 onBackPressed();
                 break;
             case R.id.llyt_scan_now:
-                dialog = AlertDialogFactory.createFactory(getActivity()).getLoadingDialog();
                 List<String> paths = new ArrayList<String>();
                 for (FileModel fileModel : models) {
                     if (fileModel.isChecked) {
@@ -66,6 +70,8 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                 }
                 if (paths.size() > 0) {
                     mPresenter.getMusics(paths, type);
+                } else {
+                    Util.toast(context, "请先选择扫描路径");
                 }
                 break;
         }
@@ -109,10 +115,17 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     }
 
     @Override
-    protected void init() {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         context = getActivity();
-        ScanActivity activity = (ScanActivity) context;
-        type = activity.getType();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            type = bundle.getInt("type");
+        }
+    }
+
+    @Override
+    protected void init() {
         models = new ArrayList<>();
         adapter = new DirAdapter(getActivity(), models, R.layout.adapter_dir);
         adapter.setOnPathListener(this);
@@ -130,6 +143,30 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         this.models = models;
         adapter.setDatas(this.models);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setMusics(List<MusicModel> models) {
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        if (dialog == null) {
+            dialog = AlertDialogFactory.createFactory(getActivity()).getLoadingDialog();
+        }
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void closeLoading() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     @Override

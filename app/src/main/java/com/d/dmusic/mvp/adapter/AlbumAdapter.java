@@ -40,6 +40,7 @@ public class AlbumAdapter extends CommonAdapter<AlbumModel> {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.album);
                 bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
+                bundle.putInt("tab", 2);
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 
