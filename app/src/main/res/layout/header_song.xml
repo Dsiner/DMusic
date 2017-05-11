@@ -7,15 +7,15 @@
     <LinearLayout
         android:id="@+id/llyt_header_song"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="@dimen/dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/iv_header_song_play_all"
-            android:layout_width="49dp"
-            android:layout_height="49dp"
-            android:padding="12dp"
+            android:layout_width="@dimen/dimen_item_height"
+            android:layout_height="@dimen/dimen_item_height"
+            android:padding="13dp"
             android:scaleType="centerCrop"
             android:src="@drawable/play_all" />
 
@@ -30,16 +30,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="播放全部"
-                android:textSize="12sp" />
+                android:text="@string/play_all"
+                android:textSize="@dimen/dimen_text_small" />
 
             <TextView
                 android:id="@+id/tv_header_song_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="0首"
-                android:textSize="8sp" />
+                android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
 
         <View
@@ -49,12 +48,10 @@
 
         <ImageView
             android:id="@+id/iv_header_song_handler"
-            android:layout_width="49dp"
-            android:layout_height="49dp"
+            android:layout_width="@dimen/dimen_item_height"
+            android:layout_height="@dimen/dimen_item_height"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerCrop"
             android:src="@drawable/song_handler" />
     </LinearLayout>
-
-    <include layout="@layout/layout_line" />
 </LinearLayout>

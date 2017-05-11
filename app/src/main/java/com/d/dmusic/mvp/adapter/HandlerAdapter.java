@@ -1,7 +1,6 @@
 package com.d.dmusic.mvp.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -54,7 +53,7 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(mLayoutId, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(mContext, view);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
         holder.tvSongName.setText(item.songName);
         holder.tvSinger.setText(item.singer);
         holder.cbCheck.setChecked(item.isSortChecked);
-        holder.llytSelected.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 item.isSortChecked = !item.isSortChecked;
@@ -115,14 +114,16 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
+        Context context;
         LinearLayout llytSelected;
         CheckBox cbCheck;
         TextView tvSongName;
         TextView tvSinger;
         ImageView ivHandler;
 
-        ItemViewHolder(View itemView) {
+        ItemViewHolder(Context context, View itemView) {
             super(itemView);
+            this.context = context;
             llytSelected = (LinearLayout) itemView.findViewById(R.id.llyt_selected);
             cbCheck = (CheckBox) itemView.findViewById(R.id.cb_check);
             tvSongName = (TextView) itemView.findViewById(R.id.tv_song_name);
@@ -132,7 +133,7 @@ public class HandlerAdapter<T extends MusicModel> extends RecyclerView.Adapter<H
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.GRAY);
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.color_lgray));
         }
 
         @Override

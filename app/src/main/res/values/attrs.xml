@@ -5,6 +5,17 @@
         <attr name="text_color" format="color" />
         <attr name="indicator_color" format="color" />
     </declare-styleable>
+    <declare-styleable name="TitleLayout">
+        <attr name="tl_leftText" format="string" />
+        <attr name="tl_rightText" format="string" />
+        <attr name="tl_middleText" format="string" />
+        <attr name="tl_leftDrawable" format="reference" />
+        <attr name="tl_rightDrawable" format="reference" />
+        <attr name="tl_middleDrawable" format="reference" />
+        <attr name="tl_leftRes" format="reference" />
+        <attr name="tl_rightRes" format="reference" />
+        <attr name="tl_middleRes" format="reference" />
+    </declare-styleable>
     <declare-styleable name="DSLayout">
         <attr name="adjustHeightT" format="dimension" />
         <attr name="adjustHeightB" format="dimension" />

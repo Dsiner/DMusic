@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 首页-本地歌曲-文件夹
  * Created by D on 2017/4/29.
  */
 public class LMFolderFragment extends AbstractLMFragment {
     private Context context;
     private FolderAdapter adapter;
-    private List<FolderModel> datas;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class LMFolderFragment extends AbstractLMFragment {
 
     @Override
     protected void lazyLoad() {
-        datas = new ArrayList<>();
+        List<FolderModel> datas = new ArrayList<>();
         adapter = new FolderAdapter(context, datas, R.layout.adapter_folder);
         xrvList.showAsList();
         xrvList.setCanRefresh(false);

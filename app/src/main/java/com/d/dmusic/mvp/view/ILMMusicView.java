@@ -8,6 +8,7 @@ import com.d.dmusic.model.SingerModel;
 import java.util.List;
 
 /**
+ * ILMMusicView
  * Created by D on 2016/6/4.
  */
 public interface ILMMusicView extends ISongView {

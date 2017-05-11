@@ -18,6 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * MusicControl
  * Created by D on 2017/4/29.
@@ -100,13 +108,40 @@ public class MusicControl {
         return instance;
     }
 
-    public void init(List<MusicModel> list, int position) {
-        if (models != null && list != null && list.size() > 0) {
+    public void init(final List<MusicModel> datas, final int position) {
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<MusicModel> list = (List<MusicModel>) MusicModel.clone(datas, MusicDB.MUSIC);
+                MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, MusicDB.MUSIC);
+                if (list == null) {
+                    list = new ArrayList<MusicModel>();
+                }
+                e.onNext(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (models != null && list != null) {
+                            models.clear();
+                            models.addAll(list);
+                            count = models.size();
+                            curPos = (position >= 0 && position < models.size()) ? position : 0;
+                            play();
+                        }
+                    }
+                });
+    }
+
+    public void reLoad() {
+        List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(context).queryAllMusic(MusicDB.MUSIC);
+        if (models != null && list != null) {
             models.clear();
             models.addAll(list);
             count = models.size();
-            curPos = (position >= 0 && position < models.size()) ? position : 0;
-            play();
+            curPos = (curPos >= 0 && curPos < models.size()) ? curPos : 0;
         }
     }
 

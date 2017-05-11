@@ -12,9 +12,9 @@ import android.widget.TextView;
 import com.d.dmusic.R;
 
 /**
+ * SongHeaderView
  * Created by D on 2017/5/7.
  */
-
 public class SongHeaderView extends LinearLayout implements View.OnClickListener {
     private ImageView ivPlayAll;
     private LinearLayout llytPlayAll;
@@ -48,6 +48,13 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
 
     public void setSongCount(int count) {
         tvSongCount.setText(count + "首");
+    }
+
+    public void setVisibility(int resId, int visibility) {
+        View v = findViewById(resId);
+        if (v != null) {
+            v.setVisibility(visibility);
+        }
     }
 
     @Override

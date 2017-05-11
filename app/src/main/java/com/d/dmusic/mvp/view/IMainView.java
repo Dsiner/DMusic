@@ -7,6 +7,7 @@ import com.d.dmusic.module.greendao.music.CustomList;
 import java.util.List;
 
 /**
+ * IMainView
  * Created by D on 2016/6/4.
  */
 public interface IMainView extends MvpView {

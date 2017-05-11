@@ -37,7 +37,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.dmusic.mvp.activity.ListHandleActivity"
+            android:name="com.d.dmusic.mvp.activity.HandleActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
     </application>

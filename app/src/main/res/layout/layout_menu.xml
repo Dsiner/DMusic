@@ -189,12 +189,13 @@
         android:id="@+id/llyt_menu_exit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="4dp">
 
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginLeft="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/exit" />
@@ -206,7 +207,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="退出"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_main" />
     </LinearLayout>
 </merge>

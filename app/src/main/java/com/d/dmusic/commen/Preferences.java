@@ -44,7 +44,7 @@ public class Preferences extends AbstractPreference {
      * 获取是否是第一次启动
      */
     public boolean getIsFirst() {
-        return settings.getBoolean("isFirst", true);
+        return settings.getBoolean("isFirst", false);
     }
 
     /**

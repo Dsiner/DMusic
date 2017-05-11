@@ -8,8 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.commen.base.BaseActivity;
@@ -24,6 +22,7 @@ import com.d.dmusic.module.itemtouchhelper.OnStartDragListener;
 import com.d.dmusic.module.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.dmusic.mvp.adapter.HandlerAdapter;
 import com.d.dmusic.utils.StatusBarCompat;
+import com.d.dmusic.view.TitleLayout;
 import com.d.dmusic.view.popup.AddToListPopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,49 +34,42 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * 音乐列表管理、排序
+ * 歌曲列表排序、管理
  * Created by D on 2017/4/28.
  */
-public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener {
-    @Bind(R.id.iv_title_back)
-    ImageView ivBack;
-    @Bind(R.id.tv_title_title)
-    TextView tvTitle;
-    @Bind(R.id.tv_title_select_all)
-    TextView ivSelectAll;
-    @Bind(R.id.llyt_add_to_list)
-    LinearLayout llytAddToList;
-    @Bind(R.id.llyt_delete)
-    LinearLayout llytDelete;
-    @Bind(R.id.llyt_revoke)
-    LinearLayout llytRevoke;
+public class HandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener {
+    @Bind(R.id.tl_title)
+    TitleLayout tlTitle;
+    @Bind(R.id.tv_title_right)
+    TextView tvRight;
     @Bind(R.id.rv_list)
     RecyclerView rvList;
 
     private int type;
+    private String title;
     private List<MusicModel> models;
     private HandlerAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
     private AlertDialog dialog;
 
-    @OnClick({R.id.iv_title_back, R.id.tv_title_select_all, R.id.llyt_add_to_list,
+    @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.llyt_add_to_list,
             R.id.llyt_delete, R.id.llyt_revoke})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_title_back:
+            case R.id.iv_title_left:
                 finish();
                 break;
-            case R.id.tv_title_select_all:
-                final boolean isAll = !((boolean) ivSelectAll.getTag());
-                ivSelectAll.setTag(isAll);
+            case R.id.tv_title_right:
+                final boolean isAll = !((boolean) tvRight.getTag());
+                tvRight.setTag(isAll);
                 for (MusicModel model : models) {
                     model.isSortChecked = isAll || !model.isSortChecked;
                 }
-                ivSelectAll.setText(isAll ? "反选" : "全选");
+                tvRight.setText(isAll ? "反选" : "全选");
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.llyt_add_to_list:
-                List<MusicModel> list = new ArrayList<MusicModel>();
+                List<MusicModel> list = new ArrayList<>();
                 for (MusicModel musicModel : models) {
                     if (musicModel.isSortChecked) {
                         list.add(musicModel);
@@ -110,7 +102,7 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_list_handle;
+        return R.layout.activity_handle;
     }
 
     @Override
@@ -126,17 +118,14 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarCompat.compat(ListHandleActivity.this, 0xffFD8D22);//沉浸式状态栏
-        Intent intent = getIntent();
-        if (intent != null) {
-            type = intent.getIntExtra("type", 0);
-        }
+        StatusBarCompat.compat(HandleActivity.this, 0xffFD8D22);//沉浸式状态栏
     }
 
     @Override
     protected void init() {
-        ivSelectAll.setTag(false);
-        ivSelectAll.setText("全选");
+        initTitle();
+        tvRight.setTag(false);
+        tvRight.setText("全选");
 
         models = new ArrayList<>();
         models.addAll(MusciCst.models);
@@ -149,6 +138,16 @@ public class ListHandleActivity extends BaseActivity<MvpBasePresenter> implement
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(rvList);
+    }
+
+    private void initTitle() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            type = intent.getIntExtra("type", 0);
+            title = intent.getStringExtra("title");
+        }
+        tlTitle.setType(type);
+        tlTitle.setText(R.id.tv_title_title, title);
     }
 
     @Override

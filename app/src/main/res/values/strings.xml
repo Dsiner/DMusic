@@ -3,4 +3,11 @@
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="loading">加载中...</string>
+
+    <string name="empty">--</string>
+    <string name="play_all">播放全部</string>
+    <string name="collection">收藏</string>
+    <string name="add_to_song_list">加入歌单</string>
+    <string name="set_ring">设为铃声</string>
+    <string name="song_info">歌曲信息</string>
 </resources>

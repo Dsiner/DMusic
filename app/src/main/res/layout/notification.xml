@@ -59,7 +59,8 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="18dp"
-            android:src="@drawable/notification_quit" />
+            android:src="@drawable/notification_quit"
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout

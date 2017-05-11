@@ -23,6 +23,7 @@ import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
 import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.PlayOrPauseEvent;
+import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.global.MusciCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
@@ -37,8 +38,6 @@ import com.d.dmusic.view.popup.PlayQueuePopup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -78,6 +77,7 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
     private PlayerReceiver playerReceiver;
     private boolean isRegisterReceiver;// 是否注册了广播监听器
     private int type = MusicDB.MUSIC;
+    private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
 
     @OnClick({R.id.iv_back, R.id.ib_play_collect, R.id.ib_play_prev,
             R.id.ib_play_play_pause, R.id.ib_play_next, R.id.ib_play_queue})
@@ -90,7 +90,7 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
                 if (control != null && control.getCurModel() != null) {
                     MusicModel item = control.getCurModel();
                     item.isCollected = !item.isCollected;
-                    SyncUtil.upCollected(context.getApplicationContext(), type, item);
+                    SyncUtil.upCollected(context.getApplicationContext(), item);
                 }
                 break;
             case R.id.ib_play_prev:
@@ -149,6 +149,10 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
     @Override
     protected void onResume() {
         super.onResume();
+        if (isNeedReLoad) {
+            isNeedReLoad = false;
+            control.reLoad();
+        }
         tvSongName.setText(control.getCurSongName());
         MediaPlayer mediaPlayer = control.getMediaPlayer();
         if (mediaPlayer != null && control.getStatus() == MusciCst.PLAY_STATUS_PLAYING) {
@@ -261,11 +265,6 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
 
     }
 
-    @Override
-    public List<MusicModel> getQueue() {
-        return null;
-    }
-
     /**
      * 用来接收从service传回来的广播的内部类
      */
@@ -298,6 +297,15 @@ public class PlayActivity extends BaseActivity<MvpBasePresenter> implements Seek
                 animator.cancel();
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onRefreshEvent(RefreshEvent event) {
+        if (event == null || isFinishing()
+                || event.event == type || event.type != RefreshEvent.SYNC_COLLECTIONG) {
+            return;
+        }
+        isNeedReLoad = true;
     }
 
     @Override

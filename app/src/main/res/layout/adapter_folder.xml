@@ -7,51 +7,41 @@
     <LinearLayout
         android:id="@+id/llyt_folder"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="16dp"
+            android:layout_width="@dimen/dimen_item_icon"
+            android:layout_height="@dimen/dimen_item_icon"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/dimen_margin"
             android:src="@drawable/scan_dir_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_folder_dir"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="left|bottom"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:singleLine="true"
                 android:text="Music"
-                android:textSize="12sp" />
+                android:textSize="@dimen/dimen_text_small" />
 
             <TextView
                 android:id="@+id/tv_folder_count"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="3dp"
-                android:layout_weight="1"
-                android:gravity="left|top"
-                android:text=""
-                android:textSize="8sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:text="0首"
+                android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/tv_folder_more"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/selector_toggle_more"
-            android:gravity="center"
-            android:visibility="gone" />
     </LinearLayout>
 
     <include layout="@layout/layout_line" />

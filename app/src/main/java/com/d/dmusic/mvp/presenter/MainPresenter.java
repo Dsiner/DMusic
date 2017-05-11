@@ -20,6 +20,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * MainPresenter
  * Created by D on 2017/4/30.
  */
 public class MainPresenter extends MvpBasePresenter<IMainView> {

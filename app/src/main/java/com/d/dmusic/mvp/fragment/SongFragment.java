@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
+import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
@@ -16,7 +17,7 @@ import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
-import com.d.dmusic.mvp.activity.ListHandleActivity;
+import com.d.dmusic.mvp.activity.HandleActivity;
 import com.d.dmusic.mvp.adapter.SongAdapter;
 import com.d.dmusic.mvp.presenter.SongPresenter;
 import com.d.dmusic.mvp.view.ISongView;
@@ -33,8 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
+ * SongFragment
  * Created by D on 2017/4/30.
  */
 public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
@@ -51,7 +54,15 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     private String title;
     private SongHeaderView header;
     private SongAdapter adapter;
-    private boolean isNeedReLoad;
+    private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
+
+    @OnClick({R.id.iv_title_left})
+    public void onClickListener(View v) {
+        switch (v.getId()) {
+            case R.id.iv_title_left:
+                MainActivity.popBackStack();
+        }
+    }
 
     @Override
     protected int getLayoutRes() {
@@ -81,6 +92,9 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type, this);
         header = new SongHeaderView(context);
         header.setVisibility(View.GONE);
+        if (type == MusicDB.LOCAL_ALL_MUSIC) {
+            header.setVisibility(R.id.iv_header_song_handler, View.GONE);
+        }
         header.setOnHeaderListener(this);
         xrvList.showAsList();
         xrvList.setCanRefresh(false);
@@ -114,11 +128,18 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         }
         tlTitle.setType(type);
         tlTitle.setText(R.id.tv_title_title, title);
-        tlTitle.setVisibility(R.id.iv_title_more, View.VISIBLE);
+        if (type == MusicDB.LOCAL_ALL_MUSIC || type == MusicDB.COLLECTION_MUSIC) {
+            tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
+        }
     }
 
     @Override
     public void setSong(List<MusicModel> models) {
+        if (models.size() <= 0) {
+            setDSState(DSLayout.STATE_EMPTY);
+        } else {
+            setDSState(View.GONE);
+        }
         notifyDataCountChanged(models.size());
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
@@ -144,7 +165,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl();
-            control.init((List<MusicModel>) MusicModel.clone(datas, MusicDB.MUSIC), 0);
+            control.init(datas, 0);
         }
     }
 
@@ -155,8 +176,9 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         if (datas != null) {
             MusciCst.models.addAll(datas);
         }
-        Intent intent = new Intent(getActivity(), ListHandleActivity.class);
+        Intent intent = new Intent(getActivity(), HandleActivity.class);
         intent.putExtra("type", type);
+        intent.putExtra("title", title);
         getActivity().startActivity(intent);
     }
 
@@ -173,7 +195,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onRefreshEvent(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.event == type) {
+                || event.event == type || event.type != RefreshEvent.SYNC_COLLECTIONG) {
             return;
         }
         isNeedReLoad = true;

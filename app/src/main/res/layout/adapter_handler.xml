@@ -7,20 +7,20 @@
     <LinearLayout
         android:id="@+id/llyt_handle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/llyt_selected"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/dimen_item_height"
+            android:layout_height="@dimen/dimen_item_height"
             android:gravity="center">
 
             <CheckBox
                 android:id="@+id/cb_check"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/dimen_item_icon"
+                android:layout_height="@dimen/dimen_item_icon"
                 android:background="@drawable/selector_toggle"
                 android:button="@null"
                 android:clickable="false"
@@ -39,20 +39,20 @@
                 android:id="@+id/tv_song_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textSize="@dimen/dimen_text_small" />
 
             <TextView
                 android:id="@+id/tv_singer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textSize="@dimen/dimen_text_small" />
+                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_handler"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/dimen_item_height"
+            android:layout_height="@dimen/dimen_item_height"
             android:scaleType="centerCrop"
             android:src="@drawable/sort_handler" />
     </LinearLayout>

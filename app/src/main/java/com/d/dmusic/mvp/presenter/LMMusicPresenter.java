@@ -56,11 +56,6 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                         if (!isViewAttached()) {
                             return;
                         }
-                        if (list.size() <= 0) {
-                            getView().setDSState(DSLayout.STATE_EMPTY);
-                        } else {
-                            getView().setDSState(View.GONE);
-                        }
                         getView().setSong(list);
                     }
                 });

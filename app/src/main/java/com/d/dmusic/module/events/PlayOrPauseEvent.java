@@ -1,6 +1,7 @@
 package com.d.dmusic.module.events;
 
 /**
+ * PlayOrPauseEvent
  * Created by D on 2016/6/6.
  */
 public class PlayOrPauseEvent {

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llyt_queue"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="@dimen/dimen_queue_height"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -18,24 +18,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="夏洛特烦恼"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/tv_singer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="  --金志文"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="--金志文"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_mini" />
+            android:textSize="12dp" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_delete"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:padding="12dp"
+        android:layout_width="39dp"
+        android:layout_height="@dimen/dimen_queue_height"
+        android:padding="13dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/list_delete" />
 </LinearLayout>

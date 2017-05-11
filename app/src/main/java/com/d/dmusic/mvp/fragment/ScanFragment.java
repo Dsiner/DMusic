@@ -43,6 +43,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * 扫描首页
  * Created by D on 2017/4/29.
  */
 public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
@@ -149,7 +150,7 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<String> paths = new ArrayList<String>();
+                List<String> paths = new ArrayList<>();
                 paths.add(FileUtil.getRootPath());
                 List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(context, type).getMusic(paths);
                 MusicDBUtil.getInstance(context).deleteAll(type);
@@ -165,7 +166,7 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
                 EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST));
 
                 if (list == null) {
-                    list = new ArrayList<MusicModel>();
+                    list = new ArrayList<>();
                 }
                 e.onNext(list);
                 e.onComplete();

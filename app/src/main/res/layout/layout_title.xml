@@ -1,33 +1,72 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
-        android:id="@+id/iv_title_back"
+        android:id="@+id/iv_title_left"
         android:layout_width="@dimen/dimen_title_height"
         android:layout_height="@dimen/dimen_title_height"
-        android:src="@drawable/title_back" />
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/title_back"
+        android:visibility="gone" />
 
     <TextView
-        android:id="@+id/tv_title_title"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:text="夏洛特烦恼"
+        android:id="@+id/tv_title_left"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_title_height"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="@dimen/dimen_margin"
+        android:paddingRight="@dimen/dimen_margin"
+        android:src="@drawable/title_back"
         android:textColor="@color/color_white"
-        android:textSize="@dimen/dimen_text_main" />
+        android:textSize="@dimen/dimen_text_sub"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_title_height"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dimen_margin"
+        android:paddingRight="@dimen/dimen_margin"
+        android:src="@drawable/title_more"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/dimen_text_sub"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_title_right"
+        android:layout_width="@dimen/dimen_title_height"
+        android:layout_height="@dimen/dimen_title_height"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/title_more"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_title_search"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        android:layout_marginRight="@dimen/dimen_margin"
+        android:layout_toLeftOf="@+id/iv_title_right"
         android:src="@drawable/title_search"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/tv_title_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/iv_title_search"
+        android:layout_toRightOf="@+id/iv_title_left"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="夏洛特烦恼"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/dimen_text_main"
+        android:visibility="gone" />
+
     <ImageView
-        android:id="@+id/iv_title_more"
-        android:layout_width="@dimen/dimen_title_height"
-        android:layout_height="@dimen/dimen_title_height"
-        android:src="@drawable/title_more" />
+        android:id="@+id/iv_title_middle"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 </merge>

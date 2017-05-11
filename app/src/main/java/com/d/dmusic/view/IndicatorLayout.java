@@ -25,6 +25,7 @@ import com.d.dmusic.utils.Util;
 import java.util.List;
 
 /**
+ * IndicatorLayout
  * Created by D on 2017/4/28.
  */
 public class IndicatorLayout extends LinearLayout {
