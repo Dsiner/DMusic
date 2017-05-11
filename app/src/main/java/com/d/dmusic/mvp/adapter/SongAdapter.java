@@ -52,7 +52,7 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onClick(View v) {
                 MusicControl control = MusicService.getControl();
-                control.init((List<MusicModel>) MusicModel.clone(mDatas, MusicDB.MUSIC), position);
+                control.init(mDatas, position);
             }
         });
         holder.setViewOnClickListener(R.id.llyt_more, new View.OnClickListener() {
@@ -77,13 +77,12 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onClick(View v) {
                 item.isCollected = !item.isCollected;
-                SyncUtil.upCollected(mContext.getApplicationContext(), type, item);//数据库操作
+                SyncUtil.upCollected(mContext.getApplicationContext(), item);//数据库操作
                 if (item.isCollected) {
                     //将下拉菜单收回
-                    item.isChecked = false;
-                    holder.setChecked(R.id.cb_more, false);
-                    holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
+                    pullUp(item, holder);
                     holder.setText(R.id.tv_collect, "已收藏");
+                    Util.toast(mContext, "已收藏");
                 } else {
                     if (type == MusicDB.COLLECTION_MUSIC) {
                         mDatas.remove(position);
@@ -92,6 +91,8 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                             listener.notifyDataCountChanged(mDatas.size());
                         }
                     } else {
+                        //将下拉菜单收回
+                        pullUp(item, holder);
                         holder.setText(R.id.tv_collect, "收藏");
                     }
                     Util.toast(mContext, "已取消收藏");
@@ -101,7 +102,7 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         holder.setViewOnClickListener(R.id.llyt_add_to_list, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<MusicModel> list = new ArrayList<MusicModel>();
+                List<MusicModel> list = new ArrayList<>();
                 list.add(item);
                 new AddToListPopup(mContext, list, type).show();
             }
@@ -112,5 +113,11 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                 new SongInfoDialog(mContext, item).show();
             }
         });
+    }
+
+    private void pullUp(final MusicModel item, final CommonHolder holder) {
+        item.isChecked = false;
+        holder.setChecked(R.id.cb_more, false);
+        holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
     }
 }

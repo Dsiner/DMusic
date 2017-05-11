@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
@@ -7,7 +8,10 @@
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main" />
+        android:background="@color/color_main"
+        app:tl_leftDrawable="@drawable/title_back"
+        app:tl_middleText="title"
+        app:tl_rightDrawable="@drawable/title_more" />
 
     <com.d.dmusic.view.DSLayout
         android:id="@+id/dsl_ds"

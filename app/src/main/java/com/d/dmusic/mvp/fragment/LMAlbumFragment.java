@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 首页-本地歌曲-专辑
  * Created by D on 2017/4/29.
  */
 public class LMAlbumFragment extends AbstractLMFragment {
     private Context context;
     private AlbumAdapter adapter;
-    private List<AlbumModel> datas;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class LMAlbumFragment extends AbstractLMFragment {
 
     @Override
     protected void lazyLoad() {
-        datas = new ArrayList<>();
+        List<AlbumModel> datas = new ArrayList<>();
         adapter = new AlbumAdapter(context, datas, R.layout.adapter_album);
         xrvList.showAsList();
         xrvList.setCanRefresh(false);

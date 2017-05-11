@@ -44,8 +44,7 @@ public class AlbumAdapter extends CommonAdapter<AlbumModel> {
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, songFragment)
-                        .addToBackStack(null).commit();
+                MainActivity.replace(songFragment);
             }
         });
     }

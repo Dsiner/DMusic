@@ -1,6 +1,7 @@
 package com.d.dmusic.model;
 
 /**
+ * 文件
  * Created by D on 2017/4/30.
  */
 public class FileModel {

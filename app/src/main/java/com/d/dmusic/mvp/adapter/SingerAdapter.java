@@ -14,6 +14,7 @@ import com.d.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
+
 public class SingerAdapter extends CommonAdapter<SingerModel> {
 
     public SingerAdapter(Context context, List<SingerModel> datas, int layoutId) {
@@ -41,8 +42,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, songFragment)
-                        .addToBackStack(null).commit();
+                MainActivity.replace(songFragment);
             }
         });
     }

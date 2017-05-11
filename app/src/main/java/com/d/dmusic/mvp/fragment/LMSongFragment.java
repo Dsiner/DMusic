@@ -16,8 +16,9 @@ import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
-import com.d.dmusic.mvp.activity.ListHandleActivity;
+import com.d.dmusic.mvp.activity.HandleActivity;
 import com.d.dmusic.mvp.adapter.SongAdapter;
+import com.d.dmusic.view.DSLayout;
 import com.d.dmusic.view.SongHeaderView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -27,22 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 首页-本地歌曲-歌曲
  * Created by D on 2017/4/29.
  */
 public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener {
-    private Context context;
     private SongHeaderView header;
     private SongAdapter adapter;
-    private List<MusicModel> datas;
     private boolean isNeedReLoad;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity();
-        datas = new ArrayList<>();
+        Context context = getActivity();
+        List<MusicModel> datas = new ArrayList<>();
         adapter = new SongAdapter(context, datas, R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
         header = new SongHeaderView(context);
+        header.setVisibility(R.id.iv_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
     }
@@ -68,6 +69,11 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
 
     @Override
     public void setSong(List<MusicModel> models) {
+        if (models.size() <= 0) {
+            setDSState(DSLayout.STATE_EMPTY);
+        } else {
+            setDSState(View.GONE);
+        }
         notifyDataCountChanged(models.size());
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
@@ -108,13 +114,13 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl();
-            control.init((List<MusicModel>) MusicModel.clone(datas, MusicDB.MUSIC), 0);
+            control.init(datas, 0);
         }
     }
 
     @Override
     public void onHandle() {
-        getActivity().startActivity(new Intent(getActivity(), ListHandleActivity.class));
+        getActivity().startActivity(new Intent(getActivity(), HandleActivity.class));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

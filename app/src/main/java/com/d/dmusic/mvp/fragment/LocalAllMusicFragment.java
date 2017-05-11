@@ -9,6 +9,7 @@ import android.view.View;
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
+import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.view.IndicatorLayout;
@@ -19,9 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
- * LocalAllMusicFragment
+ * 首页-本地歌曲
  * Created by D on 2017/4/29.
  */
 public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
@@ -34,7 +36,14 @@ public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implem
 
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<String> titles = Arrays.asList("歌曲", "歌手", "专辑", "文件夹");
-    private int type;
+
+    @OnClick({R.id.iv_title_left})
+    public void onClickListener(View v) {
+        switch (v.getId()) {
+            case R.id.iv_title_left:
+                MainActivity.popBackStack();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,10 +95,10 @@ public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implem
     }
 
     private void initTitle() {
-        type = MusicDB.LOCAL_ALL_MUSIC;
+        int type = MusicDB.LOCAL_ALL_MUSIC;
         tlTitle.setType(type);
         tlTitle.setText(R.id.tv_title_title, "本地歌曲");
-        tlTitle.setVisibility(R.id.iv_title_back, View.VISIBLE);
-        tlTitle.setVisibility(R.id.iv_title_more, View.VISIBLE);
+        tlTitle.setVisibility(R.id.iv_title_left, View.VISIBLE);
+        tlTitle.setVisibility(R.id.iv_title_right, View.VISIBLE);
     }
 }

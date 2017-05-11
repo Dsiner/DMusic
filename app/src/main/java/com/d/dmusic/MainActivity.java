@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
@@ -29,6 +30,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
+ * MainActivity
  * Created by D on 2017/4/28.
  */
 public class MainActivity extends BaseFragmentActivity implements DrawerListener {
@@ -50,10 +52,8 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @OnClick({R.id.iv_play, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
         switch (v.getId()) {
-            case R.id.iv_title_back:
-                fManger.popBackStack();
-                break;
-            case R.id.iv_title_more:
+            case R.id.iv_title_left:
+                popBackStack();
                 break;
             case R.id.iv_play:
                 Intent intent = new Intent(this, PlayActivity.class);
@@ -84,8 +84,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
         //设置抽屉打开时，主要内容区被自定义阴影覆盖
         drawerLayout.addDrawerListener(this);
         fManger = getSupportFragmentManager();
-        fManger.beginTransaction().replace(R.id.framement,
-                new MainFragment()).addToBackStack(null).commitAllowingStateLoss();
+        replace(new MainFragment());
     }
 
     @Override
@@ -115,7 +114,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
 
         ViewHelper.setScaleX(menu, leftScale);
         ViewHelper.setScaleY(menu, leftScale);
-        ViewHelper.setAlpha(menu, 0.6f + 0.4f * (1 - scale));
+//        ViewHelper.setAlpha(menu, 0.6f + 0.4f * (1 - scale));
 
         ViewHelper.setTranslationX(content, -menu.getMeasuredWidth() * slideOffset);
         ViewHelper.setPivotX(content, content.getMeasuredWidth());
@@ -173,10 +172,23 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
             if (fManger.getBackStackEntryCount() <= 1) {
                 finish();
             } else {
-                fManger.popBackStack();
+                popBackStack();
             }
             return true;
         }
         return false;
+    }
+
+    public static void replace(Fragment fragment) {
+        if (fManger != null) {
+            fManger.beginTransaction().replace(R.id.framement,
+                    fragment).addToBackStack(null).commitAllowingStateLoss();
+        }
+    }
+
+    public static void popBackStack() {
+        if (fManger != null) {
+            fManger.popBackStack();
+        }
     }
 }

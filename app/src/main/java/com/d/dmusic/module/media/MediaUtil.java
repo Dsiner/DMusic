@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MediaUtil
  * Created by D on 2017/4/29.
  */
 public class MediaUtil {
@@ -17,7 +18,7 @@ public class MediaUtil {
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null,
                 null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         if (cursor != null && cursor.moveToFirst()) {
-            List<MusicInfo> infos = new ArrayList<MusicInfo>();
+            List<MusicInfo> infos = new ArrayList<>();
             do {
                 int isMusic = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC)); // 是否为音乐
                 if (isMusic != 0) {

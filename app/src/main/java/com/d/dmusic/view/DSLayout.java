@@ -24,7 +24,6 @@ public class DSLayout extends FrameLayout {
     /***********默认态类型************/
     public final static int STATE_LOADING = 0x10;//默认态：loading态
     public final static int STATE_EMPTY = 0x11;//默认态：无数据
-    public final static int STATE_NET_FAILURE = 0x12;//默认态：网路出错
 
     /*****************默认态居中类型****************/
     private final static int CENT_TYPE_MAIN = 1;

@@ -26,6 +26,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * ScanPresenter
  * Created by D on 2017/4/30.
  */
 public class ScanPresenter extends MvpBasePresenter<IScanView> {
@@ -39,7 +40,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
             public void subscribe(@NonNull ObservableEmitter<List<FileModel>> e) throws Exception {
                 List<FileModel> list = FileUtil.getFiles(path, false);
                 if (list == null) {
-                    list = new ArrayList<FileModel>();
+                    list = new ArrayList<>();
                 }
                 e.onNext(list);
             }
@@ -74,7 +75,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(c, type), type);
 
                 if (list == null) {
-                    list = new ArrayList<MusicModel>();
+                    list = new ArrayList<>();
                 }
                 e.onNext(list);
             }

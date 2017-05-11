@@ -74,7 +74,7 @@
                 android:paddingRight="@dimen/dimen_margin"
                 android:text="清空"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/dimen_text_sub" />
         </LinearLayout>
 
         <com.d.xrv.LRecyclerView

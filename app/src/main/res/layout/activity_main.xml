@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/dimen_item_height"
             android:background="#F4F4F5"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -27,42 +27,34 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dimen_margin"
+                android:layout_marginRight="@dimen/dimen_margin"
                 android:src="@drawable/main_album_icon" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_song_name"
-                    style="@style/TTNotificationTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="夏洛特烦恼"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/dimen_text_small"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_singer"
-                    style="@style/TTNotificationTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="金志文"
-                    android:textSize="8sp" />
+                    android:textColor="@color/color_gray"
+                    android:textSize="@dimen/dimen_text_mini" />
             </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 

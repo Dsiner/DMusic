@@ -120,11 +120,6 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         tvCount.setText(count + "首");
     }
 
-    @Override
-    public List<MusicModel> getQueue() {
-        return null;
-    }
-
     public void setOnQueueListener(IQueueListener listener) {
         this.listener = listener;
     }

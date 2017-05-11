@@ -1,6 +1,5 @@
 package com.d.dmusic.mvp.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.d.dmusic.mvp.adapter.CustomListAdapter;
 import com.d.dmusic.mvp.presenter.MainPresenter;
 import com.d.dmusic.mvp.view.IMainView;
 import com.d.dmusic.view.TitleLayout;
+import com.d.dmusic.view.dialog.NewListDialog;
 import com.d.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +31,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
+ * MainFragment
  * Created by D on 2017/4/29.
  */
 public class MainFragment extends BaseFragment<MainPresenter> implements IMainView {
@@ -47,17 +48,15 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     @Bind(R.id.lv_list)
     LRecyclerView lvList;
 
-    private Context context;
     private CustomListAdapter adapter;
 
-    @OnClick({R.id.llyt_local, R.id.llyt_collection})
+    @OnClick({R.id.llyt_local, R.id.llyt_collection, R.id.tv_add_list})
     public void onClickListener(View v) {
         switch (v.getId()) {
             case R.id.llyt_local:
                 //本地音乐
                 LocalAllMusicFragment lFragment = new LocalAllMusicFragment();
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, lFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
+                MainActivity.replace(lFragment);
                 break;
             case R.id.llyt_collection:
                 //我的收藏
@@ -67,8 +66,10 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 CollectionMusicFragment cFragment = new CollectionMusicFragment();
                 cFragment.setArguments(cb);
 
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, cFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
+                MainActivity.replace(cFragment);
+                break;
+            case R.id.tv_add_list:
+                new NewListDialog(getActivity()).show();
                 break;
         }
     }
@@ -91,9 +92,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity();
         EventBus.getDefault().register(this);
-        adapter = new CustomListAdapter(context, new ArrayList<CustomList>());
+        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>());
     }
 
     @Override
@@ -104,7 +104,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
 
     private void initTitle() {
         tlTitle.setText(R.id.tv_title_title, "   首页");
-        tlTitle.setVisibility(R.id.iv_title_back, View.GONE);
     }
 
     @Override

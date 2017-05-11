@@ -8,9 +8,11 @@ import android.widget.LinearLayout;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.global.Cst;
+import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.mvp.activity.ScanActivity;
 
 /**
+ * MenuDialog
  * Created by D on 2017/4/29.
  */
 public class MenuDialog extends AbstractDialog implements View.OnClickListener {
@@ -20,12 +22,22 @@ public class MenuDialog extends AbstractDialog implements View.OnClickListener {
     private LinearLayout llytSortByTime;// 按时间排序
     private LinearLayout llytSortByCustom;// 自定义排序
     private LinearLayout llytScanMore;
-    private LinearLayout llytAddToList;
     private int type;
 
     public MenuDialog(Context context, int type) {
         super(context, R.style.PopTopInDialog, true, Gravity.TOP, Cst.SCREEN_WIDTH, Cst.SCREEN_HEIGHT);
         this.type = type;
+        initType(type);
+    }
+
+    private void initType(int type) {
+        switch (type) {
+            case MusicDB.LOCAL_ALL_MUSIC:
+                break;
+            case MusicDB.COLLECTION_MUSIC:
+                llytScanMore.setVisibility(View.GONE);
+                break;
+        }
     }
 
     @Override
@@ -41,7 +53,6 @@ public class MenuDialog extends AbstractDialog implements View.OnClickListener {
         llytSortByTime = (LinearLayout) rootView.findViewById(R.id.llyt_sort_by_time);
         llytSortByCustom = (LinearLayout) rootView.findViewById(R.id.llyt_sort_by_custom);
         llytScanMore = (LinearLayout) rootView.findViewById(R.id.llyt_scan_more);
-        llytAddToList = (LinearLayout) rootView.findViewById(R.id.llyt_add_to_list);
 
         llytBlank.setOnClickListener(this);
         vBlank.setOnClickListener(this);
@@ -49,15 +60,12 @@ public class MenuDialog extends AbstractDialog implements View.OnClickListener {
         llytSortByTime.setOnClickListener(this);
         llytSortByCustom.setOnClickListener(this);
         llytScanMore.setOnClickListener(this);
-        llytAddToList.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llyt_more:
-                dismiss();
-                break;
             case R.id.v_blank:
                 dismiss();
                 break;
@@ -80,10 +88,6 @@ public class MenuDialog extends AbstractDialog implements View.OnClickListener {
                 Intent intent = new Intent(context, ScanActivity.class);
                 intent.putExtra("type", type);
                 context.startActivity(intent);
-                dismiss();
-                break;
-            case R.id.llyt_add_to_list:
-                new NewListDialog(context).show();
                 dismiss();
                 break;
         }

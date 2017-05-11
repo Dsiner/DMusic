@@ -11,10 +11,16 @@ import android.widget.TextView;
 
 import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
+import com.d.dmusic.module.events.RefreshEvent;
+import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
+import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.module.swipelayout.SwipeLayout;
 import com.d.dmusic.module.swipelayout.adapters.RecyclerSwipeAdapter;
 import com.d.dmusic.mvp.fragment.SongFragment;
+import com.d.dmusic.utils.TaskManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +32,12 @@ import java.util.List;
 public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.SimpleViewHolder> {
     private Context mContext;
     private List<CustomList> mDatas;
+    private RefreshEvent event;
 
     public CustomListAdapter(Context context, List<CustomList> datas) {
         mContext = context;
         mDatas = datas == null ? new ArrayList<CustomList>() : datas;
+        event = new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST);
     }
 
     public void setDatas(List<CustomList> datas) {
@@ -51,14 +59,22 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
         viewHolder.slSwipe.setShowMode(SwipeLayout.ShowMode.PullOut);
         viewHolder.tvListName.setText(item.listName);
         viewHolder.tvSongCount.setText((item.songCount != null ? item.songCount : 0) + "首");
+        viewHolder.tvStick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemManger.closeItem(position);
+                stick(item);
+            }
+        });
         viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemManger.removeShownLayouts(viewHolder.slSwipe);
+                mItemManger.closeItem(position);
                 mDatas.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mDatas.size());
-                mItemManger.closeAllItems();
+                delete(item);
             }
         });
         viewHolder.llytItem.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +86,26 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, songFragment)
-                        .addToBackStack(null).commitAllowingStateLoss();
+                MainActivity.replace(songFragment);
             }
         });
         mItemManger.bindView(viewHolder.itemView, position);
+    }
+
+    private void delete(final CustomList item) {
+        TaskManager.getIns().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                MusicDBUtil.getInstance(mContext).delete(MusicDB.CUSTOM_LIST, item);
+                MusicDBUtil.getInstance(mContext).deleteAll(item.pointer);
+            }
+        });
+    }
+
+    private void stick(final CustomList item) {
+        item.seq = MusicDBUtil.getInstance(mContext).queryCustomListMinSeq() - 1;
+        MusicDBUtil.getInstance(mContext).insertOrReplaceCustomList(item);
+        EventBus.getDefault().post(event);
     }
 
     @Override
@@ -92,6 +123,7 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
         LinearLayout llytItem;
         TextView tvListName;
         TextView tvSongCount;
+        TextView tvStick;
         TextView tvDelete;
 
         SimpleViewHolder(View itemView) {
@@ -100,6 +132,7 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
             llytItem = (LinearLayout) itemView.findViewById(R.id.llyt_item);
             tvListName = (TextView) itemView.findViewById(R.id.tv_list_name);
             tvSongCount = (TextView) itemView.findViewById(R.id.tv_song_count);
+            tvStick = (TextView) itemView.findViewById(R.id.tv_stick);
             tvDelete = (TextView) itemView.findViewById(R.id.tv_delete);
         }
     }

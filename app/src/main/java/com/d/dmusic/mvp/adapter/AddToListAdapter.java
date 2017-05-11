@@ -30,7 +30,8 @@ public class AddToListAdapter extends CommonAdapter<CustomList> {
     @Override
     public void convert(int position, final CommonHolder holder, final CustomList item) {
         holder.setText(R.id.tv_list_name, item.listName);
-        holder.setViewOnClickListener(R.id.llyt_selected, new View.OnClickListener() {
+        holder.setChecked(R.id.cb_check, item.isChecked);
+        holder.setViewOnClickListener(R.id.llyt_item, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 item.isChecked = !item.isChecked;

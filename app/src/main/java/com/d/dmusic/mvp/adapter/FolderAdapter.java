@@ -15,6 +15,7 @@ import com.d.xrv.adapter.CommonHolder;
 import java.util.List;
 
 /**
+ * FolderAdapter
  * Created by D on 2016/6/2.
  */
 public class FolderAdapter extends CommonAdapter<FolderModel> {
@@ -44,8 +45,7 @@ public class FolderAdapter extends CommonAdapter<FolderModel> {
                 SongFragment songFragment = new SongFragment();
                 songFragment.setArguments(bundle);
 
-                MainActivity.fManger.beginTransaction().replace(R.id.framement, songFragment)
-                        .addToBackStack(null).commit();
+                MainActivity.replace(songFragment);
             }
         });
     }

@@ -12,12 +12,14 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv_stick"
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:background="#f7e79c"
             android:gravity="center"
             android:text="置顶"
-            android:textColor="@color/color_white" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
 
         <TextView
             android:id="@+id/tv_delete"
@@ -26,7 +28,8 @@
             android:background="#4cd964"
             android:gravity="center"
             android:text="删除"
-            android:textColor="@color/color_white" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
@@ -40,6 +43,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/dimen_margin"
             android:background="#FFA523"
             android:gravity="center">
 
@@ -54,7 +58,6 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -64,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="默认列表"
-                android:textColor="#000000"
+                android:textColor="@color/color_black"
                 android:textSize="@dimen/dimen_text_sub" />
 
             <TextView
@@ -73,8 +76,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="0首"
-                android:textColor="#000000"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/dimen_text_small" />
         </LinearLayout>
     </LinearLayout>
 </com.d.dmusic.module.swipelayout.SwipeLayout>

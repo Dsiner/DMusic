@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 首页-本地歌曲-歌手
  * Created by D on 2017/4/29.
  */
 public class LMSingerFragment extends AbstractLMFragment {

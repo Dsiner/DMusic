@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 
 import com.d.commen.base.BaseFragmentActivity;
 import com.d.dmusic.R;
@@ -13,6 +12,7 @@ import com.d.dmusic.mvp.fragment.CustomScanFragment;
 import com.d.dmusic.mvp.fragment.ScanFragment;
 import com.d.dmusic.utils.StatusBarCompat;
 import com.d.dmusic.utils.log.ULog;
+import com.d.dmusic.view.TitleLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -22,18 +22,16 @@ import butterknife.OnClick;
  * Created by D on 2017/4/29.
  */
 public class ScanActivity extends BaseFragmentActivity implements OnClickListener {
-    @Bind(R.id.iv_title_back)
-    ImageView ivTitleBack;
+    @Bind(R.id.tl_title)
+    TitleLayout tlTitle;
 
-    private int type;//传递过来的歌曲列表(本地，自定义...)type
     private Fragment fragment;
-    private Fragment scanFragment;
     private FragmentManager fragmentManager;
 
-    @OnClick({R.id.iv_title_back})
+    @OnClick({R.id.iv_title_left})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_title_back:
+            case R.id.iv_title_left:
                 finish();
                 break;
         }
@@ -46,16 +44,21 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
-        type = getIntent().getIntExtra("type", -1);
+        int type = getIntent().getIntExtra("type", 0);
         ULog.v("type" + type);
         StatusBarCompat.compat(ScanActivity.this, 0xffff0000);//沉浸式状态栏
 
+        initTitle();
+
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
-        scanFragment = new ScanFragment();
+        Fragment scanFragment = new ScanFragment();
         scanFragment.setArguments(bundle);
         replaceFragment(scanFragment);
-        ivTitleBack.setOnClickListener(this);
+    }
+
+    private void initTitle() {
+        tlTitle.setText(R.id.tv_title_title, "扫描歌曲");
     }
 
     public void replaceFragment(Fragment fragment) {

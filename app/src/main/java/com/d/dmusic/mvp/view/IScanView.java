@@ -7,9 +7,9 @@ import com.d.dmusic.module.greendao.music.base.MusicModel;
 import java.util.List;
 
 /**
+ * IScanView
  * Created by D on 2017/4/30.
  */
-
 public interface IScanView extends MvpView {
     void setDatas(List<FileModel> models);
 

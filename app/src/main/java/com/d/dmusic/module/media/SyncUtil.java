@@ -12,12 +12,12 @@ import com.d.dmusic.utils.TaskManager;
 import org.greenrobot.eventbus.EventBus;
 
 /**
+ * SyncUtil
  * Created by D on 2017/5/9.
  */
-
 public class SyncUtil {
 
-    public static void upCollected(final Context context, final int type, final MusicModel item) {
+    public static void upCollected(final Context context, final MusicModel item) {
         TaskManager.getIns().executeTask(new Runnable() {
             @Override
             public void run() {

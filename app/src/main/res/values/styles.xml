@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_trans</item>
+        <item name="colorPrimaryDark">@color/color_trans</item>
+        <item name="colorAccent">@color/color_main</item>
         <item name="android:alertDialogTheme">@style/dialog_style</item>
     </style>
 
@@ -94,16 +94,6 @@
         <!-- 背景是否模糊显示 -->
         <item name="android:windowAnimationStyle">@style/AnimBottom</item>
         <!-- 设置对话框弹出和消失的动画 -->
-    </style>
-
-    <style name="TTNotificationText">
-        <item name="android:textSize">16.0sp</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="TTNotificationTitle">
-        <item name="android:textSize">18.0sp</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="listview_style">

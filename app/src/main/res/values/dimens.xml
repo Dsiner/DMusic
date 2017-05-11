@@ -6,8 +6,15 @@
     <dimen name="dimen_dialog_min_height">115dp</dimen>
     <dimen name="dimen_margin">12dp</dimen>
     <dimen name="dimen_padding">10dp</dimen>
-    <dimen name="dimen_text_main">18sp</dimen>
-    <dimen name="dimen_text_sub">16sp</dimen>
-    <dimen name="dimen_text_small">14sp</dimen>
-    <dimen name="dimen_text_mini">12sp</dimen>
+
+    <dimen name="dimen_item_height">50dp</dimen>
+    <dimen name="dimen_item_margin_top">2dp</dimen>
+    <dimen name="dimen_item_icon">18dp</dimen>
+
+    <dimen name="dimen_queue_height">36dp</dimen>
+
+    <dimen name="dimen_text_main">18dp</dimen>
+    <dimen name="dimen_text_sub">16dp</dimen>
+    <dimen name="dimen_text_small">14dp</dimen>
+    <dimen name="dimen_text_mini">12dp</dimen>
 </resources>

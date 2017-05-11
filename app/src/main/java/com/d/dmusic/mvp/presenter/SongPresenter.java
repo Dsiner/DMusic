@@ -1,7 +1,6 @@
 package com.d.dmusic.mvp.presenter;
 
 import android.content.Context;
-import android.view.View;
 
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.dmusic.module.greendao.db.MusicDB;
@@ -23,6 +22,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ * SongPresenter
  * Created by D on 2017/4/30.
  */
 public class SongPresenter extends MvpBasePresenter<ISongView> {
@@ -55,7 +55,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                     list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
                 }
                 if (list == null) {
-                    list = new ArrayList<MusicModel>();
+                    list = new ArrayList<>();
                 }
                 e.onNext(list);
                 e.onComplete();
@@ -68,17 +68,15 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (!isViewAttached()) {
                             return;
                         }
-                        if (list.size() <= 0) {
-                            getView().setDSState(DSLayout.STATE_EMPTY);
-                        } else {
-                            getView().setDSState(View.GONE);
-                        }
                         getView().setSong(list);
                     }
                 });
     }
 
     public void setSong(final List<MusicModel> models, final int type) {
+        if (models == null) {
+            return;
+        }
         TaskManager.getIns().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -87,7 +85,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 }
                 MusicDBUtil.getInstance(mContext).deleteAll(type);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(models, type), type);
-                MusicDBUtil.getInstance(mContext).updateCusListCount(type, models != null ? models.size() : 0);
+                MusicDBUtil.getInstance(mContext).updateCusListCount(type, models.size());
                 MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, 2);//按自定义排序
             }
         });

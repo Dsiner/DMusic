@@ -5,6 +5,7 @@ import com.d.dmusic.module.greendao.music.base.MusicModel;
 import java.util.List;
 
 /**
+ * CusMusic
  * Created by D on 2017/5/2.
  */
 public class CusMusic {

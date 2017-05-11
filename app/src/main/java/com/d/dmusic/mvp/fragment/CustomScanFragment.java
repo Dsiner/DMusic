@@ -37,7 +37,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * CustomScanFragment
+ * 扫描歌曲-自定义扫描
  * Created by D on 2017/4/29.
  */
 public class CustomScanFragment extends BaseFragment<ScanPresenter> implements IScanView, DirAdapter.OnPathListener {
@@ -100,7 +100,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                 onBackPressed();
                 break;
             case R.id.llyt_scan_now:
-                final List<String> paths = new ArrayList<String>();
+                final List<String> paths = new ArrayList<>();
                 for (FileModel fileModel : models) {
                     if (fileModel.isChecked) {
                         paths.add(fileModel.absolutePath);

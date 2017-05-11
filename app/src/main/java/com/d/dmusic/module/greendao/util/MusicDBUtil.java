@@ -187,8 +187,8 @@ public class MusicDBUtil extends MusicDB {
     /**
      * 插入一条自定义列表
      */
-    public void insertCustomList(CustomList bean) {
-        daos[CUSTOM_LIST].insert(bean);
+    public void insertOrReplaceCustomList(CustomList bean) {
+        daos[CUSTOM_LIST].insertOrReplace(bean);
     }
 
     /**
@@ -240,9 +240,20 @@ public class MusicDBUtil extends MusicDB {
      * CustomList表-查询seq列，最大值
      */
     public int queryCustomListMaxSeq() {
-        List<CustomList> lists = daos[CUSTOM_LIST].queryBuilder().orderDesc(CustomListDao.Properties.Seq).list();
-        if (lists != null && lists.size() > 0) {
-            return lists.get(0).getSeq();
+        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().orderDesc(CustomListDao.Properties.Seq).list();
+        if (list != null && list.size() > 0) {
+            return list.get(0).getSeq();
+        }
+        return 0;
+    }
+
+    /**
+     * CustomList表-查询seq列，最小值
+     */
+    public int queryCustomListMinSeq() {
+        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().orderAsc(CustomListDao.Properties.Seq).list();
+        if (list != null && list.size() > 0) {
+            return list.get(0).getSeq();
         }
         return 0;
     }
@@ -310,6 +321,9 @@ public class MusicDBUtil extends MusicDB {
             case COLLECTION_MUSIC:
                 daos[COLLECTION_MUSIC].deleteInTx(o);
                 break;
+            case CUSTOM_LIST:
+                daos[CUSTOM_LIST].deleteInTx(o);
+                break;
             default:
                 if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
                     //自定义歌曲:index 0-19 一一对应
@@ -334,6 +348,9 @@ public class MusicDBUtil extends MusicDB {
                 break;
             case COLLECTION_MUSIC:
                 deleteAll(daos[COLLECTION_MUSIC]);
+                break;
+            case CUSTOM_LIST:
+                deleteAll(daos[CUSTOM_LIST]);
                 break;
             default:
                 if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {

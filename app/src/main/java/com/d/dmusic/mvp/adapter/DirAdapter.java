@@ -12,9 +12,9 @@ import com.d.xrv.adapter.CommonHolder;
 import java.util.List;
 
 /**
+ * DirAdapter
  * Created by D on 2017/4/30.
  */
-
 public class DirAdapter extends CommonAdapter<FileModel> {
     private OnPathListener listener;
 
@@ -42,22 +42,16 @@ public class DirAdapter extends CommonAdapter<FileModel> {
                     if (listener != null) {
                         listener.onPath(p);
                     }
-                } else {
-                    reverse(item, holder);
                 }
             }
         });
-        holder.setViewOnClickListener(R.id.cb_check, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_selected, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reverse(item, holder);
+                item.isChecked = !item.isChecked;
+                holder.setChecked(R.id.cb_check, item.isChecked);
             }
         });
-    }
-
-    private void reverse(FileModel item, CommonHolder holder) {
-        item.isChecked = !item.isChecked;
-        holder.setChecked(R.id.cb_check, item.isChecked);
     }
 
     public interface OnPathListener {
