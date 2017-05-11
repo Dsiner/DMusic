@@ -1,10 +1,11 @@
 package com.d.dmusic.mvp.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.d.commen.base.BaseFragment;
 import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.model.FileModel;
-import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.mvp.adapter.DirAdapter;
 import com.d.dmusic.mvp.presenter.ScanPresenter;
@@ -23,15 +23,18 @@ import com.d.dmusic.mvp.view.IScanView;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.fileutil.FileUtil;
 import com.d.xrv.LRecyclerView;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * CustomScanFragment
@@ -56,46 +59,59 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     private int type;
 
     @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
-    public void OnClickLister(View view) {
+    public void OnClickLister(final View view) {
         switch (view.getId()) {
             case R.id.llyt_dir:
-                onBackPressed();
-                break;
             case R.id.llyt_scan_now:
-                List<String> paths = new ArrayList<String>();
-                for (FileModel fileModel : models) {
-                    if (fileModel.isChecked) {
-                        paths.add(fileModel.absolutePath);
-                    }
-                }
-                if (paths.size() > 0) {
-                    mPresenter.getMusics(paths, type);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    RxPermissions rxPermissions = new RxPermissions((Activity) context);
+                    rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Permission>() {
+                                @Override
+                                public void accept(@NonNull Permission permission) throws Exception {
+                                    if (context == null || getActivity() == null || getActivity().isFinishing()) {
+                                        return;
+                                    }
+                                    if (permission.granted) {
+                                        // `permission.name` is granted !
+                                        sw(view.getId());
+                                    } else if (permission.shouldShowRequestPermissionRationale) {
+                                        // Denied permission without ask never again
+                                        Util.toast(context, "Denied permission!");
+                                    } else {
+                                        // Denied permission with ask never again
+                                        // Need to go to the settings
+                                        Util.toast(context, "Denied permission with ask never again!");
+                                    }
+                                }
+                            });
                 } else {
-                    Util.toast(context, "请先选择扫描路径");
+                    sw(view.getId());
                 }
                 break;
         }
     }
 
-    static class WeakHandler extends Handler {
-        WeakReference<CustomScanFragment> fragment;
-
-        WeakHandler(CustomScanFragment fragment) {
-            this.fragment = new WeakReference<>(fragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            CustomScanFragment theFragment = this.fragment.get();
-            if (theFragment == null || theFragment.getActivity() == null || theFragment.getActivity().isFinishing()) {
-                return;
-            }
-            switch (msg.what) {
-                case 1:
-                    theFragment.dialog.dismiss();
-                    theFragment.getActivity().finish();
-                    break;
-            }
+    private void sw(int viewId) {
+        switch (viewId) {
+            case R.id.llyt_dir:
+                onBackPressed();
+                break;
+            case R.id.llyt_scan_now:
+                final List<String> paths = new ArrayList<String>();
+                for (FileModel fileModel : models) {
+                    if (fileModel.isChecked) {
+                        paths.add(fileModel.absolutePath);
+                    }
+                }
+                if (paths.size() <= 0) {
+                    Util.toast(context, "请先选择扫描路径");
+                    return;
+                }
+                mPresenter.getMusics(paths, type);
+                break;
         }
     }
 
