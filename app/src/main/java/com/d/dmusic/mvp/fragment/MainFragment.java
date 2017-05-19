@@ -93,7 +93,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>());
+        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>(), R.layout.adapter_custom_list);
     }
 
     @Override
@@ -112,6 +112,14 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         mPresenter.getCustomList();
         mPresenter.getLocalAllCount();
         mPresenter.getCollectionCount();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (adapter != null) {
+            adapter.closeAllF(null);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

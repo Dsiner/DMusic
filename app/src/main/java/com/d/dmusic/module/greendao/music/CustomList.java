@@ -15,6 +15,7 @@ public class CustomList {
     public Integer pointer;//=type
 
     public boolean isChecked = false;//额外属性，是否选中
+    public boolean isOpen = false;
 
     public CustomList() {
     }
