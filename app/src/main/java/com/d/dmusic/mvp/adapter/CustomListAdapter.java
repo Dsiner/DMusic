@@ -2,12 +2,7 @@ package com.d.dmusic.mvp.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
@@ -15,10 +10,11 @@ import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
-import com.d.dmusic.module.swipelayout.SwipeLayout;
-import com.d.dmusic.module.swipelayout.adapters.RecyclerSwipeAdapter;
 import com.d.dmusic.mvp.fragment.SongFragment;
 import com.d.dmusic.utils.TaskManager;
+import com.d.dmusic.view.SlideLayout;
+import com.d.xrv.adapter.CommonAdapter;
+import com.d.xrv.adapter.CommonHolder;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,14 +25,13 @@ import java.util.List;
  * CustomListAdapter
  * Created by D on 2017/5/6.
  */
-public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.SimpleViewHolder> {
-    private Context mContext;
-    private List<CustomList> mDatas;
+public class CustomListAdapter extends CommonAdapter<CustomList> {
+    private List<SlideLayout> slides;
     private RefreshEvent event;
 
-    public CustomListAdapter(Context context, List<CustomList> datas) {
-        mContext = context;
-        mDatas = datas == null ? new ArrayList<CustomList>() : datas;
+    public CustomListAdapter(Context context, List<CustomList> datas, int layoutId) {
+        super(context, datas, layoutId);
+        slides = new ArrayList<>();
         event = new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST);
     }
 
@@ -48,38 +43,51 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
     }
 
     @Override
-    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_custom_list, parent, false);
-        return new SimpleViewHolder(view);
-    }
+    public void convert(final int position, CommonHolder holder, final CustomList item) {
+        holder.setText(R.id.tv_list_name, item.listName);
+        holder.setText(R.id.tv_song_count, (item.songCount != null ? item.songCount : 0) + "首");
+        final SlideLayout slSlide = holder.getView(R.id.sl_slide);
+        slSlide.setOpen(item.isOpen, false);
+        slSlide.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
+            @Override
+            public void onChange(SlideLayout layout, boolean isOpen) {
+                item.isOpen = isOpen;
+                if (isOpen) {
+                    slides.add(layout);
+                } else {
+                    slides.remove(layout);
+                }
+            }
 
-    @Override
-    public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
-        final CustomList item = mDatas.get(position);
-        viewHolder.slSwipe.setShowMode(SwipeLayout.ShowMode.PullOut);
-        viewHolder.tvListName.setText(item.listName);
-        viewHolder.tvSongCount.setText((item.songCount != null ? item.songCount : 0) + "首");
-        viewHolder.tvStick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public boolean closeAll(SlideLayout layout) {
+                return closeAllF(layout);
+            }
+        });
+        holder.setViewOnClickListener(R.id.tv_stick, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemManger.closeItem(position);
+                slSlide.close();
                 stick(item);
             }
         });
-        viewHolder.tvDelete.setOnClickListener(new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.tv_delete, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemManger.removeShownLayouts(viewHolder.slSwipe);
-                mItemManger.closeItem(position);
+                slSlide.close();
                 mDatas.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mDatas.size());
                 delete(item);
             }
         });
-        viewHolder.llytItem.setOnClickListener(new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_item, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (slSlide.isOpen()) {
+                    slSlide.close();
+                    return;
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.listName);
                 bundle.putInt("type", item.pointer);
@@ -89,7 +97,6 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
                 MainActivity.replace(songFragment);
             }
         });
-        mItemManger.bindView(viewHolder.itemView, position);
     }
 
     private void delete(final CustomList item) {
@@ -108,32 +115,20 @@ public class CustomListAdapter extends RecyclerSwipeAdapter<CustomListAdapter.Si
         EventBus.getDefault().post(event);
     }
 
-    @Override
-    public int getItemCount() {
-        return mDatas != null ? mDatas.size() : 0;
-    }
-
-    @Override
-    public int getSwipeLayoutResourceId(int position) {
-        return R.id.sl_swipe;
-    }
-
-    static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        SwipeLayout slSwipe;
-        LinearLayout llytItem;
-        TextView tvListName;
-        TextView tvSongCount;
-        TextView tvStick;
-        TextView tvDelete;
-
-        SimpleViewHolder(View itemView) {
-            super(itemView);
-            slSwipe = (SwipeLayout) itemView.findViewById(R.id.sl_swipe);
-            llytItem = (LinearLayout) itemView.findViewById(R.id.llyt_item);
-            tvListName = (TextView) itemView.findViewById(R.id.tv_list_name);
-            tvSongCount = (TextView) itemView.findViewById(R.id.tv_song_count);
-            tvStick = (TextView) itemView.findViewById(R.id.tv_stick);
-            tvDelete = (TextView) itemView.findViewById(R.id.tv_delete);
+    public boolean closeAllF(SlideLayout layout) {
+        boolean ret = false;
+        if (slides == null || slides.size() <= 0) {
+            return false;
         }
+        for (int i = 0; i < slides.size(); i++) {
+            SlideLayout slide = slides.get(i);
+            if (slide != null && slide != layout) {
+                slide.close();
+                slides.remove(slide);
+                ret = true;
+                i--;
+            }
+        }
+        return ret;
     }
 }

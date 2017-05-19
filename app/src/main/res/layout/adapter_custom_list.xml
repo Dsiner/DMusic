@@ -1,36 +1,11 @@
-<com.d.dmusic.module.swipelayout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.d.dmusic.view.SlideLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sl_swipe"
+    android:id="@+id/sl_slide"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     app:clickToClose="true"
     app:leftEdgeSwipeOffset="0dp"
     app:rightEdgeSwipeOffset="0dp">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tv_stick"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:background="#f7e79c"
-            android:gravity="center"
-            android:text="置顶"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
-
-        <TextView
-            android:id="@+id/tv_delete"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:background="#4cd964"
-            android:gravity="center"
-            android:text="删除"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llyt_item"
@@ -80,4 +55,29 @@
                 android:textSize="@dimen/dimen_text_small" />
         </LinearLayout>
     </LinearLayout>
-</com.d.dmusic.module.swipelayout.SwipeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_stick"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#f7e79c"
+            android:gravity="center"
+            android:text="置顶"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#4cd964"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
+    </LinearLayout>
+</com.d.dmusic.view.SlideLayout>
