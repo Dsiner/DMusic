@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.dmusic.R;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 
 /**
  * SongHeaderView
@@ -59,6 +60,9 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.iv_header_song_play_all:
             case R.id.llyt_header_song_play_all:

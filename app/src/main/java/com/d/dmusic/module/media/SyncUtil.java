@@ -16,8 +16,7 @@ import org.greenrobot.eventbus.EventBus;
  * Created by D on 2017/5/9.
  */
 public class SyncUtil {
-
-    public static void upCollected(final Context context, final MusicModel item) {
+    public static void upCollected(final Context context, final MusicModel item, final int type) {
         TaskManager.getIns().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -28,7 +27,7 @@ public class SyncUtil {
                     MusicDBUtil.getInstance(context).delete(MusicDB.COLLECTION_MUSIC, item.clone(new CollectionMusic()));
                     MusicDBUtil.getInstance(context).updateColleted(item.url, false);
                 }
-                EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_COLLECTIONG));
+                EventBus.getDefault().post(new RefreshEvent(type, RefreshEvent.SYNC_COLLECTIONG));
             }
         });
     }

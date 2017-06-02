@@ -13,12 +13,13 @@ import com.d.dmusic.R;
 import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.CustomListAdapter;
 import com.d.dmusic.mvp.presenter.MainPresenter;
 import com.d.dmusic.mvp.view.IMainView;
 import com.d.dmusic.view.TitleLayout;
 import com.d.dmusic.view.dialog.NewListDialog;
-import com.d.xrv.LRecyclerView;
+import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,9 +50,13 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     LRecyclerView lvList;
 
     private CustomListAdapter adapter;
+    private boolean isNeedReLoad;//为了同步收藏数，需要重新加载数据
 
     @OnClick({R.id.llyt_local, R.id.llyt_collection, R.id.tv_add_list})
     public void onClickListener(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.llyt_local:
                 //本地音乐
@@ -60,13 +65,12 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 break;
             case R.id.llyt_collection:
                 //我的收藏
-                Bundle cb = new Bundle();
-                cb.putString("title", "我的收藏");
-                cb.putInt("type", MusicDB.COLLECTION_MUSIC);
-                CollectionMusicFragment cFragment = new CollectionMusicFragment();
-                cFragment.setArguments(cb);
-
-                MainActivity.replace(cFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "我的收藏");
+                bundle.putInt("type", MusicDB.COLLECTION_MUSIC);
+                SongFragment sFragment = new SongFragment();
+                sFragment.setArguments(bundle);
+                MainActivity.replace(sFragment);
                 break;
             case R.id.tv_add_list:
                 new NewListDialog(getActivity()).show();
@@ -103,7 +107,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     private void initTitle() {
-        tlTitle.setText(R.id.tv_title_title, "   首页");
+        TextView title = (TextView) tlTitle.findViewById(R.id.tv_title_middle_main);
+        title.setText("畅音乐,享自由");
     }
 
     @Override
@@ -115,19 +120,32 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (isNeedReLoad) {
+            isNeedReLoad = false;
+            mPresenter.getCollectionCount();
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (adapter != null) {
-            adapter.closeAllF(null);
+            adapter.closeAllF();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RefreshEvent event) {
-        if (event == null || event.event != RefreshEvent.SYNC_CUSTOM_LIST) {
+        if (event == null || getActivity() == null || getActivity().isFinishing() || mPresenter == null) {
             return;
         }
-        mPresenter.getCustomList();
+        if (event.event == RefreshEvent.SYNC_CUSTOM_LIST) {
+            mPresenter.getCustomList();
+        } else if (event.event == RefreshEvent.SYNC_COLLECTIONG) {
+            isNeedReLoad = true;
+        }
     }
 
     @Override

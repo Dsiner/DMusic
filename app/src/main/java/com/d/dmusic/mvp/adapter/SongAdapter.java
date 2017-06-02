@@ -7,14 +7,16 @@ import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.media.SyncUtil;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
+import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.mvp.view.ISongView;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.view.dialog.SongInfoDialog;
 import com.d.dmusic.view.popup.AddToListPopup;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +31,21 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         this.listener = listener;
     }
 
-    public void setDatas(List<MusicModel> datas) {
-        if (mDatas != null && datas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        }
-    }
-
     @Override
     public void convert(final int position, final CommonHolder holder, final MusicModel item) {
+        if (item.isLetter) {
+            holder.setText(R.id.tv_letter, item.letter);
+            holder.setViewVisibility(R.id.llyt_section, View.VISIBLE);
+
+        } else {
+            holder.setViewVisibility(R.id.llyt_section, View.GONE);
+
+        }
+        if (item.letter != null) {
+            holder.setViewVisibility(R.id.v_right_space, View.VISIBLE);
+        } else {
+            holder.setViewVisibility(R.id.v_right_space, View.GONE);
+        }
         holder.setText(R.id.tv_list_name, item.songName);
         holder.setText(R.id.tv_title, item.singer);
         if (item.isChecked) {
@@ -48,16 +56,16 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
         }
 
-        holder.setViewOnClickListener(R.id.llyt_song, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_song, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 MusicControl control = MusicService.getControl();
                 control.init(mDatas, position);
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_more, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_more, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 item.isChecked = !item.isChecked;
                 if (item.isChecked) {
                     holder.setChecked(R.id.cb_more, true);
@@ -73,11 +81,12 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         } else {
             holder.setText(R.id.tv_collect, "收藏");
         }
-        holder.setViewOnClickListener(R.id.llyt_collect, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_collect, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 item.isCollected = !item.isCollected;
-                SyncUtil.upCollected(mContext.getApplicationContext(), item);//数据库操作
+                PlayActivity.isNeedReLoad = true;
+                SyncUtil.upCollected(mContext.getApplicationContext(), item, type);//数据库操作
                 if (item.isCollected) {
                     //将下拉菜单收回
                     pullUp(item, holder);
@@ -99,17 +108,17 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                 }
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_add_to_list, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_add_to_list, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 List<MusicModel> list = new ArrayList<>();
                 list.add(item);
                 new AddToListPopup(mContext, list, type).show();
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_info, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_info, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 new SongInfoDialog(mContext, item).show();
             }
         });

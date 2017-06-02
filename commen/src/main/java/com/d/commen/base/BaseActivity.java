@@ -31,11 +31,6 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends AppCompat
     }
 
     @Override
-    public void finish() {
-        super.finish();
-    }
-
-    @Override
     protected void onDestroy() {
         mPresenter.detachView(false);
         ButterKnife.unbind(this);

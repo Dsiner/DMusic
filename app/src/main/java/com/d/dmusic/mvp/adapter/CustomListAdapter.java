@@ -10,15 +10,16 @@ import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.mvp.fragment.SongFragment;
 import com.d.dmusic.utils.TaskManager;
-import com.d.dmusic.view.SlideLayout;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.lib.slidelayout.SlideLayout;
+import com.d.lib.slidelayout.SlideManager;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,20 +27,13 @@ import java.util.List;
  * Created by D on 2017/5/6.
  */
 public class CustomListAdapter extends CommonAdapter<CustomList> {
-    private List<SlideLayout> slides;
+    private SlideManager manager;
     private RefreshEvent event;
 
     public CustomListAdapter(Context context, List<CustomList> datas, int layoutId) {
         super(context, datas, layoutId);
-        slides = new ArrayList<>();
-        event = new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST);
-    }
-
-    public void setDatas(List<CustomList> datas) {
-        if (mDatas != null && datas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        }
+        manager = new SlideManager();
+        event = new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST);
     }
 
     @Override
@@ -52,28 +46,24 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
             @Override
             public void onChange(SlideLayout layout, boolean isOpen) {
                 item.isOpen = isOpen;
-                if (isOpen) {
-                    slides.add(layout);
-                } else {
-                    slides.remove(layout);
-                }
+                manager.onChange(layout, isOpen);
             }
 
             @Override
             public boolean closeAll(SlideLayout layout) {
-                return closeAllF(layout);
+                return manager.closeAll(layout);
             }
         });
-        holder.setViewOnClickListener(R.id.tv_stick, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.tv_stick, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
-                slSlide.close();
+            public void onFastClick(View v) {
+                slSlide.setOpen(false, false);
                 stick(item);
             }
         });
-        holder.setViewOnClickListener(R.id.tv_delete, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.tv_delete, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 slSlide.close();
                 mDatas.remove(position);
                 notifyItemRemoved(position);
@@ -81,9 +71,9 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
                 delete(item);
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_item, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_item, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 if (slSlide.isOpen()) {
                     slSlide.close();
                     return;
@@ -115,20 +105,9 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
         EventBus.getDefault().post(event);
     }
 
-    public boolean closeAllF(SlideLayout layout) {
-        boolean ret = false;
-        if (slides == null || slides.size() <= 0) {
-            return false;
+    public void closeAllF() {
+        if (manager != null) {
+            manager.closeAll(null);
         }
-        for (int i = 0; i < slides.size(); i++) {
-            SlideLayout slide = slides.get(i);
-            if (slide != null && slide != layout) {
-                slide.close();
-                slides.remove(slide);
-                ret = true;
-                i--;
-            }
-        }
-        return ret;
     }
 }

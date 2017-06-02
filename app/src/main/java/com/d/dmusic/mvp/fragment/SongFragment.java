@@ -1,5 +1,6 @@
 package com.d.dmusic.mvp.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,19 +13,21 @@ import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
-import com.d.dmusic.module.global.MusciCst;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.activity.HandleActivity;
+import com.d.dmusic.mvp.activity.ScanActivity;
 import com.d.dmusic.mvp.adapter.SongAdapter;
 import com.d.dmusic.mvp.presenter.SongPresenter;
 import com.d.dmusic.mvp.view.ISongView;
 import com.d.dmusic.view.DSLayout;
 import com.d.dmusic.view.SongHeaderView;
 import com.d.dmusic.view.TitleLayout;
-import com.d.xrv.XRecyclerView;
+import com.d.lib.xrv.XRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,7 +43,7 @@ import butterknife.OnClick;
  * SongFragment
  * Created by D on 2017/4/30.
  */
-public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
+public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener, View.OnClickListener {
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.dsl_ds)
@@ -58,6 +61,9 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 MainActivity.popBackStack();
@@ -126,10 +132,34 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
             tab = bundle.getInt("tab");
             title = bundle.getString("title");
         }
-        tlTitle.setType(type);
         tlTitle.setText(R.id.tv_title_title, title);
         if (type == MusicDB.LOCAL_ALL_MUSIC || type == MusicDB.COLLECTION_MUSIC) {
             tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
+        }
+        tlTitle.setOnMenuClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.menu_sort_name:
+                mPresenter.getSong(type, MusicDB.ORDER_TYPE_NAME);
+                break;
+            case R.id.menu_sort_time:
+                mPresenter.getSong(type, MusicDB.ORDER_TYPE_TIME);
+                break;
+            case R.id.menu_sort_custom:
+                mPresenter.getSong(type, MusicDB.ORDER_TYPE_CUSTOM);
+                break;
+            case R.id.menu_scan:
+                Activity activity = getActivity();
+                Intent intent = new Intent(activity, ScanActivity.class);
+                intent.putExtra("type", type);
+                activity.startActivity(intent);
+                break;
         }
     }
 
@@ -171,10 +201,10 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
 
     @Override
     public void onHandle() {
-        MusciCst.models.clear();
+        MusicCst.models.clear();
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null) {
-            MusciCst.models.addAll(datas);
+            MusicCst.models.addAll(datas);
         }
         Intent intent = new Intent(getActivity(), HandleActivity.class);
         intent.putExtra("type", type);
@@ -195,7 +225,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onRefreshEvent(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.event == type || event.type != RefreshEvent.SYNC_COLLECTIONG) {
+                || event.type == type || event.event != RefreshEvent.SYNC_COLLECTIONG) {
             return;
         }
         isNeedReLoad = true;

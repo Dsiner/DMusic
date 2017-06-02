@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.global.Cst;
-import com.d.dmusic.module.global.MusciCst;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
-import com.d.dmusic.module.service.MusicControl;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.adapter.PlayQueueAdapter;
-import com.d.xrv.LRecyclerView;
+import com.d.lib.xrv.LRecyclerView;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class PlayQueuePopup extends AbstractPopup implements View.OnClickListener, IQueueListener {
+    private Preferences p;
     private ImageView ivPlayMode;
     private TextView tvPlayMode;
     private TextView tvCount;
@@ -41,6 +43,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     protected void init() {
+        p = Preferences.getInstance(context.getApplicationContext());
         View vBlank = rootView.findViewById(R.id.v_queue_blank);
         LinearLayout llytQueue = (LinearLayout) rootView.findViewById(R.id.llyt_queue);
         ViewGroup.LayoutParams lp = llytQueue.getLayoutParams();
@@ -58,9 +61,10 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         adapter = new PlayQueueAdapter(context, models, R.layout.adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
+        int playMode = p.getPlayMode();
         tvCount.setText("(" + (models != null ? models.size() : 0) + "首)");
-        ivPlayMode.setBackgroundResource(MusciCst.PLAY_MODE_DRAWABLE[MusicControl.playMode]);
-        tvPlayMode.setText(MusciCst.PLAY_MODE[MusicControl.playMode]);
+        ivPlayMode.setBackgroundResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
+        tvPlayMode.setText(MusicCst.PLAY_MODE[playMode]);
 
         vBlank.setOnClickListener(this);
         flytPlayMode.setOnClickListener(this);
@@ -68,22 +72,27 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         ivQuit.setOnClickListener(this);
     }
 
-    private void changeMode() {
-        MusicControl.playMode++;
-        if (MusicControl.playMode > 3) {
-            MusicControl.playMode = 0;
+    private int changeMode() {
+        int playMode = p.getPlayMode();
+        if (++playMode > 3) {
+            playMode = 0;
         }
-        ivPlayMode.setBackgroundResource(MusciCst.PLAY_MODE_DRAWABLE[MusicControl.playMode]);
-        tvPlayMode.setText(MusciCst.PLAY_MODE[MusicControl.playMode]);
+        ivPlayMode.setBackgroundResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
+        tvPlayMode.setText(MusicCst.PLAY_MODE[playMode]);
+        p.putPlayMode(playMode);
+        return playMode;
     }
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.flyt_play_mode:
-                changeMode();
+                int playMode = changeMode();
                 if (listener != null) {
-                    listener.onPlayModeChange();
+                    listener.onPlayModeChange(playMode);
                 }
                 break;
             case R.id.tv_delete_all:
@@ -111,7 +120,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
     }
 
     @Override
-    public void onPlayModeChange() {
+    public void onPlayModeChange(int playMode) {
 
     }
 

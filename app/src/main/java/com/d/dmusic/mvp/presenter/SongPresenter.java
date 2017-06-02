@@ -31,7 +31,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         super(context);
     }
 
-    public void getSong(final int type, final int tab, final String sortBy) {
+    public void getSong(final int type, final int tab, final String sortKey) {
         if (isViewAttached()) {
             getView().setDSState(DSLayout.STATE_LOADING);
         }
@@ -42,18 +42,53 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 if (type == MusicDB.LOCAL_ALL_MUSIC && tab > 0) {
                     switch (tab) {
                         case 1:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllBySinger(sortBy);
+                            list = MusicDBUtil.getInstance(mContext).queryLocalAllBySinger(sortKey);
                             break;
                         case 2:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByAlbum(sortBy);
+                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByAlbum(sortKey);
                             break;
                         case 3:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByFolder(sortBy);
+                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByFolder(sortKey);
                             break;
                     }
                 } else {
                     list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
                 }
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                e.onNext(list);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().setSong(list);
+                    }
+                });
+    }
+
+    /**
+     * 获取歌曲
+     *
+     * @param type:仅限自定义歌曲
+     * @param orderType:排序类型:按名称、时间、自定义
+     */
+    public void getSong(final int type, final int orderType) {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, orderType);//按自定义排序
+                List<MusicModel> list = null;
+                list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllCustomMusic(type, orderType);
                 if (list == null) {
                     list = new ArrayList<>();
                 }
@@ -86,7 +121,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 MusicDBUtil.getInstance(mContext).deleteAll(type);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(models, type), type);
                 MusicDBUtil.getInstance(mContext).updateCusListCount(type, models.size());
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, 2);//按自定义排序
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//按自定义排序
             }
         });
     }

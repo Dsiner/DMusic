@@ -14,6 +14,7 @@ import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.log.ULog;
 
@@ -98,13 +99,16 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.tv_cancel:
                 dismiss();
                 break;
             case R.id.tv_ok:
                 if (insertNewList(etName.getText().toString())) {
-                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST));
+                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                     dismiss();
                 }
                 break;

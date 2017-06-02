@@ -13,6 +13,7 @@ import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.mvp.view.ILMMusicView;
 import com.d.dmusic.utils.log.ULog;
 import com.d.dmusic.view.DSLayout;
+import com.d.dmusic.view.sort.SortUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         super(context);
     }
 
-    public void getSong(final int type) {
+    public void getSong(final int type, final SortUtil sortUtil) {
         if (isViewAttached()) {
             getView().setDSState(DSLayout.STATE_LOADING);
         }
@@ -45,6 +46,9 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
                 if (list == null) {
                     list = new ArrayList<MusicModel>();
+                }
+                if (sortUtil != null) {
+                    sortUtil.sortDatas(list);//重新排序
                 }
                 e.onNext(list);
             }

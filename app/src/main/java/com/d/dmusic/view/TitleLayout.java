@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.d.dmusic.R;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.view.dialog.MenuDialog;
 
 /**
@@ -23,13 +24,12 @@ import com.d.dmusic.view.dialog.MenuDialog;
  */
 public class TitleLayout extends RelativeLayout implements View.OnClickListener {
     private Context context;
-    private int type;
-
     private final String[] texts = new String[3];
     private final Drawable[] drawables = new Drawable[3];
     private final int[] ress = new int[3];
-
+    private final int menuRes;
     private MenuDialog menu;
+    private View.OnClickListener onMenuClickListener;
 
     public TitleLayout(Context context) {
         this(context, null);
@@ -53,6 +53,8 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
         ress[0] = typedArray.getResourceId(R.styleable.TitleLayout_tl_leftRes, -1);
         ress[1] = typedArray.getResourceId(R.styleable.TitleLayout_tl_rightRes, -1);
         ress[2] = typedArray.getResourceId(R.styleable.TitleLayout_tl_middleRes, -1);
+
+        menuRes = typedArray.getResourceId(R.styleable.TitleLayout_tl_menu, -1);
         typedArray.recycle();
         init(context);
     }
@@ -69,10 +71,10 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
                 R.id.tv_title_left, R.id.iv_title_left, ALIGN_PARENT_LEFT);
         //right
         inflate(context, root, texts[1], drawables[1], ress[1],
-                R.id.tv_title_right, R.id.iv_title_right, CENTER_IN_PARENT);
+                R.id.tv_title_right, R.id.iv_title_right, ALIGN_PARENT_RIGHT);
         //middle
         inflate(context, root, texts[2], drawables[2], ress[2],
-                R.id.tv_title_title, R.id.iv_title_middle, ALIGN_PARENT_RIGHT);
+                R.id.tv_title_title, R.id.iv_title_middle, CENTER_IN_PARENT);
     }
 
     private void inflate(Context context, View root, String text, Drawable drawable, int res,
@@ -100,13 +102,6 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
         }
     }
 
-    /**
-     * setType
-     */
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public void setVisibility(int resId, int visibility) {
         View v = findViewById(resId);
         if (v != null) {
@@ -130,7 +125,8 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
 
     public void showMenu() {
         if (menu == null) {
-            menu = new MenuDialog(context, type);
+            menu = new MenuDialog(context, menuRes);
+            menu.setOnClickListener(onMenuClickListener);
         }
         menu.show();
     }
@@ -143,10 +139,20 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.iv_title_right:
                 showMenu();
                 break;
+        }
+    }
+
+    public void setOnMenuClickListener(View.OnClickListener listener) {
+        onMenuClickListener = listener;
+        if (menu != null) {
+            menu.setOnClickListener(onMenuClickListener);
         }
     }
 }

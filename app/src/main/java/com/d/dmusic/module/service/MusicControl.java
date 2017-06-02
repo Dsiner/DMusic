@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.PlayOrPauseEvent;
-import com.d.dmusic.module.global.MusciCst;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
@@ -32,9 +33,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MusicControl {
     private static MusicControl instance;
-    public static int playMode;// 当前列表播放模式
 
     private Context context;
+    private Preferences p;
     private int status;//0:无 1:播放 2:暂停
     private MediaPlayer mediaPlayer;
     private List<MusicModel> models;// 播放列表
@@ -83,6 +84,7 @@ public class MusicControl {
 
     private MusicControl(Context context) {
         this.context = context.getApplicationContext();
+        p = Preferences.getInstance(context.getApplicationContext());
         reset();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -135,8 +137,7 @@ public class MusicControl {
                 });
     }
 
-    public void reLoad() {
-        List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(context).queryAllMusic(MusicDB.MUSIC);
+    public void reLoad(List<MusicModel> list) {
         if (models != null && list != null) {
             models.clear();
             models.addAll(list);
@@ -168,6 +169,7 @@ public class MusicControl {
     public void delelteAll() {
         stop();
         reset();
+        cancle();
         TaskManager.getIns().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -208,9 +210,7 @@ public class MusicControl {
 
     private void play() {
         stop();
-        if (models.size() <= 0) {
-            reset();
-            sendBroadcast();
+        if (cancle()) {
             return;
         }
         try {
@@ -218,7 +218,7 @@ public class MusicControl {
             mediaPlayer.setDataSource(models.get(curPos).url);// 指定要播放的音频文件
             mediaPlayer.prepare();// 预加载音频文件
             mediaPlayer.start();
-            status = MusciCst.PLAY_STATUS_PLAYING;//正在播放
+            status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
 
             //广播通知
             curSongName = models.get(curPos).songName;
@@ -230,7 +230,7 @@ public class MusicControl {
     }
 
     private void sendBroadcast() {
-        Intent intent = new Intent(MusciCst.MUSIC_CURRENT_INFO);
+        Intent intent = new Intent(MusicCst.MUSIC_CURRENT_INFO);
         intent.putExtra("songName", curSongName);
         intent.putExtra("singer", curSinger);
         context.sendBroadcast(intent);
@@ -239,17 +239,21 @@ public class MusicControl {
     /**
      * 播放/暂停
      *
-     * @return ret :执行结果1:播放 2:暂停
+     * @return 执行结果0:无 1:播放 2:暂停
      */
     public int playOrPause() {
         PlayOrPauseEvent event = new PlayOrPauseEvent();
-        if (mediaPlayer.isPlaying()) {
+        if (models.size() <= 0) {
+            mediaPlayer.stop();
+            status = MusicCst.PLAY_STATUS_STOP;//停止
+            event.isPlay = false;
+        } else if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
-            status = MusciCst.PLAY_STATUS_PAUSE;//暂停
+            status = MusicCst.PLAY_STATUS_PAUSE;//暂停
             event.isPlay = false;
         } else {
             mediaPlayer.start();
-            status = MusciCst.PLAY_STATUS_PLAYING;//正在播放
+            status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
             event.isPlay = true;
         }
         EventBus.getDefault().post(event);
@@ -257,16 +261,19 @@ public class MusicControl {
     }
 
     public void next() {
-        switch (playMode) {
-            case MusciCst.PLAY_MODE_ALL_REPEAT:
-            case MusciCst.PLAY_MODE_ORDER:
-            case MusciCst.PLAY_MODE_SINGLE_CYCLE:
+        if (cancle()) {
+            return;
+        }
+        switch (p.getPlayMode()) {
+            case MusicCst.PLAY_MODE_ALL_REPEAT:
+            case MusicCst.PLAY_MODE_ORDER:
+            case MusicCst.PLAY_MODE_SINGLE_CYCLE:
                 //列表循环、顺序播放、单曲循环
                 if (++curPos >= count) {
                     curPos = 0;
                 }
                 break;
-            case MusciCst.PLAY_MODE_SHUFFLE:
+            case MusicCst.PLAY_MODE_SHUFFLE:
                 //随机播放
                 if (count > 0) {
                     Random random = new Random(System.currentTimeMillis());
@@ -279,17 +286,29 @@ public class MusicControl {
         play();
     }
 
+    private boolean cancle() {
+        if (models.size() <= 0) {
+            reset();
+            sendBroadcast();
+            return true;
+        }
+        return false;
+    }
+
     public void prev() {
-        switch (playMode) {
-            case MusciCst.PLAY_MODE_ALL_REPEAT:
-            case MusciCst.PLAY_MODE_ORDER:
-            case MusciCst.PLAY_MODE_SINGLE_CYCLE:
+        if (cancle()) {
+            return;
+        }
+        switch (p.getPlayMode()) {
+            case MusicCst.PLAY_MODE_ALL_REPEAT:
+            case MusicCst.PLAY_MODE_ORDER:
+            case MusicCst.PLAY_MODE_SINGLE_CYCLE:
                 //列表循环、顺序播放、单曲循环
                 if (--curPos < 0) {
                     curPos = count - 1;
                 }
                 break;
-            case MusciCst.PLAY_MODE_SHUFFLE:
+            case MusicCst.PLAY_MODE_SHUFFLE:
                 //随机播放
                 if (count > 0) {
                     Random random = new Random(System.currentTimeMillis());
@@ -304,14 +323,14 @@ public class MusicControl {
      * 自动播放下一首
      */
     public void autoNext() {
-        switch (playMode) {
-            case MusciCst.PLAY_MODE_ALL_REPEAT:
+        switch (p.getPlayMode()) {
+            case MusicCst.PLAY_MODE_ALL_REPEAT:
                 if (++curPos >= count) {
                     curPos = 0;
                 }
                 play();
                 break;
-            case MusciCst.PLAY_MODE_ORDER:
+            case MusicCst.PLAY_MODE_ORDER:
                 if (++curPos >= count) {
                     curPos--;
                     stop();
@@ -319,14 +338,14 @@ public class MusicControl {
                     play();
                 }
                 break;
-            case MusciCst.PLAY_MODE_SHUFFLE:
+            case MusicCst.PLAY_MODE_SHUFFLE:
                 if (count > 0) {
                     Random random = new Random(System.currentTimeMillis());
                     curPos = Math.abs(random.nextInt()) % count;
                 }
                 play();
                 break;
-            case MusciCst.PLAY_MODE_SINGLE_CYCLE:
+            case MusicCst.PLAY_MODE_SINGLE_CYCLE:
                 play();
                 break;
         }
@@ -351,7 +370,7 @@ public class MusicControl {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
-        status = MusciCst.PLAY_STATUS_STOP;//无
+        status = MusicCst.PLAY_STATUS_STOP;//停止
     }
 
     public void onDestroy() {

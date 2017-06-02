@@ -23,11 +23,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     }
 
     @Override
-    public void finish() {
-        super.finish();
-    }
-
-    @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
         super.onDestroy();

@@ -8,9 +8,10 @@ import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.model.SingerModel;
 import com.d.dmusic.module.greendao.db.MusicDB;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.mvp.fragment.SongFragment;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
@@ -21,20 +22,13 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         super(context, datas, layoutId);
     }
 
-    public void setDatas(List<SingerModel> datas) {
-        if (mDatas != null && datas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        }
-    }
-
     @Override
     public void convert(int position, CommonHolder holder, final SingerModel item) {
         holder.setText(R.id.tv_singer, item.singer);
         holder.setText(R.id.tv_title, "" + item.count);
-        holder.setViewOnClickListener(R.id.llyt_singer, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_singer, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.singer);
                 bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);

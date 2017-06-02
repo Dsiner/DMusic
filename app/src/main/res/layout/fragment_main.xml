@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
         android:background="@color/color_main"
-        app:tl_middleText="title" />
+        app:tl_middleRes="@layout/layout_title_main" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/local_bg"
+            android:background="@color/color_main"
             android:gravity="center_vertical">
 
             <ImageView
@@ -65,7 +66,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="19dp"
             android:layout_weight="1"
-            android:background="#FFA41B"
+            android:background="@color/color_main"
             android:gravity="center_vertical">
 
             <ImageView
@@ -128,7 +129,7 @@
             android:textSize="@dimen/dimen_text_small" />
     </LinearLayout>
 
-    <com.d.xrv.LRecyclerView
+    <com.d.lib.xrv.LRecyclerView
         android:id="@+id/lv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

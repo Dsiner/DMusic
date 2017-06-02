@@ -12,8 +12,8 @@
     <color name="color_red">#ff0000</color>
     <color name="color_green">#00ff00</color>
 
-    <color name="color_main">#FD8D22</color>
-    <color name="color_main_90">#E6FD8D22</color>
+    <color name="color_main">#f85959</color>
+    <color name="color_main_90">#E6f85959</color>
     <color name="color_translucent">#9900040a</color>
     <color name="color_line">#e5e5e5</color>
     <color name="color_dialog_bg">#2C2C2C</color>

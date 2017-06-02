@@ -13,8 +13,8 @@
 
     <dimen name="dimen_queue_height">36dp</dimen>
 
-    <dimen name="dimen_text_main">18dp</dimen>
-    <dimen name="dimen_text_sub">16dp</dimen>
-    <dimen name="dimen_text_small">14dp</dimen>
-    <dimen name="dimen_text_mini">12dp</dimen>
+    <dimen name="dimen_text_main">19dp</dimen>
+    <dimen name="dimen_text_sub">17dp</dimen>
+    <dimen name="dimen_text_small">15dp</dimen>
+    <dimen name="dimen_text_mini">13dp</dimen>
 </resources>

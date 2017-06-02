@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dl_drawer"
     android:layout_width="match_parent"
@@ -15,10 +16,12 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+        <include layout="@layout/layout_line" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_item_height"
-            android:background="#F4F4F5"
+            android:background="@color/color_white"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -42,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="夏洛特烦恼"
+                    android:textColor="#aa000000"
                     android:textSize="@dimen/dimen_text_small"
                     android:textStyle="bold" />
 
@@ -51,7 +54,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="金志文"
                     android:textColor="@color/color_gray"
                     android:textSize="@dimen/dimen_text_mini" />
             </LinearLayout>

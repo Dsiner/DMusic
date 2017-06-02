@@ -4,10 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
-import com.d.dmusic.commen.Preferences;
-import com.d.dmusic.module.global.MusciCst;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
-import com.d.dmusic.module.service.MusicControl;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 
 /**
@@ -35,6 +33,7 @@ public class SysApplication extends Application {
 
         //初始化数据库
         MusicDBUtil.getInstance(getApplicationContext());
+        ClickUtil.setDelayTime(400);
     }
 
     @Override
@@ -43,8 +42,6 @@ public class SysApplication extends Application {
     }
 
     public void exit() {
-        Preferences.getInstance(getApplicationContext()).putPlayerMode(MusciCst.playerMode);
-        Preferences.getInstance(getApplicationContext()).putPlayMode(MusicControl.playMode);//保存播放模式
         MusicService.getControl().onDestroy();// 停止音乐播放
         stopService(new Intent(getApplicationContext(), MusicService.class));// 停止服务
         System.exit(0);

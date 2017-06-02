@@ -8,9 +8,10 @@ import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.model.FolderModel;
 import com.d.dmusic.module.greendao.db.MusicDB;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.mvp.fragment.SongFragment;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
@@ -24,20 +25,13 @@ public class FolderAdapter extends CommonAdapter<FolderModel> {
         super(context, datas, layoutId);
     }
 
-    public void setDatas(List<FolderModel> datas) {
-        if (mDatas != null && datas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        }
-    }
-
     @Override
     public void convert(int position, CommonHolder holder, final FolderModel item) {
         holder.setText(R.id.tv_folder_dir, item.folder);
         holder.setText(R.id.tv_folder_count, "" + item.count);
-        holder.setViewOnClickListener(R.id.llyt_folder, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_folder, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", item.folder);
                 bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
