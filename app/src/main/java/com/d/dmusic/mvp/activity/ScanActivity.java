@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 
 import com.d.commen.base.BaseFragmentActivity;
 import com.d.dmusic.R;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.fragment.CustomScanFragment;
 import com.d.dmusic.mvp.fragment.ScanFragment;
 import com.d.dmusic.utils.StatusBarCompat;
@@ -30,6 +31,9 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @OnClick({R.id.iv_title_left})
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
@@ -44,12 +48,10 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
+        StatusBarCompat.compat(ScanActivity.this, 0xffff0000);//沉浸式状态栏
         int type = getIntent().getIntExtra("type", 0);
         ULog.v("type" + type);
-        StatusBarCompat.compat(ScanActivity.this, 0xffff0000);//沉浸式状态栏
-
         initTitle();
-
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
         Fragment scanFragment = new ScanFragment();

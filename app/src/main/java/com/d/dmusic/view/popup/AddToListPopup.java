@@ -15,10 +15,11 @@ import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.AddToListAdapter;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.view.loading.LoadingLayout;
-import com.d.xrv.LRecyclerView;
+import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -72,6 +73,9 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.v_blank:
             case R.id.iv_quit:
@@ -176,7 +180,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                         Util.toast(context, "成功添加");
 
                         //更新首页自定义列表
-                        EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST));
+                        EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                         dismiss();
                     }
                 });

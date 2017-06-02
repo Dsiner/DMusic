@@ -6,9 +6,10 @@ import android.view.View;
 import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.module.service.MusicService;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
@@ -24,15 +25,15 @@ public class PlayQueueAdapter extends CommonAdapter<MusicModel> {
     public void convert(final int position, CommonHolder holder, MusicModel item) {
         holder.setText(R.id.tv_song_name, item.songName);
         holder.setText(R.id.tv_singer, "--" + item.singer);
-        holder.setViewOnClickListener(R.id.llyt_queue, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_queue, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 MusicService.getControl().playPosition(position);
             }
         });
-        holder.setViewOnClickListener(R.id.iv_delete, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.iv_delete, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 MusicService.getControl().delelteByPosition(position);
                 notifyDataSetChanged();
                 if (listener != null) {

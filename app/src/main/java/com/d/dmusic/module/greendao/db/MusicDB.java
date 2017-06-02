@@ -26,6 +26,13 @@ public abstract class MusicDB extends AbstractDB<DaoMaster, DaoSession, MusicMod
     public static final int CUSTOM_MUSIC_INDEX = 10;//自定义歌曲 +0...19--->20张表
     public static final int CUSTOM_MUSIC_COUNT = 20;//自定义歌曲，表数目
 
+    /**
+     * sortType
+     */
+    public static final int ORDER_TYPE_CUSTOM = 0;//自定义歌曲，排序方式:按自定义排序
+    public static final int ORDER_TYPE_NAME = 1;//自定义歌曲，排序方式:按名称排序
+    public static final int ORDER_TYPE_TIME = 2;//自定义歌曲，排序方式:按时间排序
+
     protected MusicDB(Context context) {
         super(context);
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context.getApplicationContext(), "dmusic.db", null);

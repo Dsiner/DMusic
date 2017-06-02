@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
+import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.model.AlbumModel;
 import com.d.dmusic.model.FolderModel;
@@ -20,6 +22,8 @@ import com.d.dmusic.mvp.activity.HandleActivity;
 import com.d.dmusic.mvp.adapter.SongAdapter;
 import com.d.dmusic.view.DSLayout;
 import com.d.dmusic.view.SongHeaderView;
+import com.d.dmusic.view.sort.SideBar;
+import com.d.dmusic.view.sort.SortUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,21 +35,34 @@ import java.util.List;
  * 首页-本地歌曲-歌曲
  * Created by D on 2017/4/29.
  */
-public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener {
+public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
     private SongHeaderView header;
     private SongAdapter adapter;
+    private SortUtil sortUtil;
     private boolean isNeedReLoad;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Context context = getActivity();
-        List<MusicModel> datas = new ArrayList<>();
-        adapter = new SongAdapter(context, datas, R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
+        sortUtil = new SortUtil();
+        adapter = new SongAdapter(context, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
         header = new SongHeaderView(context);
         header.setVisibility(R.id.iv_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
+    }
+
+    @Override
+    protected void onVisible() {
+        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        super.onVisible();
+    }
+
+    @Override
+    protected void onInvisible() {
+        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+        super.onInvisible();
     }
 
     @Override
@@ -55,7 +72,8 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         xrvList.setCanLoadMore(false);
         xrvList.addHeaderView(header);
         xrvList.setAdapter(adapter);
-        mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC);
+        sbSideBar.setOnLetterChangedListener(this);
+        mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
     }
 
     @Override
@@ -63,7 +81,7 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
-            mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC);
+            mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
         }
     }
 
@@ -71,8 +89,10 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     public void setSong(List<MusicModel> models) {
         if (models.size() <= 0) {
             setDSState(DSLayout.STATE_EMPTY);
+            sbSideBar.setVisibility(View.GONE);
         } else {
             setDSState(View.GONE);
+            sbSideBar.setVisibility(View.VISIBLE);
         }
         notifyDataCountChanged(models.size());
         adapter.setDatas(models);
@@ -123,6 +143,11 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         getActivity().startActivity(new Intent(getActivity(), HandleActivity.class));
     }
 
+    @Override
+    public void onChange(int index, String c) {
+        sortUtil.onChange(index, c, xrvList);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
@@ -138,5 +163,11 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
             return;
         }
         isNeedReLoad = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+        super.onDestroy();
     }
 }

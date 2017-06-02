@@ -7,14 +7,15 @@
     </declare-styleable>
     <declare-styleable name="TitleLayout">
         <attr name="tl_leftText" format="string" />
-        <attr name="tl_rightText" format="string" />
-        <attr name="tl_middleText" format="string" />
         <attr name="tl_leftDrawable" format="reference" />
-        <attr name="tl_rightDrawable" format="reference" />
-        <attr name="tl_middleDrawable" format="reference" />
         <attr name="tl_leftRes" format="reference" />
+        <attr name="tl_rightText" format="string" />
+        <attr name="tl_rightDrawable" format="reference" />
         <attr name="tl_rightRes" format="reference" />
+        <attr name="tl_middleText" format="string" />
+        <attr name="tl_middleDrawable" format="reference" />
         <attr name="tl_middleRes" format="reference" />
+        <attr name="tl_menu" format="reference" />
     </declare-styleable>
     <declare-styleable name="DSLayout">
         <attr name="adjustHeightT" format="dimension" />
@@ -24,21 +25,15 @@
             <enum name="local" value="2" />
         </attr>
     </declare-styleable>
-    <declare-styleable name="SwipeLayout">
-        <attr name="drag_edge">
-            <flag name="left" value="1" />
-            <flag name="right" value="2" />
-            <flag name="top" value="4" />
-            <flag name="bottom" value="8" />
-        </attr>
-        <attr name="leftEdgeSwipeOffset" format="dimension" />
-        <attr name="rightEdgeSwipeOffset" format="dimension" />
-        <attr name="topEdgeSwipeOffset" format="dimension" />
-        <attr name="bottomEdgeSwipeOffset" format="dimension" />
-        <attr name="show_mode" format="enum">
-            <enum name="lay_down" value="0" />
-            <enum name="pull_out" value="1" />
-        </attr>
-        <attr name="clickToClose" format="boolean" />
+    <declare-styleable name="LrcView">
+        <attr name="lrcTextColor" format="color" />
+        <attr name="lrcCurTextColor" format="color" />
+        <attr name="lrcTimeColor" format="color" />
+        <attr name="lrcTextSize" format="dimension" />
+        <attr name="lrcCurTextSize" format="dimension" />
+        <attr name="lrcTimeSize" format="dimension" />
+        <attr name="lrcPadding" format="dimension" />
+        <attr name="lrcMinScale" format="float" />
+        <attr name="lrcMaxScale" format="float" />
     </declare-styleable>
 </resources>

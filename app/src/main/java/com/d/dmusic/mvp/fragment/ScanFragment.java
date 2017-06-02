@@ -21,6 +21,7 @@ import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.module.media.MusicFactory;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.activity.ScanActivity;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.fileutil.FileUtil;
@@ -89,6 +90,9 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
 
     @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
     public void OnClickLister(final View view) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.btn_full_scan:
             case R.id.btn_custom_scan:
@@ -156,14 +160,14 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
                 MusicDBUtil.getInstance(context).deleteAll(type);
                 MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, type);
                 MusicDBUtil.getInstance(context).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(context).updateCusListSoryByType(type, 0);//默认按时间排序
+                MusicDBUtil.getInstance(context).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//默认按自定义排序
 
                 //更新收藏字段
                 List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(context).queryAllMusic(MusicDB.COLLECTION_MUSIC);
                 MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(MusicModel.clone(c, type), type);
 
                 //更新首页自定义列表
-                EventBus.getDefault().post(new RefreshEvent(RefreshEvent.SYNC_CUSTOM_LIST));
+                EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
 
                 if (list == null) {
                     list = new ArrayList<>();

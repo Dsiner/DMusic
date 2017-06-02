@@ -5,7 +5,7 @@ package com.d.dmusic.api;
  * Created by D on 2017/5/5.
  */
 public interface IQueueListener {
-    void onPlayModeChange();
+    void onPlayModeChange(int playMode);
 
     void onCountChange(int count);
 }

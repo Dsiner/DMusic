@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MusciCst
+ * MusicCst
  * Created by D on 2017/4/29.
  */
-public class MusciCst {
+public class MusicCst {
     /**
      * 当前播放列表播放模式
      */
@@ -25,7 +25,7 @@ public class MusciCst {
     /**
      * 当前播放状态
      */
-    public static final int PLAY_STATUS_STOP = 0x0;//无
+    public static final int PLAY_STATUS_STOP = 0x0;//停止
     public static final int PLAY_STATUS_PLAYING = 0x1;//正在播放
     public static final int PLAY_STATUS_PAUSE = 0x2;//暂停
 
@@ -48,6 +48,5 @@ public class MusciCst {
     /**
      * variable
      */
-    public static int playerMode;// 音乐播放器模式，0:普通模式，1：极简模式，2：通知栏模式
     public static List<MusicModel> models = new ArrayList<>();
 }

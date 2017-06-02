@@ -39,6 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="0首"
                 android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>

@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_black"
@@ -21,37 +23,60 @@
             android:id="@+id/tv_song_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/dimen_margin"
             android:layout_weight="1"
             android:ellipsize="end"
+            android:gravity="center"
             android:singleLine="true"
-            android:text=""
             android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_main" />
+            android:textSize="@dimen/dimen_text_sub" />
 
         <ImageView
             android:id="@+id/iv_more"
             android:layout_width="@dimen/dimen_title_height"
             android:layout_height="@dimen/dimen_title_height"
             android:padding="15dp"
-            android:src="@drawable/more"
-            android:visibility="gone" />
+            android:src="@drawable/more" />
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/iv_album"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="42dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_album_cover" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llyt_album"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="42dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/img_album_cover" />
+        </LinearLayout>
+
+        <com.d.dmusic.view.lrc.LrcView
+            android:id="@+id/lrcv_lrc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_margin"
+            app:lrcCurTextColor="@color/color_main"
+            app:lrcCurTextSize="17dp"
+            app:lrcMaxScale="1.7"
+            app:lrcMinScale="0.7"
+            app:lrcPadding="17dp"
+            app:lrcTextColor="@color/color_gray"
+            app:lrcTextSize="15dp"
+            app:lrcTimeColor="@color/color_white"
+            app:lrcTimeSize="8dp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,31 +89,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="3dp"
             android:text="00:00"
-            android:textColor="#80ffffff"
+            android:textColor="@color/color_gray"
             android:textSize="@dimen/dimen_text_mini" />
 
         <SeekBar
             android:id="@+id/sb_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:max="100"
+            android:background="@null"
             android:maxHeight="2dp"
             android:minHeight="2dp"
-            android:progressDrawable="@drawable/seekbar"
-            android:thumb="@drawable/seekbar_thumb"
-            android:thumbOffset="12dp" />
+            android:progressDrawable="@drawable/seekbar_play"
+            android:thumb="@drawable/seekbar_play_thumb" />
 
         <TextView
             android:id="@+id/tv_time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
             android:layout_marginRight="@dimen/dimen_margin"
             android:text="00:00"
-            android:textColor="#80ffffff"
+            android:textColor="@color/color_gray"
             android:textSize="@dimen/dimen_text_mini" />
     </LinearLayout>
 
@@ -96,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="@dimen/dimen_margin"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
         <ImageButton
@@ -141,7 +164,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@color/color_black"
-            android:padding="6dp"
+            android:padding="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/play_mode_all_repeat" />
     </LinearLayout>

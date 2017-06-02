@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.d.dmusic.R;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
 
 /**
  * AlertDialogFactory
@@ -75,10 +75,9 @@ public class AlertDialogFactory {
         btnCancel.setText(btnCancelText);
         btnOk.setOnClickListener(btnOkListener);
         if (btnCancelListener == null) {
-            btnCancel.setOnClickListener(new View.OnClickListener() {
-
+            btnCancel.setOnClickListener(new OnClickFastListener() {
                 @Override
-                public void onClick(View v) {
+                public void onFastClick(View v) {
                     dlg.dismiss();
                 }
             });

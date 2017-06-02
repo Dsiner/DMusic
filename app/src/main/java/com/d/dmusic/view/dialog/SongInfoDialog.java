@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.utils.Util;
 
 /**
@@ -56,6 +57,9 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.tv_ok:
                 dismiss();

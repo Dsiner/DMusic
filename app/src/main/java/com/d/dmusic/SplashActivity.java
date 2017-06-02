@@ -14,8 +14,7 @@ import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.commen.Preferences;
-import com.d.dmusic.module.global.MusciCst;
-import com.d.dmusic.module.service.MusicControl;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.utils.StatusBarCompat;
@@ -97,11 +96,10 @@ public class SplashActivity extends BaseActivity<MvpBasePresenter> implements Mv
         p = Preferences.getInstance(getApplicationContext());
 
         boolean isFirst = p.getIsFirst();
-        MusciCst.playerMode = p.getPlayerMode();
-        MusicControl.playMode = p.getPlayMode();
+        int playerMode = p.getPlayerMode();
 
         if (!isFirst) {
-            switch (MusciCst.playerMode) {
+            switch (playerMode) {
                 case 0:
                     if (MusicService.isRunning()) {
                         startActivity(new Intent(this, MainActivity.class));
@@ -195,6 +193,9 @@ public class SplashActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.btn_start:
                 //启动音乐主界面

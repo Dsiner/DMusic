@@ -57,6 +57,7 @@ public class Preferences extends AbstractPreference {
 
     /**
      * 获取音乐播放器模式
+     * 音乐播放器模式，0:普通模式，1：极简模式，2：通知栏模式
      */
     public int getPlayerMode() {
         return settings.getInt("playerMode", 0);
@@ -64,6 +65,7 @@ public class Preferences extends AbstractPreference {
 
     /**
      * 设置当前列表播放模式
+     * 音乐播放器模式，0:普通模式，1：极简模式，2：通知栏模式
      */
     public void putPlayMode(int playerMode) {
         editor.putInt("playMode", playerMode);

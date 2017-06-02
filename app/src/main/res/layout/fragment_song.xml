@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,6 +11,7 @@
         android:layout_height="@dimen/dimen_title_height"
         android:background="@color/color_main"
         app:tl_leftDrawable="@drawable/title_back"
+        app:tl_menu="@layout/menu_song"
         app:tl_middleText="title"
         app:tl_rightDrawable="@drawable/title_more" />
 
@@ -19,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tl_title" />
 
-    <com.d.xrv.XRecyclerView
+    <com.d.lib.xrv.XRecyclerView
         android:id="@+id/xrv_list"
         style="@style/listview_style"
         android:layout_width="match_parent"

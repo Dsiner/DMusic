@@ -4,12 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +16,8 @@ import android.widget.TextView;
 
 import com.d.commen.base.BaseFragmentActivity;
 import com.d.dmusic.application.SysApplication;
-import com.d.dmusic.module.global.MusciCst;
+import com.d.dmusic.module.global.MusicCst;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.mvp.fragment.MainFragment;
@@ -42,22 +42,23 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     LinearLayout llytExit;
     @Bind(R.id.iv_play)
     ImageView ivPlay;
-    @Bind(R.id.dl_drawer)
-    DrawerLayout drawerLayout;
 
     private Context context;
+    private static DrawerLayout drawer;
     public static FragmentManager fManger;
     private CurrentInfoReceiver currentInfoReceiver;
 
     @OnClick({R.id.iv_play, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 popBackStack();
                 break;
             case R.id.iv_play:
-                Intent intent = new Intent(this, PlayActivity.class);
-                startActivity(intent);
+                PlayActivity.openActivity(MainActivity.this);
                 break;
             case R.id.llyt_menu_exit:
                 SysApplication.getInstance().exit();// 退出
@@ -71,18 +72,15 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void init() {
+        StatusBarCompat.compat(MainActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
         context = this;
         Util.setScreenSize(this);
-        StatusBarCompat.compat(MainActivity.this, 0xffFD8D22);//沉浸式状态栏
         registerReceiver();//注册广播监听器
-    }
 
-    @Override
-    protected void init() {
+        drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
         //设置抽屉打开时，主要内容区被自定义阴影覆盖
-        drawerLayout.addDrawerListener(this);
+        drawer.addDrawerListener(this);
         fManger = getSupportFragmentManager();
         replace(new MainFragment());
     }
@@ -100,13 +98,13 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     private void registerReceiver() {
         currentInfoReceiver = new CurrentInfoReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MusciCst.MUSIC_CURRENT_INFO);
+        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         registerReceiver(currentInfoReceiver, filter);
     }
 
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
-        View content = drawerLayout.getChildAt(0);
+        View content = drawer.getChildAt(0);
         View menu = drawerView;
         float scale = 1 - slideOffset;
         float rightScale = 0.8f + scale * 0.2f;
@@ -145,44 +143,50 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     public class CurrentInfoReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(MusciCst.MUSIC_CURRENT_INFO)) {
+            if (TextUtils.equals(intent.getAction(), MusicCst.MUSIC_CURRENT_INFO)
+                    && tvSongName != null && tvSinger != null) {
                 String songName = intent.getStringExtra("songName");
                 String singer = intent.getStringExtra("singer");
                 ULog.d("main:SongName:" + songName + "--Singer:" + singer);
-                if (tvSongName != null && tvSinger != null) {
-                    tvSongName.setText(songName);
-                    tvSinger.setText(singer);
-                }
+                tvSongName.setText(songName);
+                tvSinger.setText(singer);
             }
         }
     }
 
     @Override
     protected void onDestroy() {
+        releaseResource();
         if (currentInfoReceiver != null) {
             unregisterReceiver(currentInfoReceiver);
         }
         super.onDestroy();
     }
 
+    private void releaseResource() {
+        drawer = null;
+        fManger = null;
+    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (fManger.getBackStackEntryCount() <= 1) {
-                finish();
-            } else {
-                popBackStack();
-            }
-            return true;
+    public void onBackPressed() {
+        if (fManger.getBackStackEntryCount() <= 1) {
+            finish();
+        } else {
+            popBackStack();
         }
-        return false;
+    }
+
+    public static void setDrawerLockMode(int lockMode) {
+        if (drawer != null) {
+            drawer.setDrawerLockMode(lockMode);
+        }
     }
 
     public static void replace(Fragment fragment) {
         if (fManger != null) {
-            fManger.beginTransaction().replace(R.id.framement,
-                    fragment).addToBackStack(null).commitAllowingStateLoss();
+            fManger.beginTransaction().replace(R.id.framement, fragment)
+                    .addToBackStack(null).commitAllowingStateLoss();
         }
     }
 

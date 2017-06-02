@@ -5,8 +5,9 @@ import android.view.View;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.music.CustomList;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
+import com.d.dmusic.module.repeatclick.OnClickFastListener;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
@@ -20,20 +21,13 @@ public class AddToListAdapter extends CommonAdapter<CustomList> {
         super(context, datas, layoutId);
     }
 
-    public void setDatas(List<CustomList> datas) {
-        if (mDatas != null && datas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        }
-    }
-
     @Override
     public void convert(int position, final CommonHolder holder, final CustomList item) {
         holder.setText(R.id.tv_list_name, item.listName);
         holder.setChecked(R.id.cb_check, item.isChecked);
-        holder.setViewOnClickListener(R.id.llyt_item, new View.OnClickListener() {
+        holder.setViewOnClickListener(R.id.llyt_item, new OnClickFastListener() {
             @Override
-            public void onClick(View v) {
+            public void onFastClick(View v) {
                 item.isChecked = !item.isChecked;
                 holder.setChecked(R.id.cb_check, item.isChecked);
             }

@@ -19,7 +19,7 @@ import android.widget.RemoteViews;
 
 import com.d.dmusic.R;
 import com.d.dmusic.application.SysApplication;
-import com.d.dmusic.module.global.MusciCst;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
@@ -43,9 +43,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class MusicService extends Service {
+    public static boolean progressLock = false;
     private static boolean isRunning;
     private static MusicControl control;
-    public static boolean progressLock = false;
 
     private MyBinder binder;
     private NotificationManager manager;
@@ -88,11 +88,11 @@ public class MusicService extends Service {
                 switch (msg.what) {
                     case 1:
                         MediaPlayer mediaPlayer = control.getMediaPlayer();
-                        if (mediaPlayer != null && control.getStatus() == MusciCst.PLAY_STATUS_PLAYING) {
+                        if (mediaPlayer != null && control.getStatus() == MusicCst.PLAY_STATUS_PLAYING) {
                             int currentPosition = mediaPlayer.getCurrentPosition(); // 获取当前音乐播放的位置
                             int duration = mediaPlayer.getDuration(); // 获取当前音乐播放总时间
                             Intent intent = new Intent();
-                            intent.setAction(MusciCst.MUSIC_CURRENT_POSITION);
+                            intent.setAction(MusicCst.MUSIC_CURRENT_POSITION);
                             intent.putExtra("currentPosition", currentPosition);
                             intent.putExtra("duration", duration);
                             if (!progressLock) {
@@ -122,12 +122,12 @@ public class MusicService extends Service {
         binder = new MyBinder();
         broadcast = new ControlBroadcast();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MusciCst.PLAYER_RELOAD);
-        filter.addAction(MusciCst.MUSIC_CURRENT_INFO);
-        filter.addAction(MusciCst.PLAYER_CONTROL_PLAY_PAUSE);
-        filter.addAction(MusciCst.PLAYER_CONTROL_PREV);
-        filter.addAction(MusciCst.PLAYER_CONTROL_NEXT);
-        filter.addAction(MusciCst.MUSIC_SEEK_TO_TIME);
+        filter.addAction(MusicCst.PLAYER_RELOAD);
+        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
+        filter.addAction(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
+        filter.addAction(MusicCst.PLAYER_CONTROL_PREV);
+        filter.addAction(MusicCst.PLAYER_CONTROL_NEXT);
+        filter.addAction(MusicCst.MUSIC_SEEK_TO_TIME);
         registerReceiver(broadcast, filter);
 
         notification_ID = 6671;
@@ -178,27 +178,27 @@ public class MusicService extends Service {
         } else {
             rv.setImageViewResource(R.id.image, R.drawable.notification_icon);
         }
-        if (status == MusciCst.PLAY_STATUS_PLAYING) {
+        if (status == MusicCst.PLAY_STATUS_PLAYING) {
             rv.setImageViewResource(R.id.iv_play_pause, R.drawable.notification_pause);
-        } else if (status == MusciCst.PLAY_STATUS_PAUSE) {
+        } else if (status == MusicCst.PLAY_STATUS_PAUSE) {
             rv.setImageViewResource(R.id.iv_play_pause, R.drawable.notification_play);
         }
         rv.setTextViewText(R.id.title, songName);
         rv.setTextViewText(R.id.text, singer);
 
         //此处action不能是一样的 如果一样的 接受的flag参数只是第一个设置的值
-        Intent pauseIntent = new Intent(MusciCst.PLAYER_CONTROL_PLAY_PAUSE);
-        pauseIntent.putExtra("flag", MusciCst.PLAY_FLAG_PLAY_PAUSE);
+        Intent pauseIntent = new Intent(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
+        pauseIntent.putExtra("flag", MusicCst.PLAY_FLAG_PLAY_PAUSE);
         PendingIntent pausePIntent = PendingIntent.getBroadcast(this, 0, pauseIntent, 0);
         rv.setOnClickPendingIntent(R.id.iv_play_pause, pausePIntent);
 
-        Intent nextIntent = new Intent(MusciCst.PLAYER_CONTROL_NEXT);
-        nextIntent.putExtra("flag", MusciCst.PLAY_FLAG_NEXT);
+        Intent nextIntent = new Intent(MusicCst.PLAYER_CONTROL_NEXT);
+        nextIntent.putExtra("flag", MusicCst.PLAY_FLAG_NEXT);
         PendingIntent nextPIntent = PendingIntent.getBroadcast(this, 0, nextIntent, 0);
         rv.setOnClickPendingIntent(R.id.iv_next, nextPIntent);
 
-        Intent preIntent = new Intent(MusciCst.PLAYER_CONTROL_PREV);
-        preIntent.putExtra("flag", MusciCst.PLAY_FLAG_PRE);
+        Intent preIntent = new Intent(MusicCst.PLAYER_CONTROL_PREV);
+        preIntent.putExtra("flag", MusicCst.PLAY_FLAG_PRE);
         PendingIntent prePIntent = PendingIntent.getBroadcast(this, 0, preIntent, 0);
         rv.setOnClickPendingIntent(R.id.iv_previous, prePIntent);
 
@@ -243,7 +243,7 @@ public class MusicService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             switch (action) {
-                case MusciCst.MUSIC_SEEK_TO_TIME:
+                case MusicCst.MUSIC_SEEK_TO_TIME:
                     MediaPlayer mediaPlayer = control.getMediaPlayer();
                     if (mediaPlayer != null) {
                         int currentPosttion = intent.getIntExtra("progress", 0);
@@ -255,27 +255,27 @@ public class MusicService extends Service {
                     }
                     progressLock = false;
                     break;
-                case MusciCst.PLAYER_CONTROL_PLAY_PAUSE:
-                case MusciCst.PLAYER_CONTROL_NEXT:
-                case MusciCst.PLAYER_CONTROL_PREV:
+                case MusicCst.PLAYER_CONTROL_PLAY_PAUSE:
+                case MusicCst.PLAYER_CONTROL_NEXT:
+                case MusicCst.PLAYER_CONTROL_PREV:
                     int flag = intent.getIntExtra("flag", -1);
                     ULog.v("flags" + flag + "");
                     switch (flag) {
-                        case MusciCst.PLAY_FLAG_PLAY_PAUSE:
+                        case MusicCst.PLAY_FLAG_PLAY_PAUSE:
                             int playStatus = control.playOrPause();
                             updateNotif(playStatus);//正在播放
                             break;
-                        case MusciCst.PLAY_FLAG_NEXT:
+                        case MusicCst.PLAY_FLAG_NEXT:
                             control.next();
                             break;
-                        case MusciCst.PLAY_FLAG_PRE:
+                        case MusicCst.PLAY_FLAG_PRE:
                             control.prev();
                             break;
                     }
                     break;
-                case MusciCst.PLAYER_RELOAD:
-                case MusciCst.MUSIC_CURRENT_INFO:
-                    updateNotif(1);//正在播放
+                case MusicCst.PLAYER_RELOAD:
+                case MusicCst.MUSIC_CURRENT_INFO:
+                    updateNotif(MusicCst.PLAY_STATUS_PLAYING);//正在播放
                     break;
             }
         }
@@ -283,12 +283,12 @@ public class MusicService extends Service {
 
     private void updateNotif(int status) {
         switch (status) {
-            case MusciCst.PLAY_STATUS_STOP:
+            case MusicCst.PLAY_STATUS_STOP:
                 //取消通知栏
                 cancleNotification();
                 break;
-            case MusciCst.PLAY_STATUS_PLAYING:
-            case MusciCst.PLAY_STATUS_PAUSE:
+            case MusicCst.PLAY_STATUS_PLAYING:
+            case MusicCst.PLAY_STATUS_PAUSE:
                 //正在播放/暂停
                 //更新notification的view显示
                 updateNotification(null, control.getCurSongName(), control.getCurSinger(), status);

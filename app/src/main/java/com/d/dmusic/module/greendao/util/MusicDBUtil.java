@@ -207,11 +207,13 @@ public class MusicDBUtil extends MusicDB {
      * CustomList表-更新排序方式
      */
     public void updateCusListSoryByType(int type, int sortBy) {
-        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
-        if (list != null && list.size() > 0) {
-            CustomList bean = list.get(0);
-            bean.sortBy = sortBy;
-            daos[CUSTOM_LIST].update(bean);//更新
+        if (sortBy == ORDER_TYPE_CUSTOM || sortBy == ORDER_TYPE_NAME || sortBy == ORDER_TYPE_TIME) {
+            List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
+            if (list != null && list.size() > 0) {
+                CustomList bean = list.get(0);
+                bean.sortBy = sortBy;
+                daos[CUSTOM_LIST].update(bean);//更新
+            }
         }
     }
 
@@ -270,22 +272,24 @@ public class MusicDBUtil extends MusicDB {
     }
 
     /**
-     * 查询表：字段递增
+     * 查询表
      *
+     * @param type:仅限自定义歌曲
+     * @param orderType:排序类型
      * @return 查询结果集
      */
     public List<? extends MusicModel> queryAllCustomMusic(int type, int orderType) {
         if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
             switch (orderType) {
-                case 0:
-                    //按名称
-                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.SongName).list();
-                case 1:
-                    //按时间
-                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.TimeStamp).list();
-                case 2:
-                    //按自定义
+                case ORDER_TYPE_CUSTOM:
+                    //按自定义排序
                     return daos[type].loadAll();
+                case ORDER_TYPE_NAME:
+                    //按名称排序
+                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.SongName).list();
+                case ORDER_TYPE_TIME:
+                    //按时间排序
+                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.TimeStamp).list();
             }
         }
         return null;

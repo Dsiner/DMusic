@@ -68,7 +68,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 MusicDBUtil.getInstance(mContext).deleteAll(type);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
                 MusicDBUtil.getInstance(mContext).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, 0);//默认按时间排序
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//默认按自定义排序
 
                 //更新收藏字段
                 List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(MusicDB.COLLECTION_MUSIC);

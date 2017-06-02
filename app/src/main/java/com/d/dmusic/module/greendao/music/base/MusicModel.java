@@ -25,8 +25,15 @@ public class MusicModel {
     public Integer seq;
     public Long timeStamp;
 
+    /**
+     * extra
+     */
     public boolean isChecked = false;//附加属性：是否选中
     public boolean isSortChecked = false;//附加属性：是否选中
+
+    public String letter;//section首字母
+    public String pinyin;//内容全拼音
+    public boolean isLetter;//是否是section第一条
 
     public MusicModel() {
     }

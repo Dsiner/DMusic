@@ -10,7 +10,8 @@ import com.d.dmusic.R;
 import com.d.dmusic.mvp.presenter.LMMusicPresenter;
 import com.d.dmusic.mvp.view.ILMMusicView;
 import com.d.dmusic.view.DSLayout;
-import com.d.xrv.XRecyclerView;
+import com.d.dmusic.view.sort.SideBar;
+import com.d.lib.xrv.XRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,6 +25,8 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     DSLayout dslDS;
     @Bind(R.id.xrv_list)
     XRecyclerView xrvList;
+    @Bind(R.id.sb_sidebar)
+    SideBar sbSideBar;
 
     protected boolean isVisibleToUser;
     protected boolean isLazyLoaded;

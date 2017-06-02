@@ -17,12 +17,13 @@ import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.model.FileModel;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.DirAdapter;
 import com.d.dmusic.mvp.presenter.ScanPresenter;
 import com.d.dmusic.mvp.view.IScanView;
 import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.fileutil.FileUtil;
-import com.d.xrv.LRecyclerView;
+import com.d.lib.xrv.LRecyclerView;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -60,6 +61,9 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
 
     @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
     public void OnClickLister(final View view) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.llyt_dir:
             case R.id.llyt_scan_now:

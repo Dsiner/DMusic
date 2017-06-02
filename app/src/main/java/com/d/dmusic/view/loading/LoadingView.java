@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.d.dmusic.R;
+
 /**
  * Loading
  * Created by Administrator on 2016/8/27.
@@ -47,7 +49,7 @@ public class LoadingView extends View {
 
     private void init() {
         isFirst = true;
-        color = getResources().getColor(com.d.xrv.R.color.pull_refresh_text);
+        color = getResources().getColor(R.color.color_gray);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         minAlpha = 50;
         daration = 1000;

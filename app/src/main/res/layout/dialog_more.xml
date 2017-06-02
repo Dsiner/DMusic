@@ -1,138 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llyt_more"
+    android:id="@+id/menu_more"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_trans"
     android:orientation="horizontal">
 
     <View
-        android:id="@+id/v_blank"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/color_trans" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dimen_margin"
-        android:layout_marginTop="@dimen/dimen_title_height"
-        android:background="#aaFD8D22"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/llyt_sort_by_name"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:src="@drawable/menu_sort_by" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="@dimen/dimen_margin"
-                android:text="按名称排序"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_sub" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_line"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/llyt_sort_by_time"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:src="@drawable/menu_sort_by" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="@dimen/dimen_margin"
-                android:text="按时间排序"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_sub" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_line"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/llyt_sort_by_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:src="@drawable/menu_sort_by" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="@dimen/dimen_margin"
-                android:text="自定义排序"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_sub" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_line" />
-
-        <LinearLayout
-            android:id="@+id/llyt_scan_more"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:src="@drawable/menu_scan_dir" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="@dimen/dimen_margin"
-                android:text="扫描歌曲"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_sub" />
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>
