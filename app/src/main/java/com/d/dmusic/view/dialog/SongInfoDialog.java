@@ -42,6 +42,9 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
     }
 
     private void initInfo() {
+        if (model == null) {
+            return;
+        }
         tvSongName.setText(model.getSongName());
         tvSinger.setText(model.getSinger());
         tvAlbum.setText(model.getAlbum());

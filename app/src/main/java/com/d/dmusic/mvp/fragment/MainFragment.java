@@ -18,8 +18,8 @@ import com.d.dmusic.mvp.adapter.CustomListAdapter;
 import com.d.dmusic.mvp.presenter.MainPresenter;
 import com.d.dmusic.mvp.view.IMainView;
 import com.d.dmusic.view.TitleLayout;
-import com.d.dmusic.view.dialog.NewListDialog;
 import com.d.lib.xrv.LRecyclerView;
+import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +52,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     private CustomListAdapter adapter;
     private boolean isNeedReLoad;//为了同步收藏数，需要重新加载数据
 
-    @OnClick({R.id.llyt_local, R.id.llyt_collection, R.id.tv_add_list})
+    @OnClick({R.id.llyt_local, R.id.llyt_collection})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -71,9 +71,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 SongFragment sFragment = new SongFragment();
                 sFragment.setArguments(bundle);
                 MainActivity.replace(sFragment);
-                break;
-            case R.id.tv_add_list:
-                new NewListDialog(getActivity()).show();
                 break;
         }
     }
@@ -97,7 +94,22 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>(), R.layout.adapter_custom_list);
+        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>(), new MultiItemTypeSupport<CustomList>() {
+            @Override
+            public int getLayoutId(int viewType) {
+                switch (viewType) {
+                    case -1:
+                        return R.layout.adapter_custom_list_add;
+                    default:
+                        return R.layout.adapter_custom_list;
+                }
+            }
+
+            @Override
+            public int getItemViewType(int position, CustomList customList) {
+                return customList.pointer;
+            }
+        });
     }
 
     @Override

@@ -34,7 +34,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/play_mode_all_repeat"
+                    android:background="@drawable/ic_play_all_repeat"
                     android:padding="8dp" />
             </FrameLayout>
 

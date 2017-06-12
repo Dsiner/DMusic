@@ -2,14 +2,17 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="dimen_title_height">50dp</dimen>
-    <dimen name="dimen_dialog_width">165dp</dimen>
+    <dimen name="dimen_dialog_width">270dp</dimen>
     <dimen name="dimen_dialog_min_height">115dp</dimen>
+    <dimen name="dimen_row_height">45dp</dimen>
     <dimen name="dimen_margin">12dp</dimen>
-    <dimen name="dimen_padding">10dp</dimen>
 
     <dimen name="dimen_item_height">50dp</dimen>
     <dimen name="dimen_item_margin_top">2dp</dimen>
     <dimen name="dimen_item_icon">18dp</dimen>
+    <dimen name="dimen_notifi_height">64dp</dimen>
+    <dimen name="dimen_notifi_icon">19.2dp</dimen>
+    <dimen name="dimen_notifi_exit_icon">11.78dp</dimen>
 
     <dimen name="dimen_queue_height">36dp</dimen>
 

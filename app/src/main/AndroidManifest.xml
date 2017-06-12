@@ -26,11 +26,12 @@
         <activity
             android:name="com.d.dmusic.MainActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.d.dmusic.mvp.activity.PlayActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.d.dmusic.mvp.activity.ScanActivity"
@@ -38,6 +39,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.d.dmusic.mvp.activity.HandleActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
     </application>

@@ -62,23 +62,29 @@
                 android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/llyt_more"
+        <FrameLayout
+            android:id="@+id/flyt_more"
             android:layout_width="@dimen/dimen_item_height"
             android:layout_height="@dimen/dimen_item_height"
-            android:descendantFocusability="blocksDescendants"
-            android:gravity="center">
+            android:descendantFocusability="blocksDescendants">
+
+            <View
+                android:layout_width="@dimen/dimen_item_icon"
+                android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
+                android:background="@color/color_lgray" />
 
             <CheckBox
                 android:id="@+id/cb_more"
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
                 android:background="@drawable/selector_toggle_more"
                 android:button="@null"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center" />
-        </LinearLayout>
+        </FrameLayout>
 
         <View
             android:id="@+id/v_right_space"

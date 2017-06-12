@@ -176,12 +176,12 @@ public class MusicService extends Service {
         if (bitmap != null) {
             rv.setImageViewBitmap(R.id.image, bitmap);
         } else {
-            rv.setImageViewResource(R.id.image, R.drawable.notification_icon);
+            rv.setImageViewResource(R.id.image, R.drawable.ic_notification_icon);
         }
         if (status == MusicCst.PLAY_STATUS_PLAYING) {
-            rv.setImageViewResource(R.id.iv_play_pause, R.drawable.notification_pause);
+            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.ic_notification_pause);
         } else if (status == MusicCst.PLAY_STATUS_PAUSE) {
-            rv.setImageViewResource(R.id.iv_play_pause, R.drawable.notification_play);
+            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.ic_notification_play);
         }
         rv.setTextViewText(R.id.title, songName);
         rv.setTextViewText(R.id.text, singer);
@@ -190,17 +190,17 @@ public class MusicService extends Service {
         Intent pauseIntent = new Intent(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
         pauseIntent.putExtra("flag", MusicCst.PLAY_FLAG_PLAY_PAUSE);
         PendingIntent pausePIntent = PendingIntent.getBroadcast(this, 0, pauseIntent, 0);
-        rv.setOnClickPendingIntent(R.id.iv_play_pause, pausePIntent);
+        rv.setOnClickPendingIntent(R.id.play_pause, pausePIntent);
 
         Intent nextIntent = new Intent(MusicCst.PLAYER_CONTROL_NEXT);
         nextIntent.putExtra("flag", MusicCst.PLAY_FLAG_NEXT);
         PendingIntent nextPIntent = PendingIntent.getBroadcast(this, 0, nextIntent, 0);
-        rv.setOnClickPendingIntent(R.id.iv_next, nextPIntent);
+        rv.setOnClickPendingIntent(R.id.next, nextPIntent);
 
         Intent preIntent = new Intent(MusicCst.PLAYER_CONTROL_PREV);
         preIntent.putExtra("flag", MusicCst.PLAY_FLAG_PRE);
         PendingIntent prePIntent = PendingIntent.getBroadcast(this, 0, preIntent, 0);
-        rv.setOnClickPendingIntent(R.id.iv_previous, prePIntent);
+        rv.setOnClickPendingIntent(R.id.prev, prePIntent);
 
         builder.setContent(rv);
         Notification notification;

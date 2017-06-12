@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_bg_main"
     android:orientation="vertical">
 
     <com.d.dmusic.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_red"
-        app:tl_leftDrawable="@drawable/title_back"
+        android:background="@color/color_main"
+        app:tl_leftDrawable="@drawable/ic_title_back"
         app:tl_middleText="title" />
 
     <FrameLayout

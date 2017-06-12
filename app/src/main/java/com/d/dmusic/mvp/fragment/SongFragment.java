@@ -99,7 +99,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         header = new SongHeaderView(context);
         header.setVisibility(View.GONE);
         if (type == MusicDB.LOCAL_ALL_MUSIC) {
-            header.setVisibility(R.id.iv_header_song_handler, View.GONE);
+            header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         }
         header.setOnHeaderListener(this);
         xrvList.showAsList();

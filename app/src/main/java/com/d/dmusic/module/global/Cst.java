@@ -1,7 +1,7 @@
 package com.d.dmusic.module.global;
 
 /**
- * * Preferences
+ * Const
  * Created by D on 2017/4/29.
  */
 public class Cst {

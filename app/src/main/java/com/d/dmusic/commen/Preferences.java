@@ -78,4 +78,19 @@ public class Preferences extends AbstractPreference {
     public int getPlayMode() {
         return settings.getInt("playMode", 0);
     }
+
+    /**
+     * 设置歌曲菜单是否是下拉显示模式
+     */
+    public void putIsMenuPullMode(boolean isPullDown) {
+        editor.putBoolean("isMenuPullDown", isPullDown);
+        save();
+    }
+
+    /**
+     * 获取歌曲菜单是否是下拉显示模式
+     */
+    public boolean getIsMenuPullDown() {
+        return settings.getBoolean("isMenuPullDown", false);
+    }
 }

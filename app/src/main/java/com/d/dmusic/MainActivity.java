@@ -20,6 +20,7 @@ import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.activity.PlayActivity;
+import com.d.dmusic.mvp.activity.SettingActivity;
 import com.d.dmusic.mvp.fragment.MainFragment;
 import com.d.dmusic.utils.StatusBarCompat;
 import com.d.dmusic.utils.Util;
@@ -48,7 +49,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     public static FragmentManager fManger;
     private CurrentInfoReceiver currentInfoReceiver;
 
-    @OnClick({R.id.iv_play, R.id.llyt_menu_exit})
+    @OnClick({R.id.iv_play, R.id.llyt_setting, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -59,6 +60,9 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 break;
             case R.id.iv_play:
                 PlayActivity.openActivity(MainActivity.this);
+                break;
+            case R.id.llyt_setting:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
                 SysApplication.getInstance().exit();// 退出
@@ -74,15 +78,14 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @Override
     protected void init() {
         StatusBarCompat.compat(MainActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        Util.setScreenSize(MainActivity.this);
         context = this;
-        Util.setScreenSize(this);
-        registerReceiver();//注册广播监听器
-
-        drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
-        //设置抽屉打开时，主要内容区被自定义阴影覆盖
-        drawer.addDrawerListener(this);
         fManger = getSupportFragmentManager();
+        drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
         replace(new MainFragment());
+        drawer.setScrimColor(getResources().getColor(R.color.color_trans));
+        drawer.addDrawerListener(this);
+        registerReceiver();//注册广播监听器
     }
 
     @Override

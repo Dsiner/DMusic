@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginLeft="@dimen/dimen_margin"
+        android:layout_marginRight="@dimen/dimen_margin"
+        android:gravity="center"
+        android:text="+"
+        android:textColor="@color/color_main"
+        android:textSize="40dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:text="新建歌单"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/dimen_text_sub" />
+</LinearLayout>

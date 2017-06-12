@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
-import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.itemtouchhelper.ItemTouchHelperViewHolder;
@@ -29,14 +28,14 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
         holder.setText(R.id.tv_song_name, item.songName);
         holder.setText(R.id.tv_singer, item.singer);
         holder.setChecked(R.id.cb_check, item.isSortChecked);
-        holder.itemView.setOnClickListener(new OnClickFastListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFastClick(View v) {
+            public void onClick(View v) {
                 item.isSortChecked = !item.isSortChecked;
                 holder.setChecked(R.id.cb_check, item.isSortChecked);
             }
         });
-        holder.getView(R.id.iv_handler).setOnTouchListener(new View.OnTouchListener() {
+        holder.getView(R.id.flyt_handler).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && getItemCount() > 1 && startDragListener != null) {

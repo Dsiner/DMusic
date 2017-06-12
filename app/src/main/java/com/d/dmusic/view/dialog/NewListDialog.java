@@ -1,13 +1,12 @@
 package com.d.dmusic.view.dialog;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.events.RefreshEvent;
@@ -28,8 +27,8 @@ import java.util.List;
  */
 public class NewListDialog extends AbstractDialog implements View.OnClickListener, TextWatcher {
     private EditText etName;
-    private TextView tvCancel;
-    private TextView tvOk;
+    private Button btnCancel;
+    private Button btnOk;
 
     public NewListDialog(Context context) {
         super(context);
@@ -43,11 +42,11 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
     @Override
     protected void init(View rootView) {
         etName = (EditText) rootView.findViewById(R.id.et_name);
-        tvOk = (TextView) rootView.findViewById(R.id.tv_ok);
-        tvCancel = (TextView) rootView.findViewById(R.id.tv_cancel);
-        tvOk.setClickable(false);
-        tvOk.setOnClickListener(this);
-        tvCancel.setOnClickListener(this);
+        btnOk = (Button) rootView.findViewById(R.id.btn_ok);
+        btnCancel = (Button) rootView.findViewById(R.id.btn_cancel);
+        btnOk.setClickable(false);
+        btnOk.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
         etName.addTextChangedListener(this);
     }
 
@@ -56,12 +55,13 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
      */
     private boolean insertNewList(String name) {
         if (TextUtils.isEmpty(name)) {
-            Util.toast(context.getApplicationContext(), "请输入列表名！");
+            Util.toast(context.getApplicationContext(), "请输入歌单名！");
             return false;
         }
+        name = name.trim();
         CustomList exist = MusicDBUtil.getInstance(context).queryCustomListByName(name);
         if (exist != null) {
-            Util.toast(context.getApplicationContext(), "该列表已存在！");
+            Util.toast(context.getApplicationContext(), "该歌单已存在！");
             return false;
         }
 
@@ -77,7 +77,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
             customList.setPointer(pointer);
             MusicDBUtil.getInstance(context).insertOrReplaceCustomList(customList);
         } else {
-            Util.toast(context.getApplicationContext(), "列表已满！");
+            Util.toast(context.getApplicationContext(), "歌单已满！");
             return false;
         }
         return true;
@@ -103,10 +103,10 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
             return;
         }
         switch (v.getId()) {
-            case R.id.tv_cancel:
+            case R.id.btn_cancel:
                 dismiss();
                 break;
-            case R.id.tv_ok:
+            case R.id.btn_ok:
                 if (insertNewList(etName.getText().toString())) {
                     EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                     dismiss();
@@ -128,12 +128,13 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
     @Override
     public void afterTextChanged(Editable s) {
         ULog.v("et:" + s.toString());
-        if (s.toString().length() > 0 && s.toString().length() < 40) {
-            tvOk.setClickable(true);
-            tvOk.setTextColor(Color.parseColor("#FFA523"));
+        int length = s.toString().trim().length();
+        if (length > 0 && length < 40) {
+            btnOk.setClickable(true);
+            btnOk.setAlpha(1);
         } else {
-            tvOk.setClickable(false);
-            tvOk.setTextColor(Color.parseColor("#77FFA523"));
+            btnOk.setClickable(false);
+            btnOk.setAlpha(0.5f);
         }
     }
 }

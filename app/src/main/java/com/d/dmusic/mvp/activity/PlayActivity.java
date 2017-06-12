@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -27,10 +26,10 @@ import com.d.dmusic.module.events.PlayOrPauseEvent;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
-import com.d.dmusic.module.media.SyncUtil;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
+import com.d.dmusic.module.utils.MoreUtil;
 import com.d.dmusic.mvp.presenter.PlayPresenter;
 import com.d.dmusic.mvp.view.IPlayView;
 import com.d.dmusic.utils.StatusBarCompat;
@@ -38,6 +37,7 @@ import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.log.ULog;
 import com.d.dmusic.view.lrc.LrcRow;
 import com.d.dmusic.view.lrc.LrcView;
+import com.d.dmusic.view.popup.MorePopup;
 import com.d.dmusic.view.popup.PlayQueuePopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,8 +64,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_song_name)
-    TextView tvSongName;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
     @Bind(R.id.lrcv_lrc)
     LrcView lrc;
     @Bind(R.id.iv_album)
@@ -76,16 +76,13 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     TextView tvTimeEnd;
     @Bind(R.id.sb_progress)
     SeekBar seekBar;
-    @Bind(R.id.ib_play_collect)
-    ImageButton ibColect;
-    @Bind(R.id.ib_play_prev)
-    ImageButton ibPrev;
-    @Bind(R.id.ib_play_play_pause)
-    ImageButton ibPlayPause;
-    @Bind(R.id.ib_play_next)
-    ImageButton ibNext;
-    @Bind(R.id.ib_play_queue)
-    ImageButton ibPlayQueue;
+
+    @Bind(R.id.iv_play_collect)
+    ImageView ivColect;
+    @Bind(R.id.iv_play_play_pause)
+    ImageView ivPlayPause;
+    @Bind(R.id.iv_play_queue)
+    ImageView ivPlayQueue;
 
     private Context context;
     private int type = MusicDB.MUSIC;
@@ -96,8 +93,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private boolean isRegisterReceiver;// 是否注册了广播监听器
     public static boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
 
-    @OnClick({R.id.iv_back, R.id.ib_play_collect, R.id.ib_play_prev,
-            R.id.ib_play_play_pause, R.id.ib_play_next, R.id.ib_play_queue})
+    @OnClick({R.id.iv_back, R.id.iv_more, R.id.iv_play_collect, R.id.iv_play_prev,
+            R.id.iv_play_play_pause, R.id.iv_play_next, R.id.iv_play_queue})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -106,30 +103,32 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ib_play_collect:
+            case R.id.iv_more:
+                showMore();
+                break;
+            case R.id.iv_play_collect:
                 if (control != null && control.getCurModel() != null) {
                     MusicModel item = control.getCurModel();
-                    item.isCollected = !item.isCollected;
+                    MoreUtil.collect(context, item, type, false);
                     resetFav(item.isCollected);
-                    SyncUtil.upCollected(context.getApplicationContext(), item, type);
                 }
                 break;
-            case R.id.ib_play_prev:
+            case R.id.iv_play_prev:
                 Intent prev = new Intent(MusicCst.PLAYER_CONTROL_PREV);
                 prev.putExtra("flag", MusicCst.PLAY_FLAG_PRE);
                 sendBroadcast(prev);
                 break;
-            case R.id.ib_play_play_pause:
+            case R.id.iv_play_play_pause:
                 Intent playPause = new Intent(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
                 playPause.putExtra("flag", MusicCst.PLAY_FLAG_PLAY_PAUSE);
                 sendBroadcast(playPause);
                 break;
-            case R.id.ib_play_next:
+            case R.id.iv_play_next:
                 Intent next = new Intent(MusicCst.PLAYER_CONTROL_NEXT);
                 next.putExtra("flag", MusicCst.PLAY_FLAG_NEXT);
                 sendBroadcast(next);
                 break;
-            case R.id.ib_play_queue:
+            case R.id.iv_play_queue:
                 showQueue();
                 break;
         }
@@ -137,7 +136,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.play;
+        return R.layout.activity_play;
     }
 
     @Override
@@ -165,7 +164,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void initAlbum() {
-        tvSongName.setText(control.getCurSongName());
+        tvTitle.setText(control.getCurSongName());
         MediaPlayer mediaPlayer = control.getMediaPlayer();
         final int status = control.getStatus();
         if (mediaPlayer != null && (status == MusicCst.PLAY_STATUS_PLAYING
@@ -187,11 +186,11 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
         if (status == MusicCst.PLAY_STATUS_PLAYING) {
             //正在播放
-            ibPlayPause.setImageResource(R.drawable.play_pause);
+            ivPlayPause.setImageResource(R.drawable.ic_play_pause);
             rotationAnimator();
         } else {
             //无列表播放/暂停
-            ibPlayPause.setImageResource(R.drawable.play_play);
+            ivPlayPause.setImageResource(R.drawable.ic_play_play);
             if (animator != null && animator.isRunning()) {
                 animator.cancel();
             }
@@ -208,8 +207,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void resetFav(boolean isCollected) {
-        int fav = isCollected ? R.drawable.img_favourite_press : R.drawable.img_favourite_normal;
-        ibColect.setImageDrawable(getResources().getDrawable(fav));
+        int fav = isCollected ? R.drawable.ic_play_fav_cover : R.drawable.ic_play_fav;
+        ivColect.setImageDrawable(getResources().getDrawable(fav));
     }
 
     private void getLrc(MusicModel model) {
@@ -243,6 +242,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         if (queuePopup != null) {
             queuePopup.dismiss();
         }
+    }
+
+    private void showMore() {
+        new MorePopup(context, MorePopup.TYPE_SONG_PLAY, control.getCurModel()).show();
     }
 
     private void registerReceiver() {
@@ -307,8 +310,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     public void onPlayModeChange(int playMode) {
-        if (ibPlayQueue != null) {
-            ibPlayQueue.setImageResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
+        if (ivPlayQueue != null) {
+            ivPlayQueue.setImageResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
         }
     }
 
@@ -360,7 +363,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 lrc.seekTo(currentPosition, false);
             } else if (action.equals(MusicCst.MUSIC_CURRENT_INFO)) {
                 MusicModel model = control.getCurModel();
-                tvSongName.setText(model != null ? model.songName : "");
+                tvTitle.setText(model != null ? model.songName : "");
                 resetFav(model != null ? model.isCollected : false);
                 getLrc(model);
                 if (model == null) {
@@ -377,10 +380,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     private void togglePlay(boolean isPlay) {
         if (isPlay) {
-            ibPlayPause.setImageResource(R.drawable.play_pause);
+            ivPlayPause.setImageResource(R.drawable.ic_play_pause);
             rotationAnimator();
         } else {
-            ibPlayPause.setImageResource(R.drawable.play_play);
+            ivPlayPause.setImageResource(R.drawable.ic_play_play);
             if (animator != null && animator.isRunning()) {
                 animator.cancel();
             }

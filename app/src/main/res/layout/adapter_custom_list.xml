@@ -22,8 +22,7 @@
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/list_icon" />
+                android:src="@drawable/ic_sort_custom" />
         </LinearLayout>
 
         <LinearLayout

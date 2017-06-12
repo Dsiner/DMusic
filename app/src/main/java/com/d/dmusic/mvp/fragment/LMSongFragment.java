@@ -48,7 +48,7 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         sortUtil = new SortUtil();
         adapter = new SongAdapter(context, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
         header = new SongHeaderView(context);
-        header.setVisibility(R.id.iv_header_song_handler, View.GONE);
+        header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
     }

@@ -32,10 +32,14 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<CustomList>> e) throws Exception {
-                List<CustomList> list = MusicDBUtil.getInstance(mContext).queryAllCustomList();
-                if (list == null) {
-                    list = new ArrayList<CustomList>();
+                List<CustomList> list = new ArrayList<CustomList>();
+                List<CustomList> query = MusicDBUtil.getInstance(mContext).queryAllCustomList();
+                if (query != null) {
+                    list.addAll(query);
                 }
+                CustomList add = new CustomList();
+                add.pointer = -1;//-1:add type
+                list.add(add);
                 e.onNext(list);
                 e.onComplete();
             }
