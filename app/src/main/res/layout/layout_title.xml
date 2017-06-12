@@ -6,7 +6,7 @@
         android:layout_width="@dimen/dimen_title_height"
         android:layout_height="@dimen/dimen_title_height"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/title_back"
+        android:src="@drawable/ic_title_back"
         android:visibility="gone" />
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_alignParentLeft="true"
         android:paddingLeft="@dimen/dimen_margin"
         android:paddingRight="@dimen/dimen_margin"
-        android:src="@drawable/title_back"
+        android:src="@drawable/ic_title_back"
         android:textColor="@color/color_white"
         android:textSize="@dimen/dimen_text_sub"
         android:visibility="gone" />
@@ -29,7 +29,7 @@
         android:gravity="center"
         android:paddingLeft="@dimen/dimen_margin"
         android:paddingRight="@dimen/dimen_margin"
-        android:src="@drawable/title_more"
+        android:src="@drawable/ic_title_more"
         android:textColor="@color/color_white"
         android:textSize="@dimen/dimen_text_sub"
         android:visibility="gone" />
@@ -39,7 +39,7 @@
         android:layout_width="@dimen/dimen_title_height"
         android:layout_height="@dimen/dimen_title_height"
         android:layout_alignParentRight="true"
-        android:src="@drawable/title_more"
+        android:src="@drawable/ic_title_more"
         android:visibility="gone" />
 
     <ImageView
@@ -47,7 +47,7 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_toLeftOf="@+id/iv_title_right"
-        android:src="@drawable/title_search"
+        android:src="@drawable/ic_title_search"
         android:visibility="gone" />
 
     <TextView

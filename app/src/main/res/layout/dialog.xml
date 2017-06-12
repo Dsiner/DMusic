@@ -2,29 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dimen_dialog_width"
     android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:minHeight="@dimen/dimen_dialog_min_height"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:layout_marginBottom="@dimen/dimen_margin"
+        android:layout_marginTop="@dimen/dimen_margin"
+        android:gravity="center"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/dimen_text_main" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/dimen_margin"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_gray"
+                android:textSize="@dimen/dimen_text_sub" />
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/layout_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,11 +50,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/color_trans"
-            android:text="@string/ok" />
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/ok"
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/dimen_text_sub" />
 
         <View
             android:layout_width="1px"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/color_line" />
 
         <Button
             android:id="@+id/btn_cancel"
@@ -49,6 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/color_trans"
-            android:text="@string/cancel" />
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/cancel"
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 </LinearLayout>

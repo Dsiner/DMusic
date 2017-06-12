@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -343,7 +342,6 @@ public class LrcView extends View implements ILrcView {
                 if (curRow != i) {
                     lastRow = curRow;
                     curRow = i;
-                    Log.d("curRow:", "--" + curRow + "--lastRow:" + lastRow);
                     handleProgress(fromUser, lrcRow);
                 }
                 break;

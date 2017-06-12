@@ -14,10 +14,16 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:src="@drawable/ic_check" />
+
+        <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="@dimen/dimen_margin"
-            android:src="@drawable/menu_sort_by" />
+            android:src="@drawable/ic_sort_name" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,10 +49,16 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:src="@drawable/ic_check" />
+
+        <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="@dimen/dimen_margin"
-            android:src="@drawable/menu_sort_by" />
+            android:src="@drawable/ic_sort_time" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,10 +84,16 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:src="@drawable/ic_check" />
+
+        <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="@dimen/dimen_margin"
-            android:src="@drawable/menu_sort_by" />
+            android:src="@drawable/ic_sort_custom" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,10 +119,15 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginLeft="@dimen/dimen_margin" />
+
+        <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginLeft="@dimen/dimen_margin"
-            android:src="@drawable/menu_scan_dir" />
+            android:src="@drawable/ic_scan" />
 
         <TextView
             android:layout_width="wrap_content"

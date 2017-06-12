@@ -5,28 +5,32 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llyt_handle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/llyt_selected"
+        <FrameLayout
             android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height"
-            android:gravity="center">
+            android:layout_height="@dimen/dimen_item_height">
+
+            <View
+                android:layout_width="@dimen/dimen_item_icon"
+                android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
+                android:background="@color/color_main" />
 
             <CheckBox
                 android:id="@+id/cb_check"
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
                 android:background="@drawable/selector_toggle"
                 android:button="@null"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center" />
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -49,12 +53,19 @@
                 android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_handler"
+        <FrameLayout
+            android:id="@+id/flyt_handler"
             android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sort_handler" />
+            android:layout_height="@dimen/dimen_item_height">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_item_icon"
+                android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
+                android:background="@color/color_main"
+                android:src="@drawable/ic_sort_handler" />
+        </FrameLayout>
+
     </LinearLayout>
 
     <include layout="@layout/layout_line" />

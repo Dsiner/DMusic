@@ -20,7 +20,8 @@
             android:id="@+id/iv_dsl_icon"
             android:layout_width="61dp"
             android:layout_height="61dp"
-            android:src="@drawable/lm_album" />
+            android:background="@color/color_main"
+            android:src="@drawable/ic_album" />
 
         <TextView
             android:id="@+id/tv_dsl_desc"
@@ -29,7 +30,7 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="暂无歌曲"
-            android:textColor="@color/color_gray"
+            android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_sub" />
 
         <Button

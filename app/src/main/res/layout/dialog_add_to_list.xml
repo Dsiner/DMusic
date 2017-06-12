@@ -28,11 +28,12 @@
             android:textSize="@dimen/dimen_text_main" />
 
         <ImageView
-            android:id="@+id/iv_quit"
+            android:id="@+id/quit"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/dialog_list_quit" />
+            android:padding="18dp"
+            android:src="@drawable/ic_delete_small" />
 
         <TextView
             android:id="@+id/tv_ok"

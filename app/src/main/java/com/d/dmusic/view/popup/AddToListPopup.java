@@ -67,7 +67,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
         lrvList.setAdapter(adapter);
 
         rootView.findViewById(R.id.tv_ok).setOnClickListener(this);
-        rootView.findViewById(R.id.iv_quit).setOnClickListener(this);
+        rootView.findViewById(R.id.quit).setOnClickListener(this);
         rootView.findViewById(R.id.v_blank).setOnClickListener(this);
     }
 
@@ -78,7 +78,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
         }
         switch (v.getId()) {
             case R.id.v_blank:
-            case R.id.iv_quit:
+            case R.id.quit:
                 dismiss();
                 break;
             case R.id.tv_ok:

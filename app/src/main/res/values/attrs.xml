@@ -36,4 +36,24 @@
         <attr name="lrcMinScale" format="float" />
         <attr name="lrcMaxScale" format="float" />
     </declare-styleable>
+    <declare-styleable name="ToggleButton">
+        <attr name="tbtn_colorNormal" format="color" />
+        <attr name="tbtn_colorLight" format="color" />
+        <attr name="tbtn_colorPadding" format="color" />
+        <attr name="tbtn_padding" format="dimension" />
+        <attr name="tbtn_duration" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="RowLayout">
+        <attr name="rl_text" format="string" />
+        <attr name="rl_toggleVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="rl_gotoVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+    </declare-styleable>
 </resources>

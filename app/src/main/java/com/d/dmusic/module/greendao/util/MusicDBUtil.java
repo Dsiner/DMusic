@@ -9,6 +9,25 @@ import com.d.dmusic.module.greendao.db.SQLUtil;
 import com.d.dmusic.module.greendao.music.CustomList;
 import com.d.dmusic.module.greendao.music.CustomListDao;
 import com.d.dmusic.module.greendao.music.CustomMusic0Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic10Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic11Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic12Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic13Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic14Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic15Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic16Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic17Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic18Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic19Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic1Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic2Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic3Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic4Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic5Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic6Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic7Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic8Dao;
+import com.d.dmusic.module.greendao.music.CustomMusic9Dao;
 import com.d.dmusic.module.greendao.music.LocalAllMusicDao;
 import com.d.dmusic.module.greendao.music.Music;
 import com.d.dmusic.module.greendao.music.MusicDao;
@@ -286,14 +305,15 @@ public class MusicDBUtil extends MusicDB {
                     return daos[type].loadAll();
                 case ORDER_TYPE_NAME:
                     //按名称排序
-                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.SongName).list();
+                    return queryAllCustomMusic(type, true);
                 case ORDER_TYPE_TIME:
                     //按时间排序
-                    return daos[type].queryBuilder().orderAsc(CustomMusic0Dao.Properties.TimeStamp).list();
+                    return queryAllCustomMusic(type, false);
             }
         }
         return null;
     }
+
 
     public Cursor queryBySQL(String... sql) {
         return SQLUtil.findBySQL(daos[LOCAL_ALL_MUSIC].getDatabase(), sql);
@@ -363,5 +383,79 @@ public class MusicDBUtil extends MusicDB {
                 }
                 break;
         }
+    }
+
+    private List<? extends MusicModel> queryAllCustomMusic(int type, final boolean toggle) {
+        if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
+            final int index = type - CUSTOM_MUSIC_INDEX;
+            if (index / 10 == 0) {
+                switch (index) {
+                    case 0:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic0Dao.Properties.SongName
+                                : CustomMusic0Dao.Properties.TimeStamp).list();
+                    case 1:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic1Dao.Properties.SongName
+                                : CustomMusic1Dao.Properties.TimeStamp).list();
+                    case 2:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic2Dao.Properties.SongName
+                                : CustomMusic2Dao.Properties.TimeStamp).list();
+                    case 3:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic3Dao.Properties.SongName
+                                : CustomMusic3Dao.Properties.TimeStamp).list();
+                    case 4:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic4Dao.Properties.SongName
+                                : CustomMusic4Dao.Properties.TimeStamp).list();
+                    case 5:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic5Dao.Properties.SongName
+                                : CustomMusic5Dao.Properties.TimeStamp).list();
+                    case 6:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic6Dao.Properties.SongName
+                                : CustomMusic6Dao.Properties.TimeStamp).list();
+                    case 7:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic7Dao.Properties.SongName
+                                : CustomMusic7Dao.Properties.TimeStamp).list();
+                    case 8:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic8Dao.Properties.SongName
+                                : CustomMusic8Dao.Properties.TimeStamp).list();
+                    case 9:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic9Dao.Properties.SongName
+                                : CustomMusic9Dao.Properties.TimeStamp).list();
+                }
+            } else {
+                switch (index) {
+                    case 10:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic10Dao.Properties.SongName
+                                : CustomMusic10Dao.Properties.TimeStamp).list();
+                    case 11:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic11Dao.Properties.SongName
+                                : CustomMusic11Dao.Properties.TimeStamp).list();
+                    case 12:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic12Dao.Properties.SongName
+                                : CustomMusic12Dao.Properties.TimeStamp).list();
+                    case 13:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic13Dao.Properties.SongName
+                                : CustomMusic13Dao.Properties.TimeStamp).list();
+                    case 14:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic14Dao.Properties.SongName
+                                : CustomMusic14Dao.Properties.TimeStamp).list();
+                    case 15:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic15Dao.Properties.SongName
+                                : CustomMusic15Dao.Properties.TimeStamp).list();
+                    case 16:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic16Dao.Properties.SongName
+                                : CustomMusic16Dao.Properties.TimeStamp).list();
+                    case 17:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic17Dao.Properties.SongName
+                                : CustomMusic17Dao.Properties.TimeStamp).list();
+                    case 18:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic18Dao.Properties.SongName
+                                : CustomMusic18Dao.Properties.TimeStamp).list();
+                    case 19:
+                        return daos[type].queryBuilder().orderAsc(toggle ? CustomMusic19Dao.Properties.SongName
+                                : CustomMusic19Dao.Properties.TimeStamp).list();
+                }
+            }
+        }
+        return null;
     }
 }

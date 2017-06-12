@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/welcome_bg0"
-    android:orientation="vertical">
+    android:background="@color/color_bg_main">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
-        android:gravity="center"
-        android:textColor="#fff"
-        android:textSize="22sp" />
-</RelativeLayout>
+        android:layout_above="@+id/iv_bg01"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_title_more"
+        app:layout_heightPercent="60%"
+        app:layout_marginBottomPercent="1%"
+        app:layout_marginLeftPercent="5%"
+        app:layout_marginRightPercent="5%" />
+
+    <ImageView
+        android:id="@+id/iv_bg01"
+        android:layout_above="@+id/iv_dot0"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_title_more"
+        app:layout_heightPercent="18%"
+        app:layout_marginBottomPercent="2%"
+        app:layout_widthPercent="90%" />
+
+    <ImageView
+        android:id="@+id/iv_dot0"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_title_more"
+        app:layout_heightPercent="5%"
+        app:layout_marginBottomPercent="6%"
+        app:layout_widthPercent="90%" />
+</android.support.percent.PercentRelativeLayout>

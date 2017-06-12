@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_row_height">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_margin"
+        android:singleLine="true"
+        android:text="桌面歌词"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/dimen_text_sub" />
+
+    <com.d.dmusic.view.ToggleButton
+        android:id="@+id/tb_toggle"
+        android:layout_width="46dp"
+        android:layout_height="28dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_margin"
+        android:visibility="visible"
+        app:tbtn_colorLight="@color/color_main"
+        app:tbtn_colorNormal="@color/color_white"
+        app:tbtn_colorPadding="@color/color_line"
+        app:tbtn_padding="2dp" />
+
+    <ImageView
+        android:id="@+id/iv_goto"
+        android:layout_width="9dp"
+        android:layout_height="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_margin"
+        android:background="@color/color_lgray"
+        android:src="@drawable/ic_more_right"
+        android:visibility="visible" />
+</RelativeLayout>

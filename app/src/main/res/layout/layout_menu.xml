@@ -1,187 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_main"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dimen_margin"
+    android:paddingLeft="26dp"
+    android:paddingTop="@dimen/dimen_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="43dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_main_album_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:singleLine="true"
+            android:text="畅听"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_main" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_menu_sleep" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
             android:text="睡眠设置"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerInside"
-            android:src="@drawable/skin" />
+            android:src="@drawable/ic_menu_night" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="换肤"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/night" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
             android:text="夜间模式"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llyt_menu_normal_mode"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_menu_skin" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
-            android:text="普通模式"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:text="换肤"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llyt_menu_minimalist_mode"
+        android:id="@+id/llyt_setting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_menu_setting" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="极简模式"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llyt_menu_notification_mode"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/tv_menu_notification_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="通知栏模式"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/setting" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
             android:text="设置"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="1px"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
@@ -190,24 +134,22 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="4dp">
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:scaleType="centerInside"
-            android:src="@drawable/exit" />
+            android:src="@drawable/ic_menu_exit" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
             android:text="退出"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_text_main" />
     </LinearLayout>
-</merge>
+</LinearLayout>

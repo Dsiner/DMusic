@@ -39,9 +39,9 @@ public class DirAdapter extends CommonAdapter<FileModel> {
                 }
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_selected, new OnClickFastListener() {
+        holder.setViewOnClickListener(R.id.flyt_selected, new View.OnClickListener() {
             @Override
-            public void onFastClick(View v) {
+            public void onClick(View v) {
                 item.isChecked = !item.isChecked;
                 holder.setChecked(R.id.cb_check, item.isChecked);
             }

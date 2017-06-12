@@ -16,7 +16,8 @@
             android:layout_height="@dimen/dimen_item_icon"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_marginRight="@dimen/dimen_margin"
-            android:src="@drawable/scan_dir_icon" />
+            android:background="@color/color_main"
+            android:src="@drawable/ic_scan_dir_icon" />
 
         <TextView
             android:id="@+id/tv_list_name"
@@ -27,22 +28,27 @@
             android:text="默认列表"
             android:textSize="@dimen/dimen_text_small" />
 
-        <LinearLayout
-            android:id="@+id/llyt_selected"
+        <FrameLayout
             android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height"
-            android:gravity="center">
+            android:layout_height="@dimen/dimen_item_height">
+
+            <View
+                android:layout_width="@dimen/dimen_item_icon"
+                android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
+                android:background="@color/color_main" />
 
             <CheckBox
                 android:id="@+id/cb_check"
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
+                android:layout_gravity="center"
                 android:background="@drawable/selector_toggle"
                 android:button="@null"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center" />
-        </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
     <include layout="@layout/layout_line" />

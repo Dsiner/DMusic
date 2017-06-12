@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_translucent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/v_blank"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_popup_more_bg_light"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_margin"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dimen_margin"
+            android:paddingLeft="24dp"
+            android:paddingRight="@dimen/dimen_margin"
+            android:paddingTop="18dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_song_volume_lm" />
+
+            <SeekBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:maxHeight="1.5dp"
+                android:minHeight="1.5dp"
+                android:progressDrawable="@drawable/seekbar_volume"
+                android:thumb="@drawable/seekbar_volume_thumb" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_popup_more_line_light"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list0"
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:clipToPadding="false"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_popup_more_line_light" />
+
+        <TextView
+            android:id="@+id/tv_quit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_margin"
+            android:paddingTop="10dp"
+            android:text="关闭"
+            android:textColor="@color/color_popup_more_light"
+            android:textSize="@dimen/dimen_text_sub" />
+    </LinearLayout>
+</LinearLayout>

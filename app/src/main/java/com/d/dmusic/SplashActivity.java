@@ -136,7 +136,7 @@ public class SplashActivity extends BaseActivity<MvpBasePresenter> implements Mv
         View view0 = inflater.inflate(R.layout.welcome_page0, null);
         View view1 = inflater.inflate(R.layout.welcome_page1, null);
         View view2 = inflater.inflate(R.layout.welcome_page2, null);
-        view2.findViewById(R.id.btn_start).setOnClickListener(this);
+//        view2.findViewById(R.id.btn_start).setOnClickListener(this);
 
         final List<View> views = new ArrayList<View>();
         views.add(view0);
@@ -176,17 +176,17 @@ public class SplashActivity extends BaseActivity<MvpBasePresenter> implements Mv
     private void refreshDotsState(int position) {
         switch (position) {
             case 0:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot));
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot_cover));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
+                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
                 break;
             case 1:
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot));
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot_cover));
+                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
+                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
                 break;
             case 2:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.welcome_page_dot_cover));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
+                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
                 break;
         }
     }
@@ -196,15 +196,15 @@ public class SplashActivity extends BaseActivity<MvpBasePresenter> implements Mv
         if (ClickUtil.isFastDoubleClick()) {
             return;
         }
-        switch (v.getId()) {
-            case R.id.btn_start:
-                //启动音乐主界面
-                p.putIsFirst(false);
-                MusicService.startService(getApplicationContext());//开启service服务
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-        }
+//        switch (v.getId()) {
+//            case R.id.btn_start:
+//                //启动音乐主界面
+//                p.putIsFirst(false);
+//                MusicService.startService(getApplicationContext());//开启service服务
+//                startActivity(new Intent(this, MainActivity.class));
+//                finish();
+//                break;
+//        }
     }
 
     @Override

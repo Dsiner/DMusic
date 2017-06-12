@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
         android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/title_back"
+        app:tl_leftDrawable="@drawable/ic_title_back"
         app:tl_menu="@layout/menu_local"
         app:tl_middleText="title"
-        app:tl_rightDrawable="@drawable/title_more" />
+        app:tl_rightDrawable="@drawable/ic_title_more" />
 
     <com.d.dmusic.view.IndicatorLayout
         android:id="@+id/indicator"

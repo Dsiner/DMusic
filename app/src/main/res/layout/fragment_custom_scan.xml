@@ -7,26 +7,27 @@
     <LinearLayout
         android:id="@+id/llyt_dir"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:minHeight="40dp"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/scan_dir_back" />
+            android:layout_marginLeft="@dimen/dimen_margin"
+            android:background="@color/color_main"
+            android:src="@drawable/ic_scan_dir_back" />
 
         <TextView
             android:id="@+id/tv_current_dir"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_margin"
             android:gravity="center_vertical"
             android:text="/storage/emulated/0/"
-            android:textColor="#838383"
-            android:textSize="12sp" />
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 
     <com.d.lib.xrv.LRecyclerView
@@ -51,19 +52,19 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/scan_now" />
+                android:layout_marginLeft="@dimen/dimen_margin"
+                android:background="@color/color_main"
+                android:src="@drawable/ic_scan_now" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/dimen_margin"
+                android:layout_marginRight="@dimen/dimen_margin"
                 android:gravity="center_vertical"
                 android:text="立即扫描"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                android:textColor="@color/color_main"
+                android:textSize="@dimen/dimen_text_sub" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     private ImageView ivPlayAll;
     private LinearLayout llytPlayAll;
     private TextView tvSongCount;
-    private ImageView ivHandler;
+    private FrameLayout flytHandler;
     private OnHeaderListener listener;
 
     public SongHeaderView(Context context) {
@@ -37,14 +38,14 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     }
 
     private void init(Context context) {
-        View root = LayoutInflater.from(context).inflate(R.layout.header_song, this);
+        View root = LayoutInflater.from(context).inflate(R.layout.layout_song, this);
         ivPlayAll = (ImageView) root.findViewById(R.id.iv_header_song_play_all);
         llytPlayAll = (LinearLayout) root.findViewById(R.id.llyt_header_song_play_all);
         tvSongCount = (TextView) root.findViewById(R.id.tv_header_song_count);
-        ivHandler = (ImageView) root.findViewById(R.id.iv_header_song_handler);
+        flytHandler = (FrameLayout) root.findViewById(R.id.flyt_header_song_handler);
         ivPlayAll.setOnClickListener(this);
         llytPlayAll.setOnClickListener(this);
-        ivHandler.setOnClickListener(this);
+        flytHandler.setOnClickListener(this);
     }
 
     public void setSongCount(int count) {
@@ -70,7 +71,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
                     listener.onPlayAll();
                 }
                 break;
-            case R.id.iv_header_song_handler:
+            case R.id.flyt_header_song_handler:
                 if (listener != null) {
                     listener.onHandle();
                 }

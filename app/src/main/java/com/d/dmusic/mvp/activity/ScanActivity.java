@@ -48,7 +48,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(ScanActivity.this, 0xffff0000);//沉浸式状态栏
+        StatusBarCompat.compat(ScanActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
         int type = getIntent().getIntExtra("type", 0);
         ULog.v("type" + type);
         initTitle();

@@ -38,9 +38,8 @@
 
     <ImageView
         android:id="@+id/iv_delete"
-        android:layout_width="39dp"
+        android:layout_width="@dimen/dimen_queue_height"
         android:layout_height="@dimen/dimen_queue_height"
-        android:padding="13dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/list_delete" />
+        android:padding="12dp"
+        android:src="@drawable/ic_delete_small" />
 </LinearLayout>
