@@ -37,8 +37,9 @@
                 android:src="@drawable/ic_album" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -59,6 +60,19 @@
                     android:textColor="@color/color_gray"
                     android:textSize="@dimen/dimen_text_mini" />
             </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/flyt_menu"
+                android:layout_width="@dimen/dimen_item_height"
+                android:layout_height="@dimen/dimen_item_height">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:background="@color/color_main"
+                    android:src="@drawable/ic_sort_handler" />
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 

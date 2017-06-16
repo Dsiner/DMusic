@@ -59,6 +59,7 @@
             android:layout_height="@dimen/dimen_item_height">
 
             <ImageView
+                android:id="@+id/iv_handler"
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"

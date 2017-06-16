@@ -17,6 +17,7 @@ import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.activity.ScanActivity;
 import com.d.dmusic.view.IndicatorLayout;
 import com.d.dmusic.view.TitleLayout;
+import com.d.dmusic.view.dialog.MenuDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import butterknife.OnClick;
  * 首页-本地歌曲
  * Created by D on 2017/4/29.
  */
-public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implements MvpView, View.OnClickListener {
+public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.indicator)
@@ -99,21 +100,26 @@ public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implem
         tlTitle.setText(R.id.tv_title_title, "本地歌曲");
         tlTitle.setVisibility(R.id.iv_title_left, View.VISIBLE);
         tlTitle.setVisibility(R.id.iv_title_right, View.VISIBLE);
-        tlTitle.setOnMenuClickListener(this);
-    }
+        tlTitle.setOnMenuListener(new MenuDialog.OnMenuListener() {
+            @Override
+            public void onRefresh(View v) {
 
-    @Override
-    public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.menu_scan:
-                Activity activity = getActivity();
-                Intent intent = new Intent(activity, ScanActivity.class);
-                intent.putExtra("type", MusicDB.LOCAL_ALL_MUSIC);
-                activity.startActivity(intent);
-                break;
-        }
+            }
+
+            @Override
+            public void onClick(View v) {
+                if (ClickUtil.isFastDoubleClick()) {
+                    return;
+                }
+                switch (v.getId()) {
+                    case R.id.menu_scan:
+                        Activity activity = getActivity();
+                        Intent intent = new Intent(activity, ScanActivity.class);
+                        intent.putExtra("type", MusicDB.LOCAL_ALL_MUSIC);
+                        activity.startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 }

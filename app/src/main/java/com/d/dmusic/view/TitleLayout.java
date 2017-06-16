@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
     private final int[] ress = new int[3];
     private final int menuRes;
     private MenuDialog menu;
-    private View.OnClickListener onMenuClickListener;
+    private MenuDialog.OnMenuListener onMenuListener;
 
     public TitleLayout(Context context) {
         this(context, null);
@@ -61,7 +60,6 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
 
     private void init(Context context) {
         this.context = context;
-        setGravity(Gravity.CENTER_VERTICAL);
         View root = LayoutInflater.from(context).inflate(R.layout.layout_title, this);
         ImageView ivRight = (ImageView) root.findViewById(R.id.iv_title_right);
         ivRight.setOnClickListener(this);
@@ -126,7 +124,7 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
     public void showMenu() {
         if (menu == null) {
             menu = new MenuDialog(context, menuRes);
-            menu.setOnClickListener(onMenuClickListener);
+            menu.setOnMenuListener(onMenuListener);
         }
         menu.show();
     }
@@ -149,10 +147,10 @@ public class TitleLayout extends RelativeLayout implements View.OnClickListener 
         }
     }
 
-    public void setOnMenuClickListener(View.OnClickListener listener) {
-        onMenuClickListener = listener;
+    public void setOnMenuListener(MenuDialog.OnMenuListener listener) {
+        onMenuListener = listener;
         if (menu != null) {
-            menu.setOnClickListener(onMenuClickListener);
+            menu.setOnMenuListener(onMenuListener);
         }
     }
 }

@@ -9,18 +9,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.commen.base.BaseFragmentActivity;
 import com.d.dmusic.application.SysApplication;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
 import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.mvp.activity.SettingActivity;
+import com.d.dmusic.mvp.activity.SkinActivity;
+import com.d.dmusic.mvp.activity.SleepActivity;
 import com.d.dmusic.mvp.fragment.MainFragment;
 import com.d.dmusic.utils.StatusBarCompat;
 import com.d.dmusic.utils.Util;
@@ -39,33 +44,43 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     TextView tvSongName;
     @Bind(R.id.tv_singer)
     TextView tvSinger;
+    @Bind(R.id.tv_stroke)
+    TextView tvStroke;
     @Bind(R.id.llyt_menu_exit)
     LinearLayout llytExit;
     @Bind(R.id.iv_play)
     ImageView ivPlay;
+    @Bind(R.id.flyt_menu)
+    FrameLayout flytMenu;
 
     private Context context;
     private static DrawerLayout drawer;
     public static FragmentManager fManger;
     private CurrentInfoReceiver currentInfoReceiver;
 
-    @OnClick({R.id.iv_play, R.id.llyt_setting, R.id.llyt_menu_exit})
+    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_sleep, R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
-            case R.id.iv_title_left:
-                popBackStack();
-                break;
             case R.id.iv_play:
                 PlayActivity.openActivity(MainActivity.this);
                 break;
-            case R.id.llyt_setting:
+            case R.id.flyt_menu:
+                drawer.openDrawer(Gravity.END);
+                break;
+            case R.id.llyt_menu_sleep:
+                startActivity(new Intent(MainActivity.this, SleepActivity.class));
+                break;
+            case R.id.llyt_menu_skin:
+                startActivity(new Intent(MainActivity.this, SkinActivity.class));
+                break;
+            case R.id.llyt_menu_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                SysApplication.getInstance().exit();// 退出
+                SysApplication.getInstance().exit();//退出应用
                 break;
         }
     }
@@ -76,10 +91,22 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (SysApplication.toFinish(intent)) {
+            finish();
+        }
+    }
+
+    @Override
     protected void init() {
+        if (SysApplication.toFinish(getIntent())) {
+            finish();
+            return;
+        }
+        context = this;
         StatusBarCompat.compat(MainActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
         Util.setScreenSize(MainActivity.this);
-        context = this;
         fManger = getSupportFragmentManager();
         drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
         replace(new MainFragment());
@@ -93,6 +120,9 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
         super.onResume();
         tvSongName.setText(MusicService.getControl().getCurSongName());
         tvSinger.setText(MusicService.getControl().getCurSinger());
+        Preferences p = Preferences.getInstance(getApplicationContext());
+        flytMenu.setVisibility(p.getIsShowMenuIcon() ? View.VISIBLE : View.GONE);
+        tvStroke.setText(p.getSignature());
     }
 
     /**
@@ -159,10 +189,10 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
 
     @Override
     protected void onDestroy() {
-        releaseResource();
         if (currentInfoReceiver != null) {
             unregisterReceiver(currentInfoReceiver);
         }
+        releaseResource();
         super.onDestroy();
     }
 

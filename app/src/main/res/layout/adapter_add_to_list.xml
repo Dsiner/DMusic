@@ -12,8 +12,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/dimen_item_icon"
-            android:layout_height="@dimen/dimen_item_icon"
+            android:layout_width="@dimen/dimen_item_local_icon"
+            android:layout_height="@dimen/dimen_item_local_icon"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_marginRight="@dimen/dimen_margin"
             android:background="@color/color_main"
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="默认列表"
-            android:textSize="@dimen/dimen_text_small" />
+            android:textSize="@dimen/dimen_text_sub" />
 
         <FrameLayout
             android:layout_width="@dimen/dimen_item_height"

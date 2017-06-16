@@ -75,6 +75,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
             customList.setSongCount((long) 0);
             customList.setSeq(seq + 1);
             customList.setPointer(pointer);
+            customList.setSortBy(MusicDB.ORDER_TYPE_TIME);
             MusicDBUtil.getInstance(context).insertOrReplaceCustomList(customList);
         } else {
             Util.toast(context.getApplicationContext(), "歌单已满！");

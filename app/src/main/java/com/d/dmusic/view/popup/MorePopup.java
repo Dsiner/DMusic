@@ -2,6 +2,7 @@ package com.d.dmusic.view.popup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.d.dmusic.R;
+import com.d.dmusic.application.SysApplication;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.repeatclick.OnClickFastListener;
 import com.d.dmusic.module.utils.MoreUtil;
+import com.d.dmusic.mvp.activity.PlayerModeActivity;
 import com.d.dmusic.mvp.adapter.MoreAdapter;
 
 import java.util.ArrayList;
@@ -90,7 +94,7 @@ public class MorePopup implements View.OnClickListener {
 
     private List<MoreAdapter.Bean> getDatas() {
         List<MoreAdapter.Bean> datas = new ArrayList<>();
-        MoreAdapter.Bean beans[] = new MoreAdapter.Bean[10];
+        MoreAdapter.Bean beans[] = new MoreAdapter.Bean[11];
         int icAddList = type == TYPE_SONG_PLAY ? R.drawable.ic_song_addlist_m : R.drawable.ic_song_addlist_lm;
         int icFav = type == TYPE_SONG_PLAY ? R.drawable.ic_song_fav_m : R.drawable.ic_song_fav_lm;
         int icRing = type == TYPE_SONG_PLAY ? R.drawable.ic_song_ring_m : R.drawable.ic_song_ring_lm;
@@ -101,6 +105,7 @@ public class MorePopup implements View.OnClickListener {
         int icSearchLrc = type == TYPE_SONG_PLAY ? R.drawable.ic_song_search_lrc_m : R.drawable.ic_song_search_lrc_lm;
         int icModeChange = type == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
         int icSetting = type == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
+        int icExit = type == TYPE_SONG_PLAY ? R.drawable.ic_menu_exit : R.drawable.ic_menu_exit;
         beans[0] = new MoreAdapter.Bean(icAddList, "加到歌单", new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
@@ -111,30 +116,31 @@ public class MorePopup implements View.OnClickListener {
                 MoreUtil.addToList(context, model, type);
             }
         });
-        beans[1] = new MoreAdapter.Bean(icFav, (model != null && model.isCollected) ? "已收藏" : "收藏", new OnClickFastListener() {
-            @Override
-            public void onFastClick(View v) {
-                if (model == null) {
-                    return;
-                }
-                dismiss();
-                MoreUtil.collect(context, model, type, true);
-            }
-        });
-        beans[2] = new MoreAdapter.Bean(icRing, "设置铃声", new OnClickFastListener() {
-            @Override
-            public void onFastClick(View v) {
-
-            }
-        });
-
-        if (type == TYPE_SONG_PLAY)
-            beans[3] = new MoreAdapter.Bean(icAdjustLrc, "调整歌词", new OnClickFastListener() {
+        if (type != TYPE_SONG_PLAY)
+            beans[1] = new MoreAdapter.Bean(icFav, (model != null && model.isCollected) ? "已收藏" : "收藏", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
-
+                    if (model == null) {
+                        return;
+                    }
+                    dismiss();
+                    MoreUtil.collect(context, model, type, true);
                 }
             });
+//        beans[2] = new MoreAdapter.Bean(icRing, "设置铃声", new OnClickFastListener() {
+//            @Override
+//            public void onFastClick(View v) {
+//
+//            }
+//        });
+
+//        if (type == TYPE_SONG_PLAY)
+//            beans[3] = new MoreAdapter.Bean(icAdjustLrc, "调整歌词", new OnClickFastListener() {
+//                @Override
+//                public void onFastClick(View v) {
+//
+//                }
+//            });
 
         beans[4] = new MoreAdapter.Bean(icInfo, "歌曲信息", new OnClickFastListener() {
             @Override
@@ -146,40 +152,48 @@ public class MorePopup implements View.OnClickListener {
                 MoreUtil.showInfo(context, model);
             }
         });
-        beans[5] = new MoreAdapter.Bean(icDelete, "删除", new OnClickFastListener() {
-            @Override
-            public void onFastClick(View v) {
+//        beans[5] = new MoreAdapter.Bean(icDelete, "删除", new OnClickFastListener() {
+//            @Override
+//            public void onFastClick(View v) {
+//
+//            }
+//        });
+//        beans[6] = new MoreAdapter.Bean(icEdit, "编辑", new OnClickFastListener() {
+//            @Override
+//            public void onFastClick(View v) {
+//
+//            }
+//        });
 
-            }
-        });
-        beans[6] = new MoreAdapter.Bean(icEdit, "编辑", new OnClickFastListener() {
-            @Override
-            public void onFastClick(View v) {
+//        if (type == TYPE_SONG_PLAY)
+//            beans[7] = new MoreAdapter.Bean(icSearchLrc, "歌词搜索", new OnClickFastListener() {
+//                @Override
+//                public void onFastClick(View v) {
+//
+//                }
+//            });
 
-            }
-        });
-
-        if (type == TYPE_SONG_PLAY)
-            beans[7] = new MoreAdapter.Bean(icSearchLrc, "歌词搜索", new OnClickFastListener() {
-                @Override
-                public void onFastClick(View v) {
-
-                }
-            });
-
-        if (type == TYPE_SONG_PLAY)
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && type == TYPE_SONG_PLAY)
             beans[8] = new MoreAdapter.Bean(icModeChange, "模式切换", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
-
+                    context.startActivity(new Intent(context, PlayerModeActivity.class));
                 }
             });
 
-        if (type == TYPE_SONG_PLAY)
-            beans[9] = new MoreAdapter.Bean(icSetting, "设置", new OnClickFastListener() {
+//        if (type == TYPE_SONG_PLAY)
+//            beans[9] = new MoreAdapter.Bean(icSetting, "设置", new OnClickFastListener() {
+//                @Override
+//                public void onFastClick(View v) {
+//
+//                }
+//            });
+
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && type == TYPE_SONG_PLAY)
+            beans[10] = new MoreAdapter.Bean(icExit, "退出", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
-
+                    SysApplication.getInstance().exit();
                 }
             });
 

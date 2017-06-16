@@ -1,25 +1,36 @@
 package com.d.dmusic.mvp.fragment;
 
+import android.Manifest;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
+import com.d.dmusic.commen.Preferences;
+import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.CustomList;
+import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.greendao.util.MusicDBUtil;
+import com.d.dmusic.module.media.MusicFactory;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.CustomListAdapter;
 import com.d.dmusic.mvp.presenter.MainPresenter;
 import com.d.dmusic.mvp.view.IMainView;
-import com.d.dmusic.view.TitleLayout;
+import com.d.dmusic.utils.fileutil.FileUtil;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,27 +41,38 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * MainFragment
  * Created by D on 2017/4/29.
  */
 public class MainFragment extends BaseFragment<MainPresenter> implements IMainView {
-    @Bind(R.id.tl_title)
-    TitleLayout tlTitle;
+    @Bind(R.id.tv_title_middle_main)
+    TextView tvTitle;
     @Bind(R.id.llyt_local)
-    LinearLayout llytLocal;// 本地音乐
+    LinearLayout llytLocal;//本地音乐
     @Bind(R.id.tv_local_all_count)
-    TextView tvLocalAllCount;// 本地歌曲数
+    TextView tvLocalAllCount;//本地歌曲数
+    @Bind(R.id.pbr_loading)
+    ProgressBar pbrLoading;
     @Bind(R.id.llyt_collection)
-    LinearLayout llytColletion;// 我的收藏
+    LinearLayout llytColletion;//我的收藏
     @Bind(R.id.tv_collection_count)
-    TextView tvCollectionCount;// 收藏歌曲数
+    TextView tvCollectionCount;//收藏歌曲数
     @Bind(R.id.lv_list)
     LRecyclerView lvList;
 
+    private Preferences p;
     private CustomListAdapter adapter;
     private boolean isNeedReLoad;//为了同步收藏数，需要重新加载数据
+    private boolean isShowAdd;//为了同步设置，需要重新刷新
 
     @OnClick({R.id.llyt_local, R.id.llyt_collection})
     public void onClickListener(View v) {
@@ -94,6 +116,12 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void init() {
+        p = Preferences.getInstance(getActivity().getApplicationContext());
+        isShowAdd = p.getIsShowAdd();
         adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>(), new MultiItemTypeSupport<CustomList>() {
             @Override
             public int getLayoutId(int viewType) {
@@ -110,23 +138,18 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 return customList.pointer;
             }
         });
-    }
-
-    @Override
-    protected void init() {
-        initTitle();
         lvList.setAdapter(adapter);
-    }
-
-    private void initTitle() {
-        TextView title = (TextView) tlTitle.findViewById(R.id.tv_title_middle_main);
-        title.setText("畅音乐,享自由");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.getCustomList();
+        if (p.getIsFirst()) {
+            p.putIsFirst(false);
+            scanAll();
+            return;
+        }
+        mPresenter.getCustomList(isShowAdd);
         mPresenter.getLocalAllCount();
         mPresenter.getCollectionCount();
     }
@@ -134,9 +157,14 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     @Override
     public void onResume() {
         super.onResume();
+        tvTitle.setText(p.getStroke());
         if (isNeedReLoad) {
             isNeedReLoad = false;
             mPresenter.getCollectionCount();
+        }
+        if (isShowAdd != p.getIsShowAdd()) {
+            isShowAdd = !isShowAdd;
+            mPresenter.getCustomList(isShowAdd);
         }
     }
 
@@ -153,10 +181,13 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         if (event == null || getActivity() == null || getActivity().isFinishing() || mPresenter == null) {
             return;
         }
-        if (event.event == RefreshEvent.SYNC_CUSTOM_LIST) {
-            mPresenter.getCustomList();
-        } else if (event.event == RefreshEvent.SYNC_COLLECTIONG) {
-            isNeedReLoad = true;
+        switch (event.event) {
+            case RefreshEvent.SYNC_CUSTOM_LIST:
+                mPresenter.getCustomList(isShowAdd);
+                break;
+            case RefreshEvent.SYNC_COLLECTIONG:
+                isNeedReLoad = true;
+                break;
         }
     }
 
@@ -180,5 +211,64 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    private void scanAll() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            RxPermissions rxPermissions = new RxPermissions(getActivity());
+            rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Permission>() {
+                        @Override
+                        public void accept(@NonNull Permission permission) throws Exception {
+                            if (getActivity() == null || getActivity().isFinishing()) {
+                                return;
+                            }
+                            if (permission.granted) {
+                                // `permission.name` is granted !
+                                doInBackground(getActivity(), MusicDB.LOCAL_ALL_MUSIC);
+                            }
+                        }
+                    });
+        } else {
+            doInBackground(getActivity(), MusicDB.LOCAL_ALL_MUSIC);
+        }
+    }
+
+    private void doInBackground(final Context context, final int type) {
+        if (tvLocalAllCount == null || pbrLoading == null) {
+            return;
+        }
+        tvLocalAllCount.setVisibility(View.GONE);
+        pbrLoading.setVisibility(View.VISIBLE);
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<String> paths = new ArrayList<>();
+                paths.add(FileUtil.getRootPath());
+                List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(context, type).getMusic(paths);
+                MusicDBUtil.getInstance(context).deleteAll(type);
+                MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, type);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                e.onNext(list);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (tvLocalAllCount != null && pbrLoading != null) {
+                            tvLocalAllCount.setVisibility(View.VISIBLE);
+                            pbrLoading.setVisibility(View.GONE);
+                            setLocalAllCount(list.size());
+                        }
+                        MusicModelEvent event = new MusicModelEvent(type, list);
+                        EventBus.getDefault().post(event);
+                    }
+                });
     }
 }

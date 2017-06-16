@@ -49,7 +49,7 @@ public class AlertDialogFactory {
         return dlg;
     }
 
-    public AlertDialog getAlertDialog(String title, String content, String btnOkText, String btnCancelText, View.OnClickListener btnOkListener, View.OnClickListener btnCancelListener) {
+    public AlertDialog getAlertDialog(String title, String content, String btnOkText, String btnCancelText, final OnClickListener btnOkListener, final OnClickListener btnCancelListener) {
         final AlertDialog dlg = new AlertDialog.Builder(context).create();
         if (context instanceof Activity && !((Activity) context).isFinishing()) {
             dlg.show();
@@ -73,7 +73,14 @@ public class AlertDialogFactory {
         Button btnCancel = (Button) dlg.findViewById(R.id.btn_cancel);
         btnOk.setText(btnOkText);
         btnCancel.setText(btnCancelText);
-        btnOk.setOnClickListener(btnOkListener);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnOkListener != null) {
+                    btnOkListener.onClick(dlg, v);
+                }
+            }
+        });
         if (btnCancelListener == null) {
             btnCancel.setOnClickListener(new OnClickFastListener() {
                 @Override
@@ -82,8 +89,19 @@ public class AlertDialogFactory {
                 }
             });
         } else {
-            btnCancel.setOnClickListener(btnCancelListener);
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (btnCancelListener != null) {
+                        btnCancelListener.onClick(dlg, v);
+                    }
+                }
+            });
         }
         return dlg;
+    }
+
+    public interface OnClickListener {
+        void onClick(AlertDialog dlg, View v);
     }
 }

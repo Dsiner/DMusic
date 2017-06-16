@@ -6,19 +6,19 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.dmusic.R;
 import com.d.dmusic.module.repeatclick.ClickUtil;
+import com.d.dmusic.utils.Util;
 
 /**
  * SongHeaderView
  * Created by D on 2017/5/7.
  */
 public class SongHeaderView extends LinearLayout implements View.OnClickListener {
-    private ImageView ivPlayAll;
+    private FrameLayout flytPlayAll;
     private LinearLayout llytPlayAll;
     private TextView tvSongCount;
     private FrameLayout flytHandler;
@@ -38,12 +38,14 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     }
 
     private void init(Context context) {
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Util.dip2px(context, 50)));
+        setOrientation(HORIZONTAL);
         View root = LayoutInflater.from(context).inflate(R.layout.layout_song, this);
-        ivPlayAll = (ImageView) root.findViewById(R.id.iv_header_song_play_all);
+        flytPlayAll = (FrameLayout) root.findViewById(R.id.flyt_header_song_play_all);
         llytPlayAll = (LinearLayout) root.findViewById(R.id.llyt_header_song_play_all);
         tvSongCount = (TextView) root.findViewById(R.id.tv_header_song_count);
         flytHandler = (FrameLayout) root.findViewById(R.id.flyt_header_song_handler);
-        ivPlayAll.setOnClickListener(this);
+        flytPlayAll.setOnClickListener(this);
         llytPlayAll.setOnClickListener(this);
         flytHandler.setOnClickListener(this);
     }
@@ -65,7 +67,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
             return;
         }
         switch (v.getId()) {
-            case R.id.iv_header_song_play_all:
+            case R.id.flyt_header_song_play_all:
             case R.id.llyt_header_song_play_all:
                 if (listener != null) {
                     listener.onPlayAll();

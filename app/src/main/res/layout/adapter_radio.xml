@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_row_height"
+    android:background="@color/color_bg_main">
+
+    <FrameLayout
+        android:id="@+id/flyt_check"
+        android:layout_width="@dimen/dimen_item_height"
+        android:layout_height="@dimen/dimen_item_height"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:id="@+id/iv_check"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:background="@color/color_main"
+            android:src="@drawable/ic_check_trans" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/flyt_check"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dimen_margin"
+        android:singleLine="true"
+        android:text="普通模式"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/dimen_text_sub" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_line" />
+</RelativeLayout>

@@ -23,7 +23,7 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="添加到列表"
+            android:text="添加到歌单"
             android:textColor="@color/color_black"
             android:textSize="@dimen/dimen_text_main" />
 
@@ -42,7 +42,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="确定"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_main" />
 
         <com.d.lib.xrv.LRecyclerView

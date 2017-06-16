@@ -86,7 +86,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, orderType);//按自定义排序
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, orderType);
                 List<MusicModel> list = null;
                 list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllCustomMusic(type, orderType);
                 if (list == null) {

@@ -28,7 +28,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         super(context);
     }
 
-    public void getCustomList() {
+    public void getCustomList(final boolean isShowAdd) {
         Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<CustomList>> e) throws Exception {
@@ -37,9 +37,11 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                 if (query != null) {
                     list.addAll(query);
                 }
-                CustomList add = new CustomList();
-                add.pointer = -1;//-1:add type
-                list.add(add);
+                if (isShowAdd) {
+                    CustomList add = new CustomList();
+                    add.pointer = -1;//-1:add type
+                    list.add(add);
+                }
                 e.onNext(list);
                 e.onComplete();
             }

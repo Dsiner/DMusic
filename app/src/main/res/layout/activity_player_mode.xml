@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_sub"
+    android:orientation="vertical">
+
+    <com.d.dmusic.view.TitleLayout
+        android:id="@+id/tl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_title_height"
+        android:background="@color/color_main"
+        app:tl_leftDrawable="@drawable/ic_title_back"
+        app:tl_middleText="模式选择"
+        app:tl_rightText="确定" />
+
+    <com.d.lib.xrv.LRecyclerView
+        android:id="@+id/lrv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -21,6 +21,7 @@ import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
+import com.d.dmusic.application.SysApplication;
 import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.PlayOrPauseEvent;
 import com.d.dmusic.module.global.MusicCst;
@@ -56,9 +57,12 @@ import butterknife.OnClick;
 public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView, SeekBar.OnSeekBarChangeListener, IQueueListener {
     public static void openActivity(Context context) {
         Intent intent = new Intent(context, PlayActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-        if (context instanceof Activity) {
-            ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.push_stay);
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NORMAL) {
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.push_stay);
+            }
         }
     }
 
@@ -114,16 +118,25 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 }
                 break;
             case R.id.iv_play_prev:
+                if (control == null || control.getModels() == null || control.getModels().size() <= 0) {
+                    return;
+                }
                 Intent prev = new Intent(MusicCst.PLAYER_CONTROL_PREV);
                 prev.putExtra("flag", MusicCst.PLAY_FLAG_PRE);
                 sendBroadcast(prev);
                 break;
             case R.id.iv_play_play_pause:
+                if (control == null || control.getModels() == null || control.getModels().size() <= 0) {
+                    return;
+                }
                 Intent playPause = new Intent(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
                 playPause.putExtra("flag", MusicCst.PLAY_FLAG_PLAY_PAUSE);
                 sendBroadcast(playPause);
                 break;
             case R.id.iv_play_next:
+                if (control == null || control.getModels() == null || control.getModels().size() <= 0) {
+                    return;
+                }
                 Intent next = new Intent(MusicCst.PLAYER_CONTROL_NEXT);
                 next.putExtra("flag", MusicCst.PLAY_FLAG_NEXT);
                 sendBroadcast(next);
@@ -150,7 +163,19 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (SysApplication.toFinish(intent)) {
+            finish();
+        }
+    }
+
+    @Override
     protected void init() {
+        if (SysApplication.toFinish(getIntent())) {
+            finish();
+            return;
+        }
         context = this;
         StatusBarCompat.compat(this, 0xff000000);//沉浸式状态栏
         EventBus.getDefault().register(this);
@@ -286,7 +311,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         //开始拖动
-        MusicService.progressLock = true;
+        MusicService.progressLock = true;//加锁
     }
 
     @Override
@@ -301,6 +326,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
      * 播放进度改变
      */
     public void progressChanged(int progress) {
+        if (control == null || control.getModels() == null || control.getModels().size() <= 0) {
+            MusicService.progressLock = false;//解锁
+            return;
+        }
         ULog.v("跳转到:--" + progress);
         Intent intent = new Intent();
         intent.setAction(MusicCst.MUSIC_SEEK_TO_TIME);
@@ -393,7 +422,11 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.push_stay, R.anim.push_bottom_out);
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NORMAL) {
+            overridePendingTransition(R.anim.push_stay, R.anim.push_bottom_out);
+        } else {
+            overridePendingTransition(0, 0);
+        }
     }
 
     @Override

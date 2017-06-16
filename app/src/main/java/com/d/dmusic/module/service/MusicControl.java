@@ -110,11 +110,12 @@ public class MusicControl {
         return instance;
     }
 
-    public void init(final List<MusicModel> datas, final int position) {
+    public void init(final List<MusicModel> datas, final int position, final boolean play) {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = (List<MusicModel>) MusicModel.clone(datas, MusicDB.MUSIC);
+                MusicDBUtil.getInstance(context).deleteAll(MusicDB.MUSIC);
                 MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, MusicDB.MUSIC);
                 if (list == null) {
                     list = new ArrayList<MusicModel>();
@@ -126,12 +127,12 @@ public class MusicControl {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (models != null && list != null) {
+                        if (models != null) {
                             models.clear();
                             models.addAll(list);
                             count = models.size();
                             curPos = (position >= 0 && position < models.size()) ? position : 0;
-                            play();
+                            play(play);
                         }
                     }
                 });
@@ -209,23 +210,29 @@ public class MusicControl {
     }
 
     private void play() {
-        stop();
-        if (cancle()) {
-            return;
-        }
-        try {
-            mediaPlayer.reset();// 重置
-            mediaPlayer.setDataSource(models.get(curPos).url);// 指定要播放的音频文件
-            mediaPlayer.prepare();// 预加载音频文件
-            mediaPlayer.start();
-            status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
+        play(true);
+    }
 
-            //广播通知
+    private void play(boolean play) {
+        stop();
+        if (models.size() <= 0) {
+            reset();
+        } else {
+            try {
+                mediaPlayer.reset();//重置
+                mediaPlayer.setDataSource(models.get(curPos).url);//指定要播放的音频文件
+                mediaPlayer.prepare();//预加载音频文件
+                mediaPlayer.start();
+                status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             curSongName = models.get(curPos).songName;
             curSinger = models.get(curPos).singer;
+        }
+        //广播通知
+        if (play) {
             sendBroadcast();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -239,7 +246,7 @@ public class MusicControl {
     /**
      * 播放/暂停
      *
-     * @return 执行结果0:无 1:播放 2:暂停
+     * @return 执行结果 0：停止、1：播放、2：暂停
      */
     public int playOrPause() {
         PlayOrPauseEvent event = new PlayOrPauseEvent();
@@ -376,5 +383,6 @@ public class MusicControl {
     public void onDestroy() {
         stop();
         reset();
+        instance = null;//release
     }
 }

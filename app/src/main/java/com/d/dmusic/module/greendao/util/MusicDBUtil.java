@@ -214,6 +214,9 @@ public class MusicDBUtil extends MusicDB {
      * CustomList表-更新歌曲数目
      */
     public void updateCusListCount(int type, long count) {
+        if (type < CUSTOM_MUSIC_INDEX || type >= CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
+            return;
+        }
         List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
         if (list != null && list.size() > 0) {
             CustomList bean = list.get(0);
@@ -226,6 +229,9 @@ public class MusicDBUtil extends MusicDB {
      * CustomList表-更新排序方式
      */
     public void updateCusListSoryByType(int type, int sortBy) {
+        if (type < CUSTOM_MUSIC_INDEX || type >= CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
+            return;
+        }
         if (sortBy == ORDER_TYPE_CUSTOM || sortBy == ORDER_TYPE_NAME || sortBy == ORDER_TYPE_TIME) {
             List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
             if (list != null && list.size() > 0) {
@@ -234,6 +240,18 @@ public class MusicDBUtil extends MusicDB {
                 daos[CUSTOM_LIST].update(bean);//更新
             }
         }
+    }
+
+    /**
+     * CustomList-查询排序方式
+     */
+    public int queryCusListSoryType(int type) {
+        List<CustomList> list = daos[CUSTOM_LIST].queryBuilder().where(CustomListDao.Properties.Pointer.eq(type)).list();
+        if (list != null && list.size() > 0) {
+            CustomList bean = list.get(0);
+            return bean.sortBy;
+        }
+        return 0;
     }
 
     /**

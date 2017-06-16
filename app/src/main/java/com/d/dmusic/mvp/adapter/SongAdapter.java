@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 
 import com.d.dmusic.R;
-import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.repeatclick.OnClickFastListener;
@@ -20,14 +19,17 @@ import java.util.List;
 
 public class SongAdapter extends CommonAdapter<MusicModel> {
     private int type;// 列表标识
-    private Preferences p;
+    private boolean IsSubPull;
     private ISongView listener;
 
     public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type, ISongView listener) {
         super(context, datas, layoutId);
         this.type = type;
-        p = Preferences.getInstance(mContext.getApplicationContext());
         this.listener = listener;
+    }
+
+    public void setSubPull(boolean subPull) {
+        IsSubPull = subPull;
     }
 
     @Override
@@ -61,13 +63,13 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onFastClick(View v) {
                 MusicControl control = MusicService.getControl();
-                control.init(mDatas, position);
+                control.init(mDatas, position, true);
             }
         });
         holder.setViewOnClickListener(R.id.flyt_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!p.getIsMenuPullDown()) {
+                if (!IsSubPull) {
                     new MorePopup(mContext, MorePopup.TYPE_SONG_SUB, item).show();
                 } else {
                     item.isChecked = !item.isChecked;

@@ -18,9 +18,8 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_notification_icon" />
 
-
     <FrameLayout
-        android:id="@+id/quit"
+        android:id="@+id/exit"
         android:layout_width="37dp"
         android:layout_height="@dimen/dimen_notifi_height"
         android:layout_alignParentRight="true"
@@ -31,7 +30,7 @@
             android:layout_height="@dimen/dimen_notifi_exit_icon"
             android:layout_gravity="center"
             android:alpha="0.8"
-            android:src="@drawable/ic_notification_quit" />
+            android:src="@drawable/ic_notification_exit" />
     </FrameLayout>
 
     <FrameLayout
@@ -39,7 +38,7 @@
         android:layout_width="37dp"
         android:layout_height="@dimen/dimen_notifi_height"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/quit">
+        android:layout_toLeftOf="@+id/exit">
 
         <ImageView
             android:layout_width="@dimen/dimen_notifi_icon"
