@@ -1,6 +1,7 @@
 package com.d.dmusic.mvp.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +15,15 @@ import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.module.events.MusicModelEvent;
+import com.d.dmusic.module.events.SortTypeEvent;
 import com.d.dmusic.module.global.MusicCst;
+import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.media.SyncUtil;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.HandleAdapter;
 import com.d.dmusic.utils.StatusBarCompat;
+import com.d.dmusic.utils.Util;
 import com.d.dmusic.view.TitleLayout;
 import com.d.dmusic.view.popup.AddToListPopup;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
@@ -36,7 +41,7 @@ import butterknife.OnClick;
  * 歌曲列表排序、管理
  * Created by D on 2017/4/28.
  */
-public class HandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener {
+public class HandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.tv_title_right)
@@ -44,9 +49,11 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Bind(R.id.rv_list)
     RecyclerView rvList;
 
+    private Context context;
     private int type;
     private String title = "";
     private List<MusicModel> models;
+    private List<MusicModel> modelsFav;
     private HandleAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
     private AlertDialog dialog;
@@ -71,12 +78,16 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                         count++;
                     }
                 }
-                String mark = count > 0 ? " (已选" + count + ")" : "";
-                tlTitle.setText(R.id.tv_title_title, title + mark);
+                setCount(count);
                 tvRight.setText(isAll ? "反选" : "全选");
+                adapter.setCount(count);
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.llyt_add_to_list:
+                if (adapter.getCount() <= 0) {
+                    Util.toast(context, "请先选择");
+                    return;
+                }
                 List<MusicModel> list = new ArrayList<>();
                 for (MusicModel musicModel : models) {
                     if (musicModel.isSortChecked) {
@@ -86,14 +97,26 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 new AddToListPopup(this, list, type).show();
                 break;
             case R.id.llyt_delete:
+                int c = adapter.getCount();
+                if (c <= 0) {
+                    Util.toast(context, "请先选择");
+                    return;
+                }
                 dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
                 for (int i = models.size() - 1; i >= 0; i--) {
-                    if (models.get(i).isSortChecked) {
-                        models.remove(i);
+                    MusicModel m = models.get(i);
+                    if (m.isSortChecked) {
+                        models.remove(m);
+                        if (type == MusicDB.COLLECTION_MUSIC) {
+                            modelsFav.add(m);
+                        }
+                        c--;
                     }
                 }
-                dialog.dismiss();
+                setCount(c);
+                adapter.setCount(0);
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
                 break;
             case R.id.llyt_revoke:
                 dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
@@ -102,10 +125,20 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 for (MusicModel model : models) {
                     model.isSortChecked = false;
                 }
-                dialog.dismiss();
+                if (type == MusicDB.COLLECTION_MUSIC) {
+                    modelsFav.clear();
+                }
+                setCount(0);
+                adapter.setCount(0);
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
                 break;
         }
+    }
+
+    private void setCount(int count) {
+        String mark = count > 0 ? " (已选" + count + ")" : "";
+        tlTitle.setText(R.id.tv_title_title, title + mark);
     }
 
     @Override
@@ -126,12 +159,15 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Override
     protected void init() {
         StatusBarCompat.compat(HandleActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        context = this;
         initTitle();
 
         models = new ArrayList<>();
+        modelsFav = new ArrayList<>();
         models.addAll(MusicCst.models);
-        adapter = new HandleAdapter(HandleActivity.this, models, R.layout.adapter_handler);
+        adapter = new HandleAdapter(context, models, R.layout.adapter_handler);
         adapter.setOnStartDragListener(this);
+        adapter.setOnChangeListener(this);
         rvList.setHasFixedSize(true);
         rvList.setLayoutManager(new LinearLayoutManager(this));//为RecyclerView指定布局管理对象
         rvList.setAdapter(adapter);
@@ -158,9 +194,24 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     }
 
     @Override
+    public void onDelete(MusicModel model) {
+        if (type == MusicDB.COLLECTION_MUSIC) {
+            modelsFav.add(model);
+        }
+    }
+
+    @Override
+    public void onCountChange(int count) {
+        setCount(count);
+    }
+
+    @Override
     public void finish() {
-        MusicModelEvent event = new MusicModelEvent(type, models);
-        EventBus.getDefault().post(event);
+        EventBus.getDefault().post(new MusicModelEvent(type, models));
+        EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_CUSTOM));//按自定义排序
+        if (type == MusicDB.COLLECTION_MUSIC) {
+            SyncUtil.unCollected(context.getApplicationContext(), modelsFav, type);
+        }
         super.finish();
     }
 

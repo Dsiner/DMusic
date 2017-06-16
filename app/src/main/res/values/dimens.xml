@@ -9,6 +9,7 @@
 
     <dimen name="dimen_item_height">50dp</dimen>
     <dimen name="dimen_item_margin_top">2dp</dimen>
+    <dimen name="dimen_item_local_icon">22dp</dimen>
     <dimen name="dimen_item_icon">18dp</dimen>
     <dimen name="dimen_notifi_height">64dp</dimen>
     <dimen name="dimen_notifi_icon">19.2dp</dimen>

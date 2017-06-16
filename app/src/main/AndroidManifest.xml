@@ -7,8 +7,9 @@
     <application
         android:name="com.d.dmusic.application.SysApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -23,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.d.dmusic.WelcomeActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.d.dmusic.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -43,6 +48,27 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.d.dmusic.mvp.activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.KoanActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.SkinActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.SleepActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.PlayerModeActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.dmusic.mvp.activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
     </application>

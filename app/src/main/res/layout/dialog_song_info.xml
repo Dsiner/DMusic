@@ -8,22 +8,21 @@
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:background="@color/color_white"
+        android:background="@color/color_main"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="@dimen/dimen_margin"
+            android:layout_height="46dp"
             android:gravity="center"
             android:text="歌曲信息"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_text_main" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_main" />
+            android:background="@color/color_white" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -33,21 +32,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="9dp"
+                android:paddingLeft="9dp"
+                android:paddingRight="9dp"
+                android:paddingTop="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="歌曲名："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="歌曲:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_song_name"
@@ -56,170 +58,165 @@
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
                         android:text="夏洛特烦恼"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="歌手名："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="歌手:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_singer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="@dimen/dimen_margin"
                         android:layout_weight="1"
                         android:text="金志文"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="专辑名："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="专辑:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_album"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="@dimen/dimen_margin"
                         android:layout_weight="1"
                         android:text="未知专辑"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="歌曲时长："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tv_duration"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:layout_weight="1"
-                        android:text="03:12"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="90dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="文件格式："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="文件格式:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_filepostfix"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="@dimen/dimen_margin"
                         android:layout_weight="1"
                         android:text="mp3"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="文件大小："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="歌曲时长:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
+
+                    <TextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_margin"
+                        android:layout_weight="1"
+                        android:text="03:12"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <TextView
+                        android:layout_width="76dp"
+                        android:layout_height="wrap_content"
+                        android:text="文件大小:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_size"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="@dimen/dimen_margin"
                         android:layout_weight="1"
                         android:text="7.34MB"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="3dp">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="存放目录："
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:text="存放目录:"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
 
                     <TextView
                         android:id="@+id/tv_url"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="@dimen/dimen_margin"
                         android:layout_weight="1"
                         android:text="/storage/emulated/0/ttod/song/金志文-夏洛特烦恼.mp3"
-                        android:textColor="@color/color_black"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/dimen_text_small" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_main" />
-
         <TextView
             android:id="@+id/tv_ok"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#ffffff"
+            android:layout_height="45dp"
+            android:background="@color/color_white"
             android:gravity="center"
             android:text="确定"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
 </RelativeLayout>

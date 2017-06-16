@@ -11,11 +11,35 @@ import com.d.dmusic.utils.TaskManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 /**
  * SyncUtil
  * Created by D on 2017/5/9.
  */
 public class SyncUtil {
+    /**
+     * 收藏type-取消收藏
+     */
+    public static void unCollected(final Context context, final List<MusicModel> list, final int type) {
+        if (type != MusicDB.COLLECTION_MUSIC || list == null || list.size() <= 0) {
+            return;
+        }
+        TaskManager.getIns().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < list.size(); i++) {
+                    MusicModel item = list.get(i);
+                    if (item == null) {
+                        continue;
+                    }
+                    MusicDBUtil.getInstance(context).updateColleted(item.url, false);
+                }
+                EventBus.getDefault().post(new RefreshEvent(type, RefreshEvent.SYNC_COLLECTIONG));
+            }
+        });
+    }
+
     public static void upCollected(final Context context, final MusicModel item, final int type) {
         TaskManager.getIns().executeTask(new Runnable() {
             @Override

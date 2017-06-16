@@ -20,7 +20,7 @@ import com.d.dmusic.module.global.Cst;
 public class MenuDialog implements View.OnClickListener {
     private Dialog dialog;
     private LinearLayout rootView;
-    private View.OnClickListener onClickListener;
+    private OnMenuListener listener;
 
     public MenuDialog(Context context, int layoutRes) {
         rootView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.dialog_more, null);
@@ -65,8 +65,8 @@ public class MenuDialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         dismiss();
-        if (onClickListener != null) {
-            onClickListener.onClick(v);
+        if (listener != null) {
+            listener.onClick(v);
         }
     }
 
@@ -76,6 +76,9 @@ public class MenuDialog implements View.OnClickListener {
     public void show() {
         if (dialog != null && !dialog.isShowing()) {
             dialog.show();
+        }
+        if (listener != null && rootView != null) {
+            listener.onRefresh(rootView);
         }
     }
 
@@ -88,7 +91,13 @@ public class MenuDialog implements View.OnClickListener {
         }
     }
 
-    public void setOnClickListener(View.OnClickListener listener) {
-        onClickListener = listener;
+    public interface OnMenuListener {
+        void onRefresh(View v);
+
+        void onClick(View v);
+    }
+
+    public void setOnMenuListener(OnMenuListener listener) {
+        this.listener = listener;
     }
 }

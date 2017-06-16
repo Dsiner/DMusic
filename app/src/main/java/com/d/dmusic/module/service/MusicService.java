@@ -17,13 +17,16 @@ import android.os.IBinder;
 import android.os.Message;
 import android.widget.RemoteViews;
 
+import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.application.SysApplication;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.mvp.activity.PlayActivity;
+import com.d.dmusic.mvp.activity.PlayerModeActivity;
 import com.d.dmusic.utils.log.ULog;
 
 import java.lang.ref.WeakReference;
@@ -117,16 +120,17 @@ public class MusicService extends Service {
         super.onCreate();
         isRunning = true;
         if (control == null) {
-            control = MusicControl.getInstance(SysApplication.getInstance().getApplicationContext());
+            control = MusicControl.getInstance(getApplicationContext());
         }
         binder = new MyBinder();
         broadcast = new ControlBroadcast();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MusicCst.PLAYER_RELOAD);
-        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         filter.addAction(MusicCst.PLAYER_CONTROL_PLAY_PAUSE);
         filter.addAction(MusicCst.PLAYER_CONTROL_PREV);
         filter.addAction(MusicCst.PLAYER_CONTROL_NEXT);
+        filter.addAction(MusicCst.PLAYER_CONTROL_EXIT);
+        filter.addAction(MusicCst.PLAYER_RELOAD);
+        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         filter.addAction(MusicCst.MUSIC_SEEK_TO_TIME);
         registerReceiver(broadcast, filter);
 
@@ -147,9 +151,10 @@ public class MusicService extends Service {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (list.size() > 0) {
-                            control.init(list, 0);
-                        }
+                        Preferences p = Preferences.getInstance(getApplicationContext());
+                        boolean play = MusicCst.playerMode == MusicCst.PLAYER_MODE_NOTIFICATION
+                                || (p.getIsAutoPlay() && list.size() > 0);
+                        control.init(list, p.getLastPlayPosition(), play);
                     }
                 });
     }
@@ -163,7 +168,14 @@ public class MusicService extends Service {
      * @param status:无/播放/暂停
      */
     private void updateNotification(Bitmap bitmap, String songName, String singer, int status) {
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent;
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NOTIFICATION) {
+            intent = new Intent(this, PlayerModeActivity.class);
+        } else if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST) {
+            intent = new Intent(this, PlayActivity.class);
+        } else {
+            intent = new Intent(this, MainActivity.class);
+        }
         PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification.Builder builder = new Notification.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -202,6 +214,11 @@ public class MusicService extends Service {
         PendingIntent prePIntent = PendingIntent.getBroadcast(this, 0, preIntent, 0);
         rv.setOnClickPendingIntent(R.id.prev, prePIntent);
 
+        Intent exitIntent = new Intent(MusicCst.PLAYER_CONTROL_EXIT);
+        exitIntent.putExtra("flag", MusicCst.PLAY_FLAG_EXIT);
+        PendingIntent exitPIntent = PendingIntent.getBroadcast(this, 0, exitIntent, 0);
+        rv.setOnClickPendingIntent(R.id.exit, exitPIntent);
+
         builder.setContent(rv);
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -223,6 +240,7 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        handler.removeMessages(1);
         handler.sendEmptyMessageDelayed(1, 1000);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -243,21 +261,10 @@ public class MusicService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             switch (action) {
-                case MusicCst.MUSIC_SEEK_TO_TIME:
-                    MediaPlayer mediaPlayer = control.getMediaPlayer();
-                    if (mediaPlayer != null) {
-                        int currentPosttion = intent.getIntExtra("progress", 0);
-                        if (currentPosttion / 1000 >= mediaPlayer.getDuration() / 1000) {
-                            control.next();
-                        } else {
-                            control.seekTo(currentPosttion);
-                        }
-                    }
-                    progressLock = false;
-                    break;
                 case MusicCst.PLAYER_CONTROL_PLAY_PAUSE:
                 case MusicCst.PLAYER_CONTROL_NEXT:
                 case MusicCst.PLAYER_CONTROL_PREV:
+                case MusicCst.PLAYER_CONTROL_EXIT:
                     int flag = intent.getIntExtra("flag", -1);
                     ULog.v("flags" + flag + "");
                     switch (flag) {
@@ -271,11 +278,26 @@ public class MusicService extends Service {
                         case MusicCst.PLAY_FLAG_PRE:
                             control.prev();
                             break;
+                        case MusicCst.PLAY_FLAG_EXIT:
+                            SysApplication.getInstance().exit();//退出应用
+                            break;
                     }
                     break;
                 case MusicCst.PLAYER_RELOAD:
                 case MusicCst.MUSIC_CURRENT_INFO:
                     updateNotif(MusicCst.PLAY_STATUS_PLAYING);//正在播放
+                    break;
+                case MusicCst.MUSIC_SEEK_TO_TIME:
+                    MediaPlayer mediaPlayer = control.getMediaPlayer();
+                    if (mediaPlayer != null) {
+                        int currentPosttion = intent.getIntExtra("progress", 0);
+                        if (currentPosttion / 1000 >= mediaPlayer.getDuration() / 1000) {
+                            control.next();
+                        } else {
+                            control.seekTo(currentPosttion);
+                        }
+                    }
+                    progressLock = false;//解锁
                     break;
             }
         }
@@ -284,6 +306,7 @@ public class MusicService extends Service {
     private void updateNotif(int status) {
         switch (status) {
             case MusicCst.PLAY_STATUS_STOP:
+                updateNotification(null, control.getCurSongName(), control.getCurSinger(), status);
                 //取消通知栏
                 cancleNotification();
                 break;
@@ -299,6 +322,8 @@ public class MusicService extends Service {
     @Override
     public void onDestroy() {
         isRunning = false;
+        control = null;//release
+        stopForeground(true);
         super.onDestroy();
     }
 }

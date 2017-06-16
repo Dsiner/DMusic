@@ -22,6 +22,7 @@ public class RowLayout extends RelativeLayout {
     private int visibilityGoto;
     private TextView tvContent;
     private ToggleButton tbToggle;
+    private OnToggleListener listener;
 
     public RowLayout(Context context) {
         this(context, null);
@@ -42,13 +43,21 @@ public class RowLayout extends RelativeLayout {
     }
 
     private void init(Context context) {
-        View root = LayoutInflater.from(context).inflate(R.layout.layout_row, this);
+        final View root = LayoutInflater.from(context).inflate(R.layout.layout_row, this);
         tvContent = (TextView) root.findViewById(R.id.tv_content);
         tbToggle = (ToggleButton) root.findViewById(R.id.tb_toggle);
         ImageView ivGoto = (ImageView) root.findViewById(R.id.iv_goto);
         ivGoto.setVisibility(visibilityGoto);
-        tbToggle.setVisibility(visibilityToggle);
         tvContent.setText(content);
+        tbToggle.setVisibility(visibilityToggle);
+        tbToggle.setOnToggleListener(new ToggleButton.OnToggleListener() {
+            @Override
+            public void onToggle(boolean isOpen) {
+                if (listener != null) {
+                    listener.onToggle(RowLayout.this, isOpen);
+                }
+            }
+        });
     }
 
     /**
@@ -70,5 +79,13 @@ public class RowLayout extends RelativeLayout {
      */
     public boolean isOpen() {
         return tbToggle.isOpen();
+    }
+
+    public interface OnToggleListener {
+        void onToggle(View v, boolean isOpen);
+    }
+
+    public void setOnToggleListener(OnToggleListener listener) {
+        this.listener = listener;
     }
 }

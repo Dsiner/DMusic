@@ -5,6 +5,8 @@ import android.content.Context;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.dmusic.model.FileModel;
 import com.d.dmusic.module.events.MusicModelEvent;
+import com.d.dmusic.module.events.RefreshEvent;
+import com.d.dmusic.module.events.SortTypeEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
@@ -68,11 +70,15 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 MusicDBUtil.getInstance(mContext).deleteAll(type);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
                 MusicDBUtil.getInstance(mContext).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//默认按自定义排序
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_TIME);//默认按自定义排序
+                EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_TIME));
 
                 //更新收藏字段
                 List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(MusicDB.COLLECTION_MUSIC);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(c, type), type);
+
+                //更新首页自定义列表
+                EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
 
                 if (list == null) {
                     list = new ArrayList<>();

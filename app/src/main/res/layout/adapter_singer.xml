@@ -12,8 +12,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/dimen_item_icon"
-            android:layout_height="@dimen/dimen_item_icon"
+            android:layout_width="@dimen/dimen_item_local_icon"
+            android:layout_height="@dimen/dimen_item_local_icon"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_marginRight="@dimen/dimen_margin"
             android:background="@color/color_main"

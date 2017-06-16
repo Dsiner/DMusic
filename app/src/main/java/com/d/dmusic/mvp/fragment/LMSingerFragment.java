@@ -1,8 +1,6 @@
 package com.d.dmusic.mvp.fragment;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.d.dmusic.R;
 import com.d.dmusic.model.AlbumModel;
@@ -29,8 +27,8 @@ public class LMSingerFragment extends AbstractLMFragment {
     private List<SingerModel> datas;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void init() {
+        super.init();
         context = getActivity();
     }
 

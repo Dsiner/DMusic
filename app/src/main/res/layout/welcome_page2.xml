@@ -16,7 +16,6 @@
         app:layout_marginRightPercent="5%" />
 
     <RelativeLayout
-        android:id="@+id/llyt_done"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_above="@+id/iv_dot3"
@@ -25,7 +24,7 @@
         app:layout_marginBottomPercent="6%">
 
         <Button
-            android:id="@+id/button_done"
+            android:id="@+id/btn_start"
             android:layout_width="240dp"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"

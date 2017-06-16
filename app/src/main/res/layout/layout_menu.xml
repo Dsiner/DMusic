@@ -18,9 +18,10 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_main_album_icon" />
+            android:src="@drawable/ic_launcher_round" />
 
         <TextView
+            android:id="@+id/tv_stroke"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -32,6 +33,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llyt_menu_sleep"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -49,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:singleLine="true"
-            android:text="睡眠设置"
+            android:text="睡眠定时"
             android:textColor="@color/color_white"
             android:textSize="@dimen/dimen_text_sub" />
     </LinearLayout>
@@ -58,7 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="26dp"
@@ -78,6 +81,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llyt_menu_skin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -101,7 +105,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llyt_setting"
+        android:id="@+id/llyt_menu_setting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"

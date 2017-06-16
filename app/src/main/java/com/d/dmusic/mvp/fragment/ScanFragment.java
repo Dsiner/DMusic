@@ -17,6 +17,7 @@ import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
+import com.d.dmusic.module.events.SortTypeEvent;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
@@ -160,7 +161,8 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
                 MusicDBUtil.getInstance(context).deleteAll(type);
                 MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, type);
                 MusicDBUtil.getInstance(context).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(context).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//默认按自定义排序
+                MusicDBUtil.getInstance(context).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_TIME);//默认按时间排序
+                EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_TIME));//按时间排序
 
                 //更新收藏字段
                 List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(context).queryAllMusic(MusicDB.COLLECTION_MUSIC);

@@ -9,6 +9,7 @@
     <color name="color_black">#000000</color>
     <color name="color_gray">#FF888888</color>
     <color name="color_lgray">#99CCCCCC</color>
+    <color name="color_dgray">#CCCCCC</color>
     <color name="color_red">#ff0000</color>
     <color name="color_green">#00ff00</color>
 
@@ -26,12 +27,12 @@
     <color name="color_main_skin10">#AEFE8E</color>
     <color name="color_main_skin11">#8DC7FF</color>
     <color name="color_main_skin12">#E79BFF</color>
-    <color name="color_main_skin21">#62D4F4</color>
-    <color name="color_main_skin22">#FE99A8</color>
-    <color name="color_main_skin23">#2A2B30</color>
-    <color name="color_main_skin24">#FFB37F</color>
-    <color name="color_main_skin25">#46C5BA</color>
-    <color name="color_main_skin26">#2FC1FD</color>
+    <color name="color_main_skin13">#62D4F4</color>
+    <color name="color_main_skin14">#FE99A8</color>
+    <color name="color_main_skin15">#2A2B30</color>
+    <color name="color_main_skin16">#FFB37F</color>
+    <color name="color_main_skin17">#46C5BA</color>
+    <color name="color_main_skin18">#2FC1FD</color>
 
     <!--全局背景色-->
     <color name="color_bg_main">#FFFFFF</color>

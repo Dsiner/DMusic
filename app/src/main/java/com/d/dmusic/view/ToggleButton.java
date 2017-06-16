@@ -15,7 +15,6 @@ import android.view.ViewConfiguration;
 import android.view.animation.LinearInterpolator;
 
 import com.d.dmusic.R;
-import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 
 /**
@@ -101,29 +100,6 @@ public class ToggleButton extends View {
             public void onAnimationUpdate(ValueAnimator animation) {
                 factor = (float) animation.getAnimatedValue();//更新进度因子
                 invalidate();
-            }
-        });
-        animation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                if (factor == 1 && listener != null) {
-                    listener.onToggle(isOpen);
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
             }
         });
     }
@@ -215,6 +191,9 @@ public class ToggleButton extends View {
         } else {
             start();
         }
+        if (listener != null) {
+            listener.onToggle(isOpen);
+        }
     }
 
     public boolean isOpen() {
@@ -222,8 +201,11 @@ public class ToggleButton extends View {
     }
 
     public void setOpen(boolean open) {
+        if (factor != 0 && factor != 1) {
+            return;
+        }
         stop();
-        isOpen = !isOpen;
+        isOpen = open;
         factor = 1f;
         invalidate();
     }

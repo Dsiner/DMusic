@@ -11,11 +11,14 @@ import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
+import com.d.dmusic.module.events.SortTypeEvent;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
+import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
@@ -27,6 +30,7 @@ import com.d.dmusic.mvp.view.ISongView;
 import com.d.dmusic.view.DSLayout;
 import com.d.dmusic.view.SongHeaderView;
 import com.d.dmusic.view.TitleLayout;
+import com.d.dmusic.view.dialog.MenuDialog;
 import com.d.lib.xrv.XRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +47,7 @@ import butterknife.OnClick;
  * SongFragment
  * Created by D on 2017/4/30.
  */
-public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener, View.OnClickListener {
+public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.dsl_ds)
@@ -54,10 +58,13 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     private Context context;
     private int type;
     private int tab;//本地歌曲tab(0-3)
+    private Preferences p;
     private String title;
     private SongHeaderView header;
     private SongAdapter adapter;
+    private int orderType;
     private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
+    private boolean IsSubPull;//为了同步设置，需要重新刷新
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
@@ -94,8 +101,11 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
 
     @Override
     protected void init() {
+        p = Preferences.getInstance(getActivity().getApplicationContext());
+        IsSubPull = p.getIsSubPull();
         initTitle();
         adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type, this);
+        adapter.setSubPull(IsSubPull);
         header = new SongHeaderView(context);
         header.setVisibility(View.GONE);
         if (type == MusicDB.LOCAL_ALL_MUSIC) {
@@ -113,6 +123,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.getSong(type, tab, title);
+        orderType = MusicDBUtil.getInstance(context).queryCusListSoryType(type);
     }
 
     @Override
@@ -120,6 +131,11 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
+            mPresenter.getSong(type, tab, title);
+        }
+        if (IsSubPull != p.getIsSubPull()) {
+            IsSubPull = !IsSubPull;
+            adapter.setSubPull(IsSubPull);
             mPresenter.getSong(type, tab, title);
         }
     }
@@ -136,31 +152,46 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         if (type == MusicDB.LOCAL_ALL_MUSIC || type == MusicDB.COLLECTION_MUSIC) {
             tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
         }
-        tlTitle.setOnMenuClickListener(this);
-    }
+        tlTitle.setOnMenuListener(new MenuDialog.OnMenuListener() {
+            @Override
+            public void onRefresh(View v) {
+                View name = v.findViewById(R.id.iv_sort_name_check);
+                View time = v.findViewById(R.id.iv_sort_time_check);
+                View custom = v.findViewById(R.id.iv_sort_custom_check);
+                if (name != null && time != null && custom != null) {
+                    name.setVisibility(orderType == MusicDB.ORDER_TYPE_NAME ? View.VISIBLE : View.INVISIBLE);
+                    time.setVisibility(orderType == MusicDB.ORDER_TYPE_TIME ? View.VISIBLE : View.INVISIBLE);
+                    custom.setVisibility(orderType == MusicDB.ORDER_TYPE_CUSTOM ? View.VISIBLE : View.INVISIBLE);
+                }
+            }
 
-    @Override
-    public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.menu_sort_name:
-                mPresenter.getSong(type, MusicDB.ORDER_TYPE_NAME);
-                break;
-            case R.id.menu_sort_time:
-                mPresenter.getSong(type, MusicDB.ORDER_TYPE_TIME);
-                break;
-            case R.id.menu_sort_custom:
-                mPresenter.getSong(type, MusicDB.ORDER_TYPE_CUSTOM);
-                break;
-            case R.id.menu_scan:
-                Activity activity = getActivity();
-                Intent intent = new Intent(activity, ScanActivity.class);
-                intent.putExtra("type", type);
-                activity.startActivity(intent);
-                break;
-        }
+            @Override
+            public void onClick(View v) {
+                if (ClickUtil.isFastDoubleClick()) {
+                    return;
+                }
+                switch (v.getId()) {
+                    case R.id.menu_sort_name:
+                        orderType = MusicDB.ORDER_TYPE_NAME;
+                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_NAME);
+                        break;
+                    case R.id.menu_sort_time:
+                        orderType = MusicDB.ORDER_TYPE_TIME;
+                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_TIME);
+                        break;
+                    case R.id.menu_sort_custom:
+                        orderType = MusicDB.ORDER_TYPE_CUSTOM;
+                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_CUSTOM);
+                        break;
+                    case R.id.menu_scan:
+                        Activity activity = getActivity();
+                        Intent intent = new Intent(activity, ScanActivity.class);
+                        intent.putExtra("type", type);
+                        activity.startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -195,7 +226,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl();
-            control.init(datas, 0);
+            control.init(datas, 0, true);
         }
     }
 
@@ -229,6 +260,15 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
             return;
         }
         isNeedReLoad = true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onSortTypeEvent(SortTypeEvent event) {
+        if (event == null || getActivity() == null || getActivity().isFinishing()
+                || event.type != type) {
+            return;
+        }
+        orderType = event.orderType;
     }
 
     @Override

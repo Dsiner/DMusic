@@ -2,13 +2,12 @@ package com.d.dmusic.mvp.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
 import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.model.AlbumModel;
 import com.d.dmusic.model.FolderModel;
 import com.d.dmusic.model.SingerModel;
@@ -36,17 +35,23 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
+    private Context context;
+    private Preferences p;
     private SongHeaderView header;
     private SongAdapter adapter;
     private SortUtil sortUtil;
-    private boolean isNeedReLoad;
+    private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
+    private boolean IsSubPull;//为了同步设置，需要重新刷新
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Context context = getActivity();
+    protected void init() {
+        super.init();
+        context = getActivity();
+        p = Preferences.getInstance(getActivity().getApplicationContext());
+        IsSubPull = p.getIsSubPull();
         sortUtil = new SortUtil();
         adapter = new SongAdapter(context, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
+        adapter.setSubPull(IsSubPull);
         header = new SongHeaderView(context);
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
@@ -81,6 +86,11 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
+            mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
+        }
+        if (IsSubPull != p.getIsSubPull()) {
+            IsSubPull = !IsSubPull;
+            adapter.setSubPull(IsSubPull);
             mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
         }
     }
@@ -134,7 +144,7 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl();
-            control.init(datas, 0);
+            control.init(datas, 0, true);
         }
     }
 

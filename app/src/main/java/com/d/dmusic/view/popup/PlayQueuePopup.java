@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
 import com.d.dmusic.commen.Preferences;
-import com.d.dmusic.module.global.Cst;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.repeatclick.ClickUtil;
@@ -44,11 +42,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
     @Override
     protected void init() {
         p = Preferences.getInstance(context.getApplicationContext());
-        View vBlank = rootView.findViewById(R.id.v_queue_blank);
         LinearLayout llytQueue = (LinearLayout) rootView.findViewById(R.id.llyt_queue);
-        ViewGroup.LayoutParams lp = llytQueue.getLayoutParams();
-        lp.height = (int) (Cst.SCREEN_HEIGHT * 0.618f);
-        llytQueue.setLayoutParams(lp);
         FrameLayout flytPlayMode = (FrameLayout) rootView.findViewById(R.id.flyt_play_mode);
         ivPlayMode = (ImageView) rootView.findViewById(R.id.iv_play_mode);
         tvPlayMode = (TextView) rootView.findViewById(R.id.tv_play_mode);
@@ -66,7 +60,8 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         ivPlayMode.setBackgroundResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
         tvPlayMode.setText(MusicCst.PLAY_MODE[playMode]);
 
-        vBlank.setOnClickListener(this);
+        rootView.setOnClickListener(this);
+        llytQueue.setOnClickListener(this);
         flytPlayMode.setOnClickListener(this);
         ivDeleteAll.setOnClickListener(this);
         ivQuit.setOnClickListener(this);
@@ -89,6 +84,13 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
             return;
         }
         switch (v.getId()) {
+            case R.id.root:
+            case R.id.tv_quit:
+                dismiss();
+                break;
+            case R.id.llyt_queue:
+                //do nothing
+                break;
             case R.id.flyt_play_mode:
                 int playMode = changeMode();
                 if (listener != null) {
@@ -96,13 +98,14 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
                 }
                 break;
             case R.id.tv_delete_all:
+                if (models == null || models.size() <= 0) {
+                    return;
+                }
                 MusicService.getControl().delelteAll();
+                models = MusicService.getControl().getModels();
+                adapter.setDatas(models);
                 adapter.notifyDataSetChanged();
-                tvCount.setText("(" + 0 + "首)");
-                break;
-            case R.id.v_queue_blank:
-            case R.id.tv_quit:
-                dismiss();
+                tvCount.setText("(" + (models != null ? models.size() : 0) + "首)");
                 break;
         }
     }
