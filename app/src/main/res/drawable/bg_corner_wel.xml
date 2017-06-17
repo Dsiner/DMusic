@@ -2,12 +2,12 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 边缘线条颜色 -->
     <stroke
-        android:width="2px"
-        android:color="@color/color_main" />
+        android:width="1dp"
+        android:color="#718CAF" />
     <solid
         android:width="1px"
         android:color="@android:color/transparent" />
-    <corners android:radius="3dp" />
+    <corners android:radius="100dp" />
 </shape>
 
 

@@ -16,20 +16,22 @@
         <TextView
             android:id="@+id/tv_song_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:singleLine="true"
             android:text="夏洛特烦恼"
             android:textColor="@color/color_white"
-            android:textSize="15dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/tv_singer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:singleLine="true"
             android:text="--金志文"
             android:textColor="@color/color_white"
@@ -40,6 +42,7 @@
         android:id="@+id/iv_delete"
         android:layout_width="@dimen/dimen_queue_height"
         android:layout_height="@dimen/dimen_queue_height"
+        android:layout_marginRight="3dp"
         android:padding="12dp"
         android:src="@drawable/ic_delete_small" />
 </LinearLayout>

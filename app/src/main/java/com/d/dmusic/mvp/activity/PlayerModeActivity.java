@@ -59,7 +59,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
                             @Override
                             public void onClick(AlertDialog dlg, View v) {
                                 dlg.dismiss();
-                                SysApplication.getInstance().exit();
+                                SysApplication.exit(getApplicationContext());
                             }
                         }, new AlertDialogFactory.OnClickListener() {
                             @Override

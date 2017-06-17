@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="41.5dp"
         android:gravity="center_horizontal">
 
         <ImageView
@@ -28,7 +28,7 @@
             android:id="@+id/iv_dot1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="9.5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dot_wel" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/iv_dot2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="9.5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dot_wel" />
     </LinearLayout>

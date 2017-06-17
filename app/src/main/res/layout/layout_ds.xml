@@ -43,9 +43,10 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="重试"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_sub"
-            android:visibility="gone" />
+            android:visibility="gone"
+            skin:enable="true" />
 
         <View
             android:id="@+id/v_dsl_b"

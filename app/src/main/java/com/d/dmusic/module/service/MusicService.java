@@ -22,6 +22,7 @@ import com.d.dmusic.MainActivity;
 import com.d.dmusic.R;
 import com.d.dmusic.application.SysApplication;
 import com.d.dmusic.commen.Preferences;
+import com.d.dmusic.module.events.MusicInfoEvent;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
@@ -29,6 +30,10 @@ import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.mvp.activity.PlayerModeActivity;
 import com.d.dmusic.utils.log.ULog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -62,9 +67,9 @@ public class MusicService extends Service {
         return isRunning;
     }
 
-    public static MusicControl getControl() {
+    public static MusicControl getControl(Context context) {
         if (control == null) {
-            control = MusicControl.getInstance(SysApplication.getInstance().getApplicationContext());
+            control = MusicControl.getInstance(context.getApplicationContext());
         }
         return control;
     }
@@ -136,6 +141,7 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
         isRunning = true;
         if (control == null) {
             control = MusicControl.getInstance(getApplicationContext());
@@ -149,7 +155,6 @@ public class MusicService extends Service {
         filter.addAction(MusicCst.PLAYER_CONTROL_EXIT);
         filter.addAction(MusicCst.PLAYER_CONTROL_TIMING);
         filter.addAction(MusicCst.PLAYER_RELOAD);
-        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         filter.addAction(MusicCst.MUSIC_SEEK_TO_TIME);
         registerReceiver(broadcast, filter);
 
@@ -173,7 +178,7 @@ public class MusicService extends Service {
                         Preferences p = Preferences.getInstance(getApplicationContext());
                         boolean play = MusicCst.playerMode == MusicCst.PLAYER_MODE_NOTIFICATION
                                 || (p.getIsAutoPlay() && list.size() > 0);
-                        control.init(list, p.getLastPlayPosition(), play);
+                        control.init(getApplicationContext(), list, p.getLastPlayPosition(), play);
                     }
                 });
     }
@@ -254,7 +259,7 @@ public class MusicService extends Service {
      */
     public void cancleNotification() {
         //can not work beacauseof "startForeground"!
-        manager.cancel(notification_ID);
+//        manager.cancel(notification_ID);
     }
 
     @Override
@@ -288,8 +293,7 @@ public class MusicService extends Service {
                     ULog.v("flags" + flag + "");
                     switch (flag) {
                         case MusicCst.PLAY_FLAG_PLAY_PAUSE:
-                            int playStatus = control.playOrPause();
-                            updateNotif(playStatus);//正在播放
+                            control.playOrPause();
                             break;
                         case MusicCst.PLAY_FLAG_NEXT:
                             control.next();
@@ -298,15 +302,14 @@ public class MusicService extends Service {
                             control.prev();
                             break;
                         case MusicCst.PLAY_FLAG_EXIT:
-                            SysApplication.getInstance().exit();//退出应用
+                            SysApplication.exit(getApplicationContext());//退出应用
                             break;
                     }
                     break;
                 case MusicCst.PLAYER_CONTROL_TIMING:
-                    SysApplication.getInstance().exit();//退出应用
+                    SysApplication.exit(getApplicationContext());//退出应用
                     break;
                 case MusicCst.PLAYER_RELOAD:
-                case MusicCst.MUSIC_CURRENT_INFO:
                     updateNotif(MusicCst.PLAY_STATUS_PLAYING);//正在播放
                     break;
                 case MusicCst.MUSIC_SEEK_TO_TIME:
@@ -341,8 +344,16 @@ public class MusicService extends Service {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MusicInfoEvent event) {
+        if (event != null && isRunning && event.isUpdateNotif) {
+            updateNotif(event.status);//正在播放
+        }
+    }
+
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         isRunning = false;
         control = null;//release
         stopForeground(true);

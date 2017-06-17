@@ -51,7 +51,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         TextView ivQuit = (TextView) rootView.findViewById(R.id.tv_quit);
         lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
 
-        models = MusicService.getControl().getModels();
+        models = MusicService.getControl(context).getModels();
         adapter = new PlayQueueAdapter(context, models, R.layout.adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
@@ -101,11 +101,11 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
                 if (models == null || models.size() <= 0) {
                     return;
                 }
-                MusicService.getControl().delelteAll();
-                models = MusicService.getControl().getModels();
+                MusicService.getControl(context).delelteAll(context);
+                models = MusicService.getControl(context).getModels();
                 adapter.setDatas(models);
                 adapter.notifyDataSetChanged();
-                tvCount.setText("(" + (models != null ? models.size() : 0) + "首)");
+                onCountChange(models != null ? models.size() : 0);
                 break;
         }
     }
@@ -129,7 +129,10 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void onCountChange(int count) {
-        tvCount.setText(count + "首");
+        tvCount.setText("(" + count + "首)");
+        if (listener != null) {
+            listener.onCountChange(count);
+        }
     }
 
     public void setOnQueueListener(IQueueListener listener) {

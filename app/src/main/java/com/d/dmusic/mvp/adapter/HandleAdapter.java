@@ -79,7 +79,6 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
                 holder.setBackground(R.id.cb_check, R.drawable.selector_toggle);
                 holder.itemView.setBackgroundColor(0);
                 holder.itemView.setAlpha(1f);
-                notifyDataSetChanged();
             }
         });
     }

@@ -20,7 +20,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_margin"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="@dimen/dimen_margin"
             android:paddingTop="18dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="16dp"

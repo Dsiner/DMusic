@@ -131,6 +131,7 @@ public class LrcView extends View implements ILrcView {
         super.onDraw(canvas);
         if (lrcRows == null || lrcRows.size() <= 0) {
             //画默认的显示文字
+            paint.setColor(colorText);
             drawLine(canvas, paint, height / 2 + Util.getTextHeight(paint) / 2, DEFAULT_TEXT);
             return;
         }

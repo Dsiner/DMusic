@@ -16,7 +16,6 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
-import com.d.dmusic.utils.StatusBarCompat;
 import com.d.dmusic.utils.Util;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -63,7 +62,6 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, 0x00000000);//沉浸式状态栏
         context = this;
         LayoutInflater inflater = LayoutInflater.from(this);
         View view0 = inflater.inflate(R.layout.welcome_page0, null);

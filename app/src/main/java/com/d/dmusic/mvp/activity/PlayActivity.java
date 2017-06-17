@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.d.dmusic.R;
 import com.d.dmusic.api.IQueueListener;
 import com.d.dmusic.application.SysApplication;
 import com.d.dmusic.commen.Preferences;
-import com.d.dmusic.module.events.PlayOrPauseEvent;
+import com.d.dmusic.module.events.MusicInfoEvent;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
@@ -45,6 +46,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -111,11 +113,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 showMore();
                 break;
             case R.id.iv_play_collect:
-                if (control != null && control.getCurModel() != null) {
-                    MusicModel item = control.getCurModel();
-                    MoreUtil.collect(context, item, type, false);
-                    resetFav(item.isCollected);
-                }
+                collect(false);
                 break;
             case R.id.iv_play_prev:
                 if (control == null || control.getModels() == null || control.getModels().size() <= 0) {
@@ -144,6 +142,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             case R.id.iv_play_queue:
                 showQueue();
                 break;
+        }
+    }
+
+    private void collect(boolean isTip) {
+        if (control != null && control.getCurModel() != null) {
+            MusicModel item = control.getCurModel();
+            MoreUtil.collect(context, item, type, isTip);
+            resetFav(item.isCollected);
         }
     }
 
@@ -177,11 +183,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             return;
         }
         context = this;
-        StatusBarCompat.compat(this, 0xff000000);//沉浸式状态栏
+        StatusBarCompat.compat(this, Color.parseColor("#ff000000"));//沉浸式状态栏
         EventBus.getDefault().register(this);
         registerReceiver();
-        isRegisterReceiver = true;
-        control = MusicService.getControl();
+        control = MusicService.getControl(getApplicationContext());
         seekBar.setOnSeekBarChangeListener(this);
         initLrcListener();
         onPlayModeChange(Preferences.getInstance(getApplicationContext()).getPlayMode());
@@ -196,17 +201,13 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 || status == MusicCst.PLAY_STATUS_PAUSE)) {
             final int duration = mediaPlayer.getDuration();
             final int currentPosition = mediaPlayer.getCurrentPosition();
-            tvTimeEnd.setText(Util.formatTime(duration));
+            setProgress(currentPosition, duration);
             tvTimeStart.setText(Util.formatTime(currentPosition));
-            seekBar.setMax(duration);
-            seekBar.setProgress(currentPosition);
             MusicModel model = control.getCurModel();
             resetFav(model.isCollected);
             getLrc(model);
         } else {
-            tvTimeEnd.setText(Util.formatTime(0));
-            seekBar.setMax(0);
-            seekBar.setProgress(0);
+            setProgress(0, 0);
         }
 
         if (status == MusicCst.PLAY_STATUS_PLAYING) {
@@ -270,7 +271,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void showMore() {
-        new MorePopup(context, MorePopup.TYPE_SONG_PLAY, control.getCurModel()).show();
+        MorePopup morePopup = new MorePopup(context, MorePopup.TYPE_SONG_PLAY, control.getCurModel(), type);
+        morePopup.setOnOperationLitener(new MorePopup.OnOperationLitener() {
+            @Override
+            public void onCollect() {
+                collect(true);
+            }
+        });
+        morePopup.show();
     }
 
     private void registerReceiver() {
@@ -278,8 +286,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         playerReceiver = new PlayerReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(MusicCst.MUSIC_CURRENT_POSITION);
-        filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         registerReceiver(playerReceiver, filter);
+        isRegisterReceiver = true;
     }
 
     private void rotationAnimator() {
@@ -346,13 +354,17 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     public void onCountChange(int count) {
-
+        if (count <= 0) {
+            setProgress(0, 0);
+            tvTimeStart.setText(Util.formatTime(0));
+            lrc.setLrcRows(new ArrayList<LrcRow>());
+        }
     }
 
     @Override
     public void reLoad(List<MusicModel> list) {
         if (list.size() > 0) {
-            MusicControl control = MusicService.getControl();
+            MusicControl control = MusicService.getControl(getApplicationContext());
             control.reLoad(list);
             MusicModel model = control.getCurModel();
             resetFav(model != null ? model.isCollected : false);
@@ -378,33 +390,35 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     public class PlayerReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
+            if (intent == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
                 return;
             }
-            String action = intent.getAction();
-            if (action.equals(MusicCst.MUSIC_CURRENT_POSITION)) {
+            if (intent.getAction().equals(MusicCst.MUSIC_CURRENT_POSITION)) {
                 int currentPosition = intent.getIntExtra("currentPosition", 0);
                 int duration = intent.getIntExtra("duration", 0);
                 tvTimeStart.setText(Util.formatTime(currentPosition));
-                tvTimeEnd.setText(Util.formatTime(duration));
-                seekBar.setMax(duration);
-                seekBar.setProgress(currentPosition);
+                setProgress(currentPosition, duration);
                 lrc.seekTo(currentPosition, false);
-            } else if (action.equals(MusicCst.MUSIC_CURRENT_INFO)) {
-                MusicModel model = control.getCurModel();
-                tvTitle.setText(model != null ? model.songName : "");
-                resetFav(model != null ? model.isCollected : false);
-                getLrc(model);
-                if (model == null) {
-                    togglePlay(false);
-                }
             }
         }
     }
 
+    private void setProgress(int currentPosition, int duration) {
+        tvTimeEnd.setText(Util.formatTime(duration));
+        seekBar.setMax(duration);
+        seekBar.setProgress(currentPosition);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlayOrPauseEvent event) {
-        togglePlay(event.isPlay);
+    public void onEventMainThread(MusicInfoEvent event) {
+        if (event == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
+            return;
+        }
+        MusicModel model = control.getCurModel();
+        tvTitle.setText(model != null ? model.songName : "");
+        resetFav(model != null ? model.isCollected : false);
+        getLrc(model);
+        togglePlay(model != null && event.status == MusicCst.PLAY_STATUS_PLAYING);
     }
 
     private void togglePlay(boolean isPlay) {
@@ -431,8 +445,11 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     protected void onDestroy() {
-        if (isRegisterReceiver && playerReceiver != null) {
-            unregisterReceiver(playerReceiver);
+        if (isRegisterReceiver) {
+            isRegisterReceiver = false;
+            if (playerReceiver != null) {
+                unregisterReceiver(playerReceiver);
+            }
         }
         EventBus.getDefault().unregister(this);
         super.onDestroy();

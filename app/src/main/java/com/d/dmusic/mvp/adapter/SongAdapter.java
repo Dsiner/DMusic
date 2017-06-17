@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SongAdapter extends CommonAdapter<MusicModel> {
     private int type;// 列表标识
-    private boolean IsSubPull;
+    private boolean isSubPull;
     private ISongView listener;
 
     public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type, ISongView listener) {
@@ -29,81 +29,52 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
     }
 
     public void setSubPull(boolean subPull) {
-        IsSubPull = subPull;
+        isSubPull = subPull;
     }
 
     @Override
     public void convert(final int position, final CommonHolder holder, final MusicModel item) {
+        holder.setViewVisibility(R.id.llyt_section, item.isLetter ? View.VISIBLE : View.GONE);
+        holder.setViewVisibility(R.id.v_right_space, item.letter != null ? View.VISIBLE : View.GONE);
         if (item.isLetter) {
             holder.setText(R.id.tv_letter, item.letter);
-            holder.setViewVisibility(R.id.llyt_section, View.VISIBLE);
-        } else {
-            holder.setViewVisibility(R.id.llyt_section, View.GONE);
         }
-        if (item.letter != null) {
-            holder.setViewVisibility(R.id.v_right_space, View.VISIBLE);
-        } else {
-            holder.setViewVisibility(R.id.v_right_space, View.GONE);
-        }
+
         holder.setText(R.id.tv_list_name, item.songName);
         holder.setText(R.id.tv_title, item.singer);
-        if (item.isChecked) {
-            holder.setChecked(R.id.cb_more, true);
-            holder.setViewVisibility(R.id.llyt_more_cover, View.VISIBLE);
-        } else {
-            holder.setChecked(R.id.cb_more, false);
-            holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
-        }
-        if (item.isCollected) {
-            holder.setText(R.id.tv_collect, "已收藏");
-        } else {
-            holder.setText(R.id.tv_collect, "收藏");
-        }
+        holder.setChecked(R.id.cb_more, item.isChecked);
+        holder.setViewVisibility(R.id.llyt_more_cover, item.isChecked ? View.VISIBLE : View.GONE);
+        holder.setText(R.id.tv_collect, item.isCollected ? "已收藏" : "收藏");
         holder.setViewOnClickListener(R.id.llyt_song, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MusicControl control = MusicService.getControl();
-                control.init(mDatas, position, true);
+                MusicControl control = MusicService.getControl(mContext);
+                control.init(mContext, mDatas, position, true);
             }
         });
         holder.setViewOnClickListener(R.id.flyt_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!IsSubPull) {
-                    new MorePopup(mContext, MorePopup.TYPE_SONG_SUB, item).show();
+                if (!isSubPull) {
+                    MorePopup morePopup = new MorePopup(mContext, MorePopup.TYPE_SONG_SUB, item, type);
+                    morePopup.setOnOperationLitener(new MorePopup.OnOperationLitener() {
+                        @Override
+                        public void onCollect() {
+                            collect(item, holder, position);
+                        }
+                    });
+                    morePopup.show();
                 } else {
                     item.isChecked = !item.isChecked;
-                    if (item.isChecked) {
-                        holder.setChecked(R.id.cb_more, true);
-                        holder.setViewVisibility(R.id.llyt_more_cover, View.VISIBLE);
-                    } else {
-                        holder.setChecked(R.id.cb_more, false);
-                        holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
-                    }
+                    holder.setChecked(R.id.cb_more, item.isChecked);
+                    holder.setViewVisibility(R.id.llyt_more_cover, item.isChecked ? View.VISIBLE : View.GONE);
                 }
             }
         });
         holder.setViewOnClickListener(R.id.llyt_collect, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MoreUtil.collect(mContext, item, type, true);
-                if (item.isCollected) {
-                    holder.setText(R.id.tv_collect, "已收藏");
-                    //将下拉菜单收回
-                    pullUp(item, holder);
-                } else {
-                    if (type == MusicDB.COLLECTION_MUSIC) {
-                        mDatas.remove(position);
-                        notifyDataSetChanged();
-                        if (listener != null) {
-                            listener.notifyDataCountChanged(mDatas.size());
-                        }
-                    } else {
-                        holder.setText(R.id.tv_collect, "收藏");
-                        //将下拉菜单收回
-                        pullUp(item, holder);
-                    }
-                }
+                collect(item, holder, position);
             }
         });
         holder.setViewOnClickListener(R.id.llyt_add_to_list, new OnClickFastListener() {
@@ -118,6 +89,22 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                 MoreUtil.showInfo(mContext, item);
             }
         });
+    }
+
+    private void collect(MusicModel item, CommonHolder holder, int position) {
+        MoreUtil.collect(mContext, item, type, true);
+        //status "item.isCollected" is changed
+        if (type == MusicDB.COLLECTION_MUSIC && !item.isCollected) {
+            mDatas.remove(position);
+            notifyDataSetChanged();
+            if (listener != null) {
+                listener.notifyDataCountChanged(mDatas.size());
+            }
+        } else {
+            holder.setText(R.id.tv_collect, item.isCollected ? "已收藏" : "收藏");
+            //将下拉菜单收回
+            pullUp(item, holder);
+        }
     }
 
     private void pullUp(final MusicModel item, final CommonHolder holder) {

@@ -1,12 +1,13 @@
 package com.d.dmusic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
@@ -22,7 +23,7 @@ import java.lang.ref.WeakReference;
  * SsssActivity
  * Created by D on 2017/4/28.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
     private Context context;
     private WeakHandler handler = new WeakHandler(this);
     private Preferences p;
@@ -56,6 +57,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        StatusBarCompat.compat(SplashActivity.this, Color.parseColor("#ececec"));//沉浸式状态栏
         p = Preferences.getInstance(getApplicationContext());
         if (p.getIsFirst()) {
             //首次安装启动
@@ -93,7 +95,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private void initView() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StatusBarCompat.compat(this, 0x00000000);//沉浸式状态栏
         setContentView(R.layout.activity_splash);
         findViewById(R.id.iv_splash).setVisibility(View.VISIBLE);
     }

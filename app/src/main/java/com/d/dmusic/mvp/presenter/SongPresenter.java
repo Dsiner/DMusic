@@ -31,7 +31,12 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         super(context);
     }
 
-    public void getSong(final int type, final int tab, final String sortKey) {
+    public void getSong(final int type, final int tab, final String sortKey, final int orderType) {
+        if (type >= MusicDB.CUSTOM_MUSIC_INDEX && type < MusicDB.CUSTOM_MUSIC_INDEX + MusicDB.CUSTOM_MUSIC_COUNT) {
+            //自定义歌曲
+            getSong(type, orderType);
+            return;
+        }
         if (isViewAttached()) {
             getView().setDSState(DSLayout.STATE_LOADING);
         }
@@ -124,5 +129,38 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//按自定义排序
             }
         });
+    }
+
+    /**
+     * 所有下拉菜单，收起
+     */
+    public void subPullUp(final List<MusicModel> datas) {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<MusicModel> list = new ArrayList<MusicModel>();
+                list.addAll(datas);
+                for (MusicModel m : list) {
+                    if (m != null) {
+                        m.isChecked = false;
+                    }
+                }
+                e.onNext(list);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().setSong(list);
+                    }
+                });
     }
 }
