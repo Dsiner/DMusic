@@ -2,7 +2,6 @@ package com.d.commen.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
@@ -10,12 +9,13 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 
 import butterknife.ButterKnife;
+import cn.feng.skin.manager.base.BaseSkinActivity;
 
 /**
  * BaseActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseActivity<T extends MvpBasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinActivity {
     protected T mPresenter;
     protected View rootView;
 

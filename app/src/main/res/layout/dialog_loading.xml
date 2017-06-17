@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin">
 
     <LinearLayout
         android:layout_width="135dp"
@@ -18,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="加载中..."
-            android:textColor="@color/color_line" />
+            android:textColor="@color/color_main"
+            skin:enable="true" />
     </LinearLayout>
 </merge>

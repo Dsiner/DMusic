@@ -132,7 +132,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         switch (v.getId()) {
             case R.id.btn_start:
                 //启动音乐主界面
-                requestPermissions();
+                ddc();
                 break;
         }
     }

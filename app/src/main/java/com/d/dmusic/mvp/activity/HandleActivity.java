@@ -36,6 +36,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * 歌曲列表排序、管理
@@ -158,7 +159,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(HandleActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
         context = this;
         initTitle();
 
@@ -213,6 +214,12 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
             SyncUtil.unCollected(context.getApplicationContext(), modelsFav, type);
         }
         super.finish();
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 
     @Override

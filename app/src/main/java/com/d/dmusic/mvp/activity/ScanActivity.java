@@ -17,6 +17,7 @@ import com.d.dmusic.view.TitleLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * 扫描首页
@@ -48,7 +49,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(ScanActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(ScanActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
         int type = getIntent().getIntExtra("type", 0);
         ULog.v("type" + type);
         initTitle();
@@ -68,6 +69,12 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment).addToBackStack(null)
                 .commitAllowingStateLoss();
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 
     @Override

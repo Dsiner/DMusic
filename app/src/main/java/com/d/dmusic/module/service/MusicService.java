@@ -1,5 +1,6 @@
 package com.d.dmusic.module.service;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -77,6 +78,23 @@ public class MusicService extends Service {
         context.startService(intent);
     }
 
+    /**
+     * 睡眠定时
+     *
+     * @param start: true:开始定时睡眠 false:取消睡眠设置
+     * @param time:  定时时间
+     */
+    public static void timing(Context context, boolean start, long time) {
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 4681,
+                new Intent(MusicCst.PLAYER_CONTROL_TIMING), PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        if (start) {
+            am.set(AlarmManager.RTC, System.currentTimeMillis() + time, pendingIntent);
+        } else {
+            am.cancel(pendingIntent);
+        }
+    }
+
     private static class WeakHandler extends Handler {
         WeakReference<MusicService> weakReference;
 
@@ -129,6 +147,7 @@ public class MusicService extends Service {
         filter.addAction(MusicCst.PLAYER_CONTROL_PREV);
         filter.addAction(MusicCst.PLAYER_CONTROL_NEXT);
         filter.addAction(MusicCst.PLAYER_CONTROL_EXIT);
+        filter.addAction(MusicCst.PLAYER_CONTROL_TIMING);
         filter.addAction(MusicCst.PLAYER_RELOAD);
         filter.addAction(MusicCst.MUSIC_CURRENT_INFO);
         filter.addAction(MusicCst.MUSIC_SEEK_TO_TIME);
@@ -282,6 +301,9 @@ public class MusicService extends Service {
                             SysApplication.getInstance().exit();//退出应用
                             break;
                     }
+                    break;
+                case MusicCst.PLAYER_CONTROL_TIMING:
+                    SysApplication.getInstance().exit();//退出应用
                     break;
                 case MusicCst.PLAYER_RELOAD:
                 case MusicCst.MUSIC_CURRENT_INFO:

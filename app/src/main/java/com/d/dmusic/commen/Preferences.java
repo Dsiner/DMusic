@@ -48,6 +48,21 @@ public class Preferences extends AbstractPreference {
     }
 
     /**
+     * 设置是否皮肤包加载成功
+     */
+    public void putSkinLoaded(boolean isFirst) {
+        editor.putBoolean("isSkinLoaded", isFirst);
+        save();
+    }
+
+    /**
+     * 获取是否皮肤包加载成功
+     */
+    public boolean getSkinLoaded() {
+        return settings.getBoolean("isSkinLoaded", false);
+    }
+
+    /**
      * 设置音乐播放器模式
      * 音乐播放器模式，0：普通模式，1：极简模式，2：通知栏模式
      */
@@ -219,8 +234,8 @@ public class Preferences extends AbstractPreference {
     /**
      * 设置皮肤
      */
-    public void putSkin(int skin) {
-        editor.putInt("skin_color", skin);
+    public void putSkin(int type) {
+        editor.putInt("skin_type", type);
         save();
     }
 
@@ -228,6 +243,36 @@ public class Preferences extends AbstractPreference {
      * 获取皮肤
      */
     public int getSkin() {
-        return settings.getInt("skin_color", 0);
+        return settings.getInt("skin_type", -1);
+    }
+
+    /**
+     * 设置睡眠定时类型
+     */
+    public void putSleepType(int skin) {
+        editor.putInt("sleep_type", skin);
+        save();
+    }
+
+    /**
+     * 获取睡眠定时类型
+     */
+    public int getSleepType() {
+        return settings.getInt("sleep_type", 0);
+    }
+
+    /**
+     * 设置睡眠定时自定义时间
+     */
+    public void putSleepTiming(long time) {
+        editor.putLong("sleep_timing", time);
+        save();
+    }
+
+    /**
+     * 获取睡眠定时自定义时间
+     */
+    public long getSleepTiming() {
+        return settings.getLong("sleep_timing", 0);
     }
 }

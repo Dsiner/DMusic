@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin">
 
     <FrameLayout
         android:id="@+id/flyt_header_song_play_all"
@@ -12,7 +13,8 @@
             android:layout_height="24dp"
             android:layout_gravity="center"
             android:background="@color/color_main"
-            android:src="@drawable/ic_play_all_e" />
+            android:src="@drawable/ic_play_all_e"
+            skin:enable="true" />
     </FrameLayout>
 
     <LinearLayout
@@ -49,6 +51,7 @@
             android:layout_height="@dimen/dimen_item_icon"
             android:layout_gravity="center"
             android:background="@color/color_main"
-            android:src="@drawable/ic_song_handler" />
+            android:src="@drawable/ic_song_handler"
+            skin:enable="true" />
     </FrameLayout>
 </merge>

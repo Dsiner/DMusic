@@ -49,12 +49,18 @@ public class MusicCst {
     public static final String PLAYER_CONTROL_NEXT = "com.d.dmusic.action.player_control_next";//下一首
     public static final String PLAYER_CONTROL_PREV = "com.d.dmusic.action.player_control_prev";//上一首
     public static final String PLAYER_CONTROL_EXIT = "com.d.dmusic.action.player_control_exit";//退出应用
+    public static final String PLAYER_CONTROL_TIMING = "com.d.dmusic.action.player_control_timing";//睡眠定时
 
     public static final String MUSIC_CURRENT_INFO = "com.d.dmusic.action.music_current_info";//用来接收service的广播,更新当前正在播放歌曲信息
     public static final String MUSIC_CURRENT_POSITION = "com.d.dmusic.action.music_current_position";//用来接收service的广播
     public static final String MUSIC_SEEK_TO_TIME = "com.d.dmusic.action.music_seek_to_time";//用来发送SeekBar进度改变广播，播放时间跳转
 
     public static final String TAG_EXIT = "tag_exit";
+
+    public static final String SKIN_NAME = "dmusicskin_";//dmusicskin_0、dmusicskin_1、dmusicskin_2...dmusicskin__n皮肤包如此命名
+    public static final String SKIN_NAME_POSTFIX = ".skin";//皮肤包拼接后缀名
+    public static final int SKIN_COUNT = 18;//皮肤包总数目
+
     /**
      * variable
      */

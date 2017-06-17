@@ -135,15 +135,17 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     private void addTo() {
         showLoading();
-        Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<List<CustomList>> e) throws Exception {
+            public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
+                Boolean isEmpty = true;
                 List<CustomList> list = adapter.getDatas();// 除当前列表外的自定义列表队列
                 if (list != null) {
                     for (CustomList b : list) {
                         if (!b.isChecked) {
                             continue;
                         }
+                        isEmpty = false;
                         MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(MusicModel.clone(models, b.pointer), b.pointer);
 
                         //更新首页自定义列表歌曲数
@@ -163,25 +165,27 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                             MusicDBUtil.getInstance(context).updateCusListCount(b.pointer, count);
                         }
                     }
-                } else {
-                    list = new ArrayList<>();
                 }
-                e.onNext(list);
+                e.onNext(isEmpty);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<CustomList>>() {
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void accept(@NonNull List<CustomList> list) throws Exception {
+                    public void accept(@NonNull Boolean isEmpty) throws Exception {
                         if (context == null || ((Activity) context).isFinishing()) {
                             return;
                         }
-                        Util.toast(context, "成功添加");
-
-                        //更新首页自定义列表
-                        EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
-                        dismiss();
+                        closeLoading();
+                        if (isEmpty) {
+                            Util.toast(context, "请先选择");
+                        } else {
+                            Util.toast(context, "成功添加");
+                            //更新首页自定义列表
+                            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
+                            dismiss();
+                        }
                     }
                 });
     }

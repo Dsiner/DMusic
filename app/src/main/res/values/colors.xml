@@ -14,25 +14,25 @@
     <color name="color_green">#00ff00</color>
 
     <!--皮肤色-->
-    <color name="color_main_skin0">#1DA0EF</color>
-    <color name="color_main_skin1">#FD8D22</color>
-    <color name="color_main_skin2">#f85959</color>
-    <color name="color_main_skin3">#68AB56</color>
-    <color name="color_main_skin4">#3D9093</color>
-    <color name="color_main_skin5">#4F91B6</color>
-    <color name="color_main_skin6">#7F73B7</color>
-    <color name="color_main_skin7">#AB6850</color>
-    <color name="color_main_skin8">#FF8EB6</color>
-    <color name="color_main_skin9">#FFB88E</color>
-    <color name="color_main_skin10">#AEFE8E</color>
-    <color name="color_main_skin11">#8DC7FF</color>
-    <color name="color_main_skin12">#E79BFF</color>
-    <color name="color_main_skin13">#62D4F4</color>
-    <color name="color_main_skin14">#FE99A8</color>
-    <color name="color_main_skin15">#2A2B30</color>
-    <color name="color_main_skin16">#FFB37F</color>
-    <color name="color_main_skin17">#46C5BA</color>
-    <color name="color_main_skin18">#2FC1FD</color>
+    <color name="color_main_skin">#1DA0EF</color>
+    <color name="color_main_skin0">#FD8D22</color>
+    <color name="color_main_skin1">#f85959</color>
+    <color name="color_main_skin2">#68AB56</color>
+    <color name="color_main_skin3">#3D9093</color>
+    <color name="color_main_skin4">#4F91B6</color>
+    <color name="color_main_skin5">#7F73B7</color>
+    <color name="color_main_skin6">#AB6850</color>
+    <color name="color_main_skin7">#FF8EB6</color>
+    <color name="color_main_skin8">#FFB88E</color>
+    <color name="color_main_skin9">#AEFE8E</color>
+    <color name="color_main_skin10">#8DC7FF</color>
+    <color name="color_main_skin11">#E79BFF</color>
+    <color name="color_main_skin12">#62D4F4</color>
+    <color name="color_main_skin13">#FE99A8</color>
+    <color name="color_main_skin14">#2A2B30</color>
+    <color name="color_main_skin15">#FFB37F</color>
+    <color name="color_main_skin16">#46C5BA</color>
+    <color name="color_main_skin17">#2FC1FD</color>
 
     <!--全局背景色-->
     <color name="color_bg_main">#FFFFFF</color>
@@ -44,7 +44,7 @@
     <color name="color_main_30">#661DA0EF</color>
     <color name="color_translucent">#9900040a</color>
     <color name="color_line">#e5e5e5</color>
-    <color name="color_dialog_bg">#2C2C2C</color>
+    <color name="color_dialog_bg">#C1C1C1C1</color>
     <color name="color_queque_bg">#aa10141C</color>
     <color name="color_popup_more">#BEBFBF</color>
     <color name="color_popup_more_light">#494949</color>

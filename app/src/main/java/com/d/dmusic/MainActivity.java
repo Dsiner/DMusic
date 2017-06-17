@@ -34,6 +34,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * MainActivity
@@ -105,7 +106,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
             return;
         }
         context = this;
-        StatusBarCompat.compat(MainActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
         Util.setScreenSize(MainActivity.this);
         fManger = getSupportFragmentManager();
         drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
@@ -185,6 +186,12 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 tvSinger.setText(singer);
             }
         }
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.util.MusicDBUtil;
 import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.module.service.MusicService;
+import com.d.dmusic.module.skin.SkinUtil;
 import com.d.dmusic.mvp.activity.PlayActivity;
 import com.d.dmusic.mvp.activity.PlayerModeActivity;
 
@@ -39,11 +40,7 @@ public class SysApplication extends Application {
         //初始化数据库
         MusicDBUtil.getInstance(getApplicationContext());
         ClickUtil.setDelayTime(350);
-    }
-
-    @Override
-    public Context getApplicationContext() {
-        return super.getApplicationContext();
+        SkinUtil.initSkin(getApplicationContext());
     }
 
     /**
@@ -52,6 +49,8 @@ public class SysApplication extends Application {
     public void exit() {
         //释放全局静态变量
         MusicCst.release();
+        MusicService.timing(getApplicationContext(), false, 0);
+        Preferences.getInstance(getApplicationContext()).putSleepType(0);
         //保存当前播放位置
         Preferences.getInstance(getApplicationContext()).putLastPlayPosition(MusicService.getControl().getCurPos());
         //停止服务

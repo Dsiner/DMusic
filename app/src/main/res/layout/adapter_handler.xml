@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -18,7 +19,8 @@
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"
-                android:background="@color/color_main" />
+                android:background="@color/color_main"
+                skin:enable="true" />
 
             <CheckBox
                 android:id="@+id/cb_check"
@@ -64,7 +66,8 @@
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"
                 android:background="@color/color_main"
-                android:src="@drawable/ic_sort_handler" />
+                android:src="@drawable/ic_sort_handler"
+                skin:enable="true" />
         </FrameLayout>
 
     </LinearLayout>

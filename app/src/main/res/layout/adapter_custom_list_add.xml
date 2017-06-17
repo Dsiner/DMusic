@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:gravity="center_vertical">
@@ -12,7 +13,8 @@
         android:gravity="center"
         android:text="+"
         android:textColor="@color/color_main"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        skin:enable="true" />
 
     <TextView
         android:layout_width="match_parent"

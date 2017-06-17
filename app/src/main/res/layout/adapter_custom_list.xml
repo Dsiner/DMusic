@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.d.lib.slidelayout.SlideLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/sl_slide"
     android:layout_width="match_parent"
     android:layout_height="70dp">
@@ -17,7 +18,8 @@
             android:layout_marginLeft="@dimen/dimen_margin"
             android:layout_marginRight="@dimen/dimen_margin"
             android:background="@color/color_main"
-            android:gravity="center">
+            android:gravity="center"
+            skin:enable="true">
 
             <ImageView
                 android:layout_width="26dp"

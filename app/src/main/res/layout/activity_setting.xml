@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_sub"
@@ -12,7 +13,8 @@
         android:layout_height="@dimen/dimen_title_height"
         android:background="@color/color_main"
         app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="title" />
+        app:tl_middleText="title"
+        skin:enable="true" />
 
     <ScrollView
         android:layout_width="match_parent"

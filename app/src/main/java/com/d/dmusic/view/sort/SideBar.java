@@ -13,6 +13,8 @@ import android.view.View;
 import com.d.dmusic.R;
 import com.d.dmusic.utils.Util;
 
+import cn.feng.skin.manager.loader.SkinManager;
+
 /**
  * SideBar
  * Created by D on 2017/6/6.
@@ -69,7 +71,7 @@ public class SideBar extends View {
 
         paintCur = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintCur.setTextAlign(Paint.Align.CENTER);
-        paintCur.setColor(getResources().getColor(R.color.color_main));
+        paintCur.setColor(SkinManager.getInstance().getColor(R.color.color_main));
 
         paintRect = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintRect.setTextAlign(Paint.Align.CENTER);
@@ -112,6 +114,14 @@ public class SideBar extends View {
         textHeight = Util.getTextHeight(paint);
         textLightHeight = Util.getTextHeight(paintRect);
         setMeasuredDimension(width, height);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        if (paintCur != null) {
+            paintCur.setColor(SkinManager.getInstance().getColor(R.color.color_main));
+        }
+        super.onAttachedToWindow();
     }
 
     @Override

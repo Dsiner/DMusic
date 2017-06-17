@@ -26,6 +26,7 @@ import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.mvp.adapter.CustomListAdapter;
 import com.d.dmusic.mvp.presenter.MainPresenter;
 import com.d.dmusic.mvp.view.IMainView;
+import com.d.dmusic.utils.Util;
 import com.d.dmusic.utils.fileutil.FileUtil;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
@@ -146,6 +147,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         super.onViewCreated(view, savedInstanceState);
         if (p.getIsFirst()) {
             p.putIsFirst(false);
+            mPresenter.getCustomList(isShowAdd);
             scanAll();
             return;
         }
@@ -228,6 +230,13 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                             if (permission.granted) {
                                 // `permission.name` is granted !
                                 doInBackground(getActivity(), MusicDB.LOCAL_ALL_MUSIC);
+                            } else if (permission.shouldShowRequestPermissionRationale) {
+                                // Denied permission without ask never again
+                                Util.toast(getActivity().getApplicationContext(), "Denied permission!");
+                            } else {
+                                // Denied permission with ask never again
+                                // Need to go to the settings
+                                Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
                             }
                         }
                     });

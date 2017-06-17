@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_translucent"
@@ -9,11 +10,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@color/color_main"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        skin:enable="true">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="@dimen/dimen_item_height"
             android:gravity="center"
             android:text="歌曲信息"
             android:textColor="@color/color_white"
@@ -212,11 +214,12 @@
         <TextView
             android:id="@+id/tv_ok"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/dimen_item_height"
             android:background="@color/color_white"
             android:gravity="center"
             android:text="确定"
             android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="@dimen/dimen_text_sub"
+            skin:enable="true" />
     </LinearLayout>
 </RelativeLayout>
