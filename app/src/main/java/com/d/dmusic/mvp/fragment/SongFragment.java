@@ -64,7 +64,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     private SongAdapter adapter;
     private int orderType;
     private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
-    private boolean IsSubPull;//为了同步设置，需要重新刷新
+    private boolean isSubPull;//为了同步设置，需要重新刷新
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
@@ -102,10 +102,10 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Override
     protected void init() {
         p = Preferences.getInstance(getActivity().getApplicationContext());
-        IsSubPull = p.getIsSubPull();
+        isSubPull = p.getIsSubPull();
         initTitle();
         adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type, this);
-        adapter.setSubPull(IsSubPull);
+        adapter.setSubPull(isSubPull);
         header = new SongHeaderView(context);
         header.setVisibility(View.GONE);
         if (type == MusicDB.LOCAL_ALL_MUSIC) {
@@ -117,13 +117,13 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         xrvList.setCanLoadMore(false);
         xrvList.addHeaderView(header);
         xrvList.setAdapter(adapter);
+        orderType = MusicDBUtil.getInstance(context).queryCusListSoryType(type);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.getSong(type, tab, title);
-        orderType = MusicDBUtil.getInstance(context).queryCusListSoryType(type);
+        mPresenter.getSong(type, tab, title, orderType);
     }
 
     @Override
@@ -131,12 +131,14 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
-            mPresenter.getSong(type, tab, title);
+            mPresenter.getSong(type, tab, title, orderType);
         }
-        if (IsSubPull != p.getIsSubPull()) {
-            IsSubPull = !IsSubPull;
-            adapter.setSubPull(IsSubPull);
-            mPresenter.getSong(type, tab, title);
+        if (isSubPull != p.getIsSubPull()) {
+            isSubPull = !isSubPull;
+            adapter.setSubPull(isSubPull);
+            if (!isSubPull) {
+                mPresenter.subPullUp(adapter.getDatas());
+            }
         }
     }
 
@@ -225,8 +227,8 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     public void onPlayAll() {
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
-            MusicControl control = MusicService.getControl();
-            control.init(datas, 0, true);
+            MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
+            control.init(context, datas, 0, true);
         }
     }
 

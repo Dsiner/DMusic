@@ -36,15 +36,17 @@ public class MorePopup implements View.OnClickListener {
     private Context context;//must be Activity
     private PopupWindow popupWindow;
     private View rootView;
+    private int popType;
     private int type;
     private MusicModel model;
-    private MoreAdapter adapter;
+    private OnOperationLitener litener;
 
-    public MorePopup(Context context, int type, MusicModel model) {
+    public MorePopup(Context context, int popType, MusicModel model, int type) {
+        this.popType = popType;
         this.type = type;
         this.model = model;
         this.context = context;
-        rootView = LayoutInflater.from(context).inflate(type == TYPE_SONG_PLAY ? R.layout.popup_more : R.layout.popup_more_light, null);
+        rootView = LayoutInflater.from(context).inflate(popType == TYPE_SONG_PLAY ? R.layout.popup_more : R.layout.popup_more_light, null);
         popupWindow = new PopupWindow(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
@@ -58,7 +60,7 @@ public class MorePopup implements View.OnClickListener {
         LinearLayoutManager layoutManager0 = new LinearLayoutManager(context);
         layoutManager0.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvList0.setLayoutManager(layoutManager0);
-        adapter = new MoreAdapter(context, getDatas(), type == TYPE_SONG_PLAY ? R.layout.adapter_more : R.layout.adapter_more_light);
+        MoreAdapter adapter = new MoreAdapter(context, getDatas(), popType == TYPE_SONG_PLAY ? R.layout.adapter_more : R.layout.adapter_more_light);
         rvList0.setAdapter(adapter);
         rootView.findViewById(R.id.v_blank).setOnClickListener(this);
         rootView.findViewById(R.id.tv_quit).setOnClickListener(this);
@@ -95,17 +97,17 @@ public class MorePopup implements View.OnClickListener {
     private List<MoreAdapter.Bean> getDatas() {
         List<MoreAdapter.Bean> datas = new ArrayList<>();
         MoreAdapter.Bean beans[] = new MoreAdapter.Bean[11];
-        int icAddList = type == TYPE_SONG_PLAY ? R.drawable.ic_song_addlist_m : R.drawable.ic_song_addlist_lm;
-        int icFav = type == TYPE_SONG_PLAY ? R.drawable.ic_song_fav_m : R.drawable.ic_song_fav_lm;
-        int icRing = type == TYPE_SONG_PLAY ? R.drawable.ic_song_ring_m : R.drawable.ic_song_ring_lm;
-        int icAdjustLrc = type == TYPE_SONG_PLAY ? R.drawable.ic_song_adjust_lrc_m : R.drawable.ic_song_adjust_lrc_lm;
-        int icInfo = type == TYPE_SONG_PLAY ? R.drawable.ic_song_info_m : R.drawable.ic_song_info_lm;
-        int icDelete = type == TYPE_SONG_PLAY ? R.drawable.ic_song_delete_m : R.drawable.ic_song_delete_lm;
-        int icEdit = type == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
-        int icSearchLrc = type == TYPE_SONG_PLAY ? R.drawable.ic_song_search_lrc_m : R.drawable.ic_song_search_lrc_lm;
-        int icModeChange = type == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
-        int icSetting = type == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
-        int icExit = type == TYPE_SONG_PLAY ? R.drawable.ic_menu_exit : R.drawable.ic_menu_exit;
+        int icAddList = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_addlist_m : R.drawable.ic_song_addlist_lm;
+        int icFav = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_fav_m : R.drawable.ic_song_fav_lm;
+        int icRing = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_ring_m : R.drawable.ic_song_ring_lm;
+        int icAdjustLrc = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_adjust_lrc_m : R.drawable.ic_song_adjust_lrc_lm;
+        int icInfo = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_info_m : R.drawable.ic_song_info_lm;
+        int icDelete = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_delete_m : R.drawable.ic_song_delete_lm;
+        int icEdit = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
+        int icSearchLrc = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_search_lrc_m : R.drawable.ic_song_search_lrc_lm;
+        int icModeChange = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
+        int icSetting = popType == TYPE_SONG_PLAY ? R.drawable.ic_song_edit_m : R.drawable.ic_song_edit_lm;
+        int icExit = popType == TYPE_SONG_PLAY ? R.drawable.ic_menu_exit : R.drawable.ic_menu_exit;
         beans[0] = new MoreAdapter.Bean(icAddList, "加到歌单", new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
@@ -116,17 +118,18 @@ public class MorePopup implements View.OnClickListener {
                 MoreUtil.addToList(context, model, type);
             }
         });
-        if (type != TYPE_SONG_PLAY)
-            beans[1] = new MoreAdapter.Bean(icFav, (model != null && model.isCollected) ? "已收藏" : "收藏", new OnClickFastListener() {
-                @Override
-                public void onFastClick(View v) {
-                    if (model == null) {
-                        return;
-                    }
-                    dismiss();
-                    MoreUtil.collect(context, model, type, true);
+        beans[1] = new MoreAdapter.Bean(icFav, (model != null && model.isCollected) ? "已收藏" : "收藏", new OnClickFastListener() {
+            @Override
+            public void onFastClick(View v) {
+                if (model == null) {
+                    return;
                 }
-            });
+                if (litener != null) {
+                    litener.onCollect();
+                }
+                dismiss();
+            }
+        });
 //        beans[2] = new MoreAdapter.Bean(icRing, "设置铃声", new OnClickFastListener() {
 //            @Override
 //            public void onFastClick(View v) {
@@ -173,7 +176,7 @@ public class MorePopup implements View.OnClickListener {
 //                }
 //            });
 
-        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && type == TYPE_SONG_PLAY)
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && popType == TYPE_SONG_PLAY)
             beans[8] = new MoreAdapter.Bean(icModeChange, "模式切换", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
@@ -189,11 +192,11 @@ public class MorePopup implements View.OnClickListener {
 //                }
 //            });
 
-        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && type == TYPE_SONG_PLAY)
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST && popType == TYPE_SONG_PLAY)
             beans[10] = new MoreAdapter.Bean(icExit, "退出", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
-                    SysApplication.getInstance().exit();
+                    SysApplication.exit(context);
                 }
             });
 
@@ -207,5 +210,13 @@ public class MorePopup implements View.OnClickListener {
 
     public void refresh(MusicModel model) {
         this.model = model;
+    }
+
+    public interface OnOperationLitener {
+        void onCollect();
+    }
+
+    public void setOnOperationLitener(OnOperationLitener l) {
+        this.litener = l;
     }
 }

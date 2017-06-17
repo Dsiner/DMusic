@@ -27,7 +27,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="@dimen/dimen_text_main" />
 
         <ImageView
             android:id="@+id/iv_more"
@@ -64,14 +64,14 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dimen_margin"
             app:lrcCurTextColor="@color/color_main"
-            app:lrcCurTextSize="17dp"
+            app:lrcCurTextSize="19dp"
             app:lrcMaxScale="1.7"
             app:lrcMinScale="0.7"
-            app:lrcPadding="17dp"
-            app:lrcTextColor="@color/color_gray"
-            app:lrcTextSize="15dp"
+            app:lrcPadding="21dp"
+            app:lrcTextColor="@color/color_dgray"
+            app:lrcTextSize="17dp"
             app:lrcTimeColor="@color/color_white"
-            app:lrcTimeSize="8dp" />
+            app:lrcTimeSize="10dp" />
     </FrameLayout>
 
     <LinearLayout

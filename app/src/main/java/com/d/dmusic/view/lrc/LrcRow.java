@@ -2,7 +2,8 @@ package com.d.dmusic.view.lrc;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.d.dmusic.utils.log.ULog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class LrcRow implements Comparable<LrcRow> {
      * 比如  [03:33.02][00:36.37]当鸽子不再象征和平  ，就包含了2个对象
      */
     public static List<LrcRow> createRows(String lrcLine) {
-        if (!lrcLine.startsWith("[") || lrcLine.indexOf("]") != 9) {
+        if (lrcLine == null || !lrcLine.startsWith("[") || lrcLine.indexOf("]") != 9) {
             return null;
         }
         //最后一个"]"
@@ -87,7 +88,7 @@ public class LrcRow implements Comparable<LrcRow> {
         //歌词内容
         String content = lrcLine.substring(lastIndexOfRightBracket + 1, lrcLine.length());
         //截取出歌词时间，并将"[" 和"]" 替换为"-"   [offset:0]
-        System.out.println("lrcLine=" + lrcLine);
+        ULog.d("lrcLine=" + lrcLine);
         // -03:33.02--00:36.37-
         String times = lrcLine.substring(0, lastIndexOfRightBracket + 1).replace("[", "-").replace("]", "-");
         String[] timesArray = times.split("-");
@@ -100,7 +101,7 @@ public class LrcRow implements Comparable<LrcRow> {
                 LrcRow lrcRow = new LrcRow(tem, formatTime(tem), content);
                 lrcRows.add(lrcRow);
             } catch (Exception e) {
-                Log.w("LrcRow", e.getMessage());
+                ULog.d("LrcRow" + e.getMessage());
             }
         }
         return lrcRows;

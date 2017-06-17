@@ -27,7 +27,8 @@
         <activity
             android:name="com.d.dmusic.WelcomeActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.d.dmusic.MainActivity"
             android:configChanges="keyboardHidden|orientation"

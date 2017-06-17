@@ -41,11 +41,15 @@ public class DefaultLrcParser implements ILrcParser {
                     lrcRows.addAll(rows);
                 }
             }
-            Collections.sort(lrcRows);
-            for (int i = 0; i < lrcRows.size() - 1; i++) {
-                lrcRows.get(i).setTotalTime(lrcRows.get(i + 1).getTime() - lrcRows.get(i).getTime());
+            final int size = lrcRows.size();
+            if (size > 0) {
+                Collections.sort(lrcRows);
+                for (int i = 0; i < size - 1; i++) {
+                    LrcRow l = lrcRows.get(i);
+                    l.setTotalTime(lrcRows.get(i + 1).getTime() - l.getTime());
+                }
+                lrcRows.get(size - 1).setTotalTime(5000);
             }
-            lrcRows.get(lrcRows.size() - 1).setTotalTime(5000);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

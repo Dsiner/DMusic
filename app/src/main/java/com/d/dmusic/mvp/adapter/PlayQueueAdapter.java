@@ -24,17 +24,17 @@ public class PlayQueueAdapter extends CommonAdapter<MusicModel> {
     @Override
     public void convert(final int position, CommonHolder holder, MusicModel item) {
         holder.setText(R.id.tv_song_name, item.songName);
-        holder.setText(R.id.tv_singer, "--" + item.singer);
+        holder.setText(R.id.tv_singer, "-- " + item.singer);
         holder.setViewOnClickListener(R.id.llyt_queue, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MusicService.getControl().playPosition(position);
+                MusicService.getControl(mContext).playPosition(position);
             }
         });
         holder.setViewOnClickListener(R.id.iv_delete, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MusicService.getControl().delelteByPosition(position);
+                MusicService.getControl(mContext).delelteByPosition(mContext, position);
                 notifyDataSetChanged();
                 if (listener != null) {
                     listener.onCountChange(mDatas.size());

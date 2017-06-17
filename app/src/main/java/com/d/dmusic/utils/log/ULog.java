@@ -22,10 +22,10 @@ public class ULog {
     }
 
     public static void v(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
         if (DEBUG.DEVELOP_MODE) {
+            if (TextUtils.isEmpty(message)) {
+                return;
+            }
             final StackTraceElement[] stack = new Throwable().getStackTrace();
             final int i = 1;
             final StackTraceElement ste = stack[i];
@@ -34,10 +34,10 @@ public class ULog {
     }
 
     public static void d(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
         if (DEBUG.DEVELOP_MODE) {
+            if (TextUtils.isEmpty(message)) {
+                return;
+            }
             final StackTraceElement[] stack = new Throwable().getStackTrace();
             final int i = 1;
             final StackTraceElement ste = stack[i];
@@ -47,10 +47,10 @@ public class ULog {
 
 
     public static void i(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
         if (DEBUG.DEVELOP_MODE) {
+            if (TextUtils.isEmpty(message)) {
+                return;
+            }
             final StackTraceElement[] stack = new Throwable().getStackTrace();
             final int i = 1;
             final StackTraceElement ste = stack[i];
@@ -60,10 +60,10 @@ public class ULog {
 
 
     public static void w(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
         if (DEBUG.DEVELOP_MODE) {
+            if (TextUtils.isEmpty(message)) {
+                return;
+            }
             final StackTraceElement[] stack = new Throwable().getStackTrace();
             final int i = 1;
             final StackTraceElement ste = stack[i];
@@ -72,10 +72,10 @@ public class ULog {
     }
 
     public static void e(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
         if (DEBUG.DEVELOP_MODE) {
+            if (TextUtils.isEmpty(message)) {
+                return;
+            }
             final StackTraceElement[] stack = new Throwable().getStackTrace();
             final int i = 1;
             final StackTraceElement ste = stack[i];

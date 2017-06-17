@@ -41,17 +41,17 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     private SongAdapter adapter;
     private SortUtil sortUtil;
     private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
-    private boolean IsSubPull;//为了同步设置，需要重新刷新
+    private boolean isSubPull;//为了同步设置，需要重新刷新
 
     @Override
     protected void init() {
         super.init();
         context = getActivity();
         p = Preferences.getInstance(getActivity().getApplicationContext());
-        IsSubPull = p.getIsSubPull();
+        isSubPull = p.getIsSubPull();
         sortUtil = new SortUtil();
         adapter = new SongAdapter(context, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
-        adapter.setSubPull(IsSubPull);
+        adapter.setSubPull(isSubPull);
         header = new SongHeaderView(context);
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
@@ -88,10 +88,12 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
             isNeedReLoad = false;
             mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
         }
-        if (IsSubPull != p.getIsSubPull()) {
-            IsSubPull = !IsSubPull;
-            adapter.setSubPull(IsSubPull);
-            mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
+        if (isSubPull != p.getIsSubPull()) {
+            isSubPull = !isSubPull;
+            adapter.setSubPull(isSubPull);
+            if (!isSubPull) {
+                mPresenter.subPullUp(adapter.getDatas());
+            }
         }
     }
 
@@ -143,8 +145,8 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     public void onPlayAll() {
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
-            MusicControl control = MusicService.getControl();
-            control.init(datas, 0, true);
+            MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
+            control.init(context, datas, 0, true);
         }
     }
 

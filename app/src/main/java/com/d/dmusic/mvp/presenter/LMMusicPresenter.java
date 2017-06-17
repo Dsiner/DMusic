@@ -51,6 +51,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                     sortUtil.sortDatas(list);//重新排序
                 }
                 e.onNext(list);
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,6 +94,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                     cursor.close();
                 }
                 e.onNext(list);
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,6 +141,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                     cursor.close();
                 }
                 e.onNext(list);
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -185,6 +188,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                     cursor.close();
                 }
                 e.onNext(list);
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -200,6 +204,36 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                             getView().setDSState(View.GONE);
                         }
                         getView().setFolder(list);
+                    }
+                });
+    }
+
+    public void subPullUp(final List<MusicModel> datas) {
+        if (isViewAttached()) {
+            getView().setDSState(DSLayout.STATE_LOADING);
+        }
+        Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
+                List<MusicModel> list = new ArrayList<MusicModel>();
+                list.addAll(datas);
+                for (MusicModel m : list) {
+                    if (m != null) {
+                        m.isChecked = false;
+                    }
+                }
+                e.onNext(list);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MusicModel>>() {
+                    @Override
+                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+                        getView().setSong(list);
                     }
                 });
     }

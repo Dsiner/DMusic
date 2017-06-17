@@ -49,12 +49,12 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
 
     private int verify(String time) {
         if (TextUtils.isEmpty(time)) {
-            Util.toast(context.getApplicationContext(), "请输入睡眠时间");
+            Util.toast(context, "请输入睡眠时间");
             return -1;
         }
         int t = Integer.valueOf(time);
         if (t <= 0) {
-            SysApplication.getInstance().exit();
+            SysApplication.exit(context);
         }
         return t;
     }

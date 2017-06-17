@@ -45,6 +45,7 @@
                 android:id="@+id/tv_song_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:textSize="@dimen/dimen_text_small" />
 
             <TextView
@@ -52,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:singleLine="true"
                 android:textSize="@dimen/dimen_text_mini" />
         </LinearLayout>
 

@@ -1,11 +1,10 @@
 package com.d.dmusic.module.service;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 
 import com.d.dmusic.commen.Preferences;
-import com.d.dmusic.module.events.PlayOrPauseEvent;
+import com.d.dmusic.module.events.MusicInfoEvent;
 import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
@@ -34,7 +33,6 @@ import io.reactivex.schedulers.Schedulers;
 public class MusicControl {
     private static MusicControl instance;
 
-    private Context context;
     private Preferences p;
     private int status;//0:无 1:播放 2:暂停
     private MediaPlayer mediaPlayer;
@@ -83,7 +81,6 @@ public class MusicControl {
     }
 
     private MusicControl(Context context) {
-        this.context = context.getApplicationContext();
         p = Preferences.getInstance(context.getApplicationContext());
         reset();
         mediaPlayer = new MediaPlayer();
@@ -103,14 +100,14 @@ public class MusicControl {
         if (instance == null) {
             synchronized (MusicControl.class) {
                 if (instance == null) {
-                    instance = new MusicControl(context);
+                    instance = new MusicControl(context.getApplicationContext());
                 }
             }
         }
         return instance;
     }
 
-    public void init(final List<MusicModel> datas, final int position, final boolean play) {
+    public void init(final Context context, final List<MusicModel> datas, final int position, final boolean play) {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
@@ -167,10 +164,10 @@ public class MusicControl {
     /**
      * 清空当前播放列表
      */
-    public void delelteAll() {
+    public void delelteAll(final Context context) {
         stop();
         reset();
-        cancle();
+        sendBroadcast(status, true);
         TaskManager.getIns().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -179,31 +176,31 @@ public class MusicControl {
         });
     }
 
-    public void delelteByPosition(final int position) {
+    public void delelteByPosition(Context context, final int position) {
         if (position < 0 || position >= count) {
             return;
         }
         if (position > curPos) {
-            reCul(position);
+            reCul(context, position);
         } else if (position < curPos) {
-            reCul(position);
+            reCul(context, position);
             curPos--;
         } else if (position == curPos) {
             stop();
             if (position == count - 1) {
-                reCul(position);
+                reCul(context, position);
                 curPos = 0;
                 if (count > 0) {
                     play();
                 }
             } else {
-                reCul(position);
+                reCul(context, position);
                 play();
             }
         }
     }
 
-    private void reCul(int position) {
+    private void reCul(Context context, int position) {
         MusicDBUtil.getInstance(context).delete(MusicDB.MUSIC, getCurModel());
         models.remove(position);
         count = models.size();
@@ -222,53 +219,52 @@ public class MusicControl {
                 mediaPlayer.reset();//重置
                 mediaPlayer.setDataSource(models.get(curPos).url);//指定要播放的音频文件
                 mediaPlayer.prepare();//预加载音频文件
-                mediaPlayer.start();
-                status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
+                if (play) {
+                    mediaPlayer.start();
+                }
+                status = play ? MusicCst.PLAY_STATUS_PLAYING : MusicCst.PLAY_STATUS_PAUSE;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             curSongName = models.get(curPos).songName;
             curSinger = models.get(curPos).singer;
         }
-        //广播通知
-        if (play) {
-            sendBroadcast();
-        }
+        sendBroadcast(status, play);
+        //保存当前播放位置
+        p.putLastPlayPosition(curPos);
     }
 
-    private void sendBroadcast() {
-        Intent intent = new Intent(MusicCst.MUSIC_CURRENT_INFO);
-        intent.putExtra("songName", curSongName);
-        intent.putExtra("singer", curSinger);
-        context.sendBroadcast(intent);
+    private void sendBroadcast(int status, boolean isUpdateNotif) {
+        MusicInfoEvent event = new MusicInfoEvent();
+        event.songName = curSongName;
+        event.singer = curSinger;
+        event.status = status;
+        event.isUpdateNotif = isUpdateNotif;
+        EventBus.getDefault().post(event);
     }
 
     /**
      * 播放/暂停
-     *
-     * @return 执行结果 0：停止、1：播放、2：暂停
      */
-    public int playOrPause() {
-        PlayOrPauseEvent event = new PlayOrPauseEvent();
+    public void playOrPause() {
+        if (!isValid()) {
+            return;
+        }
         if (models.size() <= 0) {
             mediaPlayer.stop();
             status = MusicCst.PLAY_STATUS_STOP;//停止
-            event.isPlay = false;
         } else if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             status = MusicCst.PLAY_STATUS_PAUSE;//暂停
-            event.isPlay = false;
         } else {
             mediaPlayer.start();
             status = MusicCst.PLAY_STATUS_PLAYING;//正在播放
-            event.isPlay = true;
         }
-        EventBus.getDefault().post(event);
-        return status;
+        sendBroadcast(status, true);
     }
 
     public void next() {
-        if (cancle()) {
+        if (!isValid()) {
             return;
         }
         switch (p.getPlayMode()) {
@@ -293,17 +289,18 @@ public class MusicControl {
         play();
     }
 
-    private boolean cancle() {
+    private boolean isValid() {
         if (models.size() <= 0) {
+            stop();
             reset();
-            sendBroadcast();
-            return true;
+            sendBroadcast(status, false);
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void prev() {
-        if (cancle()) {
+        if (!isValid()) {
             return;
         }
         switch (p.getPlayMode()) {
@@ -383,6 +380,5 @@ public class MusicControl {
     public void onDestroy() {
         stop();
         reset();
-        instance = null;//release
     }
 }

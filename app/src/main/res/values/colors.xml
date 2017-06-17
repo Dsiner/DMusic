@@ -44,7 +44,7 @@
     <color name="color_main_30">#661DA0EF</color>
     <color name="color_translucent">#9900040a</color>
     <color name="color_line">#e5e5e5</color>
-    <color name="color_dialog_bg">#C1C1C1C1</color>
+    <color name="color_dialog_bg">#aaC1C1C1</color>
     <color name="color_queque_bg">#aa10141C</color>
     <color name="color_popup_more">#BEBFBF</color>
     <color name="color_popup_more_light">#494949</color>
