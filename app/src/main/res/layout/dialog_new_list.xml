@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_trans"
@@ -50,7 +51,8 @@
                 android:padding="6dp"
                 android:text="@string/ok"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textSize="@dimen/dimen_text_sub"
+                skin:enable="true" />
 
             <View
                 android:layout_width="1px"
@@ -67,7 +69,8 @@
                 android:padding="6dp"
                 android:text="@string/cancel"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textSize="@dimen/dimen_text_sub"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

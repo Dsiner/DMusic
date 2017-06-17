@@ -2,16 +2,16 @@ package com.d.commen.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import butterknife.ButterKnife;
+import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
 
 /**
  * BaseFragmentActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseFragmentActivity extends FragmentActivity {
+public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,7 +14,8 @@
         app:tl_leftDrawable="@drawable/ic_title_back"
         app:tl_menu="@layout/menu_local"
         app:tl_middleText="title"
-        app:tl_rightDrawable="@drawable/ic_title_more" />
+        app:tl_rightDrawable="@drawable/ic_title_more"
+        skin:enable="true" />
 
     <com.d.dmusic.view.IndicatorLayout
         android:id="@+id/indicator"

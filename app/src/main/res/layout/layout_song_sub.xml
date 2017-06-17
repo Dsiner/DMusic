@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin">
 
     <LinearLayout
         android:id="@+id/llyt_more_cover"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_item_height"
-        android:background="@color/color_main_90"
+        android:background="@color/color_main"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dimen_margin"
-        android:paddingRight="@dimen/dimen_margin">
+        android:paddingRight="@dimen/dimen_margin"
+        skin:enable="true">
 
         <LinearLayout
             android:id="@+id/llyt_collect"

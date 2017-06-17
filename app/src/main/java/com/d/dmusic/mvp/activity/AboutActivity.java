@@ -10,6 +10,7 @@ import com.d.dmusic.module.repeatclick.ClickUtil;
 import com.d.dmusic.utils.StatusBarCompat;
 
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * AboutActivity
@@ -46,6 +47,12 @@ public class AboutActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 }

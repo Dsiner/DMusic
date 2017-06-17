@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * PlayerModeActivity
@@ -100,7 +101,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
             finish();
             return;
         }
-        StatusBarCompat.compat(this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
         p = Preferences.getInstance(getApplicationContext());
         index = p.getPlayerMode();
         adapter = new RadioAdapter(this, getDatas(), R.layout.adapter_radio);
@@ -127,5 +128,11 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
         datas.add(model1);
         datas.add(model2);
         return datas;
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 }

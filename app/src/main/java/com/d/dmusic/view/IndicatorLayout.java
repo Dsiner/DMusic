@@ -24,6 +24,8 @@ import com.d.dmusic.utils.Util;
 
 import java.util.List;
 
+import cn.feng.skin.manager.loader.SkinManager;
+
 /**
  * IndicatorLayout
  * Created by D on 2017/4/28.
@@ -63,7 +65,8 @@ public class IndicatorLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.IndicatorLayout);
         count = a.getInt(R.styleable.IndicatorLayout_tab_count, COUNT_DEFAULT_TAB);//获取可见Tab的数量
-        color = a.getInt(R.styleable.IndicatorLayout_indicator_color, R.color.color_main);
+//        color = a.getInt(R.styleable.IndicatorLayout_indicator_color, R.color.color_main);
+        color = SkinManager.getInstance().getColor(R.color.color_main);
         textColor = a.getInt(R.styleable.IndicatorLayout_text_color, R.color.color_gray);
         if (count < 0) {
             count = COUNT_DEFAULT_TAB;
@@ -79,6 +82,15 @@ public class IndicatorLayout extends LinearLayout {
         paint.setColor(color);
         paint.setStyle(Style.FILL);
         paint.setPathEffect(new CornerPathEffect(3));
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        color = SkinManager.getInstance().getColor(R.color.color_main);
+        if (paint != null) {
+            paint.setColor(color);
+        }
+        super.onAttachedToWindow();
     }
 
     @Override

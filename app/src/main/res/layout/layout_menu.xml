@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_main"
     android:orientation="vertical"
     android:paddingBottom="@dimen/dimen_margin"
     android:paddingLeft="26dp"
-    android:paddingTop="@dimen/dimen_margin">
+    android:paddingTop="@dimen/dimen_margin"
+    skin:enable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +20,9 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_launcher_round" />
+            android:background="@color/color_main"
+            android:src="@drawable/ic_launcher_nemu"
+            skin:enable="true" />
 
         <TextView
             android:id="@+id/tv_stroke"

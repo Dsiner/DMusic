@@ -15,6 +15,7 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
 import com.d.dmusic.commen.AlertDialogFactory;
+import com.d.dmusic.commen.Preferences;
 import com.d.dmusic.module.events.MusicModelEvent;
 import com.d.dmusic.module.events.RefreshEvent;
 import com.d.dmusic.module.events.SortTypeEvent;
@@ -58,6 +59,26 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
     private int type;
     private CustomScanFragment customScanFragment;
     private AlertDialog dialog;//进度提示dialog
+    private int[] cornerDrawable = new int[]{R.drawable.bg_corner_main
+            , R.drawable.bg_corner_main0
+            , R.drawable.bg_corner_main1
+            , R.drawable.bg_corner_main2
+            , R.drawable.bg_corner_main3
+            , R.drawable.bg_corner_main4
+            , R.drawable.bg_corner_main5
+            , R.drawable.bg_corner_main6
+            , R.drawable.bg_corner_main7
+            , R.drawable.bg_corner_main8
+            , R.drawable.bg_corner_main9
+            , R.drawable.bg_corner_main10
+            , R.drawable.bg_corner_main11
+            , R.drawable.bg_corner_main12
+            , R.drawable.bg_corner_main13
+            , R.drawable.bg_corner_main14
+            , R.drawable.bg_corner_main15
+            , R.drawable.bg_corner_main16
+            , R.drawable.bg_corner_main17
+    };
 
     @Override
     protected int getLayoutRes() {
@@ -87,6 +108,16 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
     @Override
     protected void init() {
 
+    }
+
+    @Override
+    public void onResume() {
+        int cur = Preferences.getInstance(context.getApplicationContext()).getSkin() + 1;
+        if (cur >= 0 && cur < cornerDrawable.length) {
+            btnFullScan.setBackgroundResource(cornerDrawable[cur]);
+            btnCustomScan.setBackgroundResource(cornerDrawable[cur]);
+        }
+        super.onResume();
     }
 
     @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
@@ -185,7 +216,7 @@ public class ScanFragment extends BaseFragment<MvpBasePresenter> implements MvpV
                         MusicModelEvent event = new MusicModelEvent(type, list);
                         EventBus.getDefault().post(event);
 
-                        if (dialog != null) {
+                        if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }
                         if (getActivity() != null && !getActivity().isFinishing()) {

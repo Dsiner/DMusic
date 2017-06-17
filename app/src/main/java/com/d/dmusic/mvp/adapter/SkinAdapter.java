@@ -22,11 +22,11 @@ public class SkinAdapter extends CommonAdapter<RadioModel> {
     }
 
     public void setIndex(int index) {
-        this.index = index;
+        this.index = index + 1;
     }
 
     public int getIndex() {
-        return index;
+        return index - 1;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.d.dmusic.mvp.activity;
 
+import android.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,8 +9,11 @@ import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.dmusic.R;
+import com.d.dmusic.commen.AlertDialogFactory;
 import com.d.dmusic.commen.Preferences;
+import com.d.dmusic.module.global.MusicCst;
 import com.d.dmusic.module.repeatclick.ClickUtil;
+import com.d.dmusic.module.skin.SkinUtil;
 import com.d.dmusic.mvp.adapter.SkinAdapter;
 import com.d.dmusic.mvp.model.RadioModel;
 import com.d.dmusic.utils.StatusBarCompat;
@@ -21,6 +25,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.listener.ILoaderListener;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * SkinActivity
@@ -30,12 +36,9 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Bind(R.id.rv_list)
     RecyclerView rvList;
 
-    private Preferences p;
     private SkinAdapter adapter;
-    private List<RadioModel> datas;
     private int index;
-    private List<String> skins;
-    private int count = 19;
+    private AlertDialog dialog;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right})
     public void onClickListener(View v) {
@@ -47,11 +50,25 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
                 finish();
                 break;
             case R.id.tv_title_right:
-                int i = adapter.getIndex();
-                if (i >= 0 && i < skins.size()) {
-                    p.putSkin(i);
-                }
-                finish();
+                index = adapter.getIndex();
+                SkinUtil.load(getApplicationContext(), index, new ILoaderListener() {
+                    @Override
+                    public void onStart() {
+                        showLoading();
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        closeLoading();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        closeLoading();
+                        Util.toast(SkinActivity.this, "╯﹏╰很抱歉，换肤失败了");
+                    }
+                });
                 break;
         }
     }
@@ -73,23 +90,33 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, getResources().getColor(R.color.color_main));//沉浸式状态栏
-        p = Preferences.getInstance(getApplicationContext());
-        index = p.getSkin();
-        skins = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            skins.add("skin" + i);
-        }
-        adapter = new SkinAdapter(this, getDatas(), R.layout.adapter_skin);
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        index = Preferences.getInstance(getApplicationContext()).getSkin();
+        adapter = new SkinAdapter(this, getDatas(index), R.layout.adapter_skin);
         adapter.setIndex(index);
         rvList.setLayoutManager(new GridLayoutManager(this, 3));
         rvList.addItemDecoration(new SpaceItemDecoration(Util.dip2px(this, 6)));
         rvList.setAdapter(adapter);
     }
 
-    private List<RadioModel> getDatas() {
-        datas = new ArrayList<>();
-        for (int i = 0; i < 19; i++) {
+    private void showLoading() {
+        if (dialog == null) {
+            dialog = AlertDialogFactory.createFactory(this).getLoadingDialog("正在换肤>>");
+        }
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    private void closeLoading() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    private List<RadioModel> getDatas(int index) {
+        List<RadioModel> datas = new ArrayList<>();
+        for (int i = -1; i < MusicCst.SKIN_COUNT; i++) {
             RadioModel model = new RadioModel();
             model.color = getC(i);
             model.isChecked = index == i;
@@ -98,8 +125,10 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         return datas;
     }
 
-    private int getC(int i) {
-        switch (i) {
+    private int getC(int index) {
+        switch (index) {
+            case 0:
+                return R.color.color_main_skin0;
             case 1:
                 return R.color.color_main_skin1;
             case 2:
@@ -134,10 +163,14 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
                 return R.color.color_main_skin16;
             case 17:
                 return R.color.color_main_skin17;
-            case 18:
-                return R.color.color_main_skin18;
             default:
-                return R.color.color_main_skin0;
+                return R.color.color_main_skin;
         }
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 }

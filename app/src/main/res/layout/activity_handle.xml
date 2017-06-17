@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_main"
@@ -13,7 +14,8 @@
         android:background="@color/color_main"
         app:tl_leftDrawable="@drawable/ic_title_back"
         app:tl_middleText="title"
-        app:tl_rightText="全选" />
+        app:tl_rightText="全选"
+        skin:enable="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"
@@ -40,7 +42,8 @@
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:background="@color/color_main"
-                android:src="@drawable/ic_handle_addtolist" />
+                android:src="@drawable/ic_handle_addtolist"
+                skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,7 +51,8 @@
                 android:layout_marginTop="@dimen/dimen_item_margin_top"
                 android:text="加入歌单"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/dimen_text_small"
+                skin:enable="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +67,8 @@
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:background="@color/color_main"
-                android:src="@drawable/ic_handle_delete" />
+                android:src="@drawable/ic_handle_delete"
+                skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,7 +76,8 @@
                 android:layout_marginTop="@dimen/dimen_item_margin_top"
                 android:text="删除"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/dimen_text_small"
+                skin:enable="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +92,8 @@
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:background="@color/color_main"
-                android:src="@drawable/ic_handle_reset" />
+                android:src="@drawable/ic_handle_reset"
+                skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,7 +101,8 @@
                 android:layout_marginTop="@dimen/dimen_item_margin_top"
                 android:text="撤销操作"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/dimen_text_small"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

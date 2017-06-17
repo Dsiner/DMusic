@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,7 +18,8 @@
             android:layout_height="20dp"
             android:layout_marginLeft="@dimen/dimen_margin"
             android:background="@color/color_main"
-            android:src="@drawable/ic_scan_dir_back" />
+            android:src="@drawable/ic_scan_dir_back"
+            skin:enable="true" />
 
         <TextView
             android:id="@+id/tv_current_dir"
@@ -27,7 +29,8 @@
             android:gravity="center_vertical"
             android:text="/storage/emulated/0/"
             android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="@dimen/dimen_text_sub"
+            skin:enable="true" />
     </LinearLayout>
 
     <com.d.lib.xrv.LRecyclerView
@@ -54,7 +57,8 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="@dimen/dimen_margin"
                 android:background="@color/color_main"
-                android:src="@drawable/ic_scan_now" />
+                android:src="@drawable/ic_scan_now"
+                skin:enable="true" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -64,7 +68,8 @@
                 android:gravity="center_vertical"
                 android:text="立即扫描"
                 android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textSize="@dimen/dimen_text_sub"
+                skin:enable="true" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

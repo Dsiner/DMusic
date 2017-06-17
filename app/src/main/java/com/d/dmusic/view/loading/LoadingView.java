@@ -10,6 +10,8 @@ import android.view.View;
 
 import com.d.dmusic.R;
 
+import cn.feng.skin.manager.loader.SkinManager;
+
 /**
  * Loading
  * Created by Administrator on 2016/8/27.
@@ -49,7 +51,7 @@ public class LoadingView extends View {
 
     private void init() {
         isFirst = true;
-        color = getResources().getColor(R.color.color_gray);
+        color = SkinManager.getInstance().getColor(R.color.color_main);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         minAlpha = 50;
         daration = 1000;
@@ -72,7 +74,6 @@ public class LoadingView extends View {
             return;
         }
         canvas.translate(width / 2, height / 2);
-        paint.setColor(color);
         j++;
         j %= count;
         int alpha;
@@ -134,6 +135,10 @@ public class LoadingView extends View {
     protected void onAttachedToWindow() {
         if (!isFirst) {
             restart();
+        }
+        color = SkinManager.getInstance().getColor(R.color.color_main);
+        if (paint != null) {
+            paint.setColor(color);
         }
         super.onAttachedToWindow();
     }

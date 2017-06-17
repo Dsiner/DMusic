@@ -16,6 +16,7 @@ import com.d.dmusic.view.TitleLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * SettingActivity
@@ -83,7 +84,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(SettingActivity.this, getResources().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
         initTitle();
         p = Preferences.getInstance(SettingActivity.this);
         rlModeAutoPlay.setOpen(p.getIsAutoPlay());
@@ -129,5 +130,11 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
                 p.putIsShowMenuIcon(isOpen);
                 break;
         }
+    }
+
+    @Override
+    public void onThemeUpdate() {
+        super.onThemeUpdate();
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
     }
 }

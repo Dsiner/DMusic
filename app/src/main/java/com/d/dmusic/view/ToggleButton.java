@@ -17,6 +17,8 @@ import android.view.animation.LinearInterpolator;
 import com.d.dmusic.R;
 import com.nineoldandroids.animation.ValueAnimator;
 
+import cn.feng.skin.manager.loader.SkinManager;
+
 /**
  * ToggleButton
  * Created by D on 2017/6/6.
@@ -63,7 +65,8 @@ public class ToggleButton extends View {
     private void initTypedArray(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ToggleButton);
         colorNormal = typedArray.getColor(R.styleable.ToggleButton_tbtn_colorNormal, Color.parseColor("#ffffff"));
-        colorLight = typedArray.getColor(R.styleable.ToggleButton_tbtn_colorLight, Color.parseColor("#FF4081"));
+//        colorLight = typedArray.getColor(R.styleable.ToggleButton_tbtn_colorLight, Color.parseColor("#FF4081"));
+        colorLight = SkinManager.getInstance().getColor(R.color.color_main);
         colorPadding = typedArray.getColor(R.styleable.ToggleButton_tbtn_colorPadding, Color.parseColor("#e3e4e5"));
         padding = (int) typedArray.getDimension(R.styleable.ToggleButton_tbtn_padding, 4);
         duration = typedArray.getInteger(R.styleable.ToggleButton_tbtn_duration, 0);
@@ -131,6 +134,15 @@ public class ToggleButton extends View {
         width = MeasureSpec.getSize(widthMeasureSpec);
         height = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(width, height);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        colorLight = SkinManager.getInstance().getColor(R.color.color_main);
+        if (paintLight != null) {
+            paintLight.setColor(colorLight);
+        }
+        super.onAttachedToWindow();
     }
 
     @Override

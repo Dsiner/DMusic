@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -11,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
         android:background="@color/color_main"
-        app:tl_middleRes="@layout/layout_title_main" />
+        app:tl_middleRes="@layout/layout_title_main"
+        skin:enable="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +27,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/color_main"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            skin:enable="true">
 
             <ImageView
                 android:layout_width="40dp"
@@ -75,7 +78,8 @@
             android:layout_marginLeft="19dp"
             android:layout_weight="1"
             android:background="@color/color_main"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            skin:enable="true">
 
             <ImageView
                 android:layout_width="40dp"
@@ -116,7 +120,8 @@
         android:paddingRight="@dimen/dimen_margin"
         android:text="自建歌单"
         android:textColor="@color/color_main"
-        android:textSize="@dimen/dimen_text_sub" />
+        android:textSize="@dimen/dimen_text_sub"
+        skin:enable="true" />
 
     <com.d.lib.xrv.LRecyclerView
         android:id="@+id/lv_list"
