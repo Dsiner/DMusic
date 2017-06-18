@@ -15,7 +15,7 @@
         android:textColor="@color/color_black"
         android:textSize="@dimen/dimen_text_sub" />
 
-    <com.d.dmusic.view.ToggleButton
+    <com.d.music.view.ToggleButton
         android:id="@+id/tb_toggle"
         android:layout_width="46dp"
         android:layout_height="28dp"

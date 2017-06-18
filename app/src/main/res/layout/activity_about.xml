@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_bg_sub">
 
-    <com.d.dmusic.view.TitleLayout
+    <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="版本号：1.0.0"
+            android:text="版本号：v1.0.0"
             android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_main"
             skin:enable="true" />

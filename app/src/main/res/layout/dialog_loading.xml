@@ -9,7 +9,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.d.dmusic.view.loading.LoadingView
+        <com.d.music.view.loading.LoadingView
             android:layout_width="35dp"
             android:layout_height="35dp" />
 

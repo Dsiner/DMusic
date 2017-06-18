@@ -7,7 +7,7 @@
     android:background="@color/color_bg_sub"
     android:orientation="vertical">
 
-    <com.d.dmusic.view.TitleLayout
+    <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"

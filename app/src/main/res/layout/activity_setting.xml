@@ -7,7 +7,7 @@
     android:background="@color/color_bg_sub"
     android:orientation="vertical">
 
-    <com.d.dmusic.view.TitleLayout
+    <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_koan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -36,7 +36,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
                 android:background="@color/color_bg_main"
@@ -45,7 +45,7 @@
                 app:rl_text="夜间模式"
                 app:rl_toggleVisibility="gone" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_skin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -56,7 +56,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_sleep"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -67,7 +67,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_auto_play"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -78,7 +78,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_player_mode"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -95,7 +95,7 @@
                 android:layout_marginTop="@dimen/dimen_margin"
                 android:background="@color/color_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_sub"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -106,7 +106,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_add"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -117,7 +117,7 @@
 
             <include layout="@layout/layout_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_rotate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -127,7 +127,7 @@
                 app:rl_text="头像/封面自动旋转"
                 app:rl_toggleVisibility="visible" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_shake"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -137,7 +137,7 @@
                 app:rl_text="晃动手机切歌"
                 app:rl_toggleVisibility="visible" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_mode_menu"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
@@ -154,7 +154,7 @@
                 android:layout_marginTop="@dimen/dimen_margin"
                 android:background="@color/color_line" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"
                 android:background="@color/color_bg_main"
@@ -163,7 +163,7 @@
                 app:rl_text="帮助中心"
                 app:rl_toggleVisibility="gone" />
 
-            <com.d.dmusic.view.RowLayout
+            <com.d.music.view.RowLayout
                 android:id="@+id/rl_about"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_row_height"

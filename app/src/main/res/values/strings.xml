@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DMusic</string>
+    <string name="app_name">畅听音乐</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="loading">加载中...</string>
