@@ -224,7 +224,9 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     protected void onDestroy() {
-        MusicCst.models.clear();
+        if (MusicCst.models != null) {
+            MusicCst.models.clear();
+        }
         super.onDestroy();
     }
 }

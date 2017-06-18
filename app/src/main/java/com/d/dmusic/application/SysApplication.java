@@ -38,8 +38,6 @@ public class SysApplication extends Application {
             return;
         }
         Context appContext = context.getApplicationContext();
-        //释放全局静态变量
-        MusicCst.release();
         MusicService.timing(appContext, false, 0);
         Preferences.getInstance(appContext).putSleepType(0);
         //停止音乐播放
