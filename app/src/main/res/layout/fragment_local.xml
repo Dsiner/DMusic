@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.d.dmusic.view.TitleLayout
+    <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_title_height"
@@ -17,7 +17,7 @@
         app:tl_rightDrawable="@drawable/ic_title_more"
         skin:enable="true" />
 
-    <com.d.dmusic.view.IndicatorLayout
+    <com.d.music.view.IndicatorLayout
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:skin="http://schemas.android.com/android/skin">
 
-    <com.d.dmusic.view.loading.LoadingView
+    <com.d.music.view.loading.LoadingView
         android:id="@+id/ldv_loading"
         android:layout_width="36dp"
         android:layout_height="36dp" />

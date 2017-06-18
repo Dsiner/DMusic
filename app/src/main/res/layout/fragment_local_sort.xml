@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <com.d.dmusic.view.DSLayout
+    <com.d.music.view.DSLayout
         android:id="@+id/dsl_ds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.d.dmusic.view.sort.SideBar
+    <com.d.music.view.sort.SideBar
         android:id="@+id/sb_sidebar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
