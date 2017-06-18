@@ -64,9 +64,5 @@ public class MusicCst {
      * variable
      */
     public static int playerMode = 0;//当前播放器模式
-    public static List<MusicModel> models = new ArrayList<>();
-
-    public static void release() {
-        models = null;
-    }
+    public static List<MusicModel> models = new ArrayList<MusicModel>();//歌曲排序、管理用，全局静态变量
 }

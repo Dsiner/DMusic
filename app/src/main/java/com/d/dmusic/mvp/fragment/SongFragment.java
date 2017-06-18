@@ -234,11 +234,15 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
 
     @Override
     public void onHandle() {
-        MusicCst.models.clear();
         List<MusicModel> datas = adapter.getDatas();
-        if (datas != null) {
-            MusicCst.models.addAll(datas);
+        if (datas == null || datas.size() <= 0) {
+            return;
         }
+        if (MusicCst.models == null) {
+            MusicCst.models = new ArrayList<MusicModel>();
+        }
+        MusicCst.models.clear();
+        MusicCst.models.addAll(datas);
         Intent intent = new Intent(getActivity(), HandleActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("title", title);

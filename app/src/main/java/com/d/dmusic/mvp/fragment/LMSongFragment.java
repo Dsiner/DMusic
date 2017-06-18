@@ -1,7 +1,6 @@
 package com.d.dmusic.mvp.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
@@ -17,7 +16,6 @@ import com.d.dmusic.module.greendao.db.MusicDB;
 import com.d.dmusic.module.greendao.music.base.MusicModel;
 import com.d.dmusic.module.service.MusicControl;
 import com.d.dmusic.module.service.MusicService;
-import com.d.dmusic.mvp.activity.HandleActivity;
 import com.d.dmusic.mvp.adapter.SongAdapter;
 import com.d.dmusic.view.DSLayout;
 import com.d.dmusic.view.SongHeaderView;
@@ -152,7 +150,7 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
 
     @Override
     public void onHandle() {
-        getActivity().startActivity(new Intent(getActivity(), HandleActivity.class));
+
     }
 
     @Override
