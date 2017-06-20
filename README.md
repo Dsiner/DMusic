@@ -30,7 +30,7 @@ MusicControl完成相应播放控制后，发送EventBus(MusicInfoEvent，携带
 - [ButterKnife](https://github.com/JakeWharton/butterknife)  -注解
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)  -换肤
 
-## About DMusic -中文名(畅听音乐)
+## About DMusic -中文名(畅听音乐) v1.0.0
 
 ##### ----追求速度、简约和安全的本地音乐播放器----
 
