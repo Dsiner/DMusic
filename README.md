@@ -16,6 +16,7 @@ MusicControl完成相应播放控制后，发送EventBus(MusicInfoEvent，携带
 * 本地歌曲4个TAB采用延迟加载提升性能等
 
 ## Dependencies
+* MVP  -MVP模式
 - [greenDAO](https://github.com/greenrobot/greenDAO)  -ORM数据库
 - [EventBus](https://github.com/greenrobot/EventBus)  -通信
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)  -汉字转拼音
@@ -24,11 +25,16 @@ MusicControl完成相应播放控制后，发送EventBus(MusicInfoEvent，携带
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)  -通用RecyclerView&CommenAdapter
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)  -侧滑菜单控件
 - [UIUtil](https://github.com/Dsiner/UIUtil)  -歌词lrc、排序SideBar、等ui
-- [Percent]()  -百分比布局
-- [ConstraintLayout]()  -约束布局
+* Percent  -百分比布局
+* ConstraintLayout  -约束布局
 - [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)  -兼容型动画
 - [ButterKnife](https://github.com/JakeWharton/butterknife)  -注解
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)  -换肤
+
+## For developer
+
+* 对于布局xml换肤报错,解决方式：
+先点击定位到任意错误处，Alt+Enter——>选择Disable inspection(忽略错误检查)
 
 ## About DMusic -中文名(畅听音乐) v1.0.0
 
