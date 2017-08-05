@@ -131,6 +131,7 @@ public class SkinUtil {
             });
         } else {
             SkinManager.getInstance().restoreDefaultTheme();
+            Preferences.getInstance(context).putSkin(type);
             if (callback != null) {
                 callback.onSuccess();
             }

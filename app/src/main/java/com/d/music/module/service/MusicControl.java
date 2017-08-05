@@ -74,8 +74,15 @@ public class MusicControl {
      * 获取当前MusicModel
      */
     public MusicModel getCurModel() {
-        if (models != null && models.size() > 0 && curPos >= 0 && curPos < models.size()) {
-            return models.get(curPos);
+        return getModel(curPos);
+    }
+
+    /**
+     * 获取指定位置MusicModel
+     */
+    private MusicModel getModel(int position) {
+        if (position >= 0 && position < models.size()) {
+            return models.get(position);
         }
         return null;
     }
@@ -181,29 +188,30 @@ public class MusicControl {
             return;
         }
         if (position > curPos) {
-            reCul(context, position);
+            count = delReCul(context, position);
         } else if (position < curPos) {
-            reCul(context, position);
+            count = delReCul(context, position);
             curPos--;
         } else if (position == curPos) {
+            final int curStatus = status;
             stop();
-            if (position == count - 1) {
-                reCul(context, position);
+            count = delReCul(context, position);
+            if (position > count - 1) {
                 curPos = 0;
-                if (count > 0) {
-                    play();
-                }
+            }
+            if (count > 0) {
+                play(curStatus == MusicCst.PLAY_STATUS_PLAYING);
             } else {
-                reCul(context, position);
-                play();
+                reset();
+                sendBroadcast(status, true);
             }
         }
     }
 
-    private void reCul(Context context, int position) {
-        MusicDBUtil.getInstance(context).delete(MusicDB.MUSIC, getCurModel());
+    private int delReCul(Context context, int position) {
+        MusicDBUtil.getInstance(context).delete(MusicDB.MUSIC, getModel(position));
         models.remove(position);
-        count = models.size();
+        return models.size();
     }
 
     private void play() {

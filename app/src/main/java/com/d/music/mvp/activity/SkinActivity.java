@@ -119,7 +119,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         for (int i = -1; i < MusicCst.SKIN_COUNT; i++) {
             RadioModel model = new RadioModel();
             model.color = getC(i);
-            model.isChecked = index == i;
+            model.isChecked = (i == index);
             datas.add(model);
         }
         return datas;

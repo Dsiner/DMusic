@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="版本号：v1.0.0"
+            android:text="版本号：v1.0.1"
             android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_main"
             skin:enable="true" />
@@ -78,7 +78,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dimen_margin"
         android:gravity="center"
-        android:text="Open Source@github.com:DMusic"
+        android:text="Open Source@github.com/Dsiner"
         android:textColor="@color/color_main"
         android:textSize="@dimen/dimen_text_small"
         skin:enable="true" />
