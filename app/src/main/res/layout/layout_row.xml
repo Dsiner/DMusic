@@ -26,6 +26,7 @@
         app:tbtn_colorLight="@color/color_main"
         app:tbtn_colorNormal="@color/color_white"
         app:tbtn_colorPadding="@color/color_line"
+        app:tbtn_duration="150"
         app:tbtn_padding="2dp" />
 
     <ImageView

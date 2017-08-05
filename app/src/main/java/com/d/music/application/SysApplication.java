@@ -40,6 +40,8 @@ public class SysApplication extends Application {
         Context appContext = context.getApplicationContext();
         MusicService.timing(appContext, false, 0);
         Preferences.getInstance(appContext).putSleepType(0);
+        //保存当前播放位置
+        Preferences.getInstance(appContext).putLastPlayPosition(MusicService.getControl(appContext).getCurPos());
         //停止音乐播放
         MusicService.getControl(appContext).onDestroy();
         //停止服务
