@@ -6,14 +6,14 @@
 ![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
 ## Design
-* greenDAO作为数据库，共24张Table：当前播放、本地歌曲、我的收藏、歌单列表，及20张自建歌单（其中歌单列表中pointer字段指向具体的自建歌单）
-* 歌曲的扫描：通过系统ContentProvider（MediaStore.Audio.Media.EXTERNAL_CONTENT_URI），获取本机所有媒体文件数据库cursor，遍历cursor过滤出查询文件（过滤条件为路径，即全盘扫描和自定义文件夹扫描），将文件信息存储到数据库
-* MusicDBUtil单例为数据库统一管理类，提供通用的"一条语句式"增删改查及跨表单添加（无视表单类型，通过MusicModel提供两种clone()方法完成预先类型转换及克隆）
-* MusicControl单例统一管理歌曲播放/暂停、上一首、下一首、删除，列表加载等播放控制
-* MusicService持有MusicControl单例，只能通过MusicService获取，MusicService属于Service服务，拥有整个应用的生命周期(启动→退出)
-* PlayActivity为当前播放页面，播放/暂定、上一首、下一首等播放控制全部发送广播，MusicService接收这些广播后，通过持有的MusicControl完成播放控制，
-MusicControl完成相应播放控制后，发送EventBus(MusicInfoEvent，携带当前正在播放的信息)回传，注册此EventBus的地方有3处（MusicService用于更新通知栏，PlayActivity和首页MainActivity用于更新当前歌曲信息）。
-* 本地歌曲4个TAB采用延迟加载提升性能等
+<img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
+
+## For developer
+* 对于布局xml换肤报错,解决方式：
+先点击定位到任意错误处，Alt+Enter——>选择Disable inspection(忽略错误检查)
+
+## Todo
+- [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies
 * MVP  -MVP模式
@@ -31,12 +31,7 @@ MusicControl完成相应播放控制后，发送EventBus(MusicInfoEvent，携带
 - [ButterKnife](https://github.com/JakeWharton/butterknife)  -注解
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)  -换肤
 
-## For developer
-
-* 对于布局xml换肤报错,解决方式：
-先点击定位到任意错误处，Alt+Enter——>选择Disable inspection(忽略错误检查)
-
-## About DMusic -中文名(畅听音乐) v1.0.0
+## About DMusic  ——畅听音乐(中文名) v1.0.1
 
 ##### ----追求速度、简约和安全的本地音乐播放器----
 
