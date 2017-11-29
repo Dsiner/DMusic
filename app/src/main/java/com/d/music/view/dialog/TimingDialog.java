@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.d.music.R;
-import com.d.music.application.SysApplication;
+import com.d.music.App;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
 import com.d.music.module.repeatclick.ClickUtil;
@@ -54,7 +54,7 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
         }
         int t = Integer.valueOf(time);
         if (t <= 0) {
-            SysApplication.exit(context);
+            App.exit(context);
         }
         return t;
     }

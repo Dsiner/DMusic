@@ -128,7 +128,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
 
     @Override
     public void afterTextChanged(Editable s) {
-        ULog.v("et:" + s.toString());
+        ULog.d("et:" + s.toString());
         int length = s.toString().trim().length();
         if (length > 0 && length < 40) {
             btnOk.setClickable(true);

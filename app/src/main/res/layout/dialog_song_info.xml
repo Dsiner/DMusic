@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:text="歌曲:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_song_name"
@@ -61,7 +61,7 @@
                         android:layout_weight="1"
                         android:text="夏洛特烦恼"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:text="歌手:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_singer"
@@ -85,7 +85,7 @@
                         android:layout_weight="1"
                         android:text="金志文"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:text="专辑:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_album"
@@ -109,7 +109,7 @@
                         android:layout_weight="1"
                         android:text="未知专辑"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
 
@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text="文件格式:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_filepostfix"
@@ -134,7 +134,7 @@
                         android:layout_weight="1"
                         android:text="mp3"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -148,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:text="歌曲时长:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_duration"
@@ -158,7 +158,7 @@
                         android:layout_weight="1"
                         android:text="03:12"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -172,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:text="文件大小:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_size"
@@ -182,7 +182,7 @@
                         android:layout_weight="1"
                         android:text="7.34MB"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:text="存放目录:"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_url"
@@ -206,7 +206,7 @@
                         android:layout_weight="1"
                         android:text="/storage/emulated/0/ttod/song/金志文-夏洛特烦恼.mp3"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/dimen_text_small" />
+                        android:textSize="16dp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

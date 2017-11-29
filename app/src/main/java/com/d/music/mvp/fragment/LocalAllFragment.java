@@ -30,7 +30,7 @@ import butterknife.OnClick;
  * 首页-本地歌曲
  * Created by D on 2017/4/29.
  */
-public class LocalAllMusicFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
+public class LocalAllFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.indicator)

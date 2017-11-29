@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -20,9 +19,9 @@ import android.widget.TextView;
 
 import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpView;
+import com.d.music.App;
 import com.d.music.R;
 import com.d.music.api.IQueueListener;
-import com.d.music.application.SysApplication;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.MusicCst;
@@ -171,14 +170,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (SysApplication.toFinish(intent)) {
+        if (App.toFinish(intent)) {
             finish();
         }
     }
 
     @Override
     protected void init() {
-        if (SysApplication.toFinish(getIntent())) {
+        if (App.toFinish(getIntent())) {
             finish();
             return;
         }
@@ -205,7 +204,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             tvTimeStart.setText(Util.formatTime(currentPosition));
             MusicModel model = control.getCurModel();
             resetFav(model.isCollected);
-            getLrc(model);
+            mPresenter.getLrcRows(model);
         } else {
             setProgress(0, 0);
         }
@@ -235,13 +234,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private void resetFav(boolean isCollected) {
         int fav = isCollected ? R.drawable.ic_play_fav_cover : R.drawable.ic_play_fav;
         ivColect.setImageDrawable(getResources().getDrawable(fav));
-    }
-
-    private void getLrc(MusicModel model) {
-        if (model != null) {
-            String lrcUrl = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl : model.folder + "/" + model.songName + ".lrc";
-            mPresenter.getLrcRows(lrcUrl);
-        }
     }
 
     private void initLrcListener() {
@@ -374,9 +366,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @Override
     public void setLrcRows(String path, List<LrcRow> lrcRows) {
         lrc.setLrcRows(lrcRows);
-        if (lrcRows.size() > 0) {
-            lrc.seekTo(control.getMediaPlayer().getCurrentPosition(), true);
-        }
+        lrc.seekTo(1000, true);
     }
 
     @Override
@@ -417,7 +407,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         MusicModel model = control.getCurModel();
         tvTitle.setText(model != null ? model.songName : "");
         resetFav(model != null ? model.isCollected : false);
-        getLrc(model);
+        mPresenter.getLrcRows(model);
         togglePlay(model != null && event.status == MusicCst.PLAY_STATUS_PLAYING);
     }
 

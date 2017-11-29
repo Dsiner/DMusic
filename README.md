@@ -1,12 +1,16 @@
 # DMusic for Android
 
-![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png) 
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-## Screenshot
-![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
+![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
+
+DMusic Player 是一个基于MVP + RxJava2 + greenDAO的本地音乐播放器
 
 ## Design
 <img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
+
+## Screenshot
+![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
 ## For developer
 * 对于布局xml换肤报错,解决方式：

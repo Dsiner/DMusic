@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
+import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
+import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
 import com.d.music.commen.AlertDialogFactory;
 import com.d.music.module.events.MusicModelEvent;
@@ -26,8 +28,6 @@ import com.d.music.utils.StatusBarCompat;
 import com.d.music.utils.Util;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.popup.AddToListPopup;
-import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
-import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -211,7 +211,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
         EventBus.getDefault().post(new MusicModelEvent(type, models));
         EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_CUSTOM));//按自定义排序
         if (type == MusicDB.COLLECTION_MUSIC) {
-            SyncUtil.unCollected(context.getApplicationContext(), modelsFav, type);
+            SyncUtil.unCollected(getApplicationContext(), modelsFav);
         }
         super.finish();
     }

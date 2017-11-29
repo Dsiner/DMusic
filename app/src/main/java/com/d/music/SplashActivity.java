@@ -20,7 +20,7 @@ import com.d.music.utils.StatusBarCompat;
 import java.lang.ref.WeakReference;
 
 /**
- * SsssActivity
+ * SplashActivity
  * Created by D on 2017/4/28.
  */
 public class SplashActivity extends Activity {

@@ -8,7 +8,7 @@ import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.music.R;
-import com.d.music.application.SysApplication;
+import com.d.music.App;
 import com.d.music.commen.AlertDialogFactory;
 import com.d.music.commen.Preferences;
 import com.d.music.module.repeatclick.ClickUtil;
@@ -59,7 +59,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
                             @Override
                             public void onClick(AlertDialog dlg, View v) {
                                 dlg.dismiss();
-                                SysApplication.exit(getApplicationContext());
+                                App.exit(getApplicationContext());
                             }
                         }, new AlertDialogFactory.OnClickListener() {
                             @Override
@@ -90,14 +90,14 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (SysApplication.toFinish(intent)) {
+        if (App.toFinish(intent)) {
             finish();
         }
     }
 
     @Override
     protected void init() {
-        if (SysApplication.toFinish(getIntent())) {
+        if (App.toFinish(getIntent())) {
             finish();
             return;
         }

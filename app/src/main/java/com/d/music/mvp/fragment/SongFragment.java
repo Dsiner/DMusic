@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
+import com.d.lib.xrv.XRecyclerView;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.commen.Preferences;
@@ -31,7 +32,6 @@ import com.d.music.view.DSLayout;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.dialog.MenuDialog;
-import com.d.lib.xrv.XRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +53,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Bind(R.id.dsl_ds)
     DSLayout dslDS;
     @Bind(R.id.xrv_list)
-    XRecyclerView xrvList; // 列表
+    XRecyclerView xrvList;
 
     private Context context;
     private int type;

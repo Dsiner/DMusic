@@ -20,7 +20,7 @@ import android.widget.RemoteViews;
 
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.application.SysApplication;
+import com.d.music.App;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.MusicCst;
@@ -290,7 +290,7 @@ public class MusicService extends Service {
                 case MusicCst.PLAYER_CONTROL_PREV:
                 case MusicCst.PLAYER_CONTROL_EXIT:
                     int flag = intent.getIntExtra("flag", -1);
-                    ULog.v("flags" + flag + "");
+                    ULog.d("flags" + flag + "");
                     switch (flag) {
                         case MusicCst.PLAY_FLAG_PLAY_PAUSE:
                             control.playOrPause();
@@ -302,12 +302,12 @@ public class MusicService extends Service {
                             control.prev();
                             break;
                         case MusicCst.PLAY_FLAG_EXIT:
-                            SysApplication.exit(getApplicationContext());//退出应用
+                            App.exit(getApplicationContext());//退出应用
                             break;
                     }
                     break;
                 case MusicCst.PLAYER_CONTROL_TIMING:
-                    SysApplication.exit(getApplicationContext());//退出应用
+                    App.exit(getApplicationContext());//退出应用
                     break;
                 case MusicCst.PLAYER_RELOAD:
                     updateNotif(MusicCst.PLAY_STATUS_PLAYING);//正在播放
