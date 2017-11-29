@@ -4,7 +4,7 @@
 
 ![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
 
-DMusic Player 是一个基于MVP + RxJava2 + greenDAO的本地音乐播放器
+>**DMusic**  一个基于 `MVP + RxJava2 + greenDAO` 的本地音乐播放器
 
 ## Design
 <img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
@@ -20,22 +20,22 @@ DMusic Player 是一个基于MVP + RxJava2 + greenDAO的本地音乐播放器
 - [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies
-* MVP  -MVP模式
-- [greenDAO](https://github.com/greenrobot/greenDAO)  -ORM数据库
-- [EventBus](https://github.com/greenrobot/EventBus)  -通信
-- [TinyPinyin](https://github.com/promeG/TinyPinyin)  -汉字转拼音
-- [RxJava2](https://github.com/ReactiveX/RxJava)  -线程切换
-- [RxPermissions](https://github.com/tbruyelle/RxPermissions)  -运行时权限
-- [xrv](https://github.com/Dsiner/xRecyclerViewF)  -通用RecyclerView&CommenAdapter
-- [SlideLayout](https://github.com/Dsiner/SlideLayout)  -侧滑菜单控件
-- [UIUtil](https://github.com/Dsiner/UIUtil)  -歌词lrc、排序SideBar、等ui
-* Percent  -百分比布局
-* ConstraintLayout  -约束布局
-- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)  -兼容型动画
-- [ButterKnife](https://github.com/JakeWharton/butterknife)  -注解
-- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)  -换肤
+* MVP
+- [greenDAO](https://github.com/greenrobot/greenDAO)
+- [EventBus](https://github.com/greenrobot/EventBus)
+- [TinyPinyin](https://github.com/promeG/TinyPinyin)
+- [RxJava2](https://github.com/ReactiveX/RxJava)
+- [RxPermissions](https://github.com/tbruyelle/RxPermissions)
+- [xrv](https://github.com/Dsiner/xRecyclerViewF)
+- [SlideLayout](https://github.com/Dsiner/SlideLayout)
+- [UIUtil](https://github.com/Dsiner/UIUtil)
+* Percent
+* ConstraintLayout
+- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
+- [ButterKnife](https://github.com/JakeWharton/butterknife)
+- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
 
-## About DMusic  ——畅听音乐(中文名) v1.0.1
+## About DMusic  ——畅听音乐(中文名) v1.0.2
 
 ##### ----追求速度、简约和安全的本地音乐播放器----
 
