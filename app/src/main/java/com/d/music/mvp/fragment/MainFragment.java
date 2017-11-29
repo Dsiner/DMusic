@@ -83,7 +83,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         switch (v.getId()) {
             case R.id.llyt_local:
                 //本地音乐
-                LocalAllMusicFragment lFragment = new LocalAllMusicFragment();
+                LocalAllFragment lFragment = new LocalAllFragment();
                 MainActivity.replace(lFragment);
                 break;
             case R.id.llyt_collection:

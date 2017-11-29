@@ -105,8 +105,8 @@ public class MusicFactory {
         for (int i = 0; i < size; i++) {
             MusicInfo info = infos.get(i);
             String url = info.url;
-            ULog.v("url" + url);
-            ULog.v("path" + path);
+            ULog.d("url" + url);
+            ULog.d("path" + path);
             if (url.length() > path.length()) {
                 //加"/"表明为路径
                 if (url.substring(0, path.length() + 1).equals(path + "/")) {

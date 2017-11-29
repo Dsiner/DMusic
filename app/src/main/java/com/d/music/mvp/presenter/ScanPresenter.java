@@ -11,6 +11,7 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.media.MusicFactory;
+import com.d.music.module.media.SyncUtil;
 import com.d.music.mvp.view.IScanView;
 import com.d.music.utils.fileutil.FileUtil;
 
@@ -59,7 +60,10 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 });
     }
 
-    public void getMusics(final List<String> paths, final int type) {
+    /**
+     * 扫描音乐文件
+     */
+    public void scan(final List<String> paths, final int type) {
         if (isViewAttached()) {
             getView().showLoading();
         }
@@ -67,15 +71,12 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(mContext, type).getMusic(paths);
+                list = SyncUtil.upCollected(mContext, list);//更新收藏字段
                 MusicDBUtil.getInstance(mContext).deleteAll(type);
                 MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
                 MusicDBUtil.getInstance(mContext).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_TIME);//默认按自定义排序
+                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_TIME);//默认按时间排序
                 EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_TIME));
-
-                //更新收藏字段
-                List<MusicModel> c = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(MusicDB.COLLECTION_MUSIC);
-                MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(c, type), type);
 
                 //更新首页自定义列表
                 EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));

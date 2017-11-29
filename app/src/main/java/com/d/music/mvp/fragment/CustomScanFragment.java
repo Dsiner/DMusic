@@ -114,7 +114,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                     Util.toast(context, "请先选择扫描路径");
                     return;
                 }
-                mPresenter.getMusics(paths, type);
+                mPresenter.scan(paths, type);
                 break;
         }
     }

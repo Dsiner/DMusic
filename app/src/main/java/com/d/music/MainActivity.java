@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.commen.base.BaseFragmentActivity;
-import com.d.music.application.SysApplication;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.repeatclick.ClickUtil;
@@ -80,7 +79,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                SysApplication.exit(getApplicationContext());//退出应用
+                App.exit(getApplicationContext());//退出应用
                 break;
         }
     }
@@ -93,14 +92,14 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (SysApplication.toFinish(intent)) {
+        if (App.toFinish(intent)) {
             finish();
         }
     }
 
     @Override
     protected void init() {
-        if (SysApplication.toFinish(getIntent())) {
+        if (App.toFinish(getIntent())) {
             finish();
             return;
         }

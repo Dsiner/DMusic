@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.d.music.R;
-import com.d.music.application.SysApplication;
+import com.d.music.App;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.repeatclick.ClickUtil;
@@ -196,7 +196,7 @@ public class MorePopup implements View.OnClickListener {
             beans[10] = new MoreAdapter.Bean(icExit, "退出", new OnClickFastListener() {
                 @Override
                 public void onFastClick(View v) {
-                    SysApplication.exit(context);
+                    App.exit(context);
                 }
             });
 

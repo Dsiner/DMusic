@@ -1,11 +1,11 @@
-package com.d.music.application;
+package com.d.music;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.d.music.MainActivity;
 import com.d.music.commen.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.util.MusicDBUtil;
@@ -19,14 +19,16 @@ import com.d.music.mvp.activity.PlayerModeActivity;
  * Application
  * Created by D on 2017/4/28.
  */
-public class SysApplication extends Application {
+public class App extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
         //初始化数据库
         MusicDBUtil.getInstance(getApplicationContext());
+        //防双击间隔设置
         ClickUtil.setDelayTime(350);
+        //加载皮肤
         SkinUtil.initSkin(getApplicationContext());
     }
 
@@ -54,13 +56,14 @@ public class SysApplication extends Application {
         } else {
             exit(appContext, PlayerModeActivity.class);
         }
-//        System.exit(0);
 
-//        int pid = android.os.Process.myPid();
-//        android.os.Process.killProcess(pid);
-//
-//        ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
-//        manager.killBackgroundProcesses(getPackageName());
+        System.exit(0);
+
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
+
+        ActivityManager manager = (ActivityManager) context.getApplicationContext().getSystemService(ACTIVITY_SERVICE);
+        manager.killBackgroundProcesses(context.getApplicationContext().getPackageName());
     }
 
     public static boolean toFinish(Intent intent) {

@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
  * AbstractPreference
  * Created by D on 2017/4/29.
  */
-
 public class AbstractPreference {
     protected Context context;
     protected SharedPreferences settings;

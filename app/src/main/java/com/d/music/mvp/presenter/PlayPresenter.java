@@ -63,10 +63,11 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                 });
     }
 
-    public void getLrcRows(final String path) {
-        if (!isViewAttached()) {
+    public void getLrcRows(final MusicModel model) {
+        if (!isViewAttached() || model == null) {
             return;
         }
+        final String path = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl : model.folder + "/" + model.songName + ".lrc";
         lrcUrl = path;
         Observable.create(new ObservableOnSubscribe<List<LrcRow>>() {
             @Override

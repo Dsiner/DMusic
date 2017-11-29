@@ -86,7 +86,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                             model.singer = singer;
                             model.count = count;
                             list.add(model);
-                            ULog.v("Singer----" + "singer:" + singer + "-count:" + count);
+                            ULog.d("Singer----" + "singer:" + singer + "-count:" + count);
                         }
                     } while (cursor.moveToNext());
                 }

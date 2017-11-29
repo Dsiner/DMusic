@@ -6,18 +6,19 @@ import android.view.View;
 
 import com.d.commen.base.BaseFragment;
 import com.d.commen.mvp.MvpView;
+import com.d.lib.xrv.XRecyclerView;
 import com.d.music.R;
 import com.d.music.mvp.presenter.LMMusicPresenter;
 import com.d.music.mvp.view.ILMMusicView;
 import com.d.music.view.DSLayout;
 import com.d.music.view.sort.SideBar;
-import com.d.lib.xrv.XRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 
 /**
+ * LazyLoad Fragment
  * Created by D on 2017/4/30.
  */
 public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> implements ILMMusicView {
