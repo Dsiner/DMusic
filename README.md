@@ -21,6 +21,8 @@
 
 ## Dependencies
 * MVP
+* Percent
+* ConstraintLayout
 - [greenDAO](https://github.com/greenrobot/greenDAO)
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
@@ -29,8 +31,6 @@
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)
 - [UIUtil](https://github.com/Dsiner/UIUtil)
-* Percent
-* ConstraintLayout
 - [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)

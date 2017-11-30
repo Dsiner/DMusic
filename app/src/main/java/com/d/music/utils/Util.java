@@ -273,4 +273,20 @@ public class Util {
             return format.format(gb) + "GB";
         }
     }
+
+    /**
+     * 退出应用
+     */
+    public static void exit(Context context) {
+        //方法1
+        System.exit(0);
+
+        //方法2
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
+
+        //方法3
+        ActivityManager manager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        manager.killBackgroundProcesses(context.getApplicationContext().getPackageName());
+    }
 }

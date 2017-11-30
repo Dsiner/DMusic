@@ -1,6 +1,5 @@
 package com.d.music;
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -56,14 +55,6 @@ public class App extends Application {
         } else {
             exit(appContext, PlayerModeActivity.class);
         }
-
-        System.exit(0);
-
-        int pid = android.os.Process.myPid();
-        android.os.Process.killProcess(pid);
-
-        ActivityManager manager = (ActivityManager) context.getApplicationContext().getSystemService(ACTIVITY_SERVICE);
-        manager.killBackgroundProcesses(context.getApplicationContext().getPackageName());
     }
 
     public static boolean toFinish(Intent intent) {
