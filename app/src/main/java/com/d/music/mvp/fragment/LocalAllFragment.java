@@ -15,9 +15,9 @@ import com.d.music.R;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.mvp.activity.ScanActivity;
-import com.d.music.view.IndicatorLayout;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.dialog.MenuDialog;
+import com.d.music.view.tab.ScrollTab;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,11 +34,10 @@ public class LocalAllFragment extends BaseFragment<MvpBasePresenter> implements 
     @Bind(R.id.tl_title)
     TitleLayout tlTitle;
     @Bind(R.id.indicator)
-    IndicatorLayout indicator;
+    ScrollTab indicator;
     @Bind(R.id.vp_page)
     ViewPager pager;
 
-    private FragmentPagerAdapter fragmentPagerAdapter;
     private List<String> titles = Arrays.asList("歌曲", "歌手", "专辑", "文件夹");
 
     @OnClick({R.id.iv_title_left})
@@ -79,7 +78,7 @@ public class LocalAllFragment extends BaseFragment<MvpBasePresenter> implements 
         fragments.add(singerFragment);
         fragments.add(albumFragment);
         fragments.add(folderFragment);
-        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public int getCount() {
                 return fragments.size();
@@ -93,7 +92,13 @@ public class LocalAllFragment extends BaseFragment<MvpBasePresenter> implements 
         pager.setOffscreenPageLimit(3);//高内存占用，持久化页面数
         pager.setAdapter(fragmentPagerAdapter);
         indicator.setTitles(titles);
-        indicator.setViewPager(pager, 0);
+        indicator.setViewPager(pager);
+        indicator.setOnTabListener(new ScrollTab.OnTabListener() {
+            @Override
+            public void onChange(int position, View v) {
+                pager.setCurrentItem(position, true);
+            }
+        });
     }
 
     private void initTitle() {
