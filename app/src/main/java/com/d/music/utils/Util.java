@@ -5,8 +5,11 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.d.music.module.global.Cst;
@@ -91,6 +94,19 @@ public class Util {
     public static float getTextHeight(Paint p) {
         Paint.FontMetrics fm = p.getFontMetrics();// 获取字体高度
         return (float) ((Math.ceil(fm.descent - fm.top) + 2) / 2);
+    }
+
+    public static int getTextWidth(String str, Paint paint) {
+        Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.width();
+    }
+
+    public static int getTextWidth(String str, TextView tvText) {
+        Rect bounds = new Rect();
+        TextPaint paint = tvText.getPaint();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.width();
     }
 
     /**

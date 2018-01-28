@@ -17,15 +17,17 @@
         app:tl_rightDrawable="@drawable/ic_title_more"
         skin:enable="true" />
 
-    <com.d.music.view.IndicatorLayout
+    <com.d.music.view.tab.ScrollTab
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/color_white"
-        android:orientation="horizontal"
-        app:indicator_color="@color/color_main"
-        app:tab_count="4"
-        app:text_color="@color/color_gray" />
+        android:background="@color/color_bg_main"
+        app:stab_avag="true"
+        app:stab_indicator_color="@color/color_main"
+        app:stab_indicator_radius="1dp"
+        app:stab_indicator_type="translation"
+        app:stab_indicator_weight="2dp"
+        app:stab_type="view" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_page"
