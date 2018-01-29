@@ -8,16 +8,16 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.d.commen.base.BaseFragment;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
+import com.d.commen.view.tab.ScrollTab;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.mvp.activity.ScanActivity;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.dialog.MenuDialog;
-import com.d.music.view.tab.ScrollTab;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_translucent"
+    android:background="@color/lib_pub_color_translucent"
     android:orientation="vertical">
 
     <View
@@ -19,7 +19,7 @@
 
         <View
             android:layout_width="1px"
-            android:layout_height="@dimen/dimen_margin"
+            android:layout_height="@dimen/lib_pub_dimen_margin"
             android:visibility="visible" />
 
         <LinearLayout
@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/dimen_margin"
+            android:paddingBottom="@dimen/lib_pub_dimen_margin"
             android:paddingLeft="24dp"
-            android:paddingRight="@dimen/dimen_margin"
+            android:paddingRight="@dimen/lib_pub_dimen_margin"
             android:paddingTop="18dp"
             android:visibility="gone">
 
@@ -74,10 +74,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:paddingBottom="@dimen/dimen_margin"
+            android:paddingBottom="@dimen/lib_pub_dimen_margin"
             android:paddingTop="10dp"
             android:text="关闭"
             android:textColor="@color/color_popup_more"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 </LinearLayout>

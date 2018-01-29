@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.d.commen.view.popup.AbstractPopup;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.global.Cst;
@@ -15,10 +16,10 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.AddToListAdapter;
-import com.d.music.utils.Util;
-import com.d.music.view.loading.LoadingLayout;
+import com.d.commen.utils.Util;
+import com.d.commen.view.loading.LoadingLayout;
 import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;

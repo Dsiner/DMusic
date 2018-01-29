@@ -32,8 +32,6 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:percent:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.dsiner.lib:xrv:1.1.0'
     compile 'com.dsiner.lib:slidelayout:1.0.0'
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'org.greenrobot:eventbus:3.0.0'

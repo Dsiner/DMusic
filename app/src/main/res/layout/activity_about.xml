@@ -4,15 +4,15 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_sub">
+    android:background="@color/lib_pub_color_bg_sub">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="关于畅听音乐"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/ic_title_back"
+        app:lib_pub_tl_middleText="关于畅听音乐"
         skin:enable="true" />
 
     <LinearLayout
@@ -21,23 +21,23 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/dimen_margin">
+        android:paddingBottom="@dimen/lib_pub_dimen_margin">
 
         <ImageView
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_launcher_about"
             skin:enable="true" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_margin"
+            android:layout_marginTop="@dimen/lib_pub_dimen_margin"
             android:gravity="center"
             android:text="(Android)"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />
 
         <TextView
@@ -46,8 +46,8 @@
             android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="版本号：v1.0.3"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_main"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_main"
             skin:enable="true" />
 
         <TextView
@@ -56,8 +56,8 @@
             android:layout_marginTop="26dp"
             android:gravity="center"
             android:text="追求速度、简约和安全的\n本地音乐播放器"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />
     </LinearLayout>
 
@@ -67,8 +67,8 @@
         android:layout_above="@+id/tv_link"
         android:gravity="center"
         android:text="Copyright@D"
-        android:textColor="@color/color_main"
-        android:textSize="@dimen/dimen_text_small"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_small"
         skin:enable="true" />
 
     <TextView
@@ -76,10 +76,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dimen_margin"
+        android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
         android:gravity="center"
         android:text="Open Source@github.com/Dsiner"
-        android:textColor="@color/color_main"
-        android:textSize="@dimen/dimen_text_small"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_small"
         skin:enable="true" />
 </RelativeLayout>

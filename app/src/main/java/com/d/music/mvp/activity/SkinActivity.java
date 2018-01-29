@@ -6,18 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.d.commen.base.BaseActivity;
+import com.d.commen.commen.AlertDialogFactory;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
+import com.d.commen.utils.Util;
 import com.d.music.R;
-import com.d.music.commen.AlertDialogFactory;
 import com.d.music.commen.Preferences;
 import com.d.music.module.global.MusicCst;
-import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.module.skin.SkinUtil;
 import com.d.music.mvp.adapter.SkinAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.utils.Util;
 import com.d.music.view.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         index = Preferences.getInstance(getApplicationContext()).getSkin();
         adapter = new SkinAdapter(this, getDatas(index), R.layout.adapter_skin);
         adapter.setIndex(index);
@@ -99,7 +99,8 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         rvList.setAdapter(adapter);
     }
 
-    private void showLoading() {
+    @Override
+    public void showLoading() {
         if (dialog == null) {
             dialog = AlertDialogFactory.createFactory(this).getLoadingDialog("正在换肤>>");
         }
@@ -108,7 +109,8 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         }
     }
 
-    private void closeLoading() {
+    @Override
+    public void closeLoading() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -171,6 +173,6 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 }

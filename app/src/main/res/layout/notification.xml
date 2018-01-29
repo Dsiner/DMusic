@@ -96,7 +96,7 @@
             android:singleLine="true"
             android:text="FireFly"
             android:textColor="#222222"
-            android:textSize="@dimen/dimen_text_small" />
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
 
         <TextView
             android:id="@+id/text"
@@ -108,6 +108,6 @@
             android:singleLine="true"
             android:text="Shawn McDonald"
             android:textColor="#888888"
-            android:textSize="@dimen/dimen_text_mini" />
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </RelativeLayout>
 </RelativeLayout>

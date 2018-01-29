@@ -15,9 +15,9 @@
         <LinearLayout
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_main"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
             android:gravity="center"
             skin:enable="true">
 
@@ -39,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="默认列表"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textColor="@color/lib_pub_color_black"
+                android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
             <TextView
                 android:id="@+id/tv_song_count"
@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="0首"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textColor="@color/lib_pub_color_black"
+                android:textSize="@dimen/lib_pub_dimen_text_small" />
         </LinearLayout>
     </LinearLayout>
 
@@ -64,8 +64,8 @@
             android:background="#C7C7CD"
             android:gravity="center"
             android:text="置顶"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
         <TextView
             android:id="@+id/tv_delete"
@@ -74,7 +74,7 @@
             android:background="#FF3A30"
             android:gravity="center"
             android:text="删除"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 </com.d.lib.slidelayout.SlideLayout>

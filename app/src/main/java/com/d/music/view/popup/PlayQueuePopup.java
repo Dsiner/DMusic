@@ -9,15 +9,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.commen.view.popup.AbstractPopup;
+import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.api.IQueueListener;
 import com.d.music.commen.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.PlayQueueAdapter;
-import com.d.lib.xrv.LRecyclerView;
 
 import java.util.List;
 

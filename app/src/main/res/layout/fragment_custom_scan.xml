@@ -16,8 +16,8 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:background="@color/color_main"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_scan_dir_back"
             skin:enable="true" />
 
@@ -25,11 +25,11 @@
             android:id="@+id/tv_current_dir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:gravity="center_vertical"
             android:text="/storage/emulated/0/"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />
     </LinearLayout>
 
@@ -55,20 +55,20 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:background="@color/color_main"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_scan_now"
                 skin:enable="true" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:layout_marginRight="@dimen/dimen_margin"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                 android:gravity="center_vertical"
                 android:text="立即扫描"
-                android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_sub"
+                android:textColor="@color/lib_pub_color_main"
+                android:textSize="@dimen/lib_pub_dimen_text_sub"
                 skin:enable="true" />
         </LinearLayout>
     </LinearLayout>

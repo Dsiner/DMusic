@@ -4,6 +4,8 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
 
+    resourcePrefix 'lib_pub_'
+
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 25
@@ -30,4 +32,6 @@ dependencies {
     compile files('libs/android-skin-loader-lib.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.dsiner.lib:xrv:1.1.0'
 }

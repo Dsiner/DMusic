@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color_trans</item>
-        <item name="colorPrimaryDark">@color/color_trans</item>
-        <item name="colorAccent">@color/color_main</item>
-        <item name="android:alertDialogTheme">@style/dialog_style</item>
+        <item name="colorPrimary">@color/lib_pub_color_trans</item>
+        <item name="colorPrimaryDark">@color/lib_pub_color_trans</item>
+        <item name="colorAccent">@color/lib_pub_color_main</item>
+        <item name="android:alertDialogTheme">@style/lib_pub_dialog_style</item>
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>
 
@@ -18,14 +18,6 @@
         <item name="android:activityCloseEnterAnimation">@anim/push_left_in</item>
         <!--关闭当前Activity时展示的动画-->
         <item name="android:activityCloseExitAnimation">@anim/push_right_out</item>
-    </style>
-
-    <style name="dialog_style" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="AnimTop" parent="@android:style/Animation">
@@ -104,7 +96,7 @@
     <style name="listview_style">
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0px</item>
-        <item name="android:listSelector">@color/color_trans</item>
+        <item name="android:listSelector">@color/lib_pub_color_trans</item>
     </style>
 
     <style name="popupAnimation" mce_bogus="1" parent="android:Animation">

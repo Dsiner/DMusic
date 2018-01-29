@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="@dimen/lib_pub_dimen_dialog_width"
+    android:layout_height="match_parent"
+    android:minHeight="@dimen/lib_pub_dimen_dialog_min_height"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:background="@color/lib_pub_color_main"
+        android:gravity="center"
+        android:textColor="@color/lib_pub_color_white"
+        android:textSize="@dimen/lib_pub_dimen_text_main"
+        skin:enable="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lib_pub_color_white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lib_pub_color_main"
+        skin:enable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_sub" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:background="@color/lib_pub_color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/lib_pub_color_trans"
+            android:gravity="center"
+            android:text="@string/lib_pub_ok"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/lib_pub_color_line" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/lib_pub_color_trans"
+            android:gravity="center"
+            android:text="@string/lib_pub_cancel"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </LinearLayout>
+</LinearLayout>

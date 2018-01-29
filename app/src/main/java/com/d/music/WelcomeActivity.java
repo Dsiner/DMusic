@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import com.d.commen.base.BaseActivity;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 

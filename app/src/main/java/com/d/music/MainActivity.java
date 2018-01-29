@@ -14,9 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.commen.base.BaseFragmentActivity;
+import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.commen.utils.Util;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.music.module.global.Cst;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.activity.PlayActivity;
 import com.d.music.mvp.activity.SettingActivity;
@@ -24,7 +26,6 @@ import com.d.music.mvp.activity.SkinActivity;
 import com.d.music.mvp.activity.SleepActivity;
 import com.d.music.mvp.fragment.MainFragment;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.utils.Util;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -104,13 +105,16 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
             return;
         }
         context = this;
-        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
-        Util.setScreenSize(MainActivity.this);
+        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        int[] screenSizes = Util.getScreenSize(MainActivity.this);
+        Cst.SCREEN_WIDTH = screenSizes[0];
+        Cst.SCREEN_HEIGHT = screenSizes[1];
+
         EventBus.getDefault().register(this);
         fManger = getSupportFragmentManager();
         drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
         replace(new MainFragment());
-        drawer.setScrimColor(getResources().getColor(R.color.color_trans));
+        drawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
         drawer.addDrawerListener(this);
     }
 
@@ -162,7 +166,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

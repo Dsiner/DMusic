@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import com.d.commen.base.BaseFragment;
 import com.d.music.R;
-import com.d.music.commen.AlertDialogFactory;
+import com.d.commen.commen.AlertDialogFactory;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.DirAdapter;
 import com.d.music.mvp.presenter.ScanPresenter;
 import com.d.music.mvp.view.IScanView;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 import com.d.music.utils.fileutil.FileUtil;
 import com.d.lib.xrv.LRecyclerView;
 import com.tbruyelle.rxpermissions2.Permission;

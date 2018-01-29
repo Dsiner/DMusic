@@ -10,7 +10,7 @@ import com.d.lib.xrv.XRecyclerView;
 import com.d.music.R;
 import com.d.music.mvp.presenter.LMMusicPresenter;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.music.view.DSLayout;
+import com.d.commen.view.DSLayout;
 import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;

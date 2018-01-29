@@ -8,13 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.d.commen.view.dialog.AbstractDialog;
 import com.d.music.R;
 import com.d.music.App;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 
 import org.greenrobot.eventbus.EventBus;
 

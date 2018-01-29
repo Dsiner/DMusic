@@ -3,9 +3,9 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/dimen_margin"
-    android:layout_marginTop="@dimen/dimen_title_height"
-    android:background="@color/color_main"
+    android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+    android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
+    android:background="@color/lib_pub_color_main"
     android:orientation="vertical"
     skin:enable="true">
 
@@ -18,16 +18,16 @@
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:src="@drawable/ic_scan" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
             android:text="扫描歌曲"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 </LinearLayout>

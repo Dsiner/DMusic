@@ -10,30 +10,30 @@
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_middleRes="@layout/layout_title_main"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_middleRes="@layout/layout_title_main"
         skin:enable="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
-        android:padding="@dimen/dimen_margin">
+        android:padding="@dimen/lib_pub_dimen_margin">
 
         <LinearLayout
             android:id="@+id/llyt_local"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:gravity="center_vertical"
             skin:enable="true">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
                 android:src="@drawable/ic_local" />
 
             <LinearLayout
@@ -48,8 +48,8 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="本地音乐"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_sub" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
                 <TextView
                     android:id="@+id/tv_local_all_count"
@@ -58,8 +58,8 @@
                     android:layout_marginTop="1dp"
                     android:singleLine="true"
                     android:text="0首"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_small" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small" />
 
                 <ProgressBar
                     android:id="@+id/pbr_loading"
@@ -77,14 +77,14 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="19dp"
             android:layout_weight="1"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:gravity="center_vertical"
             skin:enable="true">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="@dimen/dimen_margin"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
                 android:src="@drawable/ic_fav" />
 
             <LinearLayout
@@ -98,8 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="我的收藏"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_sub" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
                 <TextView
                     android:id="@+id/tv_collection_count"
@@ -107,8 +107,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:text="0首"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_small" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -116,16 +116,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dimen_margin"
-        android:paddingRight="@dimen/dimen_margin"
+        android:paddingLeft="@dimen/lib_pub_dimen_margin"
+        android:paddingRight="@dimen/lib_pub_dimen_margin"
         android:text="自建歌单"
-        android:textColor="@color/color_main"
-        android:textSize="@dimen/dimen_text_sub"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_sub"
         skin:enable="true" />
 
     <com.d.lib.xrv.LRecyclerView
         android:id="@+id/lv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dimen_margin" />
+        android:layout_marginTop="@dimen/lib_pub_dimen_margin" />
 </LinearLayout>

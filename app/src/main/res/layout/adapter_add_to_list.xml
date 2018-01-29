@@ -8,16 +8,16 @@
     <LinearLayout
         android:id="@+id/llyt_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dimen_item_local_icon"
             android:layout_height="@dimen/dimen_item_local_icon"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_main"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_scan_dir_icon"
             skin:enable="true" />
 
@@ -28,17 +28,17 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="默认列表"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
         <FrameLayout
-            android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height">
+            android:layout_width="@dimen/lib_pub_dimen_item_height"
+            android:layout_height="@dimen/lib_pub_dimen_item_height">
 
             <View
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 skin:enable="true" />
 
             <CheckBox
@@ -54,5 +54,5 @@
         </FrameLayout>
     </LinearLayout>
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 </LinearLayout>

@@ -17,12 +17,12 @@
             android:id="@+id/tv_song_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="夏洛特烦恼"
-            android:textColor="@color/color_white"
+            android:textColor="@color/lib_pub_color_white"
             android:textSize="16dp" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="--金志文"
-            android:textColor="@color/color_white"
+            android:textColor="@color/lib_pub_color_white"
             android:textSize="12dp" />
     </LinearLayout>
 

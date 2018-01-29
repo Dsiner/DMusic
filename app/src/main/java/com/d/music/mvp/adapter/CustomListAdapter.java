@@ -11,7 +11,7 @@ import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.repeatclick.OnClickFastListener;
+import com.d.commen.module.repeatclick.OnClickFastListener;
 import com.d.music.mvp.fragment.SongFragment;
 import com.d.music.utils.TaskManager;
 import com.d.music.view.dialog.NewListDialog;

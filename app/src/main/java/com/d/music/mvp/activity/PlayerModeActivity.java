@@ -9,13 +9,13 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.music.R;
 import com.d.music.App;
-import com.d.music.commen.AlertDialogFactory;
+import com.d.commen.commen.AlertDialogFactory;
 import com.d.music.commen.Preferences;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.RadioAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.view.TitleLayout;
+import com.d.commen.view.TitleLayout;
 import com.d.lib.xrv.LRecyclerView;
 
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         p = Preferences.getInstance(getApplicationContext());
         index = p.getPlayerMode();
         adapter = new RadioAdapter(this, getDatas(), R.layout.adapter_radio);
@@ -133,6 +133,6 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 }

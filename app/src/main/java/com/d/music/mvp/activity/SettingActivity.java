@@ -9,10 +9,10 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.music.R;
 import com.d.music.commen.Preferences;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.view.RowLayout;
-import com.d.music.view.TitleLayout;
+import com.d.commen.view.RowLayout;
+import com.d.commen.view.TitleLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         initTitle();
         p = Preferences.getInstance(SettingActivity.this);
         rlModeAutoPlay.setOpen(p.getIsAutoPlay());
@@ -135,6 +135,6 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 }

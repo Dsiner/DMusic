@@ -3,11 +3,11 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_main"
+    android:background="@color/lib_pub_color_main"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/dimen_margin"
+    android:paddingBottom="@dimen/lib_pub_dimen_margin"
     android:paddingLeft="26dp"
-    android:paddingTop="@dimen/dimen_margin"
+    android:paddingTop="@dimen/lib_pub_dimen_margin"
     skin:enable="true">
 
     <LinearLayout
@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_launcher_nemu"
             skin:enable="true" />
 
@@ -29,11 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="畅听"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_main" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_main" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,18 +46,18 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerInside"
             android:src="@drawable/ic_menu_sleep" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="睡眠定时"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,18 +70,18 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerInside"
             android:src="@drawable/ic_menu_night" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="夜间模式"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
@@ -94,18 +94,18 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerInside"
             android:src="@drawable/ic_menu_skin" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="换肤"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 
     <LinearLayout
@@ -118,18 +118,18 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerInside"
             android:src="@drawable/ic_menu_setting" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="设置"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 
     <View
@@ -147,17 +147,17 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerInside"
             android:src="@drawable/ic_menu_exit" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="退出"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_main" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_main" />
     </LinearLayout>
 </LinearLayout>

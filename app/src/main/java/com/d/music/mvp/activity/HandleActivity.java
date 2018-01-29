@@ -15,18 +15,18 @@ import com.d.commen.mvp.MvpView;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
 import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
-import com.d.music.commen.AlertDialogFactory;
+import com.d.commen.commen.AlertDialogFactory;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.SortTypeEvent;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.media.SyncUtil;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.HandleAdapter;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.utils.Util;
-import com.d.music.view.TitleLayout;
+import com.d.commen.utils.Util;
+import com.d.commen.view.TitleLayout;
 import com.d.music.view.popup.AddToListPopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -159,7 +159,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         context = this;
         initTitle();
 
@@ -219,7 +219,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 
     @Override

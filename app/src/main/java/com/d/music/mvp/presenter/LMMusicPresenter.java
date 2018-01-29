@@ -11,8 +11,8 @@ import com.d.music.model.SingerModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.music.utils.log.ULog;
-import com.d.music.view.DSLayout;
+import com.d.commen.utils.log.ULog;
+import com.d.commen.view.DSLayout;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;

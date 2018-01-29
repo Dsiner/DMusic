@@ -69,7 +69,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
             public void onItemSelected() {
                 holder.setImageResource(R.id.iv_handler, R.drawable.ic_sort_handler_press);
                 holder.setBackground(R.id.cb_check, R.drawable.selector_toggle_press);
-                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.color_dgray));
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lib_pub_color_dgray));
                 holder.itemView.setAlpha(0.6f);
             }
 

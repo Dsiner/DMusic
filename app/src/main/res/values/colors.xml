@@ -4,15 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="color_trans">#00000000</color>
-    <color name="color_white">#ffffff</color>
-    <color name="color_black">#000000</color>
-    <color name="color_gray">#FF888888</color>
-    <color name="color_lgray">#99CCCCCC</color>
-    <color name="color_dgray">#CCCCCC</color>
-    <color name="color_red">#ff0000</color>
-    <color name="color_green">#00ff00</color>
-
     <!--皮肤色-->
     <color name="color_main_skin">#1DA0EF</color>
     <color name="color_main_skin0">#FD8D22</color>
@@ -34,17 +25,6 @@
     <color name="color_main_skin16">#46C5BA</color>
     <color name="color_main_skin17">#2FC1FD</color>
 
-    <!--全局背景色-->
-    <color name="color_bg_main">#FFFFFF</color>
-    <color name="color_bg_sub">#F9F9F9</color>
-
-    <color name="color_main">#1DA0EF</color>
-    <color name="color_main_90">#E61DA0EF</color>
-    <color name="color_main_50">#801DA0EF</color>
-    <color name="color_main_30">#661DA0EF</color>
-    <color name="color_translucent">#9900040a</color>
-    <color name="color_line">#e5e5e5</color>
-    <color name="color_dialog_bg">#aaC1C1C1</color>
     <color name="color_queque_bg">#aa10141C</color>
     <color name="color_popup_more">#BEBFBF</color>
     <color name="color_popup_more_light">#494949</color>

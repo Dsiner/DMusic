@@ -4,7 +4,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_translucent"
+    android:background="@color/lib_pub_color_translucent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -48,8 +48,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="列表循环"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_sub" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
                 <TextView
                     android:id="@+id/tv_count"
@@ -58,8 +58,8 @@
                     android:layout_marginLeft="2dp"
                     android:gravity="center"
                     android:text=" (227首)"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/dimen_text_small" />
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small" />
             </LinearLayout>
 
             <TextView
@@ -67,11 +67,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="@dimen/dimen_margin"
-                android:paddingRight="@dimen/dimen_margin"
+                android:paddingLeft="@dimen/lib_pub_dimen_margin"
+                android:paddingRight="@dimen/lib_pub_dimen_margin"
                 android:text="清空"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/dimen_text_sub" />
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_sub" />
         </LinearLayout>
 
         <com.d.lib.xrv.LRecyclerView
@@ -86,7 +86,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:text="关闭"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 </android.support.percent.PercentRelativeLayout>

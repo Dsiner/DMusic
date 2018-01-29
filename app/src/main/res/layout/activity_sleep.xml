@@ -4,29 +4,29 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_sub"
+    android:background="@color/lib_pub_color_bg_sub"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="睡眠定时"
-        app:tl_rightText="确定"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/ic_title_back"
+        app:lib_pub_tl_middleText="睡眠定时"
+        app:lib_pub_tl_rightText="确定"
         skin:enable="true" />
 
     <include
         android:id="@+id/rlyt_first"
         layout="@layout/adapter_radio"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_row_height"
-        android:background="@color/color_bg_main" />
+        android:layout_height="@dimen/lib_pub_dimen_row_height"
+        android:background="@color/lib_pub_color_bg_main" />
 
     <com.d.lib.xrv.LRecyclerView
         android:id="@+id/lrv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dimen_margin" />
+        android:layout_marginTop="@dimen/lib_pub_dimen_margin" />
 </LinearLayout>
