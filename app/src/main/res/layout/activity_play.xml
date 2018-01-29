@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_black"
+    android:background="@color/lib_pub_color_black"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="@dimen/dimen_title_height"
-            android:layout_height="@dimen/dimen_title_height"
+            android:layout_width="@dimen/lib_pub_dimen_title_height"
+            android:layout_height="@dimen/lib_pub_dimen_title_height"
             android:padding="15dp"
             android:src="@drawable/ic_title_back_down" />
 
@@ -26,13 +26,13 @@
             android:layout_weight="1"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/dimen_text_main" />
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_main" />
 
         <ImageView
             android:id="@+id/iv_more"
-            android:layout_width="@dimen/dimen_title_height"
-            android:layout_height="@dimen/dimen_title_height"
+            android:layout_width="@dimen/lib_pub_dimen_title_height"
+            android:layout_height="@dimen/lib_pub_dimen_title_height"
             android:src="@drawable/ic_title_more" />
     </LinearLayout>
 
@@ -62,15 +62,15 @@
             android:id="@+id/lrcv_lrc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimen_margin"
-            app:lrcCurTextColor="@color/color_main"
+            android:layout_margin="@dimen/lib_pub_dimen_margin"
+            app:lrcCurTextColor="@color/lib_pub_color_main"
             app:lrcCurTextSize="19dp"
             app:lrcMaxScale="1.7"
             app:lrcMinScale="0.7"
             app:lrcPadding="21dp"
-            app:lrcTextColor="@color/color_dgray"
+            app:lrcTextColor="@color/lib_pub_color_dgray"
             app:lrcTextSize="17dp"
-            app:lrcTimeColor="@color/color_white"
+            app:lrcTimeColor="@color/lib_pub_color_white"
             app:lrcTimeSize="10dp" />
     </FrameLayout>
 
@@ -84,10 +84,10 @@
             android:id="@+id/tv_time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_margin"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:text="00:00"
-            android:textColor="@color/color_gray"
-            android:textSize="@dimen/dimen_text_mini" />
+            android:textColor="@color/lib_pub_color_gray"
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
 
         <SeekBar
             android:id="@+id/sb_progress"
@@ -105,16 +105,16 @@
             android:id="@+id/tv_time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
             android:text="00:00"
-            android:textColor="@color/color_gray"
-            android:textSize="@dimen/dimen_text_mini" />
+            android:textColor="@color/lib_pub_color_gray"
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="@dimen/dimen_margin"
+        android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
@@ -123,7 +123,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@color/color_black"
+            android:background="@color/lib_pub_color_black"
             android:padding="14dp"
             android:src="@drawable/ic_play_fav" />
 

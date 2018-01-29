@@ -1,45 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="TitleLayout">
-        <attr name="tl_leftText" format="string" />
-        <attr name="tl_leftDrawable" format="reference" />
-        <attr name="tl_leftRes" format="reference" />
-        <attr name="tl_rightText" format="string" />
-        <attr name="tl_rightDrawable" format="reference" />
-        <attr name="tl_rightRes" format="reference" />
-        <attr name="tl_middleText" format="string" />
-        <attr name="tl_middleDrawable" format="reference" />
-        <attr name="tl_middleRes" format="reference" />
-        <attr name="tl_menu" format="reference" />
-    </declare-styleable>
-    <declare-styleable name="DSLayout">
-        <attr name="adjustHeightT" format="dimension" />
-        <attr name="adjustHeightB" format="dimension" />
-        <attr name="ceterType">
-            <enum name="main" value="1" />
-            <enum name="local" value="2" />
-        </attr>
-    </declare-styleable>
-    <declare-styleable name="ScrollTab">
-        <attr name="stab_type">
-            <enum name="view" value="0" />
-            <enum name="view_group" value="1" />
-        </attr>
-        <attr name="stab_titles" format="string" />
-        <attr name="stab_avag" format="boolean" />
-        <attr name="stab_padding" format="dimension" />
-        <attr name="stab_indicator_type">
-            <enum name="trend" value="0" />
-            <enum name="translation" value="1" />
-            <enum name="none" value="2" />
-        </attr>
-        <attr name="stab_indicator_color" format="color" />
-        <attr name="stab_indicator_width" format="dimension" />
-        <attr name="stab_indicator_weight" format="dimension" />
-        <attr name="stab_indicator_radius" format="dimension" />
-        <attr name="stab_indicator_padding" format="dimension" />
-        <attr name="stab_duration" format="integer" />
-    </declare-styleable>
     <declare-styleable name="LrcView">
         <attr name="lrcTextColor" format="color" />
         <attr name="lrcCurTextColor" format="color" />
@@ -50,25 +10,5 @@
         <attr name="lrcPadding" format="dimension" />
         <attr name="lrcMinScale" format="float" />
         <attr name="lrcMaxScale" format="float" />
-    </declare-styleable>
-    <declare-styleable name="ToggleButton">
-        <attr name="tbtn_colorNormal" format="color" />
-        <attr name="tbtn_colorLight" format="color" />
-        <attr name="tbtn_colorPadding" format="color" />
-        <attr name="tbtn_padding" format="dimension" />
-        <attr name="tbtn_duration" format="integer" />
-    </declare-styleable>
-    <declare-styleable name="RowLayout">
-        <attr name="rl_text" format="string" />
-        <attr name="rl_toggleVisibility">
-            <enum name="visible" value="0" />
-            <enum name="invisible" value="4" />
-            <enum name="gone" value="8" />
-        </attr>
-        <attr name="rl_gotoVisibility">
-            <enum name="visible" value="0" />
-            <enum name="invisible" value="4" />
-            <enum name="gone" value="8" />
-        </attr>
     </declare-styleable>
 </resources>

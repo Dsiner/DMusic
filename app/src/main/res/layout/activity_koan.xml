@@ -4,23 +4,23 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_sub"
+    android:background="@color/lib_pub_color_bg_sub"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="心印"
-        app:tl_rightText="确定"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/ic_title_back"
+        app:lib_pub_tl_middleText="心印"
+        app:lib_pub_tl_rightText="确定"
         skin:enable="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_row_height"
-        android:background="@color/color_bg_main"
+        android:layout_height="@dimen/lib_pub_dimen_row_height"
+        android:background="@color/lib_pub_color_bg_main"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -28,30 +28,30 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="@dimen/dimen_margin"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="签名："
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_black"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
         <EditText
             android:id="@+id/et_signature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_trans"
+            android:background="@color/lib_pub_color_trans"
             android:hint="singular"
             android:padding="6dp"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />
     </LinearLayout>
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_row_height"
-        android:background="@color/color_bg_main"
+        android:layout_height="@dimen/lib_pub_dimen_row_height"
+        android:background="@color/lib_pub_color_bg_main"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -59,23 +59,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="@dimen/dimen_margin"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="简笔："
-            android:textColor="@color/color_black"
-            android:textSize="@dimen/dimen_text_sub" />
+            android:textColor="@color/lib_pub_color_black"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
         <EditText
             android:id="@+id/et_stroke"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_trans"
+            android:background="@color/lib_pub_color_trans"
             android:hint="be simple or wonderful"
             android:padding="6dp"
-            android:textColor="@color/color_main"
-            android:textSize="@dimen/dimen_text_sub"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />
     </LinearLayout>
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 </LinearLayout>

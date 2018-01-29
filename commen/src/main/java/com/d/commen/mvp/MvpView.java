@@ -23,4 +23,20 @@ package com.d.commen.mvp;
  * @since 1.0.0
  */
 public interface MvpView {
+    /**
+     * 设置默认态，网络请求出错时可通过getState(Throwable e)获取需要显示状态
+     *
+     * @param state：DSLayout.STATE_LOADING、DSLayout.STATE_EMPTY、DSLayout.STATE_NET_ERROR、DSLayout.GONE等
+     */
+    void setState(int state);
+
+    /**
+     * loading dialog show
+     */
+    void showLoading();
+
+    /**
+     * loading dialog dismiss
+     */
+    void closeLoading();
 }

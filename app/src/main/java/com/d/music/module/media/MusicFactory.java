@@ -29,7 +29,7 @@ import com.d.music.module.greendao.music.LocalAllMusic;
 import com.d.music.module.greendao.music.Music;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.utils.log.ULog;
+import com.d.commen.utils.log.ULog;
 
 import java.util.ArrayList;
 import java.util.List;

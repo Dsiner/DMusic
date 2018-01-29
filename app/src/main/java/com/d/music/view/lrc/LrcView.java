@@ -14,7 +14,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
 import com.d.music.R;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 

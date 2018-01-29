@@ -6,7 +6,7 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.media.SyncUtil;
 import com.d.music.mvp.activity.PlayActivity;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 import com.d.music.view.dialog.SongInfoDialog;
 import com.d.music.view.popup.AddToListPopup;
 

@@ -17,7 +17,7 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.SongAdapter;
-import com.d.music.view.DSLayout;
+import com.d.commen.view.DSLayout;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.sort.SideBar;
 import com.d.music.view.sort.SortUtil;

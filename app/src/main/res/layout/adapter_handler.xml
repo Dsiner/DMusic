@@ -7,19 +7,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <FrameLayout
-            android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height">
+            android:layout_width="@dimen/lib_pub_dimen_item_height"
+            android:layout_height="@dimen/lib_pub_dimen_item_height">
 
             <View
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 skin:enable="true" />
 
             <CheckBox
@@ -46,33 +46,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/lib_pub_dimen_text_small" />
 
             <TextView
                 android:id="@+id/tv_singer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:singleLine="true"
-                android:textSize="@dimen/dimen_text_mini" />
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/flyt_handler"
-            android:layout_width="@dimen/dimen_item_height"
-            android:layout_height="@dimen/dimen_item_height">
+            android:layout_width="@dimen/lib_pub_dimen_item_height"
+            android:layout_height="@dimen/lib_pub_dimen_item_height">
 
             <ImageView
                 android:id="@+id/iv_handler"
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
                 android:layout_gravity="center"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_sort_handler"
                 skin:enable="true" />
         </FrameLayout>
 
     </LinearLayout>
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 </LinearLayout>

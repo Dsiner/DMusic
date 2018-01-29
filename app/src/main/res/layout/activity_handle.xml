@@ -4,17 +4,17 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_main"
+    android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="title"
-        app:tl_rightText="全选"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/ic_title_back"
+        app:lib_pub_tl_middleText="title"
+        app:lib_pub_tl_rightText="全选"
         skin:enable="true" />
 
     <android.support.v7.widget.RecyclerView
@@ -23,12 +23,12 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_item_height"
-        android:background="@color/color_bg_main">
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:background="@color/lib_pub_color_bg_main">
 
         <LinearLayout
             android:id="@+id/llyt_add_to_list"
@@ -41,17 +41,17 @@
             <ImageView
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_handle_addtolist"
                 skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:text="加入歌单"
-                android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small"
+                android:textColor="@color/lib_pub_color_main"
+                android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />
         </LinearLayout>
 
@@ -66,17 +66,17 @@
             <ImageView
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_handle_delete"
                 skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:text="删除"
-                android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small"
+                android:textColor="@color/lib_pub_color_main"
+                android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />
         </LinearLayout>
 
@@ -91,17 +91,17 @@
             <ImageView
                 android:layout_width="@dimen/dimen_item_icon"
                 android:layout_height="@dimen/dimen_item_icon"
-                android:background="@color/color_main"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_handle_reset"
                 skin:enable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:text="撤销操作"
-                android:textColor="@color/color_main"
-                android:textSize="@dimen/dimen_text_small"
+                android:textColor="@color/lib_pub_color_main"
+                android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />
         </LinearLayout>
     </LinearLayout>

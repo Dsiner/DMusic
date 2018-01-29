@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">commen</string>
+    <string name="lib_pub_app_name">commen</string>
+    <string name="lib_pub_ok">确定</string>
+    <string name="lib_pub_cancel">取消</string>
+    <string name="lib_pub_loading">加载中...</string>
 </resources>

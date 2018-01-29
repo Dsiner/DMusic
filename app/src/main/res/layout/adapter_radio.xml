@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_row_height"
-    android:background="@color/color_bg_main">
+    android:layout_height="@dimen/lib_pub_dimen_row_height"
+    android:background="@color/lib_pub_color_bg_main">
 
     <FrameLayout
         android:id="@+id/flyt_check"
-        android:layout_width="@dimen/dimen_item_height"
-        android:layout_height="@dimen/dimen_item_height"
+        android:layout_width="@dimen/lib_pub_dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
         android:layout_alignParentRight="true">
 
         <ImageView
@@ -16,7 +16,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="center"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_check_trans"
             skin:enable="true" />
     </FrameLayout>
@@ -27,15 +27,15 @@
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/flyt_check"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dimen_margin"
+        android:paddingLeft="@dimen/lib_pub_dimen_margin"
         android:singleLine="true"
         android:text="普通模式"
-        android:textColor="@color/color_black"
-        android:textSize="@dimen/dimen_text_sub" />
+        android:textColor="@color/lib_pub_color_black"
+        android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_line" />
+        android:background="@color/lib_pub_color_line" />
 </RelativeLayout>

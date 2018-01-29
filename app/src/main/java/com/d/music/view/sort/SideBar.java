@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.d.music.R;
-import com.d.music.utils.Util;
+import com.d.commen.utils.Util;
 
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -71,7 +71,7 @@ public class SideBar extends View {
 
         paintCur = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintCur.setTextAlign(Paint.Align.CENTER);
-        paintCur.setColor(SkinManager.getInstance().getColor(R.color.color_main));
+        paintCur.setColor(SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
 
         paintRect = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintRect.setTextAlign(Paint.Align.CENTER);
@@ -119,7 +119,7 @@ public class SideBar extends View {
     @Override
     protected void onAttachedToWindow() {
         if (paintCur != null) {
-            paintCur.setColor(SkinManager.getInstance().getColor(R.color.color_main));
+            paintCur.setColor(SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         }
         super.onAttachedToWindow();
     }

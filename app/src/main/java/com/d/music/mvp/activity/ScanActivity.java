@@ -8,12 +8,12 @@ import android.view.View.OnClickListener;
 
 import com.d.commen.base.BaseFragmentActivity;
 import com.d.music.R;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.fragment.CustomScanFragment;
 import com.d.music.mvp.fragment.ScanFragment;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.utils.log.ULog;
-import com.d.music.view.TitleLayout;
+import com.d.commen.utils.log.ULog;
+import com.d.commen.view.TitleLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -49,7 +49,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(ScanActivity.this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(ScanActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         int type = getIntent().getIntExtra("type", 0);
         ULog.d("type" + type);
         initTitle();
@@ -74,7 +74,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 
     @Override

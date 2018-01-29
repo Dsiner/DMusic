@@ -3,10 +3,10 @@ package com.d.music.mvp.activity;
 import android.view.View;
 
 import com.d.commen.base.BaseActivity;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.music.R;
-import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.utils.StatusBarCompat;
 
 import butterknife.OnClick;
@@ -47,12 +47,12 @@ public class AboutActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 }

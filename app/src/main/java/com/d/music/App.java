@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.commen.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.skin.SkinUtil;
 import com.d.music.mvp.activity.PlayActivity;

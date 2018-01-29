@@ -4,7 +4,7 @@
     android:id="@+id/dl_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_main"
+    android:background="@color/lib_pub_color_main"
     skin:enable="true">
 
     <LinearLayout
@@ -17,14 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/color_bg_main" />
+            android:background="@color/lib_pub_color_bg_main" />
 
-        <include layout="@layout/layout_line" />
+        <include layout="@layout/lib_pub_layout_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_item_height"
-            android:background="@color/color_bg_main"
+            android:layout_height="@dimen/lib_pub_dimen_item_height"
+            android:background="@color/lib_pub_color_bg_main"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -33,9 +33,9 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dimen_margin"
-                android:layout_marginRight="@dimen/dimen_margin"
-                android:background="@color/color_main"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+                android:background="@color/lib_pub_color_main"
                 android:src="@drawable/ic_album"
                 skin:enable="true" />
 
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textColor="#aa000000"
-                    android:textSize="@dimen/dimen_text_small"
+                    android:textSize="@dimen/lib_pub_dimen_text_small"
                     android:textStyle="bold" />
 
                 <TextView
@@ -60,20 +60,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textColor="@color/color_gray"
-                    android:textSize="@dimen/dimen_text_mini" />
+                    android:textColor="@color/lib_pub_color_gray"
+                    android:textSize="@dimen/lib_pub_dimen_text_mini" />
             </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/flyt_menu"
-                android:layout_width="@dimen/dimen_item_height"
-                android:layout_height="@dimen/dimen_item_height">
+                android:layout_width="@dimen/lib_pub_dimen_item_height"
+                android:layout_height="@dimen/lib_pub_dimen_item_height">
 
                 <ImageView
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:background="@color/color_main"
+                    android:background="@color/lib_pub_color_main"
                     android:src="@drawable/ic_sort_handler"
                     skin:enable="true" />
             </FrameLayout>

@@ -8,16 +8,16 @@
     <LinearLayout
         android:id="@+id/llyt_singer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/dimen_item_local_icon"
             android:layout_height="@dimen/dimen_item_local_icon"
-            android:layout_marginLeft="@dimen/dimen_margin"
-            android:layout_marginRight="@dimen/dimen_margin"
-            android:background="@color/color_main"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_singer"
             skin:enable="true" />
 
@@ -35,19 +35,19 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="夏洛特烦恼"
-                android:textSize="@dimen/dimen_text_small" />
+                android:textSize="@dimen/lib_pub_dimen_text_small" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_item_margin_top"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="金志文-夏洛特烦恼.mp3"
-                android:textSize="@dimen/dimen_text_mini" />
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
         </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/layout_line" />
+    <include layout="@layout/lib_pub_layout_line" />
 </LinearLayout>

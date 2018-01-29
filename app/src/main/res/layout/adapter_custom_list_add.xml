@@ -8,11 +8,11 @@
     <TextView
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginLeft="@dimen/dimen_margin"
-        android:layout_marginRight="@dimen/dimen_margin"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:gravity="center"
         android:text="+"
-        android:textColor="@color/color_main"
+        android:textColor="@color/lib_pub_color_main"
         android:textSize="40dp"
         skin:enable="true" />
 
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:alpha="0.5"
         android:text="新建歌单"
-        android:textColor="@color/color_black"
-        android:textSize="@dimen/dimen_text_sub" />
+        android:textColor="@color/lib_pub_color_black"
+        android:textSize="@dimen/lib_pub_dimen_text_sub" />
 </LinearLayout>

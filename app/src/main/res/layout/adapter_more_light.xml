@@ -20,5 +20,5 @@
         android:layout_marginTop="8dp"
         android:text="删除"
         android:textColor="@color/color_popup_more_light"
-        android:textSize="@dimen/dimen_text_mini" />
+        android:textSize="@dimen/lib_pub_dimen_text_mini" />
 </LinearLayout>

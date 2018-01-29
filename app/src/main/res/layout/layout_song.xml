@@ -4,15 +4,15 @@
 
     <FrameLayout
         android:id="@+id/flyt_header_song_play_all"
-        android:layout_width="@dimen/dimen_item_height"
-        android:layout_height="@dimen/dimen_item_height">
+        android:layout_width="@dimen/lib_pub_dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height">
 
         <ImageView
             android:id="@+id/iv_header_song_play_all"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_play_all_e"
             skin:enable="true" />
     </FrameLayout>
@@ -24,33 +24,33 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingRight="@dimen/dimen_margin">
+        android:paddingRight="@dimen/lib_pub_dimen_margin">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/play_all"
-            android:textSize="@dimen/dimen_text_small" />
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
 
         <TextView
             android:id="@+id/tv_header_song_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0首"
-            android:textSize="@dimen/dimen_text_mini" />
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/flyt_header_song_handler"
-        android:layout_width="@dimen/dimen_item_height"
-        android:layout_height="@dimen/dimen_item_height"
-        android:layout_marginLeft="@dimen/dimen_margin">
+        android:layout_width="@dimen/lib_pub_dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin">
 
         <ImageView
             android:layout_width="@dimen/dimen_item_icon"
             android:layout_height="@dimen/dimen_item_icon"
             android:layout_gravity="center"
-            android:background="@color/color_main"
+            android:background="@color/lib_pub_color_main"
             android:src="@drawable/ic_song_handler"
             skin:enable="true" />
     </FrameLayout>

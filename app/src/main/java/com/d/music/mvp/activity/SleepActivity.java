@@ -12,12 +12,12 @@ import com.d.music.R;
 import com.d.music.App;
 import com.d.music.commen.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.TimingAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.music.view.TitleLayout;
+import com.d.commen.view.TitleLayout;
 import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -133,7 +133,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         EventBus.getDefault().register(this);
         p = Preferences.getInstance(getApplicationContext());
         index = p.getSleepType();
@@ -198,7 +198,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 
     @Override

@@ -4,16 +4,16 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_main"
+    android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_main"
-        app:tl_leftDrawable="@drawable/ic_title_back"
-        app:tl_middleText="title"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/ic_title_back"
+        app:lib_pub_tl_middleText="title"
         skin:enable="true" />
 
     <FrameLayout

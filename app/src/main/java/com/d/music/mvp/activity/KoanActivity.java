@@ -8,7 +8,7 @@ import com.d.commen.mvp.MvpBasePresenter;
 import com.d.commen.mvp.MvpView;
 import com.d.music.R;
 import com.d.music.commen.Preferences;
-import com.d.music.module.repeatclick.ClickUtil;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.utils.StatusBarCompat;
 
 import butterknife.Bind;
@@ -61,7 +61,7 @@ public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         p = Preferences.getInstance(getApplicationContext());
         etSignature.setText(p.getSignature());
         etStroke.setText(p.getStroke());
@@ -71,6 +71,6 @@ public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
 }
