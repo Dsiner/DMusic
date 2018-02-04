@@ -20,9 +20,9 @@
 - [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies
-* MVP
-* Percent
-* ConstraintLayout
+- [MVP]()
+- [PercentLayout]()
+- [ConstraintLayout]()
 - [greenDAO](https://github.com/greenrobot/greenDAO)
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
@@ -35,7 +35,7 @@
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
 
-## About DMusic  ——畅听音乐(中文名) v1.0.2
+## About DMusic  ——畅听音乐(中文名) v1.0.3
 
 ##### ----追求速度、简约和安全的本地音乐播放器----
 
