@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="版本号：v1.0.1"
+            android:text="版本号：v1.0.3"
             android:textColor="@color/color_main"
             android:textSize="@dimen/dimen_text_main"
             skin:enable="true" />
