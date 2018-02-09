@@ -1,25 +1,35 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     resourcePrefix 'lib_pub_'
+    publishNonDefault true
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 25
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        consumerProguardFiles 'consumer-proguard-rules.pro'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -30,8 +40,8 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile files('libs/android-skin-loader-lib.jar')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.dsiner.lib:xrv:1.1.0'
+    compile rootProject.ext.dependencies.support_appcompat_v7
+    compile rootProject.ext.dependencies.butterknife
+    compile rootProject.ext.dependencies.gson
+    compile rootProject.ext.dependencies.xrv
 }
