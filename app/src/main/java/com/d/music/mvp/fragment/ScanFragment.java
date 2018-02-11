@@ -8,20 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
 
 import com.d.commen.base.BaseFragment;
-import com.d.commen.mvp.MvpView;
-import com.d.music.R;
 import com.d.commen.commen.AlertDialogFactory;
-import com.d.music.commen.Preferences;
+import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.commen.mvp.MvpView;
+import com.d.commen.utils.Util;
+import com.d.music.R;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.activity.ScanActivity;
 import com.d.music.mvp.presenter.ScanPresenter;
 import com.d.music.mvp.view.IScanView;
-import com.d.commen.utils.Util;
 import com.d.music.utils.fileutil.FileUtil;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -29,7 +27,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -41,35 +38,10 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanView {
-    @Bind(R.id.btn_full_scan)
-    Button btnFullScan;
-    @Bind(R.id.btn_custom_scan)
-    Button btnCustomScan;
-
     private Context context;
     private int type;
     private CustomScanFragment customScanFragment;
     private AlertDialog dialog;//进度提示dialog
-    private int[] cornerDrawable = new int[]{R.drawable.bg_corner_main
-            , R.drawable.bg_corner_main0
-            , R.drawable.bg_corner_main1
-            , R.drawable.bg_corner_main2
-            , R.drawable.bg_corner_main3
-            , R.drawable.bg_corner_main4
-            , R.drawable.bg_corner_main5
-            , R.drawable.bg_corner_main6
-            , R.drawable.bg_corner_main7
-            , R.drawable.bg_corner_main8
-            , R.drawable.bg_corner_main9
-            , R.drawable.bg_corner_main10
-            , R.drawable.bg_corner_main11
-            , R.drawable.bg_corner_main12
-            , R.drawable.bg_corner_main13
-            , R.drawable.bg_corner_main14
-            , R.drawable.bg_corner_main15
-            , R.drawable.bg_corner_main16
-            , R.drawable.bg_corner_main17
-    };
 
     @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
     public void OnClickLister(final View view) {
@@ -139,17 +111,6 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
     protected void init() {
 
     }
-
-    @Override
-    public void onResume() {
-        int cur = Preferences.getInstance(context.getApplicationContext()).getSkin() + 1;
-        if (cur >= 0 && cur < cornerDrawable.length) {
-            btnFullScan.setBackgroundResource(cornerDrawable[cur]);
-            btnCustomScan.setBackgroundResource(cornerDrawable[cur]);
-        }
-        super.onResume();
-    }
-
 
     private void sw(int viewId) {
         switch (viewId) {
