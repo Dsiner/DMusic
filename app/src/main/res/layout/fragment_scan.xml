@@ -39,7 +39,8 @@
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         app:layout_heightPercent="8%"
         app:layout_marginBottomPercent="2.6%"
-        app:layout_widthPercent="85%" />
+        app:layout_widthPercent="85%"
+        skin:enable="true" />
 
     <Button
         android:id="@+id/btn_custom_scan"
@@ -52,5 +53,6 @@
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         app:layout_heightPercent="8%"
         app:layout_marginBottomPercent="5%"
-        app:layout_widthPercent="85%" />
+        app:layout_widthPercent="85%"
+        skin:enable="true" />
 </android.support.percent.PercentRelativeLayout>
