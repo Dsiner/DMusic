@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.d.commen.base.BaseFragment;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.base.BaseFragment;
+import com.d.commen.module.mvp.MvpView;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.commen.Preferences;

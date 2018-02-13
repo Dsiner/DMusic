@@ -9,9 +9,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.commen.base.BaseActivity;
-import com.d.commen.mvp.MvpBasePresenter;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.base.BaseActivity;
+import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpView;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
 import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;

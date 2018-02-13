@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.d.commen.base.BaseFragmentActivity;
+import com.d.commen.module.mvp.base.BaseFragmentActivity;
 import com.d.music.R;
 import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.mvp.fragment.CustomScanFragment;

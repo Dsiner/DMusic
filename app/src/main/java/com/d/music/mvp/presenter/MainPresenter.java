@@ -3,7 +3,7 @@ package com.d.music.mvp.presenter;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.d.commen.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpBasePresenter;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.IMainView;

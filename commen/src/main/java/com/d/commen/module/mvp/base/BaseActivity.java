@@ -1,4 +1,4 @@
-package com.d.commen.base;
+package com.d.commen.module.mvp.base;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,19 +9,21 @@ import android.support.annotation.Nullable;
 import android.view.Window;
 
 import com.d.commen.commen.AlertDialogFactory;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 
 import butterknife.ButterKnife;
-import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
+import cn.feng.skin.manager.base.BaseSkinActivity;
 
 /**
- * BaseFragmentActivity
+ * BaseActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity implements MvpView {
-    protected Activity mActivity;
+public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinActivity implements MvpView {
     protected Context mContext;
+    protected Activity mActivity;
+    protected T mPresenter;
     protected DSLayout dslDs;
     private AlertDialog loadingDlg;
 
@@ -35,11 +37,18 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
+        mPresenter = getPresenter();
+        if (mPresenter != null) {
+            mPresenter.attachView(getMvpView());
+        }
         init();
     }
 
     @Override
     protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.detachView(false);
+        }
         ButterKnife.unbind(this);
         super.onDestroy();
     }
@@ -83,6 +92,10 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
     protected int getDSLayoutRes() {
         return 0;
     }
+
+    public abstract T getPresenter();
+
+    protected abstract MvpView getMvpView();
 
     protected abstract void init();
 }

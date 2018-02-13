@@ -1,7 +1,7 @@
 package com.d.music.mvp.view;
 
 
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpView;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.view.lrc.LrcRow;
 

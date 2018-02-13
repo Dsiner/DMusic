@@ -5,11 +5,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.d.commen.base.BaseActivity;
+import com.d.commen.module.mvp.base.BaseActivity;
 import com.d.commen.commen.AlertDialogFactory;
 import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.mvp.MvpBasePresenter;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpView;
 import com.d.commen.utils.Util;
 import com.d.music.R;
 import com.d.music.commen.Preferences;
