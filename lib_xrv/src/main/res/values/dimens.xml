@@ -1,0 +1,4 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="lib_xrv_text_size">10dp</dimen>
+</resources>
