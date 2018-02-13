@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.d.commen.base.BaseFragment;
+import com.d.commen.module.mvp.base.BaseFragment;
 import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.mvp.MvpBasePresenter;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.tab.ScrollTab;
 import com.d.music.MainActivity;
 import com.d.music.R;

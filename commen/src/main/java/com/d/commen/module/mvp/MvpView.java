@@ -14,33 +14,29 @@
  * limitations under the License.
  */
 
-package com.d.commen.mvp;
-
-import android.support.annotation.UiThread;
+package com.d.commen.module.mvp;
 
 /**
- * The base interface for each mvp presenter.
- * <p>
- * <p>
- * Mosby assumes that all interaction (i.e. updating the View) between Presenter and View is
- * executed on android's main UI thread.
- * </p>
+ * The root view interface for every mvp view
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface MvpPresenter<V extends MvpView> {
+public interface MvpView {
+    /**
+     * 设置默认态，网络请求出错时可通过getState(Throwable e)获取需要显示状态
+     *
+     * @param state：DSLayout.STATE_LOADING、DSLayout.STATE_EMPTY、DSLayout.STATE_NET_ERROR、DSLayout.GONE等
+     */
+    void setState(int state);
 
     /**
-     * Set or attach the view to this presenter
+     * loading dialog show
      */
-    @UiThread
-    void attachView(V view);
+    void showLoading();
 
     /**
-     * Will be called if the view has been destroyed. Typically this method will be invoked from
-     * <code>Activity.detachView()</code> or <code>Fragment.onDestroyView()</code>
+     * loading dialog dismiss
      */
-    @UiThread
-    void detachView(boolean retainInstance);
+    void closeLoading();
 }

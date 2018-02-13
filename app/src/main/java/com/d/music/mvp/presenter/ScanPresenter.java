@@ -2,7 +2,7 @@ package com.d.music.mvp.presenter;
 
 import android.content.Context;
 
-import com.d.commen.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpBasePresenter;
 import com.d.music.model.FileModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;

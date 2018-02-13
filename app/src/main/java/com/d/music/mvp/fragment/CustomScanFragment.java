@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.commen.base.BaseFragment;
+import com.d.commen.module.mvp.base.BaseFragment;
 import com.d.music.R;
 import com.d.commen.commen.AlertDialogFactory;
 import com.d.music.model.FileModel;

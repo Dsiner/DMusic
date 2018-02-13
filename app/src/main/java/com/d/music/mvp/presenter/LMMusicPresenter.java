@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
 
-import com.d.commen.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpBasePresenter;
 import com.d.music.model.AlbumModel;
 import com.d.music.model.FolderModel;
 import com.d.music.model.SingerModel;

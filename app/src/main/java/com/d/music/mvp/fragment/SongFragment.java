@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.commen.base.BaseFragment;
+import com.d.commen.module.mvp.base.BaseFragment;
 import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.music.MainActivity;

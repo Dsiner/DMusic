@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.commen.base.BaseFragmentActivity;
+import com.d.commen.module.mvp.base.BaseFragmentActivity;
 import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.utils.Util;
 import com.d.music.commen.Preferences;

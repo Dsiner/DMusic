@@ -1,4 +1,4 @@
-package com.d.commen.base;
+package com.d.commen.module.mvp.base;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.d.commen.commen.AlertDialogFactory;
-import com.d.commen.mvp.MvpBasePresenter;
-import com.d.commen.mvp.MvpView;
+import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 
 import butterknife.ButterKnife;
