@@ -15,18 +15,18 @@ import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * LazyLoad Fragment
  * Created by D on 2017/4/30.
  */
 public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> implements ILMMusicView {
-    @Bind(R.id.dsl_ds)
+    @BindView(R.id.dsl_ds)
     DSLayout dslDS;
-    @Bind(R.id.xrv_list)
+    @BindView(R.id.xrv_list)
     XRecyclerView xrvList;
-    @Bind(R.id.sb_sidebar)
+    @BindView(R.id.sb_sidebar)
     SideBar sbSideBar;
 
     protected boolean isVisibleToUser;

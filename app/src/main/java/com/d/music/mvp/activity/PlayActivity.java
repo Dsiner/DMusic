@@ -48,7 +48,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -67,26 +67,26 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         }
     }
 
-    @Bind(R.id.iv_back)
+    @BindView(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_title)
+    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @Bind(R.id.lrcv_lrc)
+    @BindView(R.id.lrcv_lrc)
     LrcView lrc;
-    @Bind(R.id.iv_album)
+    @BindView(R.id.iv_album)
     ImageView ivAlbum;
-    @Bind(R.id.tv_time_start)
+    @BindView(R.id.tv_time_start)
     TextView tvTimeStart;
-    @Bind(R.id.tv_time_end)
+    @BindView(R.id.tv_time_end)
     TextView tvTimeEnd;
-    @Bind(R.id.sb_progress)
+    @BindView(R.id.sb_progress)
     SeekBar seekBar;
 
-    @Bind(R.id.iv_play_collect)
+    @BindView(R.id.iv_play_collect)
     ImageView ivColect;
-    @Bind(R.id.iv_play_play_pause)
+    @BindView(R.id.iv_play_play_pause)
     ImageView ivPlayPause;
-    @Bind(R.id.iv_play_queue)
+    @BindView(R.id.iv_play_queue)
     ImageView ivPlayQueue;
 
     private Context context;

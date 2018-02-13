@@ -14,7 +14,7 @@ import com.d.music.utils.StatusBarCompat;
 import com.d.commen.view.RowLayout;
 import com.d.commen.view.TitleLayout;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -23,19 +23,19 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class SettingActivity extends BaseActivity<MvpBasePresenter> implements MvpView, RowLayout.OnToggleListener {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.rl_mode_auto_play)
+    @BindView(R.id.rl_mode_auto_play)
     RowLayout rlModeAutoPlay;
-    @Bind(R.id.rl_mode_sub)
+    @BindView(R.id.rl_mode_sub)
     RowLayout rlModeSub;
-    @Bind(R.id.rl_mode_add)
+    @BindView(R.id.rl_mode_add)
     RowLayout rlModeAdd;
-    @Bind(R.id.rl_mode_rotate)
+    @BindView(R.id.rl_mode_rotate)
     RowLayout rlModeRotate;
-    @Bind(R.id.rl_mode_shake)
+    @BindView(R.id.rl_mode_shake)
     RowLayout rlModeShake;
-    @Bind(R.id.rl_mode_menu)
+    @BindView(R.id.rl_mode_menu)
     RowLayout rlModeMenu;
 
     private Preferences p;

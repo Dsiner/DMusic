@@ -10,13 +10,6 @@ public class ULog {
     public static boolean DEVELOP_MODE = true;
 
     private static final String LOG_TAG = "DMusic";
-    private static ULog log;
-
-    public synchronized static ULog getInstance() {
-        if (log == null)
-            log = new ULog();
-        return log;
-    }
 
     private ULog() {
     }

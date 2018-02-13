@@ -16,6 +16,7 @@ import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * BaseFragment
@@ -28,6 +29,7 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
     protected View rootView;
     protected DSLayout dslDs;
     private AlertDialog loadingDlg;
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,13 +46,13 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
             int layoutRes = getLayoutRes();
             mPresenter = getPresenter();
             rootView = getActivity().getLayoutInflater().inflate(layoutRes, null);
-            ButterKnife.bind(this, rootView);
+            unbinder = ButterKnife.bind(this, rootView);
             init();
         } else {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
             }
-            ButterKnife.bind(this, rootView);
+            unbinder = ButterKnife.bind(this, rootView);
         }
         return rootView;
     }
@@ -68,7 +70,9 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
         if (mPresenter != null) {
             mPresenter.detachView(false);
         }
-        ButterKnife.unbind(this);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         super.onDestroyView();
     }
 

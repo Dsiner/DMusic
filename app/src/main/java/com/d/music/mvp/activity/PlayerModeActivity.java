@@ -21,7 +21,7 @@ import com.d.lib.xrv.LRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -30,9 +30,9 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.lrv_list)
+    @BindView(R.id.lrv_list)
     LRecyclerView lrvList;
 
     private Preferences p;

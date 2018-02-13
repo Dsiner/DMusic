@@ -40,7 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -55,19 +55,19 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class MainFragment extends BaseFragment<MainPresenter> implements IMainView {
-    @Bind(R.id.tv_title_middle_main)
+    @BindView(R.id.tv_title_middle_main)
     TextView tvTitle;
-    @Bind(R.id.llyt_local)
+    @BindView(R.id.llyt_local)
     LinearLayout llytLocal;//本地音乐
-    @Bind(R.id.tv_local_all_count)
+    @BindView(R.id.tv_local_all_count)
     TextView tvLocalAllCount;//本地歌曲数
-    @Bind(R.id.pbr_loading)
+    @BindView(R.id.pbr_loading)
     ProgressBar pbrLoading;
-    @Bind(R.id.llyt_collection)
+    @BindView(R.id.llyt_collection)
     LinearLayout llytColletion;//我的收藏
-    @Bind(R.id.tv_collection_count)
+    @BindView(R.id.tv_collection_count)
     TextView tvCollectionCount;//收藏歌曲数
-    @Bind(R.id.lv_list)
+    @BindView(R.id.lv_list)
     LRecyclerView lvList;
 
     private Preferences p;

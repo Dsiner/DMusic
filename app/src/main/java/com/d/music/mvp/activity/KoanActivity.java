@@ -11,7 +11,7 @@ import com.d.music.commen.Preferences;
 import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.music.utils.StatusBarCompat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -20,9 +20,9 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @Bind(R.id.et_signature)
+    @BindView(R.id.et_signature)
     EditText etSignature;
-    @Bind(R.id.et_stroke)
+    @BindView(R.id.et_stroke)
     EditText etStroke;
 
     private Preferences p;

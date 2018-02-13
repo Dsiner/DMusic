@@ -13,6 +13,7 @@ import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
 
 /**
@@ -24,6 +25,7 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
     protected Context mContext;
     protected DSLayout dslDs;
     private AlertDialog loadingDlg;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,13 +36,15 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
         //禁止横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutRes());
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         init();
     }
 
     @Override
     protected void onDestroy() {
-        ButterKnife.unbind(this);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         super.onDestroy();
     }
 

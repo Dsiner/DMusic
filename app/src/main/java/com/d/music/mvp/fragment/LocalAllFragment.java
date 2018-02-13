@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.d.commen.module.mvp.base.BaseFragment;
-import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.module.mvp.MvpBasePresenter;
 import com.d.commen.module.mvp.MvpView;
+import com.d.commen.module.mvp.base.BaseFragment;
+import com.d.commen.module.repeatclick.ClickUtil;
 import com.d.commen.view.tab.ScrollTab;
 import com.d.music.MainActivity;
 import com.d.music.R;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -31,11 +31,11 @@ import butterknife.OnClick;
  * Created by D on 2017/4/29.
  */
 public class LocalAllFragment extends BaseFragment<MvpBasePresenter> implements MvpView {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.indicator)
+    @BindView(R.id.indicator)
     ScrollTab indicator;
-    @Bind(R.id.vp_page)
+    @BindView(R.id.vp_page)
     ViewPager pager;
 
     private List<String> titles = Arrays.asList("歌曲", "歌手", "专辑", "文件夹");

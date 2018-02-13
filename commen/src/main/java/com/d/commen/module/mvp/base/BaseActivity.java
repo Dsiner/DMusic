@@ -14,6 +14,7 @@ import com.d.commen.module.mvp.MvpView;
 import com.d.commen.view.DSLayout;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.feng.skin.manager.base.BaseSkinActivity;
 
 /**
@@ -26,6 +27,7 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
     protected T mPresenter;
     protected DSLayout dslDs;
     private AlertDialog loadingDlg;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         //禁止横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutRes());
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(getMvpView());
@@ -49,7 +51,9 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         if (mPresenter != null) {
             mPresenter.detachView(false);
         }
-        ButterKnife.unbind(this);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         super.onDestroy();
     }
 

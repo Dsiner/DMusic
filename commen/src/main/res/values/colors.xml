@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="lib_pub_color_trans">#00000000</color>
+    <color name="lib_pub_color_translucent">#9900040a</color>
     <color name="lib_pub_color_white">#ffffff</color>
     <color name="lib_pub_color_black">#000000</color>
     <color name="lib_pub_color_gray">#FF888888</color>
@@ -17,7 +18,6 @@
     <color name="lib_pub_color_main_90">#E61DA0EF</color>
     <color name="lib_pub_color_main_50">#801DA0EF</color>
     <color name="lib_pub_color_main_30">#661DA0EF</color>
-    <color name="lib_pub_color_translucent">#9900040a</color>
 
     <color name="lib_pub_color_line">#e5e5e5</color>
     <color name="lib_pub_color_dialog_bg">#aaC1C1C1</color>

@@ -23,7 +23,7 @@ import com.d.music.view.SpaceItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.listener.ILoaderListener;
 import cn.feng.skin.manager.loader.SkinManager;
@@ -33,7 +33,7 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @Bind(R.id.rv_list)
+    @BindView(R.id.rv_list)
     RecyclerView rvList;
 
     private SkinAdapter adapter;

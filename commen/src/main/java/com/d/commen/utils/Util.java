@@ -61,6 +61,8 @@ public class Util {
 
     /**
      * 获取屏幕宽度和高度
+     *
+     * @return int[]{SCREEN_WIDTH, SCREEN_HEIGHT}
      */
     public static int[] getScreenSize(Activity activity) {
         if (SCREEN_WIDTH > 0) {
