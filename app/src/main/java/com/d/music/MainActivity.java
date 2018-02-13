@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -41,17 +41,17 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/4/28.
  */
 public class MainActivity extends BaseFragmentActivity implements DrawerListener {
-    @Bind(R.id.tv_song_name)
+    @BindView(R.id.tv_song_name)
     TextView tvSongName;
-    @Bind(R.id.tv_singer)
+    @BindView(R.id.tv_singer)
     TextView tvSinger;
-    @Bind(R.id.tv_stroke)
+    @BindView(R.id.tv_stroke)
     TextView tvStroke;
-    @Bind(R.id.llyt_menu_exit)
+    @BindView(R.id.llyt_menu_exit)
     LinearLayout llytExit;
-    @Bind(R.id.iv_play)
+    @BindView(R.id.iv_play)
     ImageView ivPlay;
-    @Bind(R.id.flyt_menu)
+    @BindView(R.id.flyt_menu)
     FrameLayout flytMenu;
 
     private Context context;

@@ -35,23 +35,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="9dp"
-                android:paddingLeft="9dp"
-                android:paddingRight="9dp"
-                android:paddingTop="6dp">
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="9dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="歌曲:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_song_name"
@@ -61,21 +60,20 @@
                         android:layout_weight="1"
                         android:text="夏洛特烦恼"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="歌手:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_singer"
@@ -85,21 +83,20 @@
                         android:layout_weight="1"
                         android:text="金志文"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="专辑:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_album"
@@ -109,22 +106,21 @@
                         android:layout_weight="1"
                         android:text="未知专辑"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="文件格式:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_filepostfix"
@@ -134,21 +130,20 @@
                         android:layout_weight="1"
                         android:text="mp3"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="歌曲时长:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_duration"
@@ -158,21 +153,20 @@
                         android:layout_weight="1"
                         android:text="03:12"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="文件大小:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_size"
@@ -182,21 +176,20 @@
                         android:layout_weight="1"
                         android:text="7.34MB"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
                         android:text="存放目录:"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
 
                     <TextView
                         android:id="@+id/tv_url"
@@ -206,7 +199,7 @@
                         android:layout_weight="1"
                         android:text="/storage/emulated/0/ttod/song/金志文-夏洛特烦恼.mp3"
                         android:textColor="@color/lib_pub_color_white"
-                        android:textSize="16dp" />
+                        android:textSize="16.5dp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

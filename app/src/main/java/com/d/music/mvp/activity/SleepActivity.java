@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -36,13 +36,13 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class SleepActivity extends BaseActivity<MvpBasePresenter> implements MvpView, TimingAdapter.OnChangeListener {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.tv_content)
+    @BindView(R.id.tv_content)
     TextView tvContent;
-    @Bind(R.id.iv_check)
+    @BindView(R.id.iv_check)
     ImageView ivCheck;
-    @Bind(R.id.lrv_list)
+    @BindView(R.id.lrv_list)
     LRecyclerView lrvList;
 
     private Preferences p;

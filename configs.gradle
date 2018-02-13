@@ -23,7 +23,8 @@ ext {
             gson                      : "com.google.code.gson:gson:2.7",
 
             nineoldandroids           : "com.nineoldandroids:library:2.4.0",
-            butterknife               : "com.jakewharton:butterknife:7.0.1",
+            butterknife               : "com.jakewharton:butterknife:8.8.1",
+            butterknife_compiler      : "com.jakewharton:butterknife-compiler:8.8.1",
             eventbus                  : "org.greenrobot:eventbus:3.0.0",
             greendao                  : "de.greenrobot:greendao:2.1.0",
             tinypinyin                : "com.github.promeg:tinypinyin:2.0.3",

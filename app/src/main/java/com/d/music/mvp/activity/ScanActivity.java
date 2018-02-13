@@ -15,7 +15,7 @@ import com.d.music.utils.StatusBarCompat;
 import com.d.commen.utils.log.ULog;
 import com.d.commen.view.TitleLayout;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -24,7 +24,7 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/4/29.
  */
 public class ScanActivity extends BaseFragmentActivity implements OnClickListener {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
 
     private Fragment fragment;

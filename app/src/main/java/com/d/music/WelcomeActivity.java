@@ -23,7 +23,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -34,13 +34,13 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/6/16.
  */
 public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements MvpView, ViewPager.OnPageChangeListener, View.OnClickListener {
-    @Bind(R.id.vp_page)
+    @BindView(R.id.vp_page)
     ViewPager page;
-    @Bind(R.id.iv_dot0)
+    @BindView(R.id.iv_dot0)
     ImageView ivDot0;
-    @Bind(R.id.iv_dot1)
+    @BindView(R.id.iv_dot1)
     ImageView ivDot1;
-    @Bind(R.id.iv_dot2)
+    @BindView(R.id.iv_dot2)
     ImageView ivDot2;
 
     private Context context;

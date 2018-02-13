@@ -40,7 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -48,11 +48,11 @@ import butterknife.OnClick;
  * Created by D on 2017/4/30.
  */
 public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.dsl_ds)
+    @BindView(R.id.dsl_ds)
     DSLayout dslDS;
-    @Bind(R.id.xrv_list)
+    @BindView(R.id.xrv_list)
     XRecyclerView xrvList;
 
     private Context context;

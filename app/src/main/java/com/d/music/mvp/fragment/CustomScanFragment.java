@@ -30,7 +30,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -42,13 +42,13 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class CustomScanFragment extends BaseFragment<ScanPresenter> implements IScanView, DirAdapter.OnPathListener {
-    @Bind(R.id.llyt_dir)
+    @BindView(R.id.llyt_dir)
     LinearLayout llytDir;
-    @Bind(R.id.llyt_scan_now)
+    @BindView(R.id.llyt_scan_now)
     LinearLayout llytScanNow;
-    @Bind(R.id.tv_current_dir)
+    @BindView(R.id.tv_current_dir)
     TextView tvCurrentDir;
-    @Bind(R.id.lrv_list)
+    @BindView(R.id.lrv_list)
     LRecyclerView lrvList;
 
     private Context context;

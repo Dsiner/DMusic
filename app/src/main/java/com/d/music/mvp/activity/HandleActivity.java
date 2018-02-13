@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
@@ -43,11 +43,11 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/4/28.
  */
 public class HandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
-    @Bind(R.id.tl_title)
+    @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @Bind(R.id.tv_title_right)
+    @BindView(R.id.tv_title_right)
     TextView tvRight;
-    @Bind(R.id.rv_list)
+    @BindView(R.id.rv_list)
     RecyclerView rvList;
 
     private Context context;
