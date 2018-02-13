@@ -80,7 +80,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                App.exit(getApplicationContext());//退出应用
+                App.exit(getApplicationContext());//退出
                 break;
         }
     }

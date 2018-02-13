@@ -1,0 +1,12 @@
+<resources>
+    <string name="lib_xrv_app_name">xrv</string>
+    <string name="lib_xrv_list_header_hint_normal">向下拉动可以刷新</string>
+    <string name="lib_xrv_list_header_hint_release">松开可以刷新</string>
+    <string name="lib_xrv_list_header_last_time">上次更新:</string>
+    <string name="lib_xrv_list_refreshing">加载中...</string>
+    <string name="lib_xrv_list_loading">加载中...</string>
+    <string name="lib_xrv_list_nomore">没有更多内容了</string>
+    <string name="lib_xrv_list_refresh_done">刷新完成</string>
+    <string name="lib_xrv_list_loading_complete">加载完成</string>
+    <string name="lib_xrv_list_load_more_error">加载失败，点击重试!</string>
+</resources>

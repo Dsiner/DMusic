@@ -64,20 +64,25 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     debugCompile project(path: ':commen', configuration: 'debug')
+    debugCompile project(path: ':lib_rxnet', configuration: 'debug')
+    debugCompile project(path: ':lib_xrv', configuration: 'debug')
     releaseCompile project(path: ':commen', configuration: 'release')
+    releaseCompile project(path: ':lib_rxnet', configuration: 'release')
+    releaseCompile project(path: ':lib_xrv', configuration: 'release')
+
     compile rootProject.ext.dependencies.support_v4
     compile rootProject.ext.dependencies.support_appcompat_v7
     compile rootProject.ext.dependencies.support_design
     compile rootProject.ext.dependencies.support_percent
-    compile rootProject.ext.dependencies.constraint_layout
+    compile rootProject.ext.dependencies.support_constraint_layout
 
     compile rootProject.ext.dependencies.eventbus
     compile rootProject.ext.dependencies.greendao
     compile rootProject.ext.dependencies.tinypinyin
 
-    compile rootProject.ext.dependencies.slidelayout
-
     compile rootProject.ext.dependencies.rxjava
     compile rootProject.ext.dependencies.rxandroid
     compile rootProject.ext.dependencies.rxpermissions
+
+    compile rootProject.ext.dependencies.slidelayout
 }

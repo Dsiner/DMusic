@@ -4,7 +4,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    resourcePrefix 'lib_pub_'
+    resourcePrefix 'lib_xrv_'
     publishNonDefault true
 
     defaultConfig {
@@ -34,14 +34,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile files('libs/android-skin-loader-lib.jar')
-    compile rootProject.ext.dependencies.support_appcompat_v7
-    compile rootProject.ext.dependencies.gson
+    compile rootProject.ext.dependencies.support_recyclerview_v7
+    compile rootProject.ext.dependencies.support_design
     compile rootProject.ext.dependencies.nineoldandroids
-    compile rootProject.ext.dependencies.butterknife
 }
