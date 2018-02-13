@@ -13,7 +13,7 @@ import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.commen.module.repeatclick.OnClickFastListener;
 import com.d.music.mvp.fragment.SongFragment;
-import com.d.music.utils.TaskManager;
+import com.d.commen.utils.TaskManager;
 import com.d.music.view.dialog.NewListDialog;
 import com.d.lib.slidelayout.SlideLayout;
 import com.d.lib.slidelayout.SlideManager;

@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.d.commen.utils.log.ULog;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Field;
@@ -49,6 +50,19 @@ public class Util {
     /**
      * Toast提示
      *
+     * @param c：   Context
+     * @param msg： String
+     */
+    public static void toastLong(Context c, String msg) {
+        if (c == null || TextUtils.isEmpty(msg)) {
+            return;
+        }
+        Toast.makeText(c, msg, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Toast提示
+     *
      * @param c：     Context
      * @param resId： resource id
      */
@@ -60,12 +74,19 @@ public class Util {
     }
 
     /**
+     * 打印当前代码所在线程信息
+     */
+    public static void printThread(String tag) {
+        ULog.d(tag + Thread.currentThread().getId() + "--NAME--" + Thread.currentThread().getName());
+    }
+
+    /**
      * 获取屏幕宽度和高度
      *
      * @return int[]{SCREEN_WIDTH, SCREEN_HEIGHT}
      */
     public static int[] getScreenSize(Activity activity) {
-        if (SCREEN_WIDTH > 0) {
+        if (SCREEN_WIDTH > 0 && SCREEN_HEIGHT > 0) {
             return new int[]{SCREEN_WIDTH, SCREEN_HEIGHT};
         }
         DisplayMetrics metric = new DisplayMetrics();
