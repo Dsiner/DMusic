@@ -7,7 +7,7 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ISongView;
-import com.d.music.utils.TaskManager;
+import com.d.commen.utils.TaskManager;
 import com.d.commen.view.DSLayout;
 
 import java.util.ArrayList;

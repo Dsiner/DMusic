@@ -1,7 +1,6 @@
 package com.d.music;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,8 +23,7 @@ import java.lang.ref.WeakReference;
  * Created by D on 2017/4/28.
  */
 public class SplashActivity extends Activity {
-    private Context context;
-    private WeakHandler handler = new WeakHandler(this);
+    private WeakHandler handler;
     private Preferences p;
     private int delayTime = 2500;//splash时间
     private boolean isBackPressed;
@@ -56,9 +54,9 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         StatusBarCompat.compat(SplashActivity.this, Color.parseColor("#ececec"));//沉浸式状态栏
         p = Preferences.getInstance(getApplicationContext());
+        handler = new WeakHandler(this);
         if (p.getIsFirst()) {
             //首次安装启动
             MusicCst.playerMode = MusicCst.PLAYER_MODE_NORMAL;

@@ -1,4 +1,4 @@
-package com.d.music.utils;
+package com.d.commen.utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,15 +15,17 @@ public class TaskManager {
 
     public static TaskManager getIns() {
         if (ins == null) {
-            ins = new TaskManager();
+            synchronized (TaskManager.class) {
+                if (ins == null) {
+                    ins = new TaskManager();
+                }
+            }
         }
         return ins;
     }
 
     /**
      * 执行异步任务
-     *
-     * @param runnable:runnable
      */
     public void executeTask(Runnable runnable) {
         cachedThreadPool.execute(runnable);
