@@ -2,10 +2,10 @@ package com.d.music.mvp.activity;
 
 import android.view.View;
 
-import com.d.commen.module.mvp.MvpBasePresenter;
-import com.d.commen.module.mvp.MvpView;
-import com.d.commen.module.mvp.base.BaseActivity;
-import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.R;
 import com.d.music.utils.StatusBarCompat;
 

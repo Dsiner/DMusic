@@ -1,1 +1,1 @@
-include ':app', ':commen', ':lib_rxnet', ':lib_xrv', ':greendao'
+include ':app', ':common', ':lib_rxnet', ':lib_xrv', ':greendao'

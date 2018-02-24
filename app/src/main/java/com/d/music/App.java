@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.music.commen.Preferences;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.music.common.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.service.MusicService;

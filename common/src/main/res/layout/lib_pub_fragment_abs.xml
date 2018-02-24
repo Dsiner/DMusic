@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/lib_pub_dimen_tab_height">
+
+    <com.d.lib.common.view.DSLayout
+        android:id="@+id/dsl_ds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.d.lib.xrv.XRecyclerView
+        android:id="@+id/xrv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

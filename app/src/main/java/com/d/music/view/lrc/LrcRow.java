@@ -3,7 +3,7 @@ package com.d.music.view.lrc;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.d.commen.utils.log.ULog;
+import com.d.lib.common.utils.log.ULog;
 
 import java.util.ArrayList;
 import java.util.List;

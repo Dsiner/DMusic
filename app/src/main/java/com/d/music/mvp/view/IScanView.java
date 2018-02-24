@@ -1,6 +1,6 @@
 package com.d.music.mvp.view;
 
-import com.d.commen.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.MvpView;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 

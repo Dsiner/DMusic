@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.d.music.R;
-import com.d.commen.utils.Util;
+import com.d.lib.common.utils.Util;
 
 import cn.feng.skin.manager.loader.SkinManager;
 

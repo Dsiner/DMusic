@@ -6,7 +6,7 @@ import android.view.View;
 import com.d.music.R;
 import com.d.music.api.IQueueListener;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.commen.module.repeatclick.OnClickFastListener;
+import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.module.service.MusicService;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;

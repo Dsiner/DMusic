@@ -2,13 +2,13 @@ package com.d.music.mvp.presenter;
 
 import android.content.Context;
 
-import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ISongView;
-import com.d.commen.utils.TaskManager;
-import com.d.commen.view.DSLayout;
+import com.d.lib.common.utils.TaskManager;
+import com.d.lib.common.view.DSLayout;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,15 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
 
-import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.music.model.AlbumModel;
 import com.d.music.model.FolderModel;
 import com.d.music.model.SingerModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.commen.utils.log.ULog;
-import com.d.commen.view.DSLayout;
+import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.view.DSLayout;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;
