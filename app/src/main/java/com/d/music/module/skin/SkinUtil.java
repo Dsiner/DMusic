@@ -2,7 +2,7 @@ package com.d.music.module.skin;
 
 import android.content.Context;
 
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.module.global.MusicCst;
 
 import java.io.File;

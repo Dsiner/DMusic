@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <com.d.commen.view.DSLayout
+    <com.d.lib.common.view.DSLayout
         android:id="@+id/dsl_ds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

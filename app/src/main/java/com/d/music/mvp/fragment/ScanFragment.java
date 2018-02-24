@@ -9,11 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.commen.module.mvp.base.BaseFragment;
-import com.d.commen.commen.AlertDialogFactory;
-import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.module.mvp.MvpView;
-import com.d.commen.utils.Util;
+import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.common.AlertDialogFactory;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.utils.Util;
 import com.d.music.R;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;

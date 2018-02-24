@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.R;
 import com.d.music.view.dialog.MenuDialog;
 
@@ -13,7 +13,7 @@ import com.d.music.view.dialog.MenuDialog;
  * TitleLayout
  * Created by D on 2018/1/29.
  */
-public class TitleLayout extends com.d.commen.view.TitleLayout implements View.OnClickListener {
+public class TitleLayout extends com.d.lib.common.view.TitleLayout implements View.OnClickListener {
     private MenuDialog menu;
     private MenuDialog.OnMenuListener onMenuListener;
 
@@ -32,7 +32,7 @@ public class TitleLayout extends com.d.commen.view.TitleLayout implements View.O
     @Override
     protected void init(Context context) {
         super.init(context);
-        ImageView ivRight = (ImageView) rootView.findViewById(com.d.commen.R.id.iv_title_right);
+        ImageView ivRight = (ImageView) rootView.findViewById(R.id.iv_title_right);
         ivRight.setOnClickListener(this);
     }
 

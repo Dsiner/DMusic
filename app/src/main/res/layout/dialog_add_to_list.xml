@@ -54,7 +54,7 @@
             android:layout_above="@+id/tv_ok"
             android:layout_below="@+id/tv_title" />
 
-        <com.d.commen.view.loading.LoadingLayout
+        <com.d.lib.common.view.loading.LoadingLayout
             android:id="@+id/ldl_loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

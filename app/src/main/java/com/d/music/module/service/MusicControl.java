@@ -3,13 +3,13 @@ package com.d.music.module.service;
 import android.content.Context;
 import android.media.MediaPlayer;
 
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.commen.utils.TaskManager;
+import com.d.lib.common.utils.TaskManager;
 
 import org.greenrobot.eventbus.EventBus;
 

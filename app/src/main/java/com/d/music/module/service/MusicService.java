@@ -21,7 +21,7 @@ import android.widget.RemoteViews;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.App;
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
@@ -29,7 +29,7 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.activity.PlayActivity;
 import com.d.music.mvp.activity.PlayerModeActivity;
-import com.d.commen.utils.log.ULog;
+import com.d.lib.common.utils.log.ULog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

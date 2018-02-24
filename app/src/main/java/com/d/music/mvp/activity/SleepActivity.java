@@ -5,19 +5,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.d.commen.module.mvp.base.BaseActivity;
-import com.d.commen.module.mvp.MvpBasePresenter;
-import com.d.commen.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpView;
 import com.d.music.R;
 import com.d.music.App;
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
-import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.TimingAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.commen.view.TitleLayout;
+import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;

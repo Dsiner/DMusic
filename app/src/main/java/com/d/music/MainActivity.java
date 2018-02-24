@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.commen.module.mvp.base.BaseFragmentActivity;
-import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.utils.Util;
-import com.d.music.commen.Preferences;
+import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.music.common.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.Cst;
 import com.d.music.module.service.MusicService;

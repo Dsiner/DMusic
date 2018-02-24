@@ -185,7 +185,7 @@
 }
 
 # SharedPreferences
--keep public class * extends com.d.commen.commen.AbstractPreference
+-keep public class * extends com.d.lib.common.common.AbstractPreference
 
 # --------------- 处理Model类 ---------------
 
@@ -193,7 +193,7 @@
 
 # --------------- 处理js交互 ---------------
 # 保留js要调用的原生方法不被混淆
-#-keepclassmembers class com.d.commen.commen.JSInterface {
+#-keepclassmembers class com.d.lib.common.common.JSInterface {
 #    <methods>;
 #}
 

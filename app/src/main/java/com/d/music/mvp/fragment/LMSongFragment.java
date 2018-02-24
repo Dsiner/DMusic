@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.model.AlbumModel;
 import com.d.music.model.FolderModel;
 import com.d.music.model.SingerModel;
@@ -17,7 +17,7 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.SongAdapter;
-import com.d.commen.view.DSLayout;
+import com.d.lib.common.view.DSLayout;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.sort.SideBar;
 import com.d.music.view.sort.SortUtil;

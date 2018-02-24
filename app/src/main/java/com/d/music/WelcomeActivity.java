@@ -11,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.d.commen.module.mvp.base.BaseActivity;
-import com.d.commen.module.mvp.MvpBasePresenter;
-import com.d.commen.module.mvp.MvpView;
-import com.d.commen.module.repeatclick.ClickUtil;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
-import com.d.commen.utils.Util;
+import com.d.lib.common.utils.Util;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 

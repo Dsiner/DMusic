@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.commen.module.mvp.base.BaseFragment;
-import com.d.commen.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.music.R;
 import com.d.music.mvp.presenter.LMMusicPresenter;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.commen.view.DSLayout;
+import com.d.lib.common.view.DSLayout;
 import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;

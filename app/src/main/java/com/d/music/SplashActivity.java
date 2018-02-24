@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
-import com.d.music.commen.Preferences;
+import com.d.music.common.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.activity.PlayActivity;

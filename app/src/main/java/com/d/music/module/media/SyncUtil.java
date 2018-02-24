@@ -7,7 +7,7 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CollectionMusic;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.commen.utils.TaskManager;
+import com.d.lib.common.utils.TaskManager;
 
 import org.greenrobot.eventbus.EventBus;
 

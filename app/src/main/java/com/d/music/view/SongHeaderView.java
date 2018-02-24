@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.music.R;
-import com.d.commen.module.repeatclick.ClickUtil;
-import com.d.commen.utils.Util;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
 
 /**
  * SongHeaderView

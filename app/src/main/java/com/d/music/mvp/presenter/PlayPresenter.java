@@ -3,7 +3,7 @@ package com.d.music.mvp.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.d.commen.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
