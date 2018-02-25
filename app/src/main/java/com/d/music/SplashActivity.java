@@ -13,7 +13,7 @@ import android.view.Window;
 import com.d.music.common.Preferences;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.service.MusicService;
-import com.d.music.mvp.activity.PlayActivity;
+import com.d.music.play.activity.PlayActivity;
 import com.d.music.utils.StatusBarCompat;
 
 import java.lang.ref.WeakReference;

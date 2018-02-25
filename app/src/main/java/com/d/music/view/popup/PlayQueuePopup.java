@@ -13,12 +13,12 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
-import com.d.music.api.IQueueListener;
 import com.d.music.common.Preferences;
+import com.d.music.listener.IQueueListener;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicService;
-import com.d.music.mvp.adapter.PlayQueueAdapter;
+import com.d.music.play.adapter.PlayQueueAdapter;
 
 import java.util.List;
 

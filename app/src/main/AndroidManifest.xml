@@ -38,41 +38,41 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.PlayActivity"
+            android:name="com.d.music.play.activity.PlayActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.ScanActivity"
+            android:name="com.d.music.local.activity.ScanActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.HandleActivity"
+            android:name="com.d.music.local.activity.HandleActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.SettingActivity"
+            android:name="com.d.music.setting.activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.KoanActivity"
+            android:name="com.d.music.setting.activity.KoanActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.SkinActivity"
+            android:name="com.d.music.setting.activity.SkinActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.SleepActivity"
+            android:name="com.d.music.setting.activity.SleepActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.PlayerModeActivity"
+            android:name="com.d.music.setting.activity.PlayerModeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.mvp.activity.AboutActivity"
+            android:name="com.d.music.setting.activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
     </application>

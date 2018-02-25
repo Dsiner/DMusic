@@ -19,8 +19,8 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.module.utils.MoreUtil;
-import com.d.music.mvp.activity.PlayerModeActivity;
-import com.d.music.mvp.adapter.MoreAdapter;
+import com.d.music.setting.activity.PlayerModeActivity;
+import com.d.music.play.adapter.MoreAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
