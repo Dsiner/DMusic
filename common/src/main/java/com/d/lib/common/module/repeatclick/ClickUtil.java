@@ -1,7 +1,7 @@
 package com.d.lib.common.module.repeatclick;
 
 /**
- * OnClickFastListener
+ * 防止快速点击
  * Created by D on 2017/6/6.
  */
 public class ClickUtil {

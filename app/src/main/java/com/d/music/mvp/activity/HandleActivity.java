@@ -1,7 +1,5 @@
 package com.d.music.mvp.activity;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,24 +7,23 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
 import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
-import com.d.lib.common.common.AlertDialogFactory;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.SortTypeEvent;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.media.SyncUtil;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.HandleAdapter;
 import com.d.music.utils.StatusBarCompat;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.view.TitleLayout;
 import com.d.music.view.popup.AddToListPopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,14 +47,12 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @BindView(R.id.rv_list)
     RecyclerView rvList;
 
-    private Context context;
     private int type;
     private String title = "";
     private List<MusicModel> models;
     private List<MusicModel> modelsFav;
     private HandleAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
-    private AlertDialog dialog;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.llyt_add_to_list,
             R.id.llyt_delete, R.id.llyt_revoke})
@@ -86,7 +81,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 break;
             case R.id.llyt_add_to_list:
                 if (adapter.getCount() <= 0) {
-                    Util.toast(context, "请先选择");
+                    Util.toast(mContext, "请先选择");
                     return;
                 }
                 List<MusicModel> list = new ArrayList<>();
@@ -100,10 +95,10 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
             case R.id.llyt_delete:
                 int c = adapter.getCount();
                 if (c <= 0) {
-                    Util.toast(context, "请先选择");
+                    Util.toast(mContext, "请先选择");
                     return;
                 }
-                dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
+                showLoading();
                 for (int i = models.size() - 1; i >= 0; i--) {
                     MusicModel m = models.get(i);
                     if (m.isSortChecked) {
@@ -117,10 +112,10 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 setCount(c);
                 adapter.setCount(0);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                closeLoading();
                 break;
             case R.id.llyt_revoke:
-                dialog = AlertDialogFactory.createFactory(this).getLoadingDialog();
+                showLoading();
                 models.clear();
                 models.addAll(MusicCst.models);
                 for (MusicModel model : models) {
@@ -132,7 +127,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 setCount(0);
                 adapter.setCount(0);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                closeLoading();
                 break;
         }
     }
@@ -160,13 +155,12 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Override
     protected void init() {
         StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        context = this;
         initTitle();
 
         models = new ArrayList<>();
         modelsFav = new ArrayList<>();
         models.addAll(MusicCst.models);
-        adapter = new HandleAdapter(context, models, R.layout.adapter_handler);
+        adapter = new HandleAdapter(mContext, models, R.layout.adapter_handler);
         adapter.setOnStartDragListener(this);
         adapter.setOnChangeListener(this);
         rvList.setHasFixedSize(true);

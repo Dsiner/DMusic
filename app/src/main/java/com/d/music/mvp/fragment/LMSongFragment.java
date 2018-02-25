@@ -1,9 +1,9 @@
 package com.d.music.mvp.fragment;
 
-import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
+import com.d.lib.common.view.DSLayout;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.Preferences;
@@ -17,7 +17,6 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.SongAdapter;
-import com.d.lib.common.view.DSLayout;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.sort.SideBar;
 import com.d.music.view.sort.SortUtil;
@@ -33,7 +32,6 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
-    private Context context;
     private Preferences p;
     private SongHeaderView header;
     private SongAdapter adapter;
@@ -44,13 +42,12 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     @Override
     protected void init() {
         super.init();
-        context = getActivity();
         p = Preferences.getInstance(getActivity().getApplicationContext());
         isSubPull = p.getIsSubPull();
         sortUtil = new SortUtil();
-        adapter = new SongAdapter(context, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
+        adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
         adapter.setSubPull(isSubPull);
-        header = new SongHeaderView(context);
+        header = new SongHeaderView(mContext);
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
@@ -98,10 +95,10 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     @Override
     public void setSong(List<MusicModel> models) {
         if (models.size() <= 0) {
-            setDSState(DSLayout.STATE_EMPTY);
+            setState(DSLayout.STATE_EMPTY);
             sbSideBar.setVisibility(View.GONE);
         } else {
-            setDSState(View.GONE);
+            setState(DSLayout.GONE);
             sbSideBar.setVisibility(View.VISIBLE);
         }
         notifyDataCountChanged(models.size());
@@ -125,11 +122,6 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     }
 
     @Override
-    public void setDSState(int state) {
-        dslDS.setState(state);
-    }
-
-    @Override
     public void notifyDataCountChanged(int count) {
         if (count <= 0) {
             header.setVisibility(View.GONE);
@@ -144,7 +136,7 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
-            control.init(context, datas, 0, true);
+            control.init(mContext.getApplicationContext(), datas, 0, true);
         }
     }
 

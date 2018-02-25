@@ -4,19 +4,18 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.common.AlertDialogFactory;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.music.R;
-import com.d.music.App;
-import com.d.lib.common.common.AlertDialogFactory;
-import com.d.music.common.Preferences;
+import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.xrv.LRecyclerView;
+import com.d.music.App;
+import com.d.music.R;
+import com.d.music.common.Preferences;
 import com.d.music.mvp.adapter.RadioAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.lib.common.view.TitleLayout;
-import com.d.lib.xrv.LRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +29,13 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
     @BindView(R.id.lrv_list)
     LRecyclerView lrvList;
 
+    private int index;
     private Preferences p;
     private RadioAdapter adapter;
     private List<RadioModel> datas;
-    private int index;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right})
     public void onClickListener(View v) {

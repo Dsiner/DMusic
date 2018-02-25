@@ -2,7 +2,6 @@ package com.d.lib.common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +27,11 @@ public class RowLayout extends RelativeLayout {
         this(context, null);
     }
 
-    public RowLayout(Context context, @Nullable AttributeSet attrs) {
+    public RowLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_RowLayout);
         content = typedArray.getString(R.styleable.lib_pub_RowLayout_lib_pub_rl_text);

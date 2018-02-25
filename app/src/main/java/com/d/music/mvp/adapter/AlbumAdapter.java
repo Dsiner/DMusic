@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.model.AlbumModel;
 import com.d.music.module.greendao.db.MusicDB;
-import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.mvp.fragment.SongFragment;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 

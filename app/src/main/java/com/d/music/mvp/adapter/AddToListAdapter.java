@@ -3,10 +3,10 @@ package com.d.music.mvp.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.d.music.R;
-import com.d.music.module.greendao.music.CustomList;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.music.R;
+import com.d.music.module.greendao.music.CustomList;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class AddToListAdapter extends CommonAdapter<CustomList> {
+
     public AddToListAdapter(Context context, List<CustomList> datas, int layoutId) {
         super(context, datas, layoutId);
     }

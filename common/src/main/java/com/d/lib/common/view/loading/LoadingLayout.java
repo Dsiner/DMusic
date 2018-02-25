@@ -21,6 +21,7 @@ public class LoadingLayout extends LinearLayout {
 
     public LoadingLayout(Context context) {
         super(context);
+        init(context);
     }
 
     public LoadingLayout(Context context, AttributeSet attrs) {

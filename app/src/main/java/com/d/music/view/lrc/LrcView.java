@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,8 +12,8 @@ import android.view.ViewConfiguration;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
-import com.d.music.R;
 import com.d.lib.common.utils.Util;
+import com.d.music.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 
@@ -82,11 +81,11 @@ public class LrcView extends View implements ILrcView {
         this(context, null);
     }
 
-    public LrcView(Context context, @Nullable AttributeSet attrs) {
+    public LrcView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LrcView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LrcView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LrcView);
         colorText = typedArray.getColor(R.styleable.LrcView_lrcTextColor, Color.parseColor("#4577B7"));

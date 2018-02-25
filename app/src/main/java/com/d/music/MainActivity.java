@@ -1,6 +1,5 @@
 package com.d.music;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,7 +53,6 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @BindView(R.id.flyt_menu)
     FrameLayout flytMenu;
 
-    private Context context;
     private static DrawerLayout drawer;
     public static FragmentManager fManger;
 
@@ -104,7 +102,6 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
             finish();
             return;
         }
-        context = this;
         StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         int[] screenSizes = Util.getScreenSize(MainActivity.this);
         Cst.SCREEN_WIDTH = screenSizes[0];

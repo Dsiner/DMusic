@@ -36,6 +36,9 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
         //禁止横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutRes());
+        if (getDSLayoutRes() != 0) {
+            dslDs = (DSLayout) findViewById(getDSLayoutRes());
+        }
         unbinder = ButterKnife.bind(this);
         init();
     }

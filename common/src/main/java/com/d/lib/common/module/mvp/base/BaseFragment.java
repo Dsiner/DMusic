@@ -46,11 +46,17 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
             int layoutRes = getLayoutRes();
             mPresenter = getPresenter();
             rootView = getActivity().getLayoutInflater().inflate(layoutRes, null);
+            if (getDSLayoutRes() != 0) {
+                dslDs = (DSLayout) rootView.findViewById(getDSLayoutRes());
+            }
             unbinder = ButterKnife.bind(this, rootView);
             init();
         } else {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
+            }
+            if (getDSLayoutRes() != 0) {
+                dslDs = (DSLayout) rootView.findViewById(getDSLayoutRes());
             }
             unbinder = ButterKnife.bind(this, rootView);
         }

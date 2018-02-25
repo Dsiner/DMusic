@@ -32,6 +32,7 @@ public class Preferences extends AbstractPreference {
         }
     }
 
+    /************************* 是否是第一次启动 *************************/
     /**
      * 设置是否是第一次启动
      */
@@ -47,6 +48,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("isFirst", true);
     }
 
+    /************************* 是否皮肤包加载成功 *************************/
     /**
      * 设置是否皮肤包加载成功
      */
@@ -62,6 +64,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("isSkinLoaded", false);
     }
 
+    /************************* 音乐播放器模式 *************************/
     /**
      * 设置音乐播放器模式
      * 音乐播放器模式，0：普通模式，1：极简模式，2：通知栏模式
@@ -79,6 +82,7 @@ public class Preferences extends AbstractPreference {
         return settings.getInt("playerMode", 0);
     }
 
+    /************************* 是否启动时自动播放 *************************/
     /**
      * 设置是否启动时自动播放
      */
@@ -94,6 +98,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("isAutoPlay", true);
     }
 
+    /************************* 上次退出应用时的播放位置 *************************/
     /**
      * 设置上次退出应用时的播放位置
      */
@@ -109,6 +114,7 @@ public class Preferences extends AbstractPreference {
         return settings.getInt("lastPlayPosition", 0);
     }
 
+    /************************* 当前列表播放模式 *************************/
     /**
      * 设置当前列表播放模式
      * 播放模式，0：列表循环，1：顺序播放，2：随机播放，3：单曲循环
@@ -126,6 +132,7 @@ public class Preferences extends AbstractPreference {
         return settings.getInt("playMode", 0);
     }
 
+    /************************* 歌曲操作菜单是否是下拉显示模式 *************************/
     /**
      * 设置歌曲操作菜单是否是下拉显示模式
      */
@@ -141,6 +148,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("setting_isSubPullDown", false);
     }
 
+    /************************* 是否显示新建歌单 *************************/
     /**
      * 设置是否显示新建歌单
      */
@@ -156,6 +164,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("setting_isShowAdd", true);
     }
 
+    /************************* 是否头像/封面自动旋转 *************************/
     /**
      * 设置是否头像/封面自动旋转
      */
@@ -171,6 +180,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("setting_isAlbumRotate", true);
     }
 
+    /************************* 是否晃动手机切歌 *************************/
     /**
      * 设置是否晃动手机切歌
      */
@@ -186,6 +196,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("setting_isShake", true);
     }
 
+    /************************* 是否显示首页弹出菜单按钮 *************************/
     /**
      * 设置是否显示首页弹出菜单按钮
      */
@@ -201,6 +212,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean("setting_isShowMenuIcon", true);
     }
 
+    /************************* 签名 *************************/
     /**
      * 设置签名 - singular
      */
@@ -216,6 +228,7 @@ public class Preferences extends AbstractPreference {
         return settings.getString("setting_signature", "畅听");
     }
 
+    /************************* 简笔 *************************/
     /**
      * 设置简笔 - be simple or wonderful
      */
@@ -231,6 +244,7 @@ public class Preferences extends AbstractPreference {
         return settings.getString("setting_stroke", "畅音乐,享自由");
     }
 
+    /************************* 皮肤 *************************/
     /**
      * 设置皮肤
      */
@@ -246,6 +260,7 @@ public class Preferences extends AbstractPreference {
         return settings.getInt("skin_type", -1);
     }
 
+    /************************* 睡眠定时类型 *************************/
     /**
      * 设置睡眠定时类型
      */
@@ -261,6 +276,7 @@ public class Preferences extends AbstractPreference {
         return settings.getInt("sleep_type", 0);
     }
 
+    /************************* 睡眠定时自定义时间 *************************/
     /**
      * 设置睡眠定时自定义时间
      */

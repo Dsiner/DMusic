@@ -49,11 +49,6 @@ public abstract class AbsFragmentActivity extends BaseFragmentActivity implement
     }
 
     @Override
-    protected int getDSLayoutRes() {
-        return 0;
-    }
-
-    @Override
     protected void init() {
         tvTitleR.setVisibility(View.GONE);
         titles = getTitles();

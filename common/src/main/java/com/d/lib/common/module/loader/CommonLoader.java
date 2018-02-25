@@ -85,7 +85,7 @@ public class CommonLoader<T> {
         }
     }
 
-    public void addOneData(T data, int position) {
+    public void addData(int position, T data) {
         if (mDatas != null && data != null) {
             mDatas.add(position, data);
             adapter.setDatas(mDatas);

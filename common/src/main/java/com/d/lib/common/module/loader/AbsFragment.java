@@ -12,6 +12,8 @@ import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -20,8 +22,6 @@ import butterknife.OnClick;
  * Created by D on 2017/8/23.
  */
 public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresenter> extends BaseFragment<P> implements IAbsView<M> {
-    @BindView(R2.id.dsl_ds)
-    public DSLayout dslDs;
     @BindView(R2.id.xrv_list)
     public XRecyclerView xrvList;
 
@@ -39,6 +39,11 @@ public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresente
     @Override
     protected int getLayoutRes() {
         return R.layout.lib_pub_fragment_abs;
+    }
+
+    @Override
+    protected int getDSLayoutRes() {
+        return R.id.dsl_ds;
     }
 
     @Override
@@ -77,7 +82,6 @@ public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresente
 
             @Override
             public void noContent() {
-                dslDs.setState(DSLayout.STATE_NET_ERROR);
                 dslDs.setState(DSLayout.STATE_EMPTY);
             }
 
@@ -97,13 +101,13 @@ public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresente
     }
 
     @Override
-    public void loadError() {
-        commonLoader.loadError();
+    public void setData(List<M> datas) {
+        commonLoader.setData(datas);
     }
 
     @Override
-    public void setState(int state) {
-        dslDs.setState(state);
+    public void loadError() {
+        commonLoader.loadError();
     }
 
     /**

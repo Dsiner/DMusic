@@ -17,8 +17,11 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.lib.common.utils.log.ULog;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.api.IQueueListener;
@@ -27,15 +30,12 @@ import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.utils.MoreUtil;
 import com.d.music.mvp.presenter.PlayPresenter;
 import com.d.music.mvp.view.IPlayView;
 import com.d.music.utils.StatusBarCompat;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.utils.log.ULog;
 import com.d.music.view.lrc.LrcRow;
 import com.d.music.view.lrc.LrcView;
 import com.d.music.view.popup.MorePopup;
@@ -56,6 +56,7 @@ import butterknife.OnClick;
  * Created by D on 2017/4/29.
  */
 public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView, SeekBar.OnSeekBarChangeListener, IQueueListener {
+
     public static void openActivity(Context context) {
         Intent intent = new Intent(context, PlayActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -89,7 +90,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @BindView(R.id.iv_play_queue)
     ImageView ivPlayQueue;
 
-    private Context context;
     private int type = MusicDB.MUSIC;
     private MusicControl control;
     private ObjectAnimator animator;
@@ -147,7 +147,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private void collect(boolean isTip) {
         if (control != null && control.getCurModel() != null) {
             MusicModel item = control.getCurModel();
-            MoreUtil.collect(context, item, type, isTip);
+            MoreUtil.collect(getApplicationContext(), item, type, isTip);
             resetFav(item.isCollected);
         }
     }
@@ -181,7 +181,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             finish();
             return;
         }
-        context = this;
         StatusBarCompat.compat(this, Color.parseColor("#ff000000"));//沉浸式状态栏
         EventBus.getDefault().register(this);
         registerReceiver();
@@ -250,7 +249,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     private void showQueue() {
         if (queuePopup == null) {
-            queuePopup = new PlayQueuePopup(context);
+            queuePopup = new PlayQueuePopup(mActivity);
             queuePopup.setOnQueueListener(this);
         }
         queuePopup.show();
@@ -263,7 +262,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void showMore() {
-        MorePopup morePopup = new MorePopup(context, MorePopup.TYPE_SONG_PLAY, control.getCurModel(), type);
+        MorePopup morePopup = new MorePopup(mActivity, MorePopup.TYPE_SONG_PLAY, control.getCurModel(), type);
         morePopup.setOnOperationLitener(new MorePopup.OnOperationLitener() {
             @Override
             public void onCollect() {

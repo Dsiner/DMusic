@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.d.music.R;
-import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.itemtouchhelper.ItemTouchHelperViewHolder;
+import com.d.music.R;
+import com.d.music.module.greendao.music.base.MusicModel;
 
 import java.util.Collections;
 import java.util.List;

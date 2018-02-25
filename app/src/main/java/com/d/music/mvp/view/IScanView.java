@@ -14,8 +14,4 @@ public interface IScanView extends MvpView {
     void setDatas(List<FileModel> models);
 
     void setMusics(List<MusicModel> models);
-
-    void showLoading();
-
-    void closeLoading();
 }
