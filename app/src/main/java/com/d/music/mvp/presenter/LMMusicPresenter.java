@@ -2,17 +2,16 @@ package com.d.music.mvp.presenter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.view.View;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.view.DSLayout;
 import com.d.music.model.AlbumModel;
 import com.d.music.model.FolderModel;
 import com.d.music.model.SingerModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.lib.common.utils.log.ULog;
-import com.d.lib.common.view.DSLayout;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;
@@ -37,8 +36,8 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
     }
 
     public void getSong(final int type, final SortUtil sortUtil) {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -58,7 +57,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);
@@ -67,8 +66,8 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
     }
 
     public void getSinger() {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<SingerModel>>() {
             @Override
@@ -101,13 +100,13 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 .subscribe(new Consumer<List<SingerModel>>() {
                     @Override
                     public void accept(@NonNull List<SingerModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         if (list.size() <= 0) {
-                            getView().setDSState(DSLayout.STATE_EMPTY);
+                            getView().setState(DSLayout.STATE_EMPTY);
                         } else {
-                            getView().setDSState(View.GONE);
+                            getView().setState(DSLayout.GONE);
                         }
                         getView().setSinger(list);
                     }
@@ -115,8 +114,8 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
     }
 
     public void getAlbum() {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<AlbumModel>>() {
             @Override
@@ -148,13 +147,13 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 .subscribe(new Consumer<List<AlbumModel>>() {
                     @Override
                     public void accept(@NonNull List<AlbumModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         if (list.size() <= 0) {
-                            getView().setDSState(DSLayout.STATE_EMPTY);
+                            getView().setState(DSLayout.STATE_EMPTY);
                         } else {
-                            getView().setDSState(View.GONE);
+                            getView().setState(DSLayout.GONE);
                         }
                         getView().setAlbum(list);
                     }
@@ -162,8 +161,8 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
     }
 
     public void getFolder() {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<FolderModel>>() {
             @Override
@@ -195,13 +194,13 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 .subscribe(new Consumer<List<FolderModel>>() {
                     @Override
                     public void accept(@NonNull List<FolderModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         if (list.size() <= 0) {
-                            getView().setDSState(DSLayout.STATE_EMPTY);
+                            getView().setState(DSLayout.STATE_EMPTY);
                         } else {
-                            getView().setDSState(View.GONE);
+                            getView().setState(DSLayout.GONE);
                         }
                         getView().setFolder(list);
                     }
@@ -209,8 +208,8 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
     }
 
     public void subPullUp(final List<MusicModel> datas) {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -230,7 +229,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);

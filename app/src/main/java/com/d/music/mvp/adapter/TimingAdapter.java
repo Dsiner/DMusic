@@ -3,11 +3,11 @@ package com.d.music.mvp.adapter;
 import android.content.Context;
 import android.view.View;
 
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.view.dialog.TimingDialog;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 

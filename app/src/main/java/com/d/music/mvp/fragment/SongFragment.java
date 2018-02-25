@@ -1,15 +1,14 @@
 package com.d.music.mvp.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.music.MainActivity;
@@ -50,12 +49,9 @@ import butterknife.OnClick;
 public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @BindView(R.id.dsl_ds)
-    DSLayout dslDS;
     @BindView(R.id.xrv_list)
     XRecyclerView xrvList;
 
-    private Context context;
     private int type;
     private int tab;//本地歌曲tab(0-3)
     private Preferences p;
@@ -83,6 +79,11 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     }
 
     @Override
+    protected int getDSLayoutRes() {
+        return R.id.dsl_ds;
+    }
+
+    @Override
     public SongPresenter getPresenter() {
         return new SongPresenter(getActivity().getApplicationContext());
     }
@@ -95,7 +96,6 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity();
         EventBus.getDefault().register(this);
     }
 
@@ -106,7 +106,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         initTitle();
         adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type, this);
         adapter.setSubPull(isSubPull);
-        header = new SongHeaderView(context);
+        header = new SongHeaderView(mContext);
         header.setVisibility(View.GONE);
         if (type == MusicDB.LOCAL_ALL_MUSIC) {
             header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
@@ -117,7 +117,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         xrvList.setCanLoadMore(false);
         xrvList.addHeaderView(header);
         xrvList.setAdapter(adapter);
-        orderType = MusicDBUtil.getInstance(context).queryCusListSoryType(type);
+        orderType = MusicDBUtil.getInstance(mContext.getApplicationContext()).queryCusListSoryType(type);
     }
 
     @Override
@@ -199,18 +199,13 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
     @Override
     public void setSong(List<MusicModel> models) {
         if (models.size() <= 0) {
-            setDSState(DSLayout.STATE_EMPTY);
+            setState(DSLayout.STATE_EMPTY);
         } else {
-            setDSState(View.GONE);
+            setState(DSLayout.GONE);
         }
         notifyDataCountChanged(models.size());
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setDSState(int state) {
-        dslDS.setState(state);
     }
 
     @Override
@@ -228,7 +223,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
-            control.init(context, datas, 0, true);
+            control.init(mContext.getApplicationContext(), datas, 0, true);
         }
     }
 

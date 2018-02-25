@@ -3,9 +3,9 @@ package com.d.music.mvp.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.d.music.R;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.music.R;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class MoreAdapter extends CommonAdapter<MoreAdapter.Bean> {
+
     public MoreAdapter(Context context, List<Bean> datas, int layoutId) {
         super(context, datas, layoutId);
     }

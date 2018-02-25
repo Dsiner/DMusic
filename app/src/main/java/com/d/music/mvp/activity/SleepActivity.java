@@ -5,20 +5,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.music.R;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
+import com.d.music.R;
 import com.d.music.common.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.mvp.adapter.TimingAdapter;
 import com.d.music.mvp.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-import com.d.lib.common.view.TitleLayout;
-import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,8 +35,6 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/6/13.
  */
 public class SleepActivity extends BaseActivity<MvpBasePresenter> implements MvpView, TimingAdapter.OnChangeListener {
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
     @BindView(R.id.tv_content)
     TextView tvContent;
     @BindView(R.id.iv_check)
@@ -47,7 +44,6 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     private Preferences p;
     private TimingAdapter adapter;
-    private List<RadioModel> datas;
     private int index;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.rlyt_first})
@@ -147,7 +143,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
     }
 
     private List<RadioModel> getDatas() {
-        datas = new ArrayList<>();
+        List<RadioModel> datas = new ArrayList<>();
         RadioModel model0 = new RadioModel();
         model0.content = "10分钟";
         model0.isChecked = index == 1;

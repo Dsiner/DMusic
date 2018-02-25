@@ -185,7 +185,7 @@
 }
 
 # SharedPreferences
--keep public class * extends com.d.lib.common.common.AbstractPreference
+-keep public class * extends com.d.music.common.AbstractPreference
 
 # --------------- 处理Model类 ---------------
 

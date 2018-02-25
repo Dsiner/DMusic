@@ -10,8 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.lib.xrv.LRecyclerView;
+import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.Preferences;
@@ -22,14 +26,10 @@ import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.media.MusicFactory;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.CustomListAdapter;
 import com.d.music.mvp.presenter.MainPresenter;
 import com.d.music.mvp.view.IMainView;
-import com.d.lib.common.utils.Util;
 import com.d.music.utils.fileutil.FileUtil;
-import com.d.lib.xrv.LRecyclerView;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 

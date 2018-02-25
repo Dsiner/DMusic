@@ -3,17 +3,17 @@ package com.d.music.mvp.adapter;
 import android.content.Context;
 import android.view.View;
 
+import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.utils.MoreUtil;
 import com.d.music.mvp.view.ISongView;
 import com.d.music.view.popup.MorePopup;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
 
 import java.util.List;
 

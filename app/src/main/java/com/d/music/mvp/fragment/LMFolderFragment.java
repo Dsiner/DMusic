@@ -1,7 +1,5 @@
 package com.d.music.mvp.fragment;
 
-import android.content.Context;
-
 import com.d.music.R;
 import com.d.music.model.AlbumModel;
 import com.d.music.model.FolderModel;
@@ -22,19 +20,12 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class LMFolderFragment extends AbstractLMFragment {
-    private Context context;
     private FolderAdapter adapter;
-
-    @Override
-    protected void init() {
-        super.init();
-        context = getActivity();
-    }
 
     @Override
     protected void lazyLoad() {
         List<FolderModel> datas = new ArrayList<>();
-        adapter = new FolderAdapter(context, datas, R.layout.adapter_folder);
+        adapter = new FolderAdapter(mContext, datas, R.layout.adapter_folder);
         xrvList.showAsList();
         xrvList.setCanRefresh(false);
         xrvList.setCanLoadMore(false);
@@ -61,11 +52,6 @@ public class LMFolderFragment extends AbstractLMFragment {
     public void setFolder(List<FolderModel> models) {
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setDSState(int state) {
-        dslDS.setState(state);
     }
 
     @Override

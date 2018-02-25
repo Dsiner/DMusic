@@ -3,12 +3,12 @@ package com.d.music.mvp.presenter;
 import android.content.Context;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.utils.TaskManager;
+import com.d.lib.common.view.DSLayout;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.mvp.view.ISongView;
-import com.d.lib.common.utils.TaskManager;
-import com.d.lib.common.view.DSLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             getSong(type, orderType);
             return;
         }
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -70,7 +70,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);
@@ -85,8 +85,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
      * @param orderType:排序类型:按名称、时间、自定义
      */
     public void getSong(final int type, final int orderType) {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -105,7 +105,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);
@@ -135,8 +135,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
      * 所有下拉菜单，收起
      */
     public void subPullUp(final List<MusicModel> datas) {
-        if (isViewAttached()) {
-            getView().setDSState(DSLayout.STATE_LOADING);
+        if (getView() != null) {
+            getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -156,7 +156,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);

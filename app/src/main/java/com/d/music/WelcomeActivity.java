@@ -1,39 +1,28 @@
 package com.d.music;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.module.service.MusicService;
-import com.d.lib.common.utils.Util;
-import com.tbruyelle.rxpermissions2.Permission;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * WelcomeActivity
  * Created by D on 2017/6/16.
  */
-public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements MvpView, ViewPager.OnPageChangeListener, View.OnClickListener {
+public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements MvpView, View.OnClickListener {
     @BindView(R.id.vp_page)
     ViewPager page;
     @BindView(R.id.iv_dot0)
@@ -43,7 +32,18 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
     @BindView(R.id.iv_dot2)
     ImageView ivDot2;
 
-    private Context context;
+    @Override
+    public void onClick(View v) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.btn_start:
+                //启动音乐主界面
+                gotoMain();
+                break;
+        }
+    }
 
     @Override
     protected int getLayoutRes() {
@@ -62,7 +62,6 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected void init() {
-        context = this;
         LayoutInflater inflater = LayoutInflater.from(this);
         View view0 = inflater.inflate(R.layout.welcome_page0, null);
         View view1 = inflater.inflate(R.layout.welcome_page1, null);
@@ -98,13 +97,18 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
             }
         };
         page.setAdapter(pagerAdapter);
-        page.addOnPageChangeListener(this);
+        page.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                invalidateDots(position);
+            }
+        });
     }
 
     /**
      * 刷新指示器
      */
-    private void refreshDotsState(int position) {
+    private void invalidateDots(int position) {
         switch (position) {
             case 0:
                 ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
@@ -122,67 +126,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.btn_start:
-                //启动音乐主界面
-                ddc();
-                break;
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        refreshDotsState(position);
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private void requestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            RxPermissions rxPermissions = new RxPermissions((Activity) context);
-            rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Permission>() {
-                        @Override
-                        public void accept(@NonNull Permission permission) throws Exception {
-                            if (isFinishing()) {
-                                return;
-                            }
-                            if (permission.granted) {
-                                // `permission.name` is granted !
-                                ddc();
-                            } else if (permission.shouldShowRequestPermissionRationale) {
-                                // Denied permission without ask never again
-                                Util.toast(context.getApplicationContext(), "Denied permission!");
-                                ddc();
-                            } else {
-                                // Denied permission with ask never again
-                                // Need to go to the settings
-                                Util.toast(context.getApplicationContext(), "Denied permission with ask never again!");
-                                ddc();
-                            }
-                        }
-                    });
-        } else {
-            ddc();
-        }
-    }
-
-    private void ddc() {
+    private void gotoMain() {
         MusicService.startService(getApplicationContext());//开启service服务
         startActivity(new Intent(this, MainActivity.class));
         finish();

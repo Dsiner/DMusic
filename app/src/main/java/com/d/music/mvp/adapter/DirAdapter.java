@@ -3,12 +3,12 @@ package com.d.music.mvp.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.d.music.R;
-import com.d.music.model.FileModel;
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
-import com.d.music.utils.fileutil.FileUtil;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.music.R;
+import com.d.music.model.FileModel;
+import com.d.music.utils.fileutil.FileUtil;
 
 import java.util.List;
 

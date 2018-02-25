@@ -6,7 +6,7 @@ package com.d.music.model;
  */
 public class FolderModel {
     public int id;
-    public String folder; // 路径
-    public int count; // 歌曲数
-    public boolean isChecked;// 额外属性：是否选中
+    public String folder; //路径
+    public int count; //歌曲数
+    public boolean isChecked;//额外属性：是否选中
 }

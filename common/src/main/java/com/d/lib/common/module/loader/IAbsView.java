@@ -2,7 +2,7 @@ package com.d.lib.common.module.loader;
 
 import com.d.lib.common.module.mvp.MvpView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 通用分页加载IView
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface IAbsView<T> extends MvpView {
     void getData();
 
-    void setData(ArrayList<T> datas);
+    void setData(List<T> datas);
 
     void loadError();
 }

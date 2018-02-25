@@ -3,12 +3,12 @@ package com.d.music.mvp.activity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.R;
 import com.d.music.common.Preferences;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.utils.StatusBarCompat;
 
 import butterknife.BindView;

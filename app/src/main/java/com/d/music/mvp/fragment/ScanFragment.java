@@ -1,18 +1,14 @@
 package com.d.music.mvp.fragment;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.base.BaseFragment;
-import com.d.lib.common.common.AlertDialogFactory;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
 import com.d.music.model.FileModel;
@@ -38,10 +34,8 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanView {
-    private Context context;
     private int type;
     private CustomScanFragment customScanFragment;
-    private AlertDialog dialog;//进度提示dialog
 
     @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
     public void OnClickLister(final View view) {
@@ -52,14 +46,14 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
             case R.id.btn_full_scan:
             case R.id.btn_custom_scan:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    RxPermissions rxPermissions = new RxPermissions((Activity) context);
+                    RxPermissions rxPermissions = new RxPermissions(mActivity);
                     rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Consumer<Permission>() {
                                 @Override
                                 public void accept(@NonNull Permission permission) throws Exception {
-                                    if (context == null || getActivity() == null || getActivity().isFinishing()) {
+                                    if (getActivity() == null || getActivity().isFinishing()) {
                                         return;
                                     }
                                     if (permission.granted) {
@@ -67,11 +61,11 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
                                         sw(view.getId());
                                     } else if (permission.shouldShowRequestPermissionRationale) {
                                         // Denied permission without ask never again
-                                        Util.toast(context, "Denied permission!");
+                                        Util.toast(getActivity().getApplicationContext(), "Denied permission!");
                                     } else {
                                         // Denied permission with ask never again
                                         // Need to go to the settings
-                                        Util.toast(context, "Denied permission with ask never again!");
+                                        Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
                                     }
                                 }
                             });
@@ -100,7 +94,6 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity();
         Bundle bundle = getArguments();
         if (bundle != null) {
             type = bundle.getInt("type");
@@ -145,23 +138,6 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
     public void setMusics(List<MusicModel> models) {
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
-        }
-    }
-
-    @Override
-    public void showLoading() {
-        if (dialog == null) {
-            dialog = AlertDialogFactory.createFactory(getActivity()).getLoadingDialog();
-        }
-        if (!dialog.isShowing()) {
-            dialog.show();
-        }
-    }
-
-    @Override
-    public void closeLoading() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
         }
     }
 }

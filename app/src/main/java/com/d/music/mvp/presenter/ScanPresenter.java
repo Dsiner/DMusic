@@ -52,7 +52,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                 .subscribe(new Consumer<List<FileModel>>() {
                     @Override
                     public void accept(@NonNull List<FileModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setDatas(list);
@@ -64,7 +64,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
      * 扫描音乐文件
      */
     public void scan(final List<String> paths, final int type) {
-        if (isViewAttached()) {
+        if (getView() != null) {
             getView().showLoading();
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
@@ -94,7 +94,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                         MusicModelEvent event = new MusicModelEvent(type, list);
                         EventBus.getDefault().post(event);
 
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().closeLoading();

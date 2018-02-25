@@ -1,7 +1,6 @@
 package com.d.music.view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.music.R;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
+import com.d.music.R;
 
 /**
  * SongHeaderView
@@ -28,11 +27,11 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
         this(context, null);
     }
 
-    public SongHeaderView(Context context, @Nullable AttributeSet attrs) {
+    public SongHeaderView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SongHeaderView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SongHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

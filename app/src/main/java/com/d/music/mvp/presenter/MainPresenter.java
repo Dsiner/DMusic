@@ -50,7 +50,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                 .subscribe(new Consumer<List<CustomList>>() {
                     @Override
                     public void accept(@NonNull List<CustomList> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setCustomList(list);
@@ -82,7 +82,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(@NonNull Integer count) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setLocalAllCount(count);
@@ -114,7 +114,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(@NonNull Integer count) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().setCollectionCount(count);

@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
-import com.d.music.R;
 import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.view.TitleLayout;
+import com.d.music.R;
 import com.d.music.mvp.fragment.CustomScanFragment;
 import com.d.music.mvp.fragment.ScanFragment;
 import com.d.music.utils.StatusBarCompat;
-import com.d.lib.common.utils.log.ULog;
-import com.d.lib.common.view.TitleLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;

@@ -5,11 +5,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.common.AlertDialogFactory;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseActivity;
+import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
 import com.d.music.common.Preferences;
@@ -36,8 +36,8 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @BindView(R.id.rv_list)
     RecyclerView rvList;
 
-    private SkinAdapter adapter;
     private int index;
+    private SkinAdapter adapter;
     private AlertDialog dialog;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right})
@@ -120,14 +120,14 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         List<RadioModel> datas = new ArrayList<>();
         for (int i = -1; i < MusicCst.SKIN_COUNT; i++) {
             RadioModel model = new RadioModel();
-            model.color = getC(i);
+            model.color = getSkinColor(i);
             model.isChecked = (i == index);
             datas.add(model);
         }
         return datas;
     }
 
-    private int getC(int index) {
+    private int getSkinColor(int index) {
         switch (index) {
             case 0:
                 return R.color.color_main_skin0;

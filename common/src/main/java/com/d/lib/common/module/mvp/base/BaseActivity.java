@@ -38,6 +38,9 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         //禁止横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutRes());
+        if (getDSLayoutRes() != 0) {
+            dslDs = (DSLayout) findViewById(getDSLayoutRes());
+        }
         unbinder = ButterKnife.bind(this);
         mPresenter = getPresenter();
         if (mPresenter != null) {

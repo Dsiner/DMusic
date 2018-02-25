@@ -55,7 +55,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                 .subscribe(new Consumer<List<MusicModel>>() {
                     @Override
                     public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        if (!isViewAttached()) {
+                        if (getView() == null) {
                             return;
                         }
                         getView().reLoad(list);
@@ -64,7 +64,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
     }
 
     public void getLrcRows(final MusicModel model) {
-        if (!isViewAttached() || model == null) {
+        if (getView() == null || model == null) {
             return;
         }
         final String path = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl : model.folder + "/" + model.songName + ".lrc";
@@ -87,7 +87,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                 .subscribe(new Consumer<List<LrcRow>>() {
                     @Override
                     public void accept(@NonNull List<LrcRow> list) throws Exception {
-                        if (!isViewAttached() || !TextUtils.equals(lrcUrl, path)) {
+                        if (getView() == null || !TextUtils.equals(lrcUrl, path)) {
                             return;
                         }
                         getView().setLrcRows(path, list);

@@ -1,9 +1,6 @@
 package com.d.music.mvp.fragment;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,17 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
-import com.d.lib.common.common.AlertDialogFactory;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.mvp.adapter.DirAdapter;
 import com.d.music.mvp.presenter.ScanPresenter;
 import com.d.music.mvp.view.IScanView;
-import com.d.lib.common.utils.Util;
 import com.d.music.utils.fileutil.FileUtil;
-import com.d.lib.xrv.LRecyclerView;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -51,13 +47,11 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     @BindView(R.id.lrv_list)
     LRecyclerView lrvList;
 
-    private Context context;
+    private int type;
     private final String rootPath = FileUtil.getRootPath();
     private String curPath;
     private DirAdapter adapter;
     private List<FileModel> models;
-    private AlertDialog dialog;//进度提示dialog
-    private int type;
 
     @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
     public void OnClickLister(final View view) {
@@ -68,14 +62,14 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
             case R.id.llyt_dir:
             case R.id.llyt_scan_now:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    RxPermissions rxPermissions = new RxPermissions((Activity) context);
+                    RxPermissions rxPermissions = new RxPermissions(mActivity);
                     rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Consumer<Permission>() {
                                 @Override
                                 public void accept(@NonNull Permission permission) throws Exception {
-                                    if (context == null || getActivity() == null || getActivity().isFinishing()) {
+                                    if (getActivity() == null || getActivity().isFinishing()) {
                                         return;
                                     }
                                     if (permission.granted) {
@@ -83,11 +77,11 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                                         sw(view.getId());
                                     } else if (permission.shouldShowRequestPermissionRationale) {
                                         // Denied permission without ask never again
-                                        Util.toast(context, "Denied permission!");
+                                        Util.toast(getActivity().getApplicationContext(), "Denied permission!");
                                     } else {
                                         // Denied permission with ask never again
                                         // Need to go to the settings
-                                        Util.toast(context, "Denied permission with ask never again!");
+                                        Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
                                     }
                                 }
                             });
@@ -111,7 +105,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                     }
                 }
                 if (paths.size() <= 0) {
-                    Util.toast(context, "请先选择扫描路径");
+                    Util.toast(mContext, "请先选择扫描路径");
                     return;
                 }
                 mPresenter.scan(paths, type);
@@ -137,7 +131,6 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity();
         Bundle bundle = getArguments();
         if (bundle != null) {
             type = bundle.getInt("type");
@@ -169,23 +162,6 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     public void setMusics(List<MusicModel> models) {
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
-        }
-    }
-
-    @Override
-    public void showLoading() {
-        if (dialog == null) {
-            dialog = AlertDialogFactory.createFactory(getActivity()).getLoadingDialog();
-        }
-        if (!dialog.isShowing()) {
-            dialog.show();
-        }
-    }
-
-    @Override
-    public void closeLoading() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
         }
     }
 

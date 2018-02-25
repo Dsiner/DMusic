@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.music.utils.StatusBarCompat;
 import com.d.lib.common.view.RowLayout;
 import com.d.lib.common.view.TitleLayout;
+import com.d.music.R;
+import com.d.music.common.Preferences;
+import com.d.music.utils.StatusBarCompat;
 
 import butterknife.BindView;
 import butterknife.OnClick;

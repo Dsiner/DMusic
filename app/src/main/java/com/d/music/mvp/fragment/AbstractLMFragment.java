@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.music.R;
 import com.d.music.mvp.presenter.LMMusicPresenter;
 import com.d.music.mvp.view.ILMMusicView;
-import com.d.lib.common.view.DSLayout;
 import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,8 +21,6 @@ import butterknife.BindView;
  * Created by D on 2017/4/30.
  */
 public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> implements ILMMusicView {
-    @BindView(R.id.dsl_ds)
-    DSLayout dslDS;
     @BindView(R.id.xrv_list)
     XRecyclerView xrvList;
     @BindView(R.id.sb_sidebar)
@@ -36,6 +33,11 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_local_sort;
+    }
+
+    @Override
+    protected int getDSLayoutRes() {
+        return R.id.dsl_ds;
     }
 
     @Override
@@ -89,6 +91,7 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     protected abstract void lazyLoad();
 
     protected void onInvisible() {
+
     }
 
     @Override

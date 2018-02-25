@@ -5,21 +5,21 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.lib.common.utils.TaskManager;
+import com.d.lib.slidelayout.SlideLayout;
+import com.d.lib.slidelayout.SlideManager;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.mvp.fragment.SongFragment;
-import com.d.lib.common.utils.TaskManager;
 import com.d.music.view.dialog.NewListDialog;
-import com.d.lib.slidelayout.SlideLayout;
-import com.d.lib.slidelayout.SlideManager;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 
 import org.greenrobot.eventbus.EventBus;
 
