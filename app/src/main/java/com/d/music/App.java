@@ -11,8 +11,8 @@ import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.skin.SkinUtil;
-import com.d.music.mvp.activity.PlayActivity;
-import com.d.music.mvp.activity.PlayerModeActivity;
+import com.d.music.play.activity.PlayActivity;
+import com.d.music.setting.activity.PlayerModeActivity;
 
 /**
  * Application

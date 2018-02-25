@@ -27,8 +27,8 @@ import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.mvp.activity.PlayActivity;
-import com.d.music.mvp.activity.PlayerModeActivity;
+import com.d.music.play.activity.PlayActivity;
+import com.d.music.setting.activity.PlayerModeActivity;
 import com.d.lib.common.utils.log.ULog;
 
 import org.greenrobot.eventbus.EventBus;

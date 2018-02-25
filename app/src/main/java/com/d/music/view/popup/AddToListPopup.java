@@ -17,7 +17,7 @@ import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.music.mvp.adapter.AddToListAdapter;
+import com.d.music.play.adapter.AddToListAdapter;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.loading.LoadingLayout;
 import com.d.lib.xrv.LRecyclerView;

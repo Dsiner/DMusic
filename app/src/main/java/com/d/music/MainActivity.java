@@ -19,11 +19,11 @@ import com.d.music.common.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.global.Cst;
 import com.d.music.module.service.MusicService;
-import com.d.music.mvp.activity.PlayActivity;
-import com.d.music.mvp.activity.SettingActivity;
-import com.d.music.mvp.activity.SkinActivity;
-import com.d.music.mvp.activity.SleepActivity;
-import com.d.music.mvp.fragment.MainFragment;
+import com.d.music.play.activity.PlayActivity;
+import com.d.music.setting.activity.SettingActivity;
+import com.d.music.setting.activity.SkinActivity;
+import com.d.music.setting.activity.SleepActivity;
+import com.d.music.local.fragment.MainFragment;
 import com.d.music.utils.StatusBarCompat;
 import com.nineoldandroids.view.ViewHelper;
 
