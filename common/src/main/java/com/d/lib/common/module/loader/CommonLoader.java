@@ -12,7 +12,7 @@ public class CommonLoader<T> {
 
     private XRecyclerView list;
     private CommonAdapter adapter;
-    private ArrayList<T> mDatas;
+    private List<T> mDatas;
     private int pageCount = PAGE_COUNT;
     private OnLoaderListener listener;
     public int page = 1;
@@ -80,13 +80,14 @@ public class CommonLoader<T> {
     public void addToTop(List<T> datas) {
         if (mDatas != null && datas != null) {
             mDatas.addAll(0, datas);
+            adapter.setDatas(mDatas);
             adapter.notifyDataSetChanged();
             list.scrollToPosition(0);
         }
     }
 
     public void addData(int position, T data) {
-        if (mDatas != null && data != null) {
+        if (mDatas != null && data != null && position >= 0 && position <= mDatas.size()) {
             mDatas.add(position, data);
             adapter.setDatas(mDatas);
             adapter.notifyDataSetChanged();
@@ -118,7 +119,7 @@ public class CommonLoader<T> {
         }
     }
 
-    public ArrayList<T> getDatas() {
+    public List<T> getDatas() {
         return mDatas;
     }
 

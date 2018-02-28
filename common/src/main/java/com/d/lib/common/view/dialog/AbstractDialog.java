@@ -18,6 +18,9 @@ public abstract class AbstractDialog {
     protected Dialog dialog;
     protected View rootView;
 
+    private AbstractDialog() {
+    }
+
     protected AbstractDialog(Context context) {
         this(context, R.style.lib_pub_dialog_style, false, 0, 0, 0);
     }

@@ -54,7 +54,7 @@ public abstract class AbsFragmentActivity extends BaseFragmentActivity implement
         titles = getTitles();
         fragments = getFragments();
         if (titles.size() != fragments.size()) {
-            throw new RuntimeException("The size of titles are not equal size of fragments.");
+            throw new RuntimeException("The size of titles is not equal size of fragments.");
         }
         curFragment = fragments.get(0);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
