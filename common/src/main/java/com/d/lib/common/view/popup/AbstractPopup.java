@@ -18,6 +18,9 @@ public abstract class AbstractPopup implements View.OnKeyListener {
     protected PopupWindow popupWindow;
     protected View rootView;
 
+    private AbstractPopup() {
+    }
+
     public AbstractPopup(Context context) {
         this(context, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true, -1);
     }
