@@ -1,52 +1,50 @@
-package com.d.lib.common.module.loader;
+package com.d.music.local.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.d.lib.common.R;
-import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
-import com.d.lib.common.utils.ViewHelper;
-import com.d.lib.common.view.TitleLayout;
+import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.view.tab.ScrollTab;
+import com.d.music.R;
+import com.d.music.view.TitleLayout;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
- * 通用ViewPage-FragmentActivity
- * Created by D on 2017/7/19.
+ * 首页-本地歌曲
+ * Created by D on 2017/4/29.
  */
-public abstract class AbsFragmentActivity extends BaseFragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
-    protected TitleLayout tlTitle;
-    protected ScrollTab indicator;
-    protected ViewPager pager;
+public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePresenter> implements MvpView, ViewPager.OnPageChangeListener {
+    @BindView(R.id.tl_title)
+    public TitleLayout tlTitle;
+    @BindView(R.id.indicator)
+    public ScrollTab indicator;
+    @BindView(R.id.vp_page)
+    public ViewPager pager;
 
     protected List<String> titles;
     protected List<Fragment> fragments;
     protected Fragment curFragment;
 
     @Override
-    public void onClick(View v) {
-        int resId = v.getId();
-        if (resId == R.id.iv_title_left) {
-            finish();
-        }
-    }
-
-    @Override
     protected int getLayoutRes() {
-        return R.layout.lib_pub_activity_abs_page;
+        return R.layout.fragment_local;
     }
 
     @Override
-    protected void bindView() {
-        super.bindView();
-        tlTitle = ViewHelper.findView(this, R.id.tl_title);
-        indicator = ViewHelper.findView(this, R.id.indicator);
-        pager = ViewHelper.findView(this, R.id.vp_page);
+    public MvpBasePresenter getPresenter() {
+        return new MvpBasePresenter(getActivity().getApplicationContext());
+    }
 
-        ViewHelper.setOnClick(this, this, R.id.iv_title_left);
+    @Override
+    protected MvpView getMvpView() {
+        return this;
     }
 
     @Override
@@ -57,7 +55,7 @@ public abstract class AbsFragmentActivity extends BaseFragmentActivity implement
             throw new RuntimeException("The size of titles is not equal size of fragments.");
         }
         curFragment = fragments.get(0);
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public int getCount() {
                 return fragments.size();

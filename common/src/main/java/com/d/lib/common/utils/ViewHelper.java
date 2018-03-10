@@ -67,12 +67,24 @@ public class ViewHelper {
         return view;
     }
 
-    public static void setOnClick(@NonNull Activity activity, @IdRes int id, View.OnClickListener l) {
+    public static void setOnClick(@NonNull Activity activity, @IdRes int id, @Nullable View.OnClickListener l) {
         activity.findViewById(id).setOnClickListener(l);
     }
 
-    public static void setOnClick(@NonNull View root, @IdRes int id, View.OnClickListener l) {
+    public static void setOnClick(@NonNull Activity activity, @Nullable View.OnClickListener l, @IdRes int... ids) {
+        for (int id : ids) {
+            activity.findViewById(id).setOnClickListener(l);
+        }
+    }
+
+    public static void setOnClick(@NonNull View root, @IdRes int id, @Nullable View.OnClickListener l) {
         root.findViewById(id).setOnClickListener(l);
+    }
+
+    public static void setOnClick(@NonNull View root, @Nullable View.OnClickListener l, @IdRes int... ids) {
+        for (int id : ids) {
+            root.findViewById(id).setOnClickListener(l);
+        }
     }
 
     public static String getRunningActivityName(Context context) {

@@ -4,32 +4,28 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.d.lib.common.R;
-import com.d.lib.common.R2;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.module.mvp.model.BaseModel;
+import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * 通用分页加载Fragment
  * Created by D on 2017/8/23.
  */
-public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresenter> extends BaseFragment<P> implements IAbsView<M> {
-    @BindView(R2.id.xrv_list)
-    public XRecyclerView xrvList;
+public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresenter> extends BaseFragment<P> implements IAbsView<M>, View.OnClickListener {
+    protected XRecyclerView xrvList;
 
     protected CommonAdapter<M> adapter;
     protected CommonLoader<M> commonLoader;
 
-    @OnClick({R2.id.btn_dsl})
-    public void onAbsFragmentClickListener(View v) {
+    @Override
+    public void onClick(View v) {
         int resId = v.getId();
         if (resId == R.id.btn_dsl) {
             getData();
@@ -44,6 +40,14 @@ public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresente
     @Override
     protected int getDSLayoutRes() {
         return R.id.dsl_ds;
+    }
+
+    @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        xrvList = ViewHelper.findView(rootView, R.id.xrv_list);
+
+        ViewHelper.setOnClick(rootView, this, R.id.btn_dsl);
     }
 
     @Override
