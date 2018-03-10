@@ -7,7 +7,6 @@ import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.local.view.ISongView;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
@@ -20,12 +19,11 @@ import java.util.List;
 public class SongAdapter extends CommonAdapter<MusicModel> {
     private int type;// 列表标识
     private boolean isSubPull;
-    private ISongView listener;
+    private OnDataChangedListener listener;
 
-    public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type, ISongView listener) {
+    public SongAdapter(Context context, List<MusicModel> datas, int layoutId, int type) {
         super(context, datas, layoutId);
         this.type = type;
-        this.listener = listener;
     }
 
     public void setSubPull(boolean subPull) {
@@ -98,7 +96,7 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             mDatas.remove(position);
             notifyDataSetChanged();
             if (listener != null) {
-                listener.notifyDataCountChanged(mDatas.size());
+                listener.onChange(mDatas.size());
             }
         } else {
             holder.setText(R.id.tv_collect, item.isCollected ? "已收藏" : "收藏");
@@ -111,5 +109,13 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         item.isChecked = false;
         holder.setChecked(R.id.cb_more, false);
         holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
+    }
+
+    public interface OnDataChangedListener {
+        void onChange(int count);
+    }
+
+    public void setOnDataChangedListener(OnDataChangedListener l) {
+        this.listener = l;
     }
 }

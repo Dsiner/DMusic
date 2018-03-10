@@ -4,15 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.d.lib.common.module.loader.AbsLazyFragment;
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseFragment;
-import com.d.lib.xrv.XRecyclerView;
+import com.d.lib.common.module.mvp.model.BaseModel;
 import com.d.music.R;
 import com.d.music.local.presenter.LMMusicPresenter;
 import com.d.music.local.view.ILMMusicView;
+import com.d.music.model.AlbumModel;
+import com.d.music.model.FolderModel;
+import com.d.music.model.SingerModel;
+import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -20,15 +26,9 @@ import butterknife.BindView;
  * LazyLoad Fragment
  * Created by D on 2017/4/30.
  */
-public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> implements ILMMusicView {
-    @BindView(R.id.xrv_list)
-    XRecyclerView xrvList;
+public abstract class AbstractLMFragment<M extends BaseModel> extends AbsLazyFragment<M, LMMusicPresenter> implements ILMMusicView {
     @BindView(R.id.sb_sidebar)
     SideBar sbSideBar;
-
-    protected boolean isVisibleToUser;
-    protected boolean isLazyLoaded;
-    private boolean isPrepared;
 
     @Override
     protected int getLayoutRes() {
@@ -57,40 +57,28 @@ public abstract class AbstractLMFragment extends BaseFragment<LMMusicPresenter> 
     }
 
     @Override
-    protected void init() {
-        isPrepared = true;
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onVisible();
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()) {
-            this.isVisibleToUser = true;
-            onVisible();
-        } else {
-            this.isVisibleToUser = false;
-            onInvisible();
-        }
+    public void setSong(List<MusicModel> models) {
+
     }
 
-    protected void onVisible() {
-        if (!isPrepared || !isVisibleToUser) {
-            return;
-        }
-        isPrepared = false;//仅仅懒加载加载一次
-        isLazyLoaded = true;
-        lazyLoad();
+    @Override
+    public void setSinger(List<SingerModel> models) {
+
     }
 
-    protected abstract void lazyLoad();
+    @Override
+    public void setAlbum(List<AlbumModel> models) {
 
-    protected void onInvisible() {
+    }
+
+    @Override
+    public void setFolder(List<FolderModel> models) {
 
     }
 

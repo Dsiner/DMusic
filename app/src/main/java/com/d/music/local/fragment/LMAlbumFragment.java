@@ -1,13 +1,13 @@
 package com.d.music.local.fragment;
 
+import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.local.adapter.AlbumAdapter;
+import com.d.music.local.presenter.LMMusicPresenter;
 import com.d.music.model.AlbumModel;
-import com.d.music.model.FolderModel;
-import com.d.music.model.SingerModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -19,44 +19,38 @@ import java.util.List;
  * 首页-本地歌曲-专辑
  * Created by D on 2017/4/29.
  */
-public class LMAlbumFragment extends AbstractLMFragment {
-    private AlbumAdapter adapter;
+public class LMAlbumFragment extends AbstractLMFragment<AlbumModel> {
 
     @Override
-    protected void lazyLoad() {
-        List<AlbumModel> datas = new ArrayList<>();
-        adapter = new AlbumAdapter(mContext, datas, R.layout.adapter_album);
-        xrvList.showAsList();
+    public LMMusicPresenter getPresenter() {
+        return new LMMusicPresenter(getActivity().getApplicationContext());
+    }
+
+    @Override
+    protected MvpView getMvpView() {
+        return this;
+    }
+
+    @Override
+    protected CommonAdapter<AlbumModel> getAdapter() {
+        return new AlbumAdapter(mContext, new ArrayList<AlbumModel>(), R.layout.adapter_album);
+    }
+
+    @Override
+    protected void initList() {
+        super.initList();
         xrvList.setCanRefresh(false);
         xrvList.setCanLoadMore(false);
-        xrvList.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onLoad(int page) {
         mPresenter.getAlbum();
     }
 
     @Override
-    public void setSong(List<MusicModel> models) {
-
-    }
-
-    @Override
-    public void setSinger(List<SingerModel> models) {
-
-    }
-
-    @Override
     public void setAlbum(List<AlbumModel> models) {
-        adapter.setDatas(models);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setFolder(List<FolderModel> models) {
-
-    }
-
-    @Override
-    public void notifyDataCountChanged(int count) {
-
+        commonLoader.setData(models);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

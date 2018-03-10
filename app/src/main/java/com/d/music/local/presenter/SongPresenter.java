@@ -73,7 +73,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setSong(list);
+                        getView().setData(list);
                     }
                 });
     }
@@ -108,7 +108,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setSong(list);
+                        getView().setData(list);
                     }
                 });
     }
@@ -159,7 +159,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setSong(list);
+                        getView().setData(list);
                     }
                 });
     }

@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.d.lib.common.module.loader.AbsFragment;
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseFragment;
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.lib.common.view.DSLayout;
-import com.d.lib.xrv.XRecyclerView;
+import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.Preferences;
@@ -46,18 +45,15 @@ import butterknife.OnClick;
  * SongFragment
  * Created by D on 2017/4/30.
  */
-public class SongFragment extends BaseFragment<SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
+public class SongFragment extends AbsFragment<MusicModel, SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
-    @BindView(R.id.xrv_list)
-    XRecyclerView xrvList;
 
     private int type;
     private int tab;//本地歌曲tab(0-3)
     private Preferences p;
     private String title;
     private SongHeaderView header;
-    private SongAdapter adapter;
     private int orderType;
     private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
     private boolean isSubPull;//为了同步设置，需要重新刷新
@@ -70,6 +66,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         switch (v.getId()) {
             case R.id.iv_title_left:
                 MainActivity.popBackStack();
+                break;
         }
     }
 
@@ -101,29 +98,49 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
 
     @Override
     protected void init() {
+        initTitle();
         p = Preferences.getInstance(getActivity().getApplicationContext());
         isSubPull = p.getIsSubPull();
-        initTitle();
-        adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type, this);
+        orderType = MusicDBUtil.getInstance(mContext.getApplicationContext()).queryCusListSoryType(type);
+        super.init();
+    }
+
+    @Override
+    protected CommonAdapter<MusicModel> getAdapter() {
+        SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type);
         adapter.setSubPull(isSubPull);
+        adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
+            @Override
+            public void onChange(int count) {
+                notifyDataCountChanged(count);
+            }
+        });
+        return adapter;
+    }
+
+    @Override
+    protected void initList() {
         header = new SongHeaderView(mContext);
         header.setVisibility(View.GONE);
         if (type == MusicDB.LOCAL_ALL_MUSIC) {
             header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         }
         header.setOnHeaderListener(this);
-        xrvList.showAsList();
         xrvList.setCanRefresh(false);
         xrvList.setCanLoadMore(false);
         xrvList.addHeaderView(header);
-        xrvList.setAdapter(adapter);
-        orderType = MusicDBUtil.getInstance(mContext.getApplicationContext()).queryCusListSoryType(type);
+        super.initList();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onLoad(int page) {
         mPresenter.getSong(type, tab, title, orderType);
+    }
+
+    @Override
+    public void setData(List<MusicModel> datas) {
+        super.setData(datas);
+        notifyDataCountChanged(commonLoader.getDatas().size());
     }
 
     @Override
@@ -131,11 +148,11 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
-            mPresenter.getSong(type, tab, title, orderType);
+            getData();
         }
         if (isSubPull != p.getIsSubPull()) {
             isSubPull = !isSubPull;
-            adapter.setSubPull(isSubPull);
+            ((SongAdapter) adapter).setSubPull(isSubPull);
             if (!isSubPull) {
                 mPresenter.subPullUp(adapter.getDatas());
             }
@@ -196,26 +213,9 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
         });
     }
 
-    @Override
-    public void setSong(List<MusicModel> models) {
-        if (models.size() <= 0) {
-            setState(DSLayout.STATE_EMPTY);
-        } else {
-            setState(DSLayout.GONE);
-        }
-        notifyDataCountChanged(models.size());
-        adapter.setDatas(models);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void notifyDataCountChanged(int count) {
-        if (count <= 0) {
-            header.setVisibility(View.GONE);
-        } else {
-            header.setSongCount(count);
-            header.setVisibility(View.VISIBLE);
-        }
+    private void notifyDataCountChanged(int count) {
+        header.setSongCount(count);
+        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class SongFragment extends BaseFragment<SongPresenter> implements ISongVi
                 || event.type != type || mPresenter == null) {
             return;
         }
-        setSong(event.list);
+        setData(event.list);
         mPresenter.setSong(event.list, type);
     }
 

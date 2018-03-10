@@ -41,11 +41,10 @@ public abstract class AbsLazyFragment<M extends BaseModel, P extends MvpBasePres
     }
 
     protected void onVisible() {
-        if (!isPrepared || !isVisibleToUser) {
+        if (isLazyLoaded || !isPrepared || !isVisibleToUser) {
             return;
         }
-        isPrepared = false;//仅仅懒加载加载一次
-        isLazyLoaded = true;
+        isLazyLoaded = true;//仅仅懒加载加载一次
         initList();
         getData();
     }

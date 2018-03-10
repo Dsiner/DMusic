@@ -3,14 +3,11 @@ package com.d.music.local.fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
-import com.d.lib.common.view.DSLayout;
+import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.Preferences;
 import com.d.music.local.adapter.SongAdapter;
-import com.d.music.model.AlbumModel;
-import com.d.music.model.FolderModel;
-import com.d.music.model.SingerModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.greendao.db.MusicDB;
@@ -31,26 +28,50 @@ import java.util.List;
  * 首页-本地歌曲-歌曲
  * Created by D on 2017/4/29.
  */
-public class LMSongFragment extends AbstractLMFragment implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
+public class LMSongFragment extends AbstractLMFragment<MusicModel> implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
     private Preferences p;
     private SongHeaderView header;
-    private SongAdapter adapter;
     private SortUtil sortUtil;
     private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
     private boolean isSubPull;//为了同步设置，需要重新刷新
 
     @Override
     protected void init() {
-        super.init();
         p = Preferences.getInstance(getActivity().getApplicationContext());
         isSubPull = p.getIsSubPull();
         sortUtil = new SortUtil();
-        adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC, this);
+        sbSideBar.setOnLetterChangedListener(this);
+        super.init();
+    }
+
+    @Override
+    protected CommonAdapter<MusicModel> getAdapter() {
+        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC);
         adapter.setSubPull(isSubPull);
+        adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
+            @Override
+            public void onChange(int count) {
+                notifyDataCountChanged(count);
+            }
+        });
+        return adapter;
+    }
+
+    @Override
+    protected void onLoad(int page) {
+        mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
+    }
+
+    @Override
+    protected void initList() {
         header = new SongHeaderView(mContext);
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
+        xrvList.addHeaderView(header);
+        xrvList.setCanRefresh(false);
+        xrvList.setCanLoadMore(false);
+        super.initList();
     }
 
     @Override
@@ -66,26 +87,15 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
     }
 
     @Override
-    protected void lazyLoad() {
-        xrvList.showAsList();
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
-        xrvList.addHeaderView(header);
-        xrvList.setAdapter(adapter);
-        sbSideBar.setOnLetterChangedListener(this);
-        mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
-            mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
+            getData();
         }
         if (isSubPull != p.getIsSubPull()) {
             isSubPull = !isSubPull;
-            adapter.setSubPull(isSubPull);
+            ((SongAdapter) adapter).setSubPull(isSubPull);
             if (!isSubPull) {
                 mPresenter.subPullUp(adapter.getDatas());
             }
@@ -94,46 +104,19 @@ public class LMSongFragment extends AbstractLMFragment implements SongHeaderView
 
     @Override
     public void setSong(List<MusicModel> models) {
-        if (models.size() <= 0) {
-            setState(DSLayout.STATE_EMPTY);
-            sbSideBar.setVisibility(View.GONE);
-        } else {
-            setState(DSLayout.GONE);
-            sbSideBar.setVisibility(View.VISIBLE);
-        }
-        notifyDataCountChanged(models.size());
-        adapter.setDatas(models);
-        adapter.notifyDataSetChanged();
+        commonLoader.setData(models);
+        notifyDataCountChanged(commonLoader.getDatas().size());
     }
 
-    @Override
-    public void setSinger(List<SingerModel> models) {
-
-    }
-
-    @Override
-    public void setAlbum(List<AlbumModel> models) {
-
-    }
-
-    @Override
-    public void setFolder(List<FolderModel> models) {
-
-    }
-
-    @Override
-    public void notifyDataCountChanged(int count) {
-        if (count <= 0) {
-            header.setVisibility(View.GONE);
-        } else {
-            header.setSongCount(count);
-            header.setVisibility(View.VISIBLE);
-        }
+    private void notifyDataCountChanged(int count) {
+        header.setSongCount(count);
+        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
+        sbSideBar.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void onPlayAll() {
-        List<MusicModel> datas = adapter.getDatas();
+        List<MusicModel> datas = commonLoader.getDatas();
         if (datas != null && datas.size() > 0) {
             MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
             control.init(mContext.getApplicationContext(), datas, 0, true);

@@ -1,5 +1,6 @@
 package com.d.music.module.greendao.music.base;
 
+import com.d.lib.common.module.mvp.model.BaseModel;
 import com.d.music.module.media.MusicFactory;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by D on 2017/4/28.
  */
 
-public class MusicModel {
+public class MusicModel extends BaseModel{
 
     public String url;
     public String songName;
