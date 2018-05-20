@@ -9,7 +9,6 @@ import android.util.AttributeSet;
  * ARecyclerView
  * Created by D on 2017/4/25.
  */
-
 public abstract class ARecyclerView extends RecyclerView {
 
     public ARecyclerView(Context context) {

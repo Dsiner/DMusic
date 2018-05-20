@@ -13,3 +13,17 @@
 # Gson specific classes
 -keep class sun.misc.Unsafe {*;}
 # Application classes that will be serialized/deserialized over Gson
+
+# ----- rxjava && rxandroid -----
+-dontwarn io.reactivex.**
+-keep class io.reactivex.** {*;}
+
+# ----- okhttp3 && okio -----
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-keep class okhttp3.** {*;}
+-keep class okio.** {*;}
+
+# ----- retrofit2 -----
+-dontwarn retrofit2.**
+-keep class retrofit2.** {*;}

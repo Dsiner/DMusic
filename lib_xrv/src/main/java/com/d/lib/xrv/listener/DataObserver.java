@@ -10,7 +10,6 @@ import com.d.lib.xrv.adapter.WrapAdapter;
  * AdapterDataObserver for RecyclerView
  * Created by D on 2017/4/25.
  */
-
 public class DataObserver extends RecyclerView.AdapterDataObserver {
     private XRecyclerView xRecyclerView;
     private WrapAdapter mWrapAdapter;
