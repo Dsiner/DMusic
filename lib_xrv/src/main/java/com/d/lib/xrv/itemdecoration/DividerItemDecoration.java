@@ -13,7 +13,6 @@ import com.d.lib.xrv.adapter.WrapAdapter;
  * 分割
  * Created by D on 2017/2/9.
  */
-
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable mDivider;

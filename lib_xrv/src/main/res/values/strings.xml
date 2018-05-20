@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lib_xrv_app_name">xrv</string>
     <string name="lib_xrv_list_header_hint_normal">向下拉动可以刷新</string>

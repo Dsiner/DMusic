@@ -7,7 +7,6 @@ import android.util.AttributeSet;
  * LRecyclerView-listview
  * Created by D on 2017/4/25.
  */
-
 public class LRecyclerView extends ARecyclerView {
     public LRecyclerView(Context context) {
         this(context, null);
