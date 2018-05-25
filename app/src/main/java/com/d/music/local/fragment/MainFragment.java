@@ -75,7 +75,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     private boolean isNeedReLoad;//为了同步收藏数，需要重新加载数据
     private boolean isShowAdd;//为了同步设置，需要重新刷新
 
-    @OnClick({R.id.llyt_local, R.id.llyt_collection})
+    @OnClick({R.id.llyt_local, R.id.llyt_collection, R.id.llyt_net})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -94,6 +94,10 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 SongFragment sFragment = new SongFragment();
                 sFragment.setArguments(bundle);
                 MainActivity.replace(sFragment);
+                break;
+            case R.id.llyt_net:
+                //音乐馆
+
                 break;
         }
     }
