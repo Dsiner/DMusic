@@ -2,7 +2,8 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
+![xxxhdpi](https://user-images.githubusercontent.com/37498811/40835919-bc36bfd8-65b6-11e8-9b9e-f8af0f1b87be.png)
+
 
 >**DMusic**  一个基于 `MVP + RxJava2 + greenDAO` 的本地音乐播放器
 
