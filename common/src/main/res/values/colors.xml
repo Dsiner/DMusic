@@ -14,10 +14,10 @@
     <color name="lib_pub_color_bg_main">#FFFFFF</color>
     <color name="lib_pub_color_bg_sub">#F9F9F9</color>
 
-    <color name="lib_pub_color_main">#1DA0EF</color>
-    <color name="lib_pub_color_main_90">#E61DA0EF</color>
-    <color name="lib_pub_color_main_50">#801DA0EF</color>
-    <color name="lib_pub_color_main_30">#661DA0EF</color>
+    <color name="lib_pub_color_main">#0C6EC6</color>
+    <color name="lib_pub_color_main_90">#E60C6EC6</color>
+    <color name="lib_pub_color_main_50">#800C6EC6</color>
+    <color name="lib_pub_color_main_30">#660C6EC6</color>
 
     <color name="lib_pub_color_line">#e5e5e5</color>
     <color name="lib_pub_color_dialog_bg">#aaC1C1C1</color>

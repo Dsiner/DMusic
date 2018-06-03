@@ -2,11 +2,10 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
-[![Readme](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-brightgreen.svg)](https://github.com/Dsiner/DMusic/blob/master/README-zh.md)
 
 ![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-> A local music player based on `MVP + greenDAO + RxJava2`
+> 一个基于 `MVP + RxJava2 + greenDAO` 的本地音乐播放器
 
 ## Design
 <img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
@@ -15,11 +14,11 @@
 ![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
 ## For developer
-* For the layout xml skin error, the solution:
-  First click to locate any error, Alt+Enter->Select Disable inspection (ignore error checking)
+* 对于布局xml换肤报错,解决方式：
+  先点击定位到任意错误处，Alt+Enter——>选择Disable inspection(忽略错误检查)
 
 ## Todo
-- [ ] Music online search, play, cache, download, etc.
+- [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies
 - [MVP]()
@@ -42,23 +41,23 @@
 
 ## About DMusic  ——畅听音乐(中文名) v1.0.3
 
-##### ----The pursuit of speed, simplicity and security of the local music player----
+##### ----追求速度、简约和安全的本地音乐播放器----
 
-* √Easy sliding menu, song drag management, and more humanization
-* √Colorful skin, fresh you
-* √The music mode is turned on by you
+* √便捷的侧滑菜单，歌曲拖曳管理、及更多人性化
+* √多彩焕肤，清新有你
+* √音乐模式由你开启
 
-##### ----Opening a Free Tour----
-* Local music: songs, singers, albums, folder management, alphabetical order, direct access
-* Self-built song list: move with your heart
-* Support lyrics: lyrics files must be in the same folder as song files
-* Sleep timing: manage your sleep
-* Skin: 19 sets of skin to choose from, switch with mood
-* Display mode switch: Song operation sub-menu can select drop-down or pop-up mode, whether to display new song list icon? Whether managing more freedom is up to you
-* Automatic play at startup: optional
-* Heartprint: The label that defines the personality is displayed on the homepage (default "Chang Music, Enjoy Freedom")
-* Degree of freedom operation: homepage song list, there are top, delete the two operations, sliding display; self-built song list support name, time and custom sorting, sorting page support drag and drop sort, slide to delete, multiple selection Join Songs, Bulk Delete, and Undo Actions
-* Mode selection: 3 modes to choose from, normal mode, minimal mode, notification bar mode
+##### ----开启畅听之旅----
+* 本地音乐：歌曲、歌手、专辑、文件夹分类管理、按字母排序，一触直达
+* 自建歌单：随心而动
+* 支持歌词：歌词文件需和歌曲文件在同一文件夹内
+* 睡眠定时：管理好你的睡眠
+* 皮肤：19套肤色可供选择，随心情切换
+* 显示模式切换：歌曲操作子菜单可选下拉或弹窗模式、是否显示新建歌单图标？是否管理更多自由，由你而定
+* 启动时自动播放：可选
+* 心印：定义个性的标签于首页显示（默认“畅音乐，享自由”）
+* 自由度操作：首页自建歌单，有置顶、删除两种操作，侧滑显示；自建歌单支持名称、时间及自定义排序、排序页支持按住拖曳排序，侧滑删除、多选加入歌单、批量删除、和撤销操作
+* 模式选择：3种模式可供选择，普通模式、极简模式、通知栏模式
 
 ## Licence
 
