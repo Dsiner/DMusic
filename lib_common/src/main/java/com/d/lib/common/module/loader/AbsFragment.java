@@ -6,7 +6,6 @@ import android.view.View;
 import com.d.lib.common.R;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.base.BaseFragment;
-import com.d.lib.common.module.mvp.model.BaseModel;
 import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
@@ -18,7 +17,8 @@ import java.util.List;
  * 通用分页加载Fragment
  * Created by D on 2017/8/23.
  */
-public abstract class AbsFragment<M extends BaseModel, P extends MvpBasePresenter> extends BaseFragment<P> implements IAbsView<M>, View.OnClickListener {
+public abstract class AbsFragment<M, P extends MvpBasePresenter> extends BaseFragment<P>
+        implements IAbsView<M>, View.OnClickListener {
     protected XRecyclerView xrvList;
 
     protected CommonAdapter<M> adapter;

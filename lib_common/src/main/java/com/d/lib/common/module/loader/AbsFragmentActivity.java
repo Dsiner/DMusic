@@ -17,7 +17,8 @@ import java.util.List;
  * 通用ViewPage-FragmentActivity
  * Created by D on 2017/7/19.
  */
-public abstract class AbsFragmentActivity extends BaseFragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public abstract class AbsFragmentActivity extends BaseFragmentActivity
+        implements View.OnClickListener, ViewPager.OnPageChangeListener {
     protected TitleLayout tlTitle;
     protected ScrollTab indicator;
     protected ViewPager pager;

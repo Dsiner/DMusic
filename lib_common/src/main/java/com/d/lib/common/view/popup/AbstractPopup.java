@@ -45,7 +45,7 @@ public abstract class AbstractPopup implements View.OnKeyListener {
     }
 
     /**
-     * 显示popupWindow
+     * Show PopupWindow
      */
     public void show() {
         if (popupWindow != null && !popupWindow.isShowing() && context != null && !((Activity) context).isFinishing()) {
@@ -54,7 +54,7 @@ public abstract class AbstractPopup implements View.OnKeyListener {
     }
 
     /**
-     * 隐藏popupWindow
+     * Dismiss PopupWindow
      */
     public void dismiss() {
         if (popupWindow != null && popupWindow.isShowing()) {

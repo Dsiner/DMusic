@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application>
-        <receiver android:name="com.d.lib.common.module.receiver.netstate.NetChangeReceiver">
+        <receiver android:name="com.d.lib.common.module.netstate.NetChangeReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

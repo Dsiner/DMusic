@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.model.BaseModel;
 
 /**
  * ViewPage-Fragment通用分页加载Fragment
  * Created by D on 2017/8/23.
  */
-public abstract class AbsLazyFragment<M extends BaseModel, P extends MvpBasePresenter> extends AbsFragment<M, P> {
+public abstract class AbsLazyFragment<M, P extends MvpBasePresenter> extends AbsFragment<M, P> {
     protected boolean isVisibleToUser;
     protected boolean isLazyLoaded;
     protected boolean isPrepared;

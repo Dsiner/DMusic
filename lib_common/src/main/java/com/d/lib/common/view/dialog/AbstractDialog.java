@@ -1,9 +1,11 @@
 package com.d.lib.common.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -49,17 +51,30 @@ public abstract class AbstractDialog {
         init(rootView);
     }
 
+    protected AbstractDialog(Context context, int themeResId, ViewGroup.LayoutParams params) {
+        this.context = context;
+        rootView = LayoutInflater.from(context).inflate(getLayoutRes(), null);
+        dialog = new Dialog(context, themeResId);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.setContentView(rootView, params);
+        init(rootView);
+    }
+
     /**
-     * 显示dialog
+     * Show dialog
      */
     public void show() {
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
+            return;
+        }
         if (dialog != null && !dialog.isShowing()) {
             dialog.show();
         }
     }
 
     /**
-     * 隐藏dialog
+     * Dismiss dialog
      */
     public void dismiss() {
         if (dialog != null && dialog.isShowing()) {

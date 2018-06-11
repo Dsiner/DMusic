@@ -1,9 +1,11 @@
-package com.d.lib.common.module.receiver.netstate;
+package com.d.lib.common.module.netstate;
+
+import android.support.annotation.UiThread;
 
 import java.util.ArrayList;
 
 /**
- * 网络监听
+ * Network monitoring
  * Created by D on 2018/2/5.
  */
 public class NetBus {
@@ -21,19 +23,21 @@ public class NetBus {
         return instance;
     }
 
+    @UiThread
     public void addListener(OnNetListener l) {
         if (l != null) {
             onNetListeners.add(l);
         }
     }
 
+    @UiThread
     public void removeListener(OnNetListener l) {
         if (l != null) {
             onNetListeners.remove(l);
         }
     }
 
-    public void onNetChange(int state) {
+    void onNetChange(int state) {
         synchronized (NetBus.class) {
             for (int i = 0; i < onNetListeners.size(); i++) {
                 OnNetListener listener = onNetListeners.get(i);
