@@ -23,10 +23,10 @@
         android:layout_height="40dp"
         android:background="@color/lib_pub_color_bg_main"
         app:lib_pub_stab_avag="true"
-        app:lib_pub_stab_indicator_color="@color/lib_pub_color_main"
-        app:lib_pub_stab_indicator_radius="1dp"
-        app:lib_pub_stab_indicator_type="translation"
-        app:lib_pub_stab_indicator_weight="2dp"
+        app:lib_pub_stab_indicatorColor="@color/lib_pub_color_main"
+        app:lib_pub_stab_indicatorRadius="1dp"
+        app:lib_pub_stab_indicatorType="translation"
+        app:lib_pub_stab_indicatorWeight="2dp"
         app:lib_pub_stab_type="view" />
 
     <android.support.v4.view.ViewPager

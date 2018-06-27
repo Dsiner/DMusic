@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_alignParentLeft="true"
+        android:gravity="center"
         android:paddingLeft="@dimen/lib_pub_dimen_margin"
         android:paddingRight="@dimen/lib_pub_dimen_margin"
         android:textColor="@color/lib_pub_color_white"
@@ -42,22 +43,11 @@
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/iv_title_search"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/iv_title_right"
-        android:padding="2.5dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/tv_title_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/iv_title_search"
         android:layout_toRightOf="@+id/iv_title_left"
         android:gravity="center_vertical"
         android:singleLine="true"

@@ -2,6 +2,7 @@ package com.d.lib.common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.d.lib.common.R;
+import com.d.lib.common.view.toggle.ToggleButton;
+import com.d.lib.common.view.toggle.ToggleView;
 
 /**
  * TitleLayout
  * Created by D on 2017/5/3.
  */
 public class RowLayout extends RelativeLayout {
-    private final String content;
+    private int layout;
+    private Drawable icon;
+    private final String content, hint;
     private int visibilityToggle;
     private int visibilityGoto;
-    private TextView tvContent;
+    private ImageView ivIcon;
+    private TextView tvNumber;
+    private TextView tvContent, tvHint;
     private ToggleButton tbToggle;
     private OnToggleListener listener;
 
@@ -34,7 +41,10 @@ public class RowLayout extends RelativeLayout {
     public RowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_RowLayout);
+        layout = typedArray.getResourceId(R.styleable.lib_pub_RowLayout_lib_pub_rl_layout, R.layout.lib_pub_layout_row);
         content = typedArray.getString(R.styleable.lib_pub_RowLayout_lib_pub_rl_text);
+        hint = typedArray.getString(R.styleable.lib_pub_RowLayout_lib_pub_rl_hint);
+        icon = typedArray.getDrawable(R.styleable.lib_pub_RowLayout_lib_pub_rl_icon);
         visibilityToggle = typedArray.getInteger(R.styleable.lib_pub_RowLayout_lib_pub_rl_toggleVisibility, 0);
         visibilityGoto = typedArray.getInteger(R.styleable.lib_pub_RowLayout_lib_pub_rl_gotoVisibility, 0);
         typedArray.recycle();
@@ -42,14 +52,24 @@ public class RowLayout extends RelativeLayout {
     }
 
     private void init(Context context) {
-        final View root = LayoutInflater.from(context).inflate(R.layout.lib_pub_layout_row, this);
-        tvContent = (TextView) root.findViewById(R.id.tv_content);
-        tbToggle = (ToggleButton) root.findViewById(R.id.tb_toggle);
-        ImageView ivGoto = (ImageView) root.findViewById(R.id.iv_goto);
+        View root = LayoutInflater.from(context).inflate(layout, this);
+        ivIcon = (ImageView) root.findViewById(R.id.iv_layout_row_icon);
+        tvNumber = (TextView) root.findViewById(R.id.tv_layout_row_number);
+        tvContent = (TextView) root.findViewById(R.id.tv_layout_row_content);
+        tvHint = (TextView) root.findViewById(R.id.tv_layout_row_hint);
+        tbToggle = (ToggleButton) root.findViewById(R.id.tb_layout_row_toggle);
+        ImageView ivGoto = (ImageView) root.findViewById(R.id.iv_layout_row_goto);
         ivGoto.setVisibility(visibilityGoto);
-        tvContent.setText(content);
+        if (icon != null) {
+            ivIcon.setImageDrawable(icon);
+            ivIcon.setVisibility(VISIBLE);
+        } else {
+            ivIcon.setVisibility(GONE);
+        }
+        tvContent.setText(content != null ? content : "");
+        tvHint.setText(hint != null && visibilityGoto == VISIBLE ? hint : "");
         tbToggle.setVisibility(visibilityToggle);
-        tbToggle.setOnToggleListener(new ToggleButton.OnToggleListener() {
+        tbToggle.setOnToggleListener(new ToggleView.OnToggleListener() {
             @Override
             public void onToggle(boolean isOpen) {
                 if (listener != null) {
@@ -67,14 +87,35 @@ public class RowLayout extends RelativeLayout {
     }
 
     /**
-     * toggle按钮设置开闭
+     * 设置辅助文本内容
+     */
+    public void setHint(CharSequence text, int visibility) {
+        if (visibilityGoto != VISIBLE) {
+            return;
+        }
+        tvHint.setText(text);
+    }
+
+    /**
+     * 设置红点文本内容
+     */
+    public void setNumber(CharSequence text, int visibility) {
+        if (visibilityGoto != VISIBLE) {
+            return;
+        }
+        tvNumber.setText(text);
+        tvNumber.setVisibility(visibility);
+    }
+
+    /**
+     * Toggle按钮设置开闭
      */
     public void setOpen(boolean open) {
         tbToggle.setOpen(open);
     }
 
     /**
-     * toggle按钮开闭状态
+     * Toggle按钮开闭状态
      */
     public boolean isOpen() {
         return tbToggle.isOpen();

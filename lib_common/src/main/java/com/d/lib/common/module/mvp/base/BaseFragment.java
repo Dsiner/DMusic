@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.lib.common.common.AlertDialogFactory;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.view.DSLayout;
+import com.d.lib.common.view.dialog.AlertDialogFactory;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

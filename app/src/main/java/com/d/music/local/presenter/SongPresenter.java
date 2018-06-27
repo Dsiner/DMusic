@@ -3,7 +3,7 @@ package com.d.music.local.presenter;
 import android.content.Context;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.utils.TaskManager;
+import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.lib.common.view.DSLayout;
 import com.d.music.local.view.ISongView;
 import com.d.music.module.greendao.db.MusicDB;
@@ -117,7 +117,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         if (models == null) {
             return;
         }
-        TaskManager.getIns().executeTask(new Runnable() {
+        TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
                 for (MusicModel model : models) {

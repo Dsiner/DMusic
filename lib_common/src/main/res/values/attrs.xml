@@ -12,7 +12,9 @@
         <attr name="lib_pub_tl_middleRes" format="reference" />
         <attr name="lib_pub_tl_menu" format="reference" />
     </declare-styleable>
+
     <declare-styleable name="lib_pub_DSLayout">
+        <attr name="lib_pub_dsl_layout" format="reference" />
         <attr name="lib_pub_dsl_adjustHeightT" format="dimension" />
         <attr name="lib_pub_dsl_adjustHeightB" format="dimension" />
         <attr name="lib_pub_dsl_emptyDrawable" format="reference" />
@@ -22,6 +24,7 @@
             <enum name="local" value="2" />
         </attr>
     </declare-styleable>
+
     <declare-styleable name="lib_pub_ScrollTab">
         <attr name="lib_pub_stab_type">
             <enum name="view" value="0" />
@@ -30,27 +33,43 @@
         <attr name="lib_pub_stab_titles" format="string" />
         <attr name="lib_pub_stab_avag" format="boolean" />
         <attr name="lib_pub_stab_padding" format="dimension" />
-        <attr name="lib_pub_stab_indicator_type">
+        <attr name="lib_pub_stab_indicatorType">
             <enum name="trend" value="0" />
             <enum name="translation" value="1" />
             <enum name="none" value="2" />
         </attr>
-        <attr name="lib_pub_stab_indicator_color" format="color" />
-        <attr name="lib_pub_stab_indicator_width" format="dimension" />
-        <attr name="lib_pub_stab_indicator_weight" format="dimension" />
-        <attr name="lib_pub_stab_indicator_radius" format="dimension" />
-        <attr name="lib_pub_stab_indicator_padding" format="dimension" />
+        <attr name="lib_pub_stab_indicatorColor" format="color" />
+        <attr name="lib_pub_stab_indicatorWidth" format="dimension" />
+        <attr name="lib_pub_stab_indicatorWeight" format="dimension" />
+        <attr name="lib_pub_stab_indicatorRadius" format="dimension" />
+        <attr name="lib_pub_stab_indicatorPadding" format="dimension" />
         <attr name="lib_pub_stab_duration" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="lib_pub_SegementView">
+        <attr name="lib_pub_segementv_titles" format="string" />
+        <attr name="lib_pub_segementv_colorMain" format="color" />
+        <attr name="lib_pub_segementv_colorSub" format="color" />
+        <attr name="lib_pub_segementv_textSize" format="dimension" />
+        <attr name="lib_pub_segementv_radius" format="dimension" />
+        <attr name="lib_pub_segementv_divideWidth" format="dimension" />
+        <attr name="lib_pub_segementv_borderWidth" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="lib_pub_ToggleButton">
-        <attr name="lib_pub_tbtn_colorNormal" format="color" />
-        <attr name="lib_pub_tbtn_colorLight" format="color" />
+        <attr name="lib_pub_tbtn_colorThumb" format="color" />
+        <attr name="lib_pub_tbtn_colorTrackOpen" format="color" />
+        <attr name="lib_pub_tbtn_colorTrackOff" format="color" />
         <attr name="lib_pub_tbtn_colorPadding" format="color" />
         <attr name="lib_pub_tbtn_padding" format="dimension" />
         <attr name="lib_pub_tbtn_duration" format="integer" />
     </declare-styleable>
+
     <declare-styleable name="lib_pub_RowLayout">
+        <attr name="lib_pub_rl_layout" format="reference" />
+        <attr name="lib_pub_rl_icon" format="reference" />
         <attr name="lib_pub_rl_text" format="string" />
+        <attr name="lib_pub_rl_hint" format="string" />
         <attr name="lib_pub_rl_toggleVisibility">
             <enum name="visible" value="0" />
             <enum name="invisible" value="4" />
@@ -61,5 +80,43 @@
             <enum name="invisible" value="4" />
             <enum name="gone" value="8" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="lib_pub_NoticeLayout">
+        <attr name="lib_pub_noticel_layout" format="reference" />
+        <attr name="lib_pub_noticel_icon" format="reference" />
+        <attr name="lib_pub_noticel_text" format="string" />
+        <attr name="lib_pub_noticel_button" format="string" />
+        <attr name="lib_pub_noticel_gotoVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="lib_pub_noticel_exitVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="lib_pub_BadgeView">
+        <attr name="lib_pub_badgev_color" format="color" />
+        <attr name="lib_pub_badgev_circle" format="boolean" />
+        <attr name="lib_pub_badgev_radius" format="dimension" />
+        <attr name="lib_pub_badgev_max" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="lib_pub_ReplyBgView">
+        <attr name="lib_pub_replybv_gravity">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="top" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="lib_pub_replybv_color" format="color" />
+        <attr name="lib_pub_replybv_radius" format="dimension" />
+        <attr name="lib_pub_replybv_offset" format="dimension" />
+        <attr name="lib_pub_replybv_trgWidth" format="dimension" />
+        <attr name="lib_pub_replybv_trgHeight" format="dimension" />
     </declare-styleable>
 </resources>

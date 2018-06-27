@@ -89,7 +89,7 @@ public class Schedulers {
         }
     }
 
-    private static boolean isMainThread() {
+    public static boolean isMainThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
 }

@@ -23,11 +23,17 @@ public class TabViewGroup extends RelativeLayout implements TabView {
     private boolean focus;
 
     public TabViewGroup(Context context) {
-        this(context, null);
+        super(context);
+        init(context);
     }
 
     public TabViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+    }
+
+    public TabViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init(context);
     }
 
@@ -38,14 +44,6 @@ public class TabViewGroup extends RelativeLayout implements TabView {
         View root = LayoutInflater.from(context).inflate(R.layout.lib_pub_view_tab, this);
         tvTitle = (TextView) root.findViewById(R.id.tv_title);
         tvNumber = (TextView) root.findViewById(R.id.tv_number);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        if (hasWindowFocus) {
-            colorCur = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        }
-        super.onWindowFocusChanged(hasWindowFocus);
     }
 
     @Override
@@ -62,6 +60,10 @@ public class TabViewGroup extends RelativeLayout implements TabView {
     public void setNumber(String text, int visibility) {
         tvNumber.setText(text);
         tvNumber.setVisibility(visibility);
+    }
+
+    public void onThemeUpdate() {
+        colorCur = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
     }
 
     @Override

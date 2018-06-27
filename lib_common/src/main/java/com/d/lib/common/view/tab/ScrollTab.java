@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -71,11 +73,11 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
         this(context, null);
     }
 
-    public ScrollTab(Context context, AttributeSet attrs) {
+    public ScrollTab(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ScrollTab(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ScrollTab(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initTypedArray(context, attrs);
         init(context);
@@ -87,11 +89,12 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
         isAvag = typedArray.getBoolean(R.styleable.lib_pub_ScrollTab_lib_pub_stab_avag, false);
         padding = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_padding, Util.dip2px(context, 12));
         strTitles = typedArray.getString(R.styleable.lib_pub_ScrollTab_lib_pub_stab_titles);
-        indicatorType = typedArray.getInt(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicator_type, TYPE_INDICATOR_TREND);
-        indicatorWidth = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicator_width, 0);
-        indicatorWeight = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicator_weight, Util.dip2px(context, 1));
-        indicatorRadius = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicator_radius, Util.dip2px(context, 0.5f));
-        indicatorPadding = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicator_padding, Util.dip2px(context, 5));
+        indicatorType = typedArray.getInt(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorType, TYPE_INDICATOR_TREND);
+        indicatorColor = typedArray.getColor(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorColor, ContextCompat.getColor(context, R.color.lib_pub_color_main));
+        indicatorWidth = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorWidth, Util.dip2px(context, 30));
+        indicatorWeight = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorWeight, Util.dip2px(context, 1));
+        indicatorRadius = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorRadius, Util.dip2px(context, 0.5f));
+        indicatorPadding = typedArray.getDimension(R.styleable.lib_pub_ScrollTab_lib_pub_stab_indicatorPadding, Util.dip2px(context, 5));
         typedArray.recycle();
     }
 
@@ -202,17 +205,15 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
                 float nextMiddle = nextLeft + (nextRight - nextLeft) / 2;
                 middle = middle + (nextMiddle - middle) * positionOffset;
             }
-            float indicatorWidthAdj = indicatorWidth == 0 ? (right - left) : indicatorWidth;
-            left = middle - indicatorWidthAdj / 2;
-            right = middle + indicatorWidthAdj / 2;
+            left = middle - indicatorWidth / 2;
+            right = middle + indicatorWidth / 2;
             rectF.set(left, height - indicatorWeight, right, height);
         } else {
             float left = tabs.get(position).getLeft();
             float right = tabs.get(position).getRight();
             float middle = left + (right - left) / 2;
-            float indicatorWidthAdj = indicatorWidth == 0 ? (right - left) : indicatorWidth;
-            left = middle - indicatorWidthAdj / 2;
-            right = middle + indicatorWidthAdj / 2;
+            left = middle - indicatorWidth / 2;
+            right = middle + indicatorWidth / 2;
             rectF.set(left, height - indicatorWeight, right, height);
         }
         canvas.drawRoundRect(rectF, indicatorRadius, indicatorRadius, paint);
@@ -236,21 +237,18 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
             positionOffset = 0;
             onChange(index);
             adjustScrollY(index);
+            invalidate();
         }
         if (listener != null) {
             listener.onChange(index, v);
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        if (hasWindowFocus) {
-            indicatorColor = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-            if (paint != null) {
-                paint.setColor(indicatorColor);
-            }
+    public void onThemeUpdate() {
+        indicatorColor = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
+        if (paint != null) {
+            paint.setColor(indicatorColor);
         }
-        super.onWindowFocusChanged(hasWindowFocus);
     }
 
     private void onChange(int position) {

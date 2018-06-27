@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 
-import com.d.lib.common.common.AlertDialogFactory;
+import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.mvp.base.BaseActivity;

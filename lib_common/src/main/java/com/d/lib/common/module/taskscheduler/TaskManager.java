@@ -53,4 +53,11 @@ public class TaskManager {
     void executeSingle(Runnable runnable) {
         singleThreadExecutor.execute(runnable);
     }
+
+    /**
+     * Execute async task in a new thread
+     */
+    void executeNew(Runnable runnable) {
+        new Thread(runnable).start();
+    }
 }

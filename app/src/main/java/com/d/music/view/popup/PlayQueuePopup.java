@@ -37,7 +37,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
     private List<MusicModel> models;
 
     public PlayQueuePopup(Context context) {
-        super(context, R.style.AnimBottom);
+        super(context, R.layout.popup_play_queue, R.style.AnimBottom);
     }
 
     @Override
@@ -113,14 +113,9 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void show() {
-        if (popupWindow != null && !popupWindow.isShowing() && context != null && !((Activity) context).isFinishing()) {
-            popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        if (!isShowing() && context != null && !((Activity) context).isFinishing()) {
+            showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
         }
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.popup_play_queue;
     }
 
     @Override

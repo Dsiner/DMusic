@@ -5,7 +5,7 @@
     <LinearLayout
         android:layout_width="135dp"
         android:layout_height="92dp"
-        android:background="@drawable/lib_pub_bg_corner_dialog"
+        android:background="@drawable/lib_pub_corner_dialog_loading"
         android:gravity="center"
         android:orientation="vertical">
 

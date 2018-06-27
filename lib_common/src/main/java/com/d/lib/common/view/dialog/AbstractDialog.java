@@ -3,6 +3,8 @@ package com.d.lib.common.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,70 +17,90 @@ import com.d.lib.common.R;
  * AbstractDialog
  * Created by D on 2017/4/29.
  */
-public abstract class AbstractDialog {
+public abstract class AbstractDialog extends Dialog {
     protected Context context;
-    protected Dialog dialog;
     protected View rootView;
 
-    private AbstractDialog() {
-    }
-
-    protected AbstractDialog(Context context) {
+    protected AbstractDialog(@NonNull Context context) {
         this(context, R.style.lib_pub_dialog_style, false, 0, 0, 0);
     }
 
-    protected AbstractDialog(Context context, int themeResId) {
+    protected AbstractDialog(@NonNull Context context, @StyleRes int themeResId) {
         this(context, themeResId, false, 0, 0, 0);
     }
 
-    protected AbstractDialog(Context context, int themeResId, boolean isSetWin, int gravity, int width, int heith) {
+    /**
+     * Creates a dialog window that uses a custom dialog style.
+     *
+     * @param context    context
+     * @param themeResId the dialog's layout resource
+     * @param isSetWin   set the gravity of the window
+     * @param gravity    the desired gravity constant
+     * @param width      the dialog's width
+     * @param heith      the dialog's height
+     */
+    protected AbstractDialog(@NonNull Context context, @StyleRes int themeResId, boolean isSetWin, int gravity, int width, int heith) {
+        super(context, themeResId);
         this.context = context;
-        rootView = LayoutInflater.from(context).inflate(getLayoutRes(), null);
-        dialog = new Dialog(context, themeResId);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
+        this.rootView = LayoutInflater.from(context).inflate(getLayoutRes(), null);
+        setContentView(this.rootView);
+        setCanceledOnTouchOutside(true);
+        setCancelable(true);
         if (isSetWin) {
-            Window dialogWindow = dialog.getWindow();
+            Window dialogWindow = getWindow();
             if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(-1);
+                dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);
+                dialogWindow.getDecorView().setPadding(0, 0, 0, 0);
                 dialogWindow.setGravity(gravity);
-                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                p.width = width; //宽度设置
-                p.height = heith; //高度设置
+                // Get the current layout param of the dialog
+                WindowManager.LayoutParams p = dialogWindow.getAttributes();
+                // set dialog's width
+                p.width = width;
+                // set dialog's height
+                p.height = heith;
                 dialogWindow.setAttributes(p);
             }
         }
-        dialog.setContentView(rootView);
-        init(rootView);
+        init(this.rootView);
     }
 
     protected AbstractDialog(Context context, int themeResId, ViewGroup.LayoutParams params) {
+        super(context, themeResId);
         this.context = context;
-        rootView = LayoutInflater.from(context).inflate(getLayoutRes(), null);
-        dialog = new Dialog(context, themeResId);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
-        dialog.setContentView(rootView, params);
-        init(rootView);
+        this.rootView = LayoutInflater.from(context).inflate(getLayoutRes(), null);
+        setContentView(this.rootView, params);
+        setCanceledOnTouchOutside(true);
+        setCancelable(true);
+        Window dialogWindow = getWindow();
+        if (dialogWindow != null) {
+            dialogWindow.setWindowAnimations(-1);
+            dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);
+            dialogWindow.getDecorView().setPadding(0, 0, 0, 0);
+        }
+        init(this.rootView);
     }
 
     /**
      * Show dialog
      */
+    @Override
     public void show() {
         if (context instanceof Activity && ((Activity) context).isFinishing()) {
             return;
         }
-        if (dialog != null && !dialog.isShowing()) {
-            dialog.show();
+        if (!isShowing()) {
+            super.show();
         }
     }
 
     /**
      * Dismiss dialog
      */
+    @Override
     public void dismiss() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+        if (isShowing()) {
+            super.dismiss();
         }
     }
 

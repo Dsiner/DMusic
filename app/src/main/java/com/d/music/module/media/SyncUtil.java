@@ -2,12 +2,12 @@ package com.d.music.module.media;
 
 import android.content.Context;
 
+import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CollectionMusic;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.lib.common.utils.TaskManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +27,7 @@ public class SyncUtil {
         if (list == null || list.size() <= 0) {
             return;
         }
-        TaskManager.getIns().executeTask(new Runnable() {
+        TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < list.size(); i++) {
@@ -46,7 +46,7 @@ public class SyncUtil {
      * 更新收藏状态
      */
     public static void upCollected(final Context context, final MusicModel item, final int type) {
-        TaskManager.getIns().executeTask(new Runnable() {
+        TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
                 if (item.isCollected) {

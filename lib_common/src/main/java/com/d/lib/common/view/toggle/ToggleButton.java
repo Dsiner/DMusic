@@ -1,13 +1,13 @@
-package com.d.lib.common.view;
+package com.d.lib.common.view.toggle;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,14 +23,14 @@ import cn.feng.skin.manager.loader.SkinManager;
  * ToggleButton
  * Created by D on 2017/6/6.
  */
-public class ToggleButton extends View {
+public class ToggleButton extends View implements ToggleView {
     private int width;
     private int height;
 
     private Rect rect;
     private RectF rectF;
-    private Paint paintNormal;
-    private Paint paintLight;
+    private Paint paintThumb;
+    private Paint paintTrack;
     private Paint paintPadding;
     private Paint paintShader;
 
@@ -45,7 +45,7 @@ public class ToggleButton extends View {
     private float factor = 1;//进度因子:0-1
 
     private OnToggleListener listener;
-    private int colorNormal, colorLight, colorPadding;
+    private int colorThumb, colorTrackOpen, colorTrackOff, colorPadding;
     private float dX, dY;
 
     public ToggleButton(Context context) {
@@ -64,11 +64,11 @@ public class ToggleButton extends View {
 
     private void initTypedArray(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_ToggleButton);
-        colorNormal = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorNormal, Color.parseColor("#ffffff"));
-//        colorLight = typedArray.getColor(R.styleable.ToggleButton_tbtn_colorLight, Color.parseColor("#FF4081"));
-        colorLight = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        colorPadding = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorPadding, Color.parseColor("#e3e4e5"));
-        padding = (int) typedArray.getDimension(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_padding, 4);
+        colorThumb = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorThumb, ContextCompat.getColor(context, R.color.lib_pub_color_white));
+        colorTrackOpen = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
+        colorTrackOff = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorTrackOff, ContextCompat.getColor(context, R.color.lib_pub_color_white));
+        colorPadding = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorPadding, ContextCompat.getColor(context, R.color.lib_pub_color_hint));
+        padding = (int) typedArray.getDimension(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_padding, 1);
         duration = typedArray.getInteger(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_duration, 0);
         typedArray.recycle();
     }
@@ -82,17 +82,17 @@ public class ToggleButton extends View {
         rect = new Rect();
         rectF = new RectF();
 
-        paintNormal = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintNormal.setColor(colorNormal);
+        paintThumb = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintThumb.setColor(colorThumb);
 
-        paintLight = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintLight.setColor(colorLight);
+        paintTrack = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintTrack.setColor(colorTrackOff);
 
         paintPadding = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintPadding.setColor(colorPadding);
 
         paintShader = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintShader.setColor(colorNormal);
+        paintShader.setColor(colorThumb);
         paintShader.setShadowLayer(padding * 2, 0, 0, colorPadding);
 
         animation = ValueAnimator.ofFloat(0f, 1f);
@@ -110,14 +110,14 @@ public class ToggleButton extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        boolean toggle = (factor == 1) == isOpen;
         float rectRadius = height / 2f;
         rect.set(0, 0, width, height);
         rectF.set(rect);
-        canvas.drawRoundRect(rectF, rectRadius, rectRadius, toggle ? paintLight : paintPadding);
+        canvas.drawRoundRect(rectF, rectRadius, rectRadius, isOpen ? paintTrack : paintPadding);
+
         rect.set((int) padding, (int) padding, (int) (width - padding), (int) (height - padding));
         rectF.set(rect);
-        canvas.drawRoundRect(rectF, rectRadius, rectRadius, toggle ? paintLight : paintNormal);
+        canvas.drawRoundRect(rectF, rectRadius, rectRadius, paintTrack);
 
         float c0 = height / 2;
         float c1 = width - height / 2;
@@ -134,15 +134,6 @@ public class ToggleButton extends View {
         width = MeasureSpec.getSize(widthMeasureSpec);
         height = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(width, height);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        colorLight = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        if (paintLight != null) {
-            paintLight.setColor(colorLight);
-        }
-        super.onAttachedToWindow();
     }
 
     @Override
@@ -192,11 +183,14 @@ public class ToggleButton extends View {
         }
     }
 
-    /**
-     * toggle
-     */
+    @Override
     public void toggle() {
         isOpen = !isOpen;
+        if (isOpen) {
+            paintTrack.setColor(colorTrackOpen);
+        } else {
+            paintTrack.setColor(colorTrackOff);
+        }
         if (duration <= 0) {
             factor = 1f;
             invalidate();
@@ -208,10 +202,7 @@ public class ToggleButton extends View {
         }
     }
 
-    public boolean isOpen() {
-        return isOpen;
-    }
-
+    @Override
     public void setOpen(boolean open) {
         if (factor != 0 && factor != 1) {
             return;
@@ -219,17 +210,21 @@ public class ToggleButton extends View {
         stop();
         isOpen = open;
         factor = 1f;
+        if (isOpen) {
+            paintTrack.setColor(colorTrackOpen);
+        } else {
+            paintTrack.setColor(colorTrackOff);
+        }
         invalidate();
     }
 
-    public interface OnToggleListener {
-        /**
-         * @param isOpen: isOpen
-         */
-        void onToggle(boolean isOpen);
+    @Override
+    public boolean isOpen() {
+        return isOpen;
     }
 
-    public void setOnToggleListener(OnToggleListener listener) {
-        this.listener = listener;
+    @Override
+    public void setOnToggleListener(OnToggleListener l) {
+        this.listener = l;
     }
 }

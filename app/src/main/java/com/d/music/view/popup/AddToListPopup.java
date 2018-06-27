@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
+import com.d.lib.common.view.loading.LoadingLayout;
 import com.d.lib.common.view.popup.AbstractPopup;
+import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.global.Cst;
@@ -16,11 +20,7 @@ import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.play.adapter.AddToListAdapter;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.view.loading.LoadingLayout;
-import com.d.lib.xrv.LRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,14 +45,9 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
     private List<MusicModel> models;//待插入歌曲队列
 
     public AddToListPopup(Context context, List<MusicModel> models, int type) {
-        super(context);
+        super(context, R.layout.dialog_add_to_list);
         this.models = models;
         queryListNot(type);
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.dialog_add_to_list;
     }
 
     @Override
@@ -90,8 +85,8 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void show() {
-        if (popupWindow != null && !popupWindow.isShowing() && context != null && !((Activity) context).isFinishing()) {
-            popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        if (!isShowing() && context != null && !((Activity) context).isFinishing()) {
+            showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
         }
     }
 

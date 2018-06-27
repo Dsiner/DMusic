@@ -2,6 +2,7 @@ package com.d.lib.common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,25 +13,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.R;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.loading.LoadingLayout;
 
 /**
- * Default state:默认态
+ * Default Status: 默认态
  * Created by D on 2017/5/7.
  */
 public class DSLayout extends FrameLayout {
-    /***********默认态类型************/
+    /*********** 默认态类型 ************/
     public final static int STATE_LOADING = 0x10;//默认态：loading态
     public final static int STATE_EMPTY = 0x11;//默认态：无数据
     public final static int STATE_NET_ERROR = 0x12;//默认态：网络错误
 
-    /*****************默认态居中类型****************/
+    /***************** 默认态居中类型 ****************/
     private final static int CENT_TYPE_MAIN = 1;
     private final static int CENT_TYPE_LOCAL = 2;
     private final static float[] AJUST_HEIGHT = new float[]{0, 50, 70};
 
+    private int layoutId;
     private int centerType;//居中类型
     private float adjustHeightT;//校正高度
     private float adjustHeightB;//校正高度
@@ -53,6 +57,7 @@ public class DSLayout extends FrameLayout {
     public DSLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_DSLayout);
+        layoutId = typedArray.getResourceId(R.styleable.lib_pub_DSLayout_lib_pub_dsl_layout, R.layout.lib_pub_layout_ds);
         centerType = typedArray.getInteger(R.styleable.lib_pub_DSLayout_lib_pub_dsl_ceterType, 0);
         adjustHeightT = typedArray.getDimension(R.styleable.lib_pub_DSLayout_lib_pub_dsl_adjustHeightT, 0);
         adjustHeightB = typedArray.getDimension(R.styleable.lib_pub_DSLayout_lib_pub_dsl_adjustHeightB, 0);
@@ -63,7 +68,7 @@ public class DSLayout extends FrameLayout {
     }
 
     protected void init(Context context) {
-        View root = LayoutInflater.from(context).inflate(R.layout.lib_pub_layout_ds, this);
+        View root = LayoutInflater.from(context).inflate(layoutId, this);
         View vT = root.findViewById(R.id.v_dsl_t);
         View vB = root.findViewById(R.id.v_dsl_b);
 
@@ -84,7 +89,7 @@ public class DSLayout extends FrameLayout {
                 paramsB.height = Util.dip2px(context, AJUST_HEIGHT[CENT_TYPE_LOCAL]);
                 break;
             default:
-                //do nothing,default center 0/0
+                //do nothing, default center 0/0
                 break;
         }
         if (adjustHeightT != 0 || adjustHeightB != 0) {
@@ -107,7 +112,7 @@ public class DSLayout extends FrameLayout {
         ldlLoading.setVisibility(GONE);
         llytDsl.setVisibility(VISIBLE);
         ivIcon.setImageResource(resIdEmpty);
-        tvDesc.setText("暂无歌曲");
+        tvDesc.setText(getResources().getString(R.string.lib_pub_no_data));
         button.setVisibility(GONE);
     }
 
@@ -116,14 +121,81 @@ public class DSLayout extends FrameLayout {
         ldlLoading.setVisibility(GONE);
         llytDsl.setVisibility(VISIBLE);
         ivIcon.setImageResource(resIdNetError);
-        tvDesc.setText("暂无网络");
+        tvDesc.setText(getResources().getString(R.string.lib_pub_net_error));
+        button.setText(getResources().getString(R.string.lib_pub_retry));
         button.setVisibility(VISIBLE);
+    }
+
+    /**
+     * 设置图片
+     */
+    public DSLayout icon(int resId) {
+        ivIcon.setImageResource(resId);
+        return this;
+    }
+
+    /**
+     * 设置图片
+     */
+    public DSLayout icon(Drawable drawable) {
+        ivIcon.setImageDrawable(drawable);
+        return this;
+    }
+
+    /**
+     * 设置图片
+     */
+    public DSLayout icon(String url) {
+        Glide.with(getContext())
+                .load(url)
+                .apply(new RequestOptions().dontTransform().dontAnimate())
+                .into(ivIcon);
+        return this;
+    }
+
+    /**
+     * 设置Gif图
+     */
+    public DSLayout gif(int resId) {
+        Glide.with(getContext())
+                .asGif()
+                .load(resId)
+                .into(ivIcon);
+        return this;
+    }
+
+    /**
+     * 设置Gif图
+     */
+    public DSLayout gif(String url) {
+        Glide.with(getContext())
+                .asGif()
+                .load(url)
+                .into(ivIcon);
+        return this;
+    }
+
+    /**
+     * 设置提示文本
+     */
+    public DSLayout desc(CharSequence text) {
+        tvDesc.setText(text);
+        return this;
+    }
+
+    /**
+     * 设置按钮文本、显示状态
+     */
+    public DSLayout button(CharSequence text, int visibility) {
+        button.setText(text);
+        button.setVisibility(visibility);
+        return this;
     }
 
     /**
      * setState
      */
-    public void setState(int state) {
+    public DSLayout setState(int state) {
         switch (state) {
             case GONE:
             case VISIBLE:
@@ -140,5 +212,6 @@ public class DSLayout extends FrameLayout {
                 showNetError();
                 break;
         }
+        return this;
     }
 }

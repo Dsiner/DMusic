@@ -1,6 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lib_pub_app_name">common</string>
-    <string name="lib_pub_ok">确定</string>
-    <string name="lib_pub_cancel">取消</string>
-    <string name="lib_pub_loading">加载中...</string>
+    <string name="lib_pub_ok">Ok</string>
+    <string name="lib_pub_cancel">Cancel</string>
+    <string name="lib_pub_loading">Loading...</string>
+
+    <string name="lib_pub_no_data">No songs</string>
+    <string name="lib_pub_net_error">Failed to load, please check the network and try again</string>
+    <string name="lib_pub_retry">Retry</string>
 </resources>

@@ -50,4 +50,6 @@ dependencies {
     compile rootProject.ext.dependencies.nineoldandroids
     compile rootProject.ext.dependencies.butterknife
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
+    compile rootProject.ext.dependencies.glide
+    annotationProcessor rootProject.ext.dependencies.glide_compiler
 }

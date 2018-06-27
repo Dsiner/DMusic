@@ -1,4 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base application theme. -->
+    <style name="lib_pub_AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/lib_pub_color_main</item>
+        <item name="colorPrimaryDark">@color/lib_pub_color_main</item>
+        <item name="colorAccent">@color/lib_pub_color_main</item>
+    </style>
 
     <!--public dialog-->
     <style name="lib_pub_dialog_style" parent="@android:style/Theme.Dialog">
@@ -20,5 +28,13 @@
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0px</item>
         <item name="android:listSelector">@color/lib_pub_color_trans</item>
+    </style>
+
+    <style name="lib_pub_btn_style">
+        <item name="android:background">@drawable/lib_pub_select_btn_main</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/lib_pub_color_select_btn_main</item>
+        <item name="android:textSize">@dimen/lib_pub_dimen_text_small</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>

@@ -16,9 +16,9 @@
         android:layout_height="@dimen/lib_pub_dimen_tab_height"
         android:background="@color/lib_pub_color_bg_sub"
         app:lib_pub_stab_avag="true"
-        app:lib_pub_stab_indicator_color="@color/lib_pub_color_main"
-        app:lib_pub_stab_indicator_padding="37dp"
-        app:lib_pub_stab_indicator_type="trend"
+        app:lib_pub_stab_indicatorColor="@color/lib_pub_color_main"
+        app:lib_pub_stab_indicatorPadding="37dp"
+        app:lib_pub_stab_indicatorType="trend"
         app:lib_pub_stab_type="view_group" />
 
     <android.support.v4.view.ViewPager

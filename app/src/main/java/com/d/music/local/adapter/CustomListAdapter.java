@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
-import com.d.lib.common.utils.TaskManager;
+import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.lib.slidelayout.SlideLayout;
 import com.d.lib.slidelayout.SlideManager;
 import com.d.lib.xrv.adapter.CommonAdapter;
@@ -108,7 +108,7 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
     }
 
     private void delete(final CustomList item) {
-        TaskManager.getIns().executeTask(new Runnable() {
+        TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
                 MusicDBUtil.getInstance(mContext).delete(MusicDB.CUSTOM_LIST, item);

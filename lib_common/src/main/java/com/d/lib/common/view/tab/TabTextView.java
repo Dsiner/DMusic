@@ -3,6 +3,7 @@ package com.d.lib.common.view.tab;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -37,17 +38,17 @@ public class TabTextView extends View implements TabView {
         this(context, null);
     }
 
-    public TabTextView(Context context, AttributeSet attrs) {
+    public TabTextView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TabTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TabTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(Context context) {
-        textSize = Util.dip2px(context, 16);
+        textSize = Util.dip2px(context, 15);
         textColor = ContextCompat.getColor(context, R.color.lib_pub_color_gray);
         textColorFocus = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
 
@@ -78,15 +79,11 @@ public class TabTextView extends View implements TabView {
         setMeasuredDimension(width, height);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        if (hasWindowFocus) {
-            textColorFocus = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-            if (paint != null) {
-                paint.setColor(focus ? textColorFocus : textColor);
-            }
+    public void onThemeUpdate() {
+        textColorFocus = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
+        if (paint != null) {
+            paint.setColor(focus ? textColorFocus : textColor);
         }
-        super.onWindowFocusChanged(hasWindowFocus);
     }
 
     @Override
@@ -107,7 +104,7 @@ public class TabTextView extends View implements TabView {
     @Override
     public void notifyData(boolean focus) {
         this.focus = focus;
-        paint.setColor(focus ? textColorFocus : textColor);
+        this.paint.setColor(focus ? textColorFocus : textColor);
         invalidate();
     }
 
