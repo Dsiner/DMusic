@@ -19,31 +19,47 @@ public class TaskScheduler<T> {
     private int subscribeScheduler = Schedulers.defaultThread();
 
     /**
-     * Execute sync task in main thread
+     * Causes the Runnable r to be added to the message queue.
+     * The runnable will be run in the main thread
      */
-    public static void executeMain(Runnable runnable) {
-        TaskManager.getIns().executeMain(runnable);
+    public static boolean postMain(Runnable r) {
+        return TaskManager.getIns().postMain(r);
     }
 
     /**
-     * Execute async task in cached thread pool
+     * Causes the Runnable r to be added to the message queue.
+     * The runnable will be run in the main thread
      */
-    public static void executeTask(Runnable runnable) {
-        TaskManager.getIns().executeTask(runnable);
+    public static boolean postMainDelayed(Runnable r, long delayMillis) {
+        return TaskManager.getIns().postMainDelayed(r, delayMillis);
     }
 
     /**
-     * Execute async task in single thread pool
+     * Execute sync task in the main thread
      */
-    public static void executeSingle(Runnable runnable) {
-        TaskManager.getIns().executeSingle(runnable);
+    public static void executeMain(Runnable r) {
+        TaskManager.getIns().executeMain(r);
+    }
+
+    /**
+     * Execute async task in the cached thread pool
+     */
+    public static void executeTask(Runnable r) {
+        TaskManager.getIns().executeTask(r);
+    }
+
+    /**
+     * Execute async task in the single thread pool
+     */
+    public static void executeSingle(Runnable r) {
+        TaskManager.getIns().executeSingle(r);
     }
 
     /**
      * Execute async task in a new thread
      */
-    public static void executeNew(Runnable runnable) {
-        TaskManager.getIns().executeNew(runnable);
+    public static void executeNew(Runnable r) {
+        TaskManager.getIns().executeNew(r);
     }
 
     /**

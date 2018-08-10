@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
  * TaskManager
  */
 public class TaskManager {
-    private static TaskManager ins;
+    private volatile static TaskManager ins;
 
     private Handler mainHandler;
     private ExecutorService cachedThreadPool;
@@ -34,30 +34,52 @@ public class TaskManager {
     }
 
     /**
-     * Execute sync task in main thread
+     * Causes the Runnable r to be added to the message queue.
+     * The runnable will be run in the main thread
      */
-    void executeMain(Runnable runnable) {
-        mainHandler.post(runnable);
+    boolean postMain(Runnable r) {
+        return mainHandler.post(r);
     }
 
     /**
-     * Execute async task in cached thread pool
+     * Causes the Runnable r to be added to the message queue.
+     * The runnable will be run in the main thread
      */
-    void executeTask(Runnable runnable) {
-        cachedThreadPool.execute(runnable);
+    boolean postMainDelayed(Runnable r, long delayMillis) {
+        return mainHandler.postDelayed(r, delayMillis);
     }
 
     /**
-     * Execute async task in single thread pool
+     * Execute sync task in the main thread
      */
-    void executeSingle(Runnable runnable) {
-        singleThreadExecutor.execute(runnable);
+    void executeMain(Runnable r) {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+            if (r != null) {
+                r.run();
+            }
+            return;
+        }
+        mainHandler.post(r);
+    }
+
+    /**
+     * Execute async task in the cached thread pool
+     */
+    void executeTask(Runnable r) {
+        cachedThreadPool.execute(r);
+    }
+
+    /**
+     * Execute async task in the single thread pool
+     */
+    void executeSingle(Runnable r) {
+        singleThreadExecutor.execute(r);
     }
 
     /**
      * Execute async task in a new thread
      */
-    void executeNew(Runnable runnable) {
-        new Thread(runnable).start();
+    void executeNew(Runnable r) {
+        new Thread(r).start();
     }
 }

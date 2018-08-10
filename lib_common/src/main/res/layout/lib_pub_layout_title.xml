@@ -48,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/iv_title_left"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/lib_pub_color_white"

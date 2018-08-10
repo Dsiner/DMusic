@@ -84,6 +84,7 @@ public class BottomVerSheetDialog extends AbsSheetDialog<BottomVerSheetDialog.Be
             holder.setText(R.id.tv_item, item.item);
             holder.setTextColor(R.id.tv_item, ContextCompat.getColor(mContext, item.color));
             holder.setViewVisibility(R.id.iv_check, item.isChecked ? View.VISIBLE : View.GONE);
+            holder.setViewVisibility(R.id.v_bttom_line, position < getItemCount() - 1 ? View.VISIBLE : View.GONE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

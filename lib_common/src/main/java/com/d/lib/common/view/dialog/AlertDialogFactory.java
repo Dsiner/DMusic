@@ -71,7 +71,7 @@ public class AlertDialogFactory {
         tv_content.setText(!TextUtils.isEmpty(content) ? content : "");
 
         Button btnOk = (Button) dlg.findViewById(R.id.btn_ok);
-        btnOk.setText(TextUtils.isEmpty(btnOkText) ? btnOkText : context.getResources().getString(R.string.lib_pub_ok));
+        btnOk.setText(!TextUtils.isEmpty(btnOkText) ? btnOkText : context.getResources().getString(R.string.lib_pub_ok));
 
         Button btnCancel = (Button) dlg.findViewById(R.id.btn_cancel);
         btnCancel.setText(!TextUtils.isEmpty(btnCancelText) ? btnCancelText : "");

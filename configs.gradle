@@ -19,7 +19,7 @@ ext {
             support_appcompat_v7      : "com.android.support:appcompat-v7:${supportVersion}",
             support_cardview_v7       : "com.android.support:cardview-v7:${supportVersion}",
             support_recyclerview_v7   : "com.android.support:recyclerview-v7:${supportVersion}",
-            support_constraint_layout : "com.android.support.constraint:constraint-layout:1.0.2",
+            support_constraint_layout : "com.android.support.constraint:constraint-layout:1.1.2",
             gson                      : "com.google.code.gson:gson:2.7",
 
             nineoldandroids           : "com.nineoldandroids:library:2.4.0",
@@ -43,7 +43,7 @@ ext {
             retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:2.3.0",
             retrofit_converter_scalars: "com.squareup.retrofit2:converter-scalars:2.3.0",
 
-            slidelayout               : "com.dsiner.lib:slidelayout:1.0.0"
+            slidelayout               : "com.dsiner.lib:slidelayout:1.0.2"
     ]
 
     classpaths = [

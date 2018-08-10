@@ -50,42 +50,40 @@ public class Schedulers {
     /**
      * Switch thread
      */
-    public static void switchThread(@Scheduler int scheduler, final Runnable runnable) {
+    public static void switchThread(@Scheduler final int scheduler, final Runnable r) {
         if (scheduler == NEW_THREAD) {
-            new Thread(new Runnable() {
+            TaskScheduler.executeNew(new Runnable() {
                 @Override
                 public void run() {
-                    if (runnable != null) {
-                        runnable.run();
+                    if (r != null) {
+                        r.run();
                     }
                 }
-            }).start();
+            });
             return;
         } else if (scheduler == IO) {
             TaskScheduler.executeTask(new Runnable() {
                 @Override
                 public void run() {
-                    if (runnable != null) {
-                        runnable.run();
+                    if (r != null) {
+                        r.run();
                     }
                 }
             });
             return;
         } else if (scheduler == MAIN_THREAD) {
-            if (!isMainThread()) {
-                TaskScheduler.executeMain(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (runnable != null) {
-                            runnable.run();
-                        }
+            TaskScheduler.executeMain(new Runnable() {
+                @Override
+                public void run() {
+                    if (r != null) {
+                        r.run();
                     }
-                });
-                return;
-            }
+                }
+            });
+            return;
         }
-        if (runnable != null) {
-            runnable.run();
+        if (r != null) {
+            r.run();
         }
     }
 

@@ -4,6 +4,7 @@ apply from: 'configs.gradle'
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -17,6 +18,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
+        maven { url "https://maven.google.com" }
+        maven { url "https://dl.google.com/dl/android/maven2/" }
     }
 }
 
