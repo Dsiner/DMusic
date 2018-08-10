@@ -2,11 +2,11 @@ package com.d.music.module.utils;
 
 import android.content.Context;
 
+import com.d.lib.common.utils.Util;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.media.SyncUtil;
 import com.d.music.play.activity.PlayActivity;
-import com.d.lib.common.utils.Util;
 import com.d.music.view.dialog.SongInfoDialog;
 import com.d.music.view.popup.AddToListPopup;
 

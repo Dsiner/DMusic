@@ -5,12 +5,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
+import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.music.R;
 import com.d.music.common.Preferences;
 import com.d.music.module.global.MusicCst;

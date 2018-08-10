@@ -12,15 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import com.d.music.R;
-import com.d.music.App;
-import com.d.music.module.global.MusicCst;
-import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.music.App;
+import com.d.music.R;
+import com.d.music.module.global.MusicCst;
+import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.utils.MoreUtil;
-import com.d.music.setting.activity.PlayerModeActivity;
 import com.d.music.play.adapter.MoreAdapter;
+import com.d.music.setting.activity.PlayerModeActivity;
 
 import java.util.ArrayList;
 import java.util.List;

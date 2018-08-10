@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
 import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.lib.common.utils.Util;
 
 /**
  * SongInfoDialog

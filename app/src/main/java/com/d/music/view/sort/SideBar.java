@@ -10,8 +10,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.d.music.R;
 import com.d.lib.common.utils.Util;
+import com.d.music.R;
 
 import cn.feng.skin.manager.loader.SkinManager;
 
