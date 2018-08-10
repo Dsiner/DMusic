@@ -29,7 +29,7 @@
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
 - [RxJava2](https://github.com/ReactiveX/RxJava)
-- [RxPermissions](https://github.com/tbruyelle/RxPermissions)
+- [PermissionCompat](https://github.com/Dsiner/PermissionCompat)
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)
 - [UIUtil](https://github.com/Dsiner/UIUtil)

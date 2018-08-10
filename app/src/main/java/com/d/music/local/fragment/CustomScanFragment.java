@@ -10,6 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.module.permissioncompat.Permission;
+import com.d.lib.common.module.permissioncompat.PermissionCompat;
+import com.d.lib.common.module.permissioncompat.PermissionSchedulers;
+import com.d.lib.common.module.permissioncompat.callback.PermissionCallback;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.lib.xrv.LRecyclerView;
@@ -20,18 +24,12 @@ import com.d.music.local.view.IScanView;
 import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.utils.fileutil.FileUtil;
-import com.tbruyelle.rxpermissions2.Permission;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 扫描歌曲-自定义扫描
@@ -62,13 +60,12 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
             case R.id.llyt_dir:
             case R.id.llyt_scan_now:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    RxPermissions rxPermissions = new RxPermissions(mActivity);
-                    rxPermissions.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Consumer<Permission>() {
+                    PermissionCompat.with(mActivity).requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .subscribeOn(PermissionSchedulers.io())
+                            .observeOn(PermissionSchedulers.mainThread())
+                            .requestPermissions(new PermissionCallback<Permission>() {
                                 @Override
-                                public void accept(@NonNull Permission permission) throws Exception {
+                                public void onNext(Permission permission) {
                                     if (getActivity() == null || getActivity().isFinishing()) {
                                         return;
                                     }
