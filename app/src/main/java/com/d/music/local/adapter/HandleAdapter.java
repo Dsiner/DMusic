@@ -1,6 +1,7 @@
 package com.d.music.local.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -70,7 +71,9 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
                 holder.setImageResource(R.id.iv_handler, R.drawable.ic_sort_handler_press);
                 holder.setBackground(R.id.cb_check, R.drawable.selector_toggle_press);
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lib_pub_color_dgray));
-                holder.itemView.setAlpha(0.6f);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    holder.itemView.setAlpha(0.6f);
+                }
             }
 
             @Override
@@ -78,7 +81,9 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
                 holder.setImageResource(R.id.iv_handler, R.drawable.ic_sort_handler);
                 holder.setBackground(R.id.cb_check, R.drawable.selector_toggle);
                 holder.itemView.setBackgroundColor(0);
-                holder.itemView.setAlpha(1f);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    holder.itemView.setAlpha(1f);
+                }
             }
         });
     }

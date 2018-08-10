@@ -1,9 +1,5 @@
 package com.d.music.play.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,6 +36,10 @@ import com.d.music.view.lrc.LrcRow;
 import com.d.music.view.lrc.LrcView;
 import com.d.music.view.popup.MorePopup;
 import com.d.music.view.popup.PlayQueuePopup;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

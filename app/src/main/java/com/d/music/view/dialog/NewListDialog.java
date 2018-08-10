@@ -1,6 +1,7 @@
 package com.d.music.view.dialog;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -133,10 +134,14 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
         int length = s.toString().trim().length();
         if (length > 0 && length < 40) {
             btnOk.setClickable(true);
-            btnOk.setAlpha(1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                btnOk.setAlpha(1);
+            }
         } else {
             btnOk.setClickable(false);
-            btnOk.setAlpha(0.5f);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                btnOk.setAlpha(0.5f);
+            }
         }
     }
 }
