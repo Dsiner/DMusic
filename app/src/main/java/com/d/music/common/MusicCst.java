@@ -1,4 +1,4 @@
-package com.d.music.module.global;
+package com.d.music.common;
 
 import com.d.music.R;
 import com.d.music.module.greendao.music.base.MusicModel;
@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MusicCst
+ * Music Constants
  * Created by D on 2017/4/29.
  */
 public class MusicCst {
+
     /**
      * 播放器模式
      */
@@ -61,7 +62,7 @@ public class MusicCst {
     public static final int SKIN_COUNT = 18;//皮肤包总数目
 
     /**
-     * variable
+     * Variable
      */
     public static int playerMode = 0;//当前播放器模式
     public static List<MusicModel> models = new ArrayList<MusicModel>();//歌曲排序、管理用，全局静态变量

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 import com.d.lib.common.module.taskscheduler.TaskScheduler;
-import com.d.music.common.Preferences;
+import com.d.music.common.MusicCst;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;

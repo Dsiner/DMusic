@@ -13,9 +13,8 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
-import com.d.music.common.Preferences;
-import com.d.music.listener.IQueueListener;
-import com.d.music.module.global.MusicCst;
+import com.d.music.common.MusicCst;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicService;
 import com.d.music.play.adapter.PlayQueueAdapter;
@@ -26,14 +25,14 @@ import java.util.List;
  * PlayQueuePopup
  * Created by D on 2017/4/29.
  */
-public class PlayQueuePopup extends AbstractPopup implements View.OnClickListener, IQueueListener {
+public class PlayQueuePopup extends AbstractPopup implements View.OnClickListener, PlayQueueAdapter.IQueueListener {
     private Preferences p;
     private ImageView ivPlayMode;
     private TextView tvPlayMode;
     private TextView tvCount;
     private LRecyclerView lrvList;
     private PlayQueueAdapter adapter;
-    private IQueueListener listener;
+    private PlayQueueAdapter.IQueueListener listener;
     private List<MusicModel> models;
 
     public PlayQueuePopup(Context context) {
@@ -80,6 +79,19 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
     }
 
     @Override
+    public void onPlayModeChange(int playMode) {
+
+    }
+
+    @Override
+    public void onCountChange(int count) {
+        tvCount.setText("(" + count + "首)");
+        if (listener != null) {
+            listener.onCountChange(count);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -118,20 +130,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         }
     }
 
-    @Override
-    public void onPlayModeChange(int playMode) {
-
-    }
-
-    @Override
-    public void onCountChange(int count) {
-        tvCount.setText("(" + count + "首)");
-        if (listener != null) {
-            listener.onCountChange(count);
-        }
-    }
-
-    public void setOnQueueListener(IQueueListener listener) {
+    public void setOnQueueListener(PlayQueueAdapter.IQueueListener listener) {
         this.listener = listener;
     }
 }

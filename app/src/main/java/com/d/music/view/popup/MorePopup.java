@@ -16,7 +16,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.module.global.MusicCst;
+import com.d.music.common.MusicCst;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.utils.MoreUtil;
 import com.d.music.play.adapter.MoreAdapter;

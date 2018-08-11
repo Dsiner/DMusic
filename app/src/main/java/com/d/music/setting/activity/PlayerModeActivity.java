@@ -12,7 +12,7 @@ import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.setting.adapter.RadioAdapter;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;

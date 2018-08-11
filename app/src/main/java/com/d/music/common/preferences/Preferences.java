@@ -1,4 +1,4 @@
-package com.d.music.common;
+package com.d.music.common.preferences;
 
 import android.content.Context;
 

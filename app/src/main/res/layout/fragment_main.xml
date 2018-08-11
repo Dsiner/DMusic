@@ -21,8 +21,8 @@
         android:orientation="horizontal"
         android:padding="@dimen/lib_pub_dimen_margin">
 
-        <LinearLayout
-            android:id="@+id/llyt_local"
+        <RelativeLayout
+            android:id="@+id/rlyt_local"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -31,15 +31,24 @@
             skin:enable="true">
 
             <ImageView
+                android:layout_width="70dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_local_decorate" />
+
+            <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
                 android:src="@drawable/ic_local" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="57dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -69,10 +78,10 @@
                     android:indeterminateDrawable="@drawable/ic_loading"
                     android:visibility="gone" />
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/llyt_collection"
+        <RelativeLayout
+            android:id="@+id/rlyt_collection"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="19dp"
@@ -84,13 +93,14 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
                 android:src="@drawable/ic_fav" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="57dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -110,7 +120,7 @@
                     android:textColor="@color/lib_pub_color_white"
                     android:textSize="@dimen/lib_pub_dimen_text_small" />
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -119,26 +129,34 @@
         android:orientation="horizontal"
         android:padding="@dimen/lib_pub_dimen_margin">
 
-        <LinearLayout
-            android:id="@+id/llyt_net"
+        <RelativeLayout
+            android:id="@+id/rlyt_online"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/lib_pub_color_main"
-            android:gravity="center_vertical"
             skin:enable="true">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_online_decorate" />
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_fav_decorate" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_online" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="57dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -167,7 +185,7 @@
                     android:indeterminateDrawable="@drawable/ic_loading"
                     android:visibility="gone" />
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"

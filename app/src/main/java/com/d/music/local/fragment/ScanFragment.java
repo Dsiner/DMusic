@@ -16,9 +16,9 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
 import com.d.music.local.activity.ScanActivity;
+import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
-import com.d.music.model.FileModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.utils.fileutil.FileUtil;
 

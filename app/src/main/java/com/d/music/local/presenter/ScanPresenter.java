@@ -3,8 +3,8 @@ package com.d.music.local.presenter;
 import android.content.Context;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.music.local.model.FileModel;
 import com.d.music.local.view.IScanView;
-import com.d.music.model.FileModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.events.SortTypeEvent;

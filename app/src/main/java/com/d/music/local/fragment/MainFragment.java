@@ -2,11 +2,11 @@ package com.d.music.local.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,7 +22,7 @@ import com.d.lib.xrv.LRecyclerView;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.local.adapter.CustomListAdapter;
 import com.d.music.local.presenter.MainPresenter;
 import com.d.music.local.view.IMainView;
@@ -33,6 +33,7 @@ import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.media.MusicFactory;
+import com.d.music.online.activity.OnlineActivity;
 import com.d.music.utils.fileutil.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,37 +60,36 @@ import io.reactivex.schedulers.Schedulers;
 public class MainFragment extends BaseFragment<MainPresenter> implements IMainView {
     @BindView(R.id.tv_title_middle_main)
     TextView tvTitle;
-    @BindView(R.id.llyt_local)
-    LinearLayout llytLocal;//本地音乐
     @BindView(R.id.tv_local_all_count)
-    TextView tvLocalAllCount;//本地歌曲数
+    TextView tvLocalAllCount;
     @BindView(R.id.pbr_loading)
     ProgressBar pbrLoading;
-    @BindView(R.id.llyt_collection)
-    LinearLayout llytColletion;//我的收藏
     @BindView(R.id.tv_collection_count)
-    TextView tvCollectionCount;//收藏歌曲数
+    TextView tvCollectionCount;
     @BindView(R.id.lv_list)
     LRecyclerView lvList;
 
     private Preferences p;
     private CustomListAdapter adapter;
-    private boolean isNeedReLoad;//为了同步收藏数，需要重新加载数据
-    private boolean isShowAdd;//为了同步设置，需要重新刷新
 
-    @OnClick({R.id.llyt_local, R.id.llyt_collection, R.id.llyt_net})
+    // 为了同步收藏数，需要重新加载数据
+    private boolean isNeedReLoad;
+    // 为了同步设置，需要重新刷新
+    private boolean isShowAdd;
+
+    @OnClick({R.id.rlyt_local, R.id.rlyt_collection, R.id.rlyt_online})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
-            case R.id.llyt_local:
-                //本地音乐
+            case R.id.rlyt_local:
+                // 本地音乐
                 LocalAllFragment lFragment = new LocalAllFragment();
                 MainActivity.replace(lFragment);
                 break;
-            case R.id.llyt_collection:
-                //我的收藏
+            case R.id.rlyt_collection:
+                // 我的收藏
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "我的收藏");
                 bundle.putInt("type", MusicDB.COLLECTION_MUSIC);
@@ -97,9 +97,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 sFragment.setArguments(bundle);
                 MainActivity.replace(sFragment);
                 break;
-            case R.id.llyt_net:
-                //音乐馆
-
+            case R.id.rlyt_online:
+                // 音乐馆
+                getActivity().startActivity(new Intent(getActivity(), OnlineActivity.class));
                 break;
         }
     }

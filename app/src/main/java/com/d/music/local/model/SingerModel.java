@@ -1,4 +1,4 @@
-package com.d.music.model;
+package com.d.music.local.model;
 
 import com.d.lib.common.module.mvp.model.BaseModel;
 

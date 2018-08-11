@@ -12,7 +12,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
 import com.d.music.module.service.MusicService;
 import com.d.music.setting.adapter.TimingAdapter;

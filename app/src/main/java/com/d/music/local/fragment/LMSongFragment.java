@@ -6,7 +6,7 @@ import android.view.View;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.local.adapter.SongAdapter;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;

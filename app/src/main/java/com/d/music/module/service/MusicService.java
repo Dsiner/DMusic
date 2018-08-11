@@ -22,9 +22,9 @@ import com.d.lib.common.utils.log.ULog;
 import com.d.music.App;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.MusicCst;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.greendao.util.MusicDBUtil;
@@ -201,6 +201,8 @@ public class MusicService extends Service {
             intent = new Intent(this, MainActivity.class);
         }
         PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        // FIXME: @dsiner 2018/8/11
         Notification.Builder builder = new Notification.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             builder.setPriority(Notification.PRIORITY_HIGH);

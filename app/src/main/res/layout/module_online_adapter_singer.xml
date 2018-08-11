@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="77dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_seq"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/lib_pub_color_text_sub"
+        android:textSize="19dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/tv_seq"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/iv_cover"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_singer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="陈粒"
+            android:textColor="@color/lib_pub_color_text_main"
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="热度:814100"
+            android:textColor="@color/lib_pub_color_text_sub"
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/iv_cover"
+        android:background="@color/lib_pub_color_line" />
+</RelativeLayout>

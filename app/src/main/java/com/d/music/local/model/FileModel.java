@@ -1,4 +1,4 @@
-package com.d.music.model;
+package com.d.music.local.model;
 
 /**
  * 文件

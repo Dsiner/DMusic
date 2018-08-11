@@ -3,7 +3,7 @@ package com.d.music.local.fragment;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.local.adapter.SingerAdapter;
-import com.d.music.model.SingerModel;
+import com.d.music.local.model.SingerModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.greendao.db.MusicDB;
 

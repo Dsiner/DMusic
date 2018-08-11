@@ -13,7 +13,7 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.SleepFinishEvent;
 import com.d.music.module.service.MusicService;
 

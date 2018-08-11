@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.music.common.Preferences;
-import com.d.music.module.global.MusicCst;
+import com.d.music.common.MusicCst;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.greendao.util.MusicDBUtil;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.skin.SkinUtil;
@@ -23,11 +23,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //初始化数据库
+        // 初始化数据库
         MusicDBUtil.getInstance(getApplicationContext());
-        //防双击间隔设置
+        // 防双击间隔设置
         ClickUtil.setDelayTime(350);
-        //加载皮肤
+        // 加载皮肤
         SkinUtil.initSkin(getApplicationContext());
     }
 
@@ -41,11 +41,11 @@ public class App extends Application {
         Context appContext = context.getApplicationContext();
         MusicService.timing(appContext, false, 0);
         Preferences.getInstance(appContext).putSleepType(0);
-        //保存当前播放位置
+        // 保存当前播放位置
         Preferences.getInstance(appContext).putLastPlayPosition(MusicService.getControl(appContext).getCurPos());
-        //停止音乐播放
+        // 停止音乐播放
         MusicService.getControl(appContext).onDestroy();
-        //停止服务
+        // 停止服务
         appContext.stopService(new Intent(appContext, MusicService.class));
 
         if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NORMAL) {

@@ -14,11 +14,9 @@ import android.widget.TextView;
 
 import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
-import com.d.lib.common.utils.Util;
-import com.d.music.common.Preferences;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.global.Cst;
 import com.d.music.module.service.MusicService;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.SettingActivity;
@@ -78,7 +76,8 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                App.exit(getApplicationContext());//退出
+                // 退出
+                App.exit(getApplicationContext());
                 break;
         }
     }
@@ -102,11 +101,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
             finish();
             return;
         }
-        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        int[] screenSizes = Util.getScreenSize(MainActivity.this);
-        Cst.SCREEN_WIDTH = screenSizes[0];
-        Cst.SCREEN_HEIGHT = screenSizes[1];
-
+        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         EventBus.getDefault().register(this);
         fManger = getSupportFragmentManager();
         drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
@@ -135,7 +130,6 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
 
         ViewHelper.setScaleX(menu, leftScale);
         ViewHelper.setScaleY(menu, leftScale);
-//        ViewHelper.setAlpha(menu, 0.6f + 0.4f * (1 - scale));
 
         ViewHelper.setTranslationX(content, -menu.getMeasuredWidth() * slideOffset);
         ViewHelper.setPivotX(content, content.getMeasuredWidth());
@@ -163,7 +157,8 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        // 沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

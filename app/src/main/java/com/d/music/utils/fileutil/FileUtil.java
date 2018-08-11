@@ -3,7 +3,7 @@ package com.d.music.utils.fileutil;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.d.music.model.FileModel;
+import com.d.music.local.model.FileModel;
 import com.d.music.module.media.MediaUtil;
 
 import java.io.File;

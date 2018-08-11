@@ -1,5 +1,6 @@
 package com.d.music.view.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
@@ -10,8 +11,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.d.lib.common.utils.Util;
 import com.d.music.R;
-import com.d.music.module.global.Cst;
 
 /**
  * MenuDialog
@@ -34,8 +35,8 @@ public class MenuDialog implements View.OnClickListener {
         if (dialogWindow != null) {
             dialogWindow.setGravity(Gravity.TOP);
             WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-            p.width = Cst.SCREEN_WIDTH; //宽度设置
-            p.height = Cst.SCREEN_HEIGHT; //高度设置
+            p.width = Util.getScreenSize((Activity) context)[0]; //宽度设置
+            p.height = Util.getScreenSize((Activity) context)[1]; //高度设置
             dialogWindow.setAttributes(p);
         }
         dialog.setContentView(rootView);

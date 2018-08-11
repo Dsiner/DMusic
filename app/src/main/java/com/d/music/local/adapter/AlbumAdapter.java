@@ -10,7 +10,7 @@ import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.fragment.SongFragment;
-import com.d.music.model.AlbumModel;
+import com.d.music.local.model.AlbumModel;
 import com.d.music.module.greendao.db.MusicDB;
 
 import java.util.List;

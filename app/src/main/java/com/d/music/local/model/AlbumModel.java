@@ -1,14 +1,14 @@
-package com.d.music.model;
+package com.d.music.local.model;
 
 import com.d.lib.common.module.mvp.model.BaseModel;
 
 /**
- * 文件夹
+ * 专辑
  * Created by D on 2017/4/29.
  */
-public class FolderModel extends BaseModel {
+public class AlbumModel extends BaseModel {
     public int id;
-    public String folder; //路径
+    public String album; //专辑名
     public int count; //歌曲数
     public boolean isChecked;//额外属性：是否选中
 }

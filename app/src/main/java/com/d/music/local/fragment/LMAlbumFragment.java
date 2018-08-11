@@ -4,8 +4,8 @@ import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.local.adapter.AlbumAdapter;
+import com.d.music.local.model.AlbumModel;
 import com.d.music.local.presenter.LMMusicPresenter;
-import com.d.music.model.AlbumModel;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.greendao.db.MusicDB;
 

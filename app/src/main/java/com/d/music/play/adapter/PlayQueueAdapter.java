@@ -7,7 +7,6 @@ import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.listener.IQueueListener;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicService;
 
@@ -41,5 +40,11 @@ public class PlayQueueAdapter extends CommonAdapter<MusicModel> {
                 }
             }
         });
+    }
+
+    public interface IQueueListener {
+        void onPlayModeChange(int playMode);
+
+        void onCountChange(int count);
     }
 }

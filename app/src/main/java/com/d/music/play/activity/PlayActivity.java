@@ -20,15 +20,15 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.log.ULog;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.common.Preferences;
-import com.d.music.listener.IQueueListener;
+import com.d.music.common.MusicCst;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.global.MusicCst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.utils.MoreUtil;
+import com.d.music.play.adapter.PlayQueueAdapter;
 import com.d.music.play.presenter.PlayPresenter;
 import com.d.music.play.view.IPlayView;
 import com.d.music.utils.StatusBarCompat;
@@ -55,19 +55,8 @@ import butterknife.OnClick;
  * PlayActivity
  * Created by D on 2017/4/29.
  */
-public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView, SeekBar.OnSeekBarChangeListener, IQueueListener {
-
-    public static void openActivity(Context context) {
-        Intent intent = new Intent(context, PlayActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NORMAL) {
-            if (context instanceof Activity) {
-                ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.push_stay);
-            }
-        }
-    }
-
+public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView,
+        SeekBar.OnSeekBarChangeListener, PlayQueueAdapter.IQueueListener {
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_title)
@@ -95,8 +84,19 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private ObjectAnimator animator;
     private PlayQueuePopup queuePopup;
     private PlayerReceiver playerReceiver;
-    private boolean isRegisterReceiver;// 是否注册了广播监听器
-    public static boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
+    private boolean isRegisterReceiver; // 是否注册了广播监听器
+    public static boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+
+    public static void openActivity(Context context) {
+        Intent intent = new Intent(context, PlayActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_NORMAL) {
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.push_stay);
+            }
+        }
+    }
 
     @OnClick({R.id.iv_back, R.id.iv_more, R.id.iv_play_collect, R.id.iv_play_prev,
             R.id.iv_play_play_pause, R.id.iv_play_next, R.id.iv_play_queue})

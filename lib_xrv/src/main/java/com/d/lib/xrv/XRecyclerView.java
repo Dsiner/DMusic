@@ -220,7 +220,6 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
             }
             if (layoutManager.getChildCount() > 0
                     && lastVisibleItemPosition >= layoutManager.getItemCount() - 1
-                    && layoutManager.getItemCount() > layoutManager.getChildCount()
                     && !isNoMore && !isLoadMoreError && refreshHeader.getState() < ListState.STATE_REFRESHING) {
                 loadMore();
             }

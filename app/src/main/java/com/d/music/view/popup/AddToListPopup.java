@@ -1,5 +1,6 @@
 package com.d.music.view.popup;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,7 +16,6 @@ import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.global.Cst;
 import com.d.music.module.greendao.db.MusicDB;
 import com.d.music.module.greendao.music.CustomList;
 import com.d.music.module.greendao.music.base.MusicModel;
@@ -42,7 +42,11 @@ import io.reactivex.schedulers.Schedulers;
 public class AddToListPopup extends AbstractPopup implements View.OnClickListener {
     private LoadingLayout ldlLoading;
     private AddToListAdapter adapter;
-    private List<MusicModel> models;//待插入歌曲队列
+
+    /**
+     * 待插入歌曲队列
+     */
+    private List<MusicModel> models;
 
     public AddToListPopup(Context context, List<MusicModel> models, int type) {
         super(context, R.layout.dialog_add_to_list);
@@ -54,7 +58,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
     protected void init() {
         RelativeLayout rlytList = (RelativeLayout) rootView.findViewById(R.id.rlyt_add_to_list);
         ViewGroup.LayoutParams lp = rlytList.getLayoutParams();
-        lp.height = (int) (Cst.SCREEN_HEIGHT * 0.382f);
+        lp.height = (int) (Util.getScreenSize((Activity) context)[1] * 0.382f);
         rlytList.setLayoutParams(lp);
 
         ldlLoading = (LoadingLayout) rootView.findViewById(R.id.ldl_loading);
@@ -102,6 +106,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
         }
     }
 
+    @SuppressLint("CheckResult")
     private void queryListNot(final int notType) {
         showLoading();
         Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
@@ -129,6 +134,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                 });
     }
 
+    @SuppressLint("CheckResult")
     private void addTo() {
         showLoading();
         Observable.create(new ObservableOnSubscribe<Boolean>() {

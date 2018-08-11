@@ -8,11 +8,11 @@ import com.d.lib.common.module.loader.AbsLazyFragment;
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.mvp.model.BaseModel;
 import com.d.music.R;
+import com.d.music.local.model.AlbumModel;
+import com.d.music.local.model.FolderModel;
+import com.d.music.local.model.SingerModel;
 import com.d.music.local.presenter.LMMusicPresenter;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.model.AlbumModel;
-import com.d.music.model.FolderModel;
-import com.d.music.model.SingerModel;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.view.sort.SideBar;
 

@@ -27,7 +27,7 @@ public class MusicModel extends BaseModel{
     public Long timeStamp;
 
     /**
-     * extra
+     * Extra
      */
     public boolean isChecked = false;//附加属性：是否选中
     public boolean isSortChecked = false;//附加属性：是否选中
