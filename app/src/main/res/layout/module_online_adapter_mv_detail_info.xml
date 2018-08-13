@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_mv_info_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+        android:text="IsLand Love"
+        android:textColor="@color/lib_pub_color_text_main"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_info_singer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="3dp"
+        android:text="Dou"
+        android:textColor="@color/lib_pub_color_text_sub"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_info_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="3dp"
+        android:text="2018-08-12    2259次播放"
+        android:textColor="@color/lib_pub_color_text_sub"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_info_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="3dp"
+        android:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
+        android:textColor="@color/lib_pub_color_text_sub"
+        android:textSize="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginRight="-12dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点赞" />
+
+            <TextView
+                android:id="@+id/tv_mv_info_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推荐" />
+
+            <TextView
+                android:id="@+id/tv_mv_info_sub_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="评论" />
+
+            <TextView
+                android:id="@+id/tv_mv_info_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分享" />
+
+            <TextView
+                android:id="@+id/tv_mv_info_share_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/lib_pub_color_line" />
+</LinearLayout>

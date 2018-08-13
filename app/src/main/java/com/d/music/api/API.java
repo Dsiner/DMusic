@@ -45,7 +45,7 @@ public interface API {
     }
 
     /**
-     * GET/歌手
+     * GET/Baidu-歌手
      */
     interface TopArtists {
         String rtpType = BASE_URL_NETEASE + "toplist/artist";
@@ -54,7 +54,7 @@ public interface API {
     }
 
     /**
-     * GET/Baidu排行榜
+     * GET/Baidu-排行榜
      */
     interface BaiduBill {
         String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting";
@@ -65,7 +65,7 @@ public interface API {
     }
 
     /**
-     * GET/Baidu排行榜歌单详情
+     * GET/Baidu-排行榜-歌单详情
      */
     interface BaiduBillSongs {
         String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting?";
@@ -76,7 +76,7 @@ public interface API {
     }
 
     /**
-     * GET/Baidu电台
+     * GET/Baidu-电台
      */
     interface RadioChannels {
         String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting";
@@ -87,7 +87,7 @@ public interface API {
     }
 
     /**
-     * GET/Baidu电台歌单详情
+     * GET/Baidu-电台-歌单详情
      */
     interface RadioChannelSongs {
         String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.radio.getChannelSong&format=json";
@@ -97,7 +97,7 @@ public interface API {
     }
 
     /**
-     * GET/网易MV排行榜
+     * GET/网易-MV-排行榜
      */
     interface MVTop {
         String rtpType = BASE_URL_NETEASE + "top/mv";
@@ -106,7 +106,31 @@ public interface API {
     }
 
     /**
-     * GET/Baidu歌曲详情
+     * GET/网易-MV-详情
+     */
+    interface MvDetailInfo {
+        String rtpType = BASE_URL_NETEASE + "mv";
+        String mvid = "mvid";
+    }
+
+    /**
+     * GET/网易-MV-相似
+     */
+    interface SimilarMV {
+        String rtpType = BASE_URL_NETEASE + "simi/mv";
+        String mvid = "mvid";
+    }
+
+    /**
+     * GET/网易-MV-评论
+     */
+    interface MVComment {
+        String rtpType = BASE_URL_NETEASE + "comment/mv";
+        String id = "id";
+    }
+
+    /**
+     * GET/Baidu-歌曲详情
      */
     interface SongInfo {
         String rtpType = "http://music.baidu.com/data/music/links";

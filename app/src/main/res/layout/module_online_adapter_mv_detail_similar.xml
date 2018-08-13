@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="86dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_mv_similar_cover"
+        android:layout_width="145dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tv_mv_similar_play_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:lines="1"
+        android:text="播放:3.7万"
+        android:textColor="@color/lib_pub_color_white"
+        android:textSize="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_toRightOf="@+id/iv_mv_similar_cover"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_mv_similar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="榜单"
+            android:textColor="@color/lib_pub_color_text_main"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/tv_mv_similar_singer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lines="1"
+            android:text="歌手"
+            android:textSize="11dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_toRightOf="@+id/iv_mv_similar_cover"
+        android:background="@color/lib_pub_color_line" />
+</RelativeLayout>

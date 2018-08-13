@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.d.lib.common.view.TitleLayout
+        android:id="@+id/tl_title"
+        style="@style/lib_pub_title_style"
+        android:visibility="gone"
+        app:lib_pub_tl_middleText="title" />
+
+    <com.d.commenplayer.CommenPlayer
+        android:id="@+id/player"
+        android:layout_width="match_parent"
+        android:layout_height="210dp" />
+
+    <com.d.lib.common.view.DSLayout
+        android:id="@+id/dsl_ds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="210dp" />
+
+    <com.d.lib.xrv.XRecyclerView
+        android:id="@+id/xrv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="210dp" />
+</FrameLayout>

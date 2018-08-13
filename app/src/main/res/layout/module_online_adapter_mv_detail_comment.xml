@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_mv_comment_cover"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_comment_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_mv_comment_cover"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:singleLine="true"
+        android:text="Zak"
+        android:textColor="#666666"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_mv_comment_user"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="2dp"
+        android:text="2017-09-25 15:21"
+        android:textColor="#666666"
+        android:textSize="9dp" />
+
+    <TextView
+        android:id="@+id/tv_mv_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_mv_comment_time"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="6dp"
+        android:text="评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论"
+        android:textColor="@color/lib_pub_color_text_main"
+        android:textSize="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="60dp"
+        android:background="@color/lib_pub_color_line" />
+</RelativeLayout>

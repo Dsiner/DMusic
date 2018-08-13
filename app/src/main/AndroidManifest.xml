@@ -85,5 +85,10 @@
             android:name="com.d.music.online.activity.DetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.music.online.activity.MVDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 </manifest>

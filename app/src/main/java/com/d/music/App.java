@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.d.lib.common.module.netstate.NetCompat;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.common.MusicCst;
 import com.d.music.common.preferences.Preferences;
@@ -29,6 +30,8 @@ public class App extends Application {
         ClickUtil.setDelayTime(350);
         // 加载皮肤
         SkinUtil.initSkin(getApplicationContext());
+        // 网络监听
+        NetCompat.init(getApplicationContext());
     }
 
     /**

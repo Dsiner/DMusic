@@ -51,5 +51,6 @@ dependencies {
     compile rootProject.ext.dependencies.butterknife
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     compile rootProject.ext.dependencies.glide
+    compile rootProject.ext.dependencies.glide_integration
     annotationProcessor rootProject.ext.dependencies.glide_compiler
 }

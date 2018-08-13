@@ -12,6 +12,7 @@ public class Constants {
         private final static String path = Environment.getExternalStorageDirectory().getPath() + "/DMusic/";
         public final static String log = path + "log";
         public final static String cache = path + "cache/";
+        public final static String glide_cache = "/image_cache";
         public final static String download = path + "download/";
         public final static String song = path + "song/";
         public final static String lyric = path + "lyric/";

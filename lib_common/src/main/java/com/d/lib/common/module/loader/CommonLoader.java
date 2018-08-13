@@ -86,9 +86,33 @@ public class CommonLoader<T> {
         }
     }
 
+    public void addData(T data) {
+        if (mDatas != null && data != null) {
+            mDatas.add(data);
+            adapter.setDatas(mDatas);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void addData(List<T> datas) {
+        if (mDatas != null && datas != null) {
+            mDatas.addAll(datas);
+            adapter.setDatas(mDatas);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public void addData(int position, T data) {
         if (mDatas != null && data != null && position >= 0 && position <= mDatas.size()) {
             mDatas.add(position, data);
+            adapter.setDatas(mDatas);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void addData(int position, List<T> datas) {
+        if (mDatas != null && datas != null && position >= 0 && position <= mDatas.size()) {
+            mDatas.addAll(position, datas);
             adapter.setDatas(mDatas);
             adapter.notifyDataSetChanged();
         }
