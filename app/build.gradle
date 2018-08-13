@@ -66,8 +66,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     debugCompile project(path: ':lib_common', configuration: 'debug')
     debugCompile project(path: ':lib_rxnet', configuration: 'debug')
+    debugCompile project(path: ':lib_commenplayer', configuration: 'debug')
     releaseCompile project(path: ':lib_common', configuration: 'release')
     releaseCompile project(path: ':lib_rxnet', configuration: 'release')
+    releaseCompile project(path: ':lib_commenplayer', configuration: 'release')
 
     compile rootProject.ext.dependencies.support_v4
     compile rootProject.ext.dependencies.support_appcompat_v7

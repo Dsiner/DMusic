@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.d.commenplayer.media.IjkVideoView
+        android:id="@+id/ijkplayer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.d.commenplayer.ui.TouchLayout
+        android:id="@+id/tl_touch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.d.commenplayer.ui.ControlLayout
+        android:id="@+id/cl_control"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/flyt_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/iv_thumbnail_play"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lib_player_ic_play" />
+    </FrameLayout>
+</merge>
