@@ -54,6 +54,10 @@ public class MVInfoModel extends MVDetailModel {
     public String commentThreadId;
     public List<ArtistsBean> artists;
 
+    public MVInfoModel() {
+        this.view_type = TYPE_INFO;
+    }
+
     public static class BrsBean {
 
         /**

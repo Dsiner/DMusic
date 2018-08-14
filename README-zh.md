@@ -5,7 +5,7 @@
 
 ![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-> 一个基于 `MVP + RxJava2 + greenDAO` 的本地音乐播放器
+> 一个基于 `Component + MVP Base + MVP Customization + greenDAO + RxJava2 + OkHttp3 + Retrofit` 的音乐播放器
 
 ## Design
 <img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
@@ -13,28 +13,29 @@
 ## Screenshot
 ![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
-## For developer
-* 对于布局xml换肤报错,解决方式：
-  先点击定位到任意错误处，Alt+Enter——>选择Disable inspection(忽略错误检查)
-
 ## Todo
+- [x] Music Online list.
+- [x] MV Online play.
 - [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies
-- [MVP]()
+- [Common](https://github.com/Dsiner/Common)
+- [greenDAO](https://github.com/greenrobot/greenDAO)
+- [RxJava2](https://github.com/ReactiveX/RxJava)
+
 - [PercentLayout]()
 - [ConstraintLayout]()
-- [greenDAO](https://github.com/greenrobot/greenDAO)
+- [ButterKnife](https://github.com/JakeWharton/butterknife)
+- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
+- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
+
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
-- [RxJava2](https://github.com/ReactiveX/RxJava)
+
 - [PermissionCompat](https://github.com/Dsiner/PermissionCompat)
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)
 - [UIUtil](https://github.com/Dsiner/UIUtil)
-- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
-- [ButterKnife](https://github.com/JakeWharton/butterknife)
-- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
 
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution

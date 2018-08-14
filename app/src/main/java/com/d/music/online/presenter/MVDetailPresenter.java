@@ -27,7 +27,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
         super(context);
     }
 
-    public void getMvDetailInfo(long id) {
+    public void getMvDetailInfo(final long id) {
         Params params = new Params(API.MvDetailInfo.rtpType);
         params.addParam(API.MvDetailInfo.mvid, "" + id);
         RxNet.get(API.MvDetailInfo.rtpType, params)
@@ -47,7 +47,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
                 });
     }
 
-    public void getSimilarMV(long id) {
+    public void getSimilarMV(final long id) {
         Params params = new Params(API.SimilarMV.rtpType);
         params.addParam(API.SimilarMV.mvid, "" + id);
         RxNet.get(API.SimilarMV.rtpType, params)
@@ -58,7 +58,8 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
                             return;
                         }
                         List<MVDetailModel> similar = new ArrayList<>();
-                        if (response.mvs != null) {
+                        if (response.mvs != null && response.mvs.size() > 0) {
+                            similar.add(new MVDetailModel(MVDetailModel.TYPE_SIMILAR_HEAD));
                             similar.addAll(response.mvs);
                         }
                         getView().setSimilar(similar);
@@ -71,7 +72,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
                 });
     }
 
-    public void getMVComment(long id, int page) {
+    public void getMVComment(final long id, final int page) {
         int offset = CommonLoader.PAGE_COUNT * (page - 1);
         int limit = CommonLoader.PAGE_COUNT;
         Params params = new Params(API.MVComment.rtpType);
@@ -92,6 +93,9 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
                         }
                         if (response.comments != null) {
                             comments.addAll(response.comments);
+                        }
+                        if (page == 1 && comments.size() > 0) {
+                            comments.add(0, new MVDetailModel(MVDetailModel.TYPE_COMMENT_HEAD));
                         }
                         getView().setData(comments);
                     }

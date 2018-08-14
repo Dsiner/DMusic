@@ -48,6 +48,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     private long id;
     private boolean ignoreNet;
+    private int height916;
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
@@ -82,10 +83,14 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
             @Override
             public int getLayoutId(int viewType) {
                 switch (viewType) {
-                    case 1:
+                    case MVDetailModel.TYPE_INFO:
                         return R.layout.module_online_adapter_mv_detail_info;
-                    case 2:
+                    case MVDetailModel.TYPE_SIMILAR_HEAD:
+                        return R.layout.module_online_adapter_mv_detail_similar_head;
+                    case MVDetailModel.TYPE_SIMILAR:
                         return R.layout.module_online_adapter_mv_detail_similar;
+                    case MVDetailModel.TYPE_COMMENT_HEAD:
+                        return R.layout.module_online_adapter_mv_detail_comment_head;
                     default:
                         return R.layout.module_online_adapter_mv_detail_comment;
                 }
@@ -94,11 +99,11 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
             @Override
             public int getItemViewType(int position, MVDetailModel model) {
                 if (model instanceof MVInfoModel) {
-                    return 1;
+                    return MVDetailModel.TYPE_INFO;
                 } else if (model instanceof MVSimilarModel) {
-                    return 2;
+                    return MVDetailModel.TYPE_SIMILAR;
                 }
-                return 0;
+                return model.view_type;
             }
         });
     }
@@ -110,10 +115,16 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
             id = bundle.getLong("id", 0);
         }
         super.init();
+        height916 = (int) (Util.getScreenSize(mActivity)[0] * 9f / 16f);
         initPlayer();
     }
 
     private void initPlayer() {
+        ViewGroup.LayoutParams lp = player.getLayoutParams();
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        lp.height = height916;
+        player.setLayoutParams(lp);
+
         player.setLive(false);
         player.setScaleType(IRenderView.AR_MATCH_PARENT);
         player.setOnNetListener(new OnNetListener() {
@@ -174,6 +185,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @Override
     protected void onLoad(int page) {
+        dslDs.setState(DSLayout.GONE);
         if (page == 1) {
             mPresenter.getMvDetailInfo(id);
             mPresenter.getSimilarMV(id);
@@ -203,6 +215,9 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @Override
     public void setSimilar(List<MVDetailModel> similar) {
+        if (similar.size() <= 0) {
+            return;
+        }
         dslDs.setState(DSLayout.GONE);
         xrvList.setVisibility(View.VISIBLE);
         List<MVDetailModel> datas = commonLoader.getDatas();
@@ -244,9 +259,11 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             player.setLayoutParams(lp);
+            tlTitle.setVisibility(View.GONE);
         } else {
-            lp.height = Util.dip2px(mContext, 210);
+            lp.height = height916;
             player.setLayoutParams(lp);
+            tlTitle.setVisibility(View.VISIBLE);
         }
         if (player != null) {
             player.onConfigurationChanged(newConfig);

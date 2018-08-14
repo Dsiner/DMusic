@@ -35,6 +35,10 @@ public class MVSimilarModel extends MVDetailModel {
     public String alg;
     public List<ArtistsBean> artists;
 
+    public MVSimilarModel() {
+        this.view_type = TYPE_SIMILAR;
+    }
+
     public static class ArtistsBean {
 
         /**

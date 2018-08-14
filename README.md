@@ -6,7 +6,7 @@
 
 ![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-> A local music player based on `MVP + greenDAO + RxJava2`
+> A music player based on `Component + MVP Base + MVP Customization + greenDAO + RxJava2 + OkHttp3 + Retrofit`
 
 ## Design
 <img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
@@ -14,28 +14,29 @@
 ## Screenshot
 ![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
-## For developer
-* For the layout xml skin error, the solution:
-  First click to locate any error, Alt+Enter->Select Disable inspection (ignore error checking)
-
 ## Todo
+- [x] Music Online list.
+- [x] MV Online play.
 - [ ] Music online search, play, cache, download, etc.
 
 ## Dependencies
-- [MVP]()
+- [Common](https://github.com/Dsiner/Common)
+- [greenDAO](https://github.com/greenrobot/greenDAO)
+- [RxJava2](https://github.com/ReactiveX/RxJava)
+
 - [PercentLayout]()
 - [ConstraintLayout]()
-- [greenDAO](https://github.com/greenrobot/greenDAO)
+- [ButterKnife](https://github.com/JakeWharton/butterknife)
+- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
+- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
+
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
-- [RxJava2](https://github.com/ReactiveX/RxJava)
+
 - [PermissionCompat](https://github.com/Dsiner/PermissionCompat)
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)
 - [UIUtil](https://github.com/Dsiner/UIUtil)
-- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
-- [ButterKnife](https://github.com/JakeWharton/butterknife)
-- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
 
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution

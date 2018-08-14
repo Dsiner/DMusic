@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2dp"
         android:text="Dou"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2dp"
         android:text="2018-08-12    2259次播放"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
@@ -43,16 +43,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="6dp"
         android:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginLeft="-12dp"
-        android:layout_marginRight="-12dp"
+        android:layout_height="76dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -62,16 +60,19 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="点赞" />
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_mv_info_like" />
 
             <TextView
                 android:id="@+id/tv_mv_info_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23" />
+                android:text="0"
+                android:textColor="@color/lib_pub_color_text_sub"
+                android:textSize="12dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,16 +82,19 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推荐" />
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_mv_info_download" />
 
             <TextView
                 android:id="@+id/tv_mv_info_sub_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23" />
+                android:text="0"
+                android:textColor="@color/lib_pub_color_text_sub"
+                android:textSize="12dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,16 +104,19 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="评论" />
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_mv_info_comment" />
 
             <TextView
                 android:id="@+id/tv_mv_info_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23" />
+                android:text="0"
+                android:textColor="@color/lib_pub_color_text_sub"
+                android:textSize="12dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,16 +126,19 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="分享" />
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_mv_info_share" />
 
             <TextView
                 android:id="@+id/tv_mv_info_share_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23" />
+                android:text="0"
+                android:textColor="@color/lib_pub_color_text_sub"
+                android:textSize="12dp" />
         </LinearLayout>
     </LinearLayout>
 

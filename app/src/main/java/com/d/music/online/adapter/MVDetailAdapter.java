@@ -25,6 +25,7 @@ import java.util.Locale;
  * Created by D on 2018/8/11.
  */
 public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
+
     private GlideCircleTransform circleTransform;
     private SimpleDateFormat dateFormat;
 

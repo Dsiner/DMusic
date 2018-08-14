@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="86dp"
+    android:layout_height="64dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_mv_similar_cover"
-        android:layout_width="145dp"
-        android:layout_height="80dp"
+        android:layout_width="110dp"
+        android:layout_height="62dp"
         android:layout_centerVertical="true"
         android:scaleType="centerCrop" />
 
@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_toRightOf="@+id/iv_mv_similar_cover"
         android:gravity="center_vertical"
         android:orientation="vertical">

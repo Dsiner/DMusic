@@ -31,6 +31,10 @@ public class MVCommentModel extends MVDetailModel {
     public boolean isRemoveHotComment;
     public List<UserBean> beReplied;
 
+    public MVCommentModel() {
+        this.view_type = TYPE_COMMENT;
+    }
+
     public static class UserBean {
 
         /**
