@@ -2,6 +2,7 @@ package com.d.music.online.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
@@ -43,6 +44,9 @@ public class DetailActivity extends BaseFragmentActivity {
     @Override
     protected void init() {
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            findViewById(R.id.fragment_content).setFitsSystemWindows(true);
+        }
         type = getIntent().getIntExtra("type", 0);
         String args = getIntent().getStringExtra("args");
         String title = getIntent().getStringExtra("title");

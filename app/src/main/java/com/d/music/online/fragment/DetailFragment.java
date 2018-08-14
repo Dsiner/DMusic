@@ -3,7 +3,10 @@ package com.d.music.online.fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.module.loader.AbsFragment;
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.repeatclick.ClickUtil;
@@ -13,9 +16,13 @@ import com.d.music.R;
 import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.adapter.DetailAdapter;
+import com.d.music.online.model.BillSongsRespModel;
+import com.d.music.online.model.RadioSongsRespModel;
 import com.d.music.online.presenter.MusicPresenter;
+import com.d.music.online.view.IMusicView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,9 +31,11 @@ import butterknife.OnClick;
  * DetailFragment
  * Created by D on 2018/8/12.
  */
-public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> {
+public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> implements IMusicView {
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
+    @BindView(R.id.iv_cover)
+    ImageView ivCover;
 
     private int type;
     private String title, args;
@@ -55,7 +64,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> {
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.lib_pub_activity_abs;
+        return R.layout.module_online_fragment_detail;
     }
 
     @Override
@@ -91,5 +100,35 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> {
         } else if (type == DetailActivity.TYPE_RADIO) {
             mPresenter.getRadioSongs(args, page);
         }
+    }
+
+    @Override
+    public void setInfo(BillSongsRespModel info) {
+        if (info == null || info.billboard == null || info.billboard.pic_s260 == null) {
+            return;
+        }
+        setCover(info.billboard.pic_s260);
+    }
+
+    @Override
+    public void setInfo(RadioSongsRespModel info) {
+        if (info == null || info.result == null || info.result.songlist == null
+                || info.result.songlist.size() <= 0
+                || info.result.songlist.get(0) == null) {
+            return;
+        }
+        setCover(info.result.songlist.get(0).thumb);
+    }
+
+    private void setCover(String url) {
+        Glide.with(mContext)
+                .load(url)
+                .apply(new RequestOptions().dontAnimate())
+                .into(ivCover);
+    }
+
+    @Override
+    public void setData(List<MusicModel> datas) {
+        super.setData(datas);
     }
 }

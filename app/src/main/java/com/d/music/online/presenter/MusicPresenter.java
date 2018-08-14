@@ -3,7 +3,6 @@ package com.d.music.online.presenter;
 import android.content.Context;
 
 import com.d.lib.common.module.loader.CommonLoader;
-import com.d.lib.common.module.loader.IAbsView;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
@@ -14,6 +13,7 @@ import com.d.music.online.model.BillSongsModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsModel;
 import com.d.music.online.model.RadioSongsRespModel;
+import com.d.music.online.view.IMusicView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * MusicPresenter
  * Created by D on 2018/8/11.
  */
-public class MusicPresenter extends MvpBasePresenter<IAbsView<MusicModel>> {
+public class MusicPresenter extends MvpBasePresenter<IMusicView> {
 
     public MusicPresenter(Context context) {
         super(context);
@@ -59,6 +59,7 @@ public class MusicPresenter extends MvpBasePresenter<IAbsView<MusicModel>> {
                         if (getView() == null) {
                             return;
                         }
+                        getView().setInfo(response);
                         getView().setData(response.datas);
                     }
 
@@ -102,6 +103,7 @@ public class MusicPresenter extends MvpBasePresenter<IAbsView<MusicModel>> {
                         if (getView() == null) {
                             return;
                         }
+                        getView().setInfo(response);
                         getView().setData(response.datas);
                     }
 
