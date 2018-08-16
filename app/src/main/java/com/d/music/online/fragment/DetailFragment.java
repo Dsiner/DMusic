@@ -20,6 +20,7 @@ import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsRespModel;
 import com.d.music.online.presenter.MusicPresenter;
 import com.d.music.online.view.IMusicView;
+import com.d.music.view.SongHeaderView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     private int type;
     private String title, args;
+    private SongHeaderView header;
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
@@ -86,10 +88,13 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     protected void initList() {
+        header = new SongHeaderView(mContext);
+        header.setVisibility(View.GONE);
         xrvList.setCanRefresh(false);
         if (type == DetailActivity.TYPE_RADIO) {
             xrvList.setCanLoadMore(false);
         }
+        xrvList.addHeaderView(header);
         super.initList();
     }
 
@@ -120,6 +125,12 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
         setCover(info.result.songlist.get(0).thumb);
     }
 
+    @Override
+    public void setData(List<MusicModel> datas) {
+        super.setData(datas);
+        notifyDataCountChanged(commonLoader.getDatas().size());
+    }
+
     private void setCover(String url) {
         Glide.with(mContext)
                 .load(url)
@@ -127,8 +138,8 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
                 .into(ivCover);
     }
 
-    @Override
-    public void setData(List<MusicModel> datas) {
-        super.setData(datas);
+    private void notifyDataCountChanged(int count) {
+        header.setSongCount(count);
+        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 }

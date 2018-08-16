@@ -1,6 +1,8 @@
 package com.d.music.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +26,16 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     private OnHeaderListener listener;
 
     public SongHeaderView(Context context) {
-        this(context, null);
+        super(context);
+        init(context);
     }
 
     public SongHeaderView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(context);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public SongHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);

@@ -68,7 +68,7 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
         tvCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(-1, "");
+                onItemClick(-1, null);
             }
         });
     }
@@ -90,7 +90,7 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
                         item.isChecked = true;
                         notifyDataSetChanged();
                     }
-                    onItemClick(position, item.item);
+                    onItemClick(position, item);
                 }
             });
         }

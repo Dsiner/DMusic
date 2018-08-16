@@ -1,9 +1,11 @@
 package com.d.music.local.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
@@ -12,8 +14,9 @@ import com.d.music.module.greendao.music.base.MusicModel;
 import com.d.music.module.service.MusicControl;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.utils.MoreUtil;
-import com.d.music.view.popup.MorePopup;
+import com.d.music.view.dialog.OperationDialog;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SongAdapter extends CommonAdapter<MusicModel> {
@@ -54,14 +57,27 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onClick(View v) {
                 if (!isSubPull) {
-                    MorePopup morePopup = new MorePopup(mContext, MorePopup.TYPE_SONG_SUB, item, type);
-                    morePopup.setOnOperationLitener(new MorePopup.OnOperationLitener() {
-                        @Override
-                        public void onCollect() {
-                            collect(item, holder, position);
-                        }
-                    });
-                    morePopup.show();
+                    OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
+                            Arrays.asList(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_ADDLIST, false),
+                                    new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_FAV, false).item(item.isCollected ? "已收藏" : "收藏"),
+                                    new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_INFO, false)),
+                            new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
+                                @Override
+                                public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
+                                    if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
+                                        MoreUtil.addToList(mContext, item, type);
+                                    } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
+                                        collect(item, holder, position);
+                                    } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
+                                        MoreUtil.showInfo(mContext, item);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancel(Dialog dlg) {
+
+                                }
+                            });
                 } else {
                     item.isChecked = !item.isChecked;
                     holder.setChecked(R.id.cb_more, item.isChecked);

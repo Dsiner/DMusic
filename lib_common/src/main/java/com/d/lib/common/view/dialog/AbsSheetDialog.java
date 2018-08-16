@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class AbsSheetDialog<T> extends AbstractDialog {
     protected List<T> datas;
     protected String title;
-    protected OnItemClickListener listener;
+    protected OnItemClickListener<T> listener;
 
     protected AbsSheetDialog(Context context) {
         super(context, R.style.lib_pub_dialog_style, true,
@@ -44,7 +44,7 @@ public abstract class AbsSheetDialog<T> extends AbstractDialog {
         list.setAdapter(getAdapter());
     }
 
-    protected void onItemClick(int position, String item) {
+    protected void onItemClick(int position, T item) {
         dismiss();
         if (listener != null) {
             if (position == -1) {
@@ -59,13 +59,13 @@ public abstract class AbsSheetDialog<T> extends AbstractDialog {
 
     protected abstract void initView(View rootView);
 
-    public interface OnItemClickListener {
+    public interface OnItemClickListener<T> {
         /**
          * Click item
          *
          * @param position: from 0 to datas.size()-1;
          */
-        void onClick(Dialog dlg, int position, String item);
+        void onClick(Dialog dlg, int position, T item);
 
         /**
          * Click cancel

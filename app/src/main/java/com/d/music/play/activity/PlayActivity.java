@@ -1,6 +1,7 @@
 package com.d.music.play.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.MusicCst;
@@ -31,10 +33,11 @@ import com.d.music.module.utils.MoreUtil;
 import com.d.music.play.adapter.PlayQueueAdapter;
 import com.d.music.play.presenter.PlayPresenter;
 import com.d.music.play.view.IPlayView;
+import com.d.music.setting.activity.PlayerModeActivity;
 import com.d.music.utils.StatusBarCompat;
+import com.d.music.view.dialog.OperationDialog;
 import com.d.music.view.lrc.LrcRow;
 import com.d.music.view.lrc.LrcView;
-import com.d.music.view.popup.MorePopup;
 import com.d.music.view.popup.PlayQueuePopup;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
@@ -262,14 +265,37 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void showMore() {
-        MorePopup morePopup = new MorePopup(mActivity, MorePopup.TYPE_SONG_PLAY, control.getCurModel(), type);
-        morePopup.setOnOperationLitener(new MorePopup.OnOperationLitener() {
-            @Override
-            public void onCollect() {
-                collect(true);
-            }
-        });
-        morePopup.show();
+        final MusicModel item = control.getCurModel();
+        final List<OperationDialog.Bean> datas = new ArrayList<>();
+        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_ADDLIST, true));
+        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_FAV, true).item(item.isCollected ? "已收藏" : "收藏"));
+        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_INFO, true));
+        if (MusicCst.playerMode == MusicCst.PLAYER_MODE_MINIMALIST) {
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_CHANGE_MODE, "模式切换", R.drawable.ic_song_edit_m));
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_EXIT, "退出", R.drawable.ic_menu_exit));
+        }
+        OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NIGHT, "", datas,
+                new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
+                    @Override
+                    public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
+                        if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
+                            MoreUtil.addToList(mContext, item, type);
+                        } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
+                            collect(true);
+                        } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
+                            MoreUtil.showInfo(mContext, item);
+                        } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
+                            startActivity(new Intent(mContext, PlayerModeActivity.class));
+                        } else if (bean.type == OperationDialog.Bean.TYPE_EXIT) {
+                            App.exit(mContext);
+                        }
+                    }
+
+                    @Override
+                    public void onCancel(Dialog dlg) {
+
+                    }
+                });
     }
 
     private void registerReceiver() {

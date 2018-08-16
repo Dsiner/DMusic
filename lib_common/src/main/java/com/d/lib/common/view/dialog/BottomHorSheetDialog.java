@@ -52,7 +52,7 @@ public class BottomHorSheetDialog extends AbsSheetDialog<BottomHorSheetDialog.Be
         tvCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(-1, "");
+                onItemClick(-1, null);
             }
         });
     }
@@ -69,7 +69,7 @@ public class BottomHorSheetDialog extends AbsSheetDialog<BottomHorSheetDialog.Be
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(position, item.item);
+                    onItemClick(position, item);
                 }
             });
         }

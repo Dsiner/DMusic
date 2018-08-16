@@ -69,7 +69,7 @@ public class BottomVerSheetDialog extends AbsSheetDialog<BottomVerSheetDialog.Be
         tvCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(-1, "");
+                onItemClick(-1, null);
             }
         });
     }
@@ -92,7 +92,7 @@ public class BottomVerSheetDialog extends AbsSheetDialog<BottomVerSheetDialog.Be
                         item.isChecked = true;
                         notifyDataSetChanged();
                     }
-                    onItemClick(position, item.item);
+                    onItemClick(position, item);
                 }
             });
         }

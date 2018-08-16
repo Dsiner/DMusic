@@ -14,8 +14,9 @@
 ![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
 
 ## Todo
-- [x] Music Online list.
-- [x] MV Online play.
+- [x] Support online music list.
+- [x] Support MV online play.
+- [x] Support music download.
 - [ ] 音乐在线搜索、播放、缓存、下载等
 
 ## Dependencies

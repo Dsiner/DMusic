@@ -69,7 +69,7 @@ public class BottomShareSheetDialog extends AbsSheetDialog<BottomShareSheetDialo
         tvCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(-1, "");
+                onItemClick(-1, null);
             }
         });
     }
