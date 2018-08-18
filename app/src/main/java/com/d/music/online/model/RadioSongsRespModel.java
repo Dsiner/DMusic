@@ -1,7 +1,7 @@
 package com.d.music.online.model;
 
 import com.d.lib.common.module.mvp.model.BaseRespModel;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 
 import java.util.List;
 

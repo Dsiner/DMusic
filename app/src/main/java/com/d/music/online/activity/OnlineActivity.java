@@ -3,7 +3,6 @@ package com.d.music.online.activity;
 import android.support.v4.app.Fragment;
 
 import com.d.lib.common.module.loader.AbsFragmentActivity;
-import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.TitleLayout;
 import com.d.music.R;
 import com.d.music.online.fragment.BillFragment;

@@ -62,7 +62,7 @@ public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     protected void init() {
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        p = Preferences.getInstance(getApplicationContext());
+        p = Preferences.getIns(getApplicationContext());
         etSignature.setText(p.getSignature());
         etStroke.setText(p.getStroke());
         etSignature.setSelection(etSignature.getText().length());

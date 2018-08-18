@@ -2,7 +2,7 @@ package com.d.music.local.view;
 
 import com.d.lib.common.module.mvp.MvpView;
 import com.d.music.local.model.FileModel;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 
 import java.util.List;
 

@@ -15,9 +15,9 @@ import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.CustomList;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,24 +61,24 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
             return false;
         }
         name = name.trim();
-        CustomList exist = MusicDBUtil.getInstance(context).queryCustomListByName(name);
+        CustomListModel exist = AppDBUtil.getIns(context).optCustomList().queryByName(name);
         if (exist != null) {
             Util.toast(context.getApplicationContext(), "该歌单已存在！");
             return false;
         }
 
-        List<CustomList> list = MusicDBUtil.getInstance(context).queryAllCustomListByPointerAsc();
+        List<CustomListModel> list = AppDBUtil.getIns(context).optCustomList().queryAllByPointerAsc();
         int count = list != null ? list.size() : 0;
         if (count < 20) {
-            final int seq = MusicDBUtil.getInstance(context).queryCustomListMaxSeq();
-            final int pointer = list != null ? getPointer(list) : MusicDB.CUSTOM_MUSIC_INDEX;
-            CustomList customList = new CustomList();
-            customList.setListName(name);
-            customList.setSongCount((long) 0);
-            customList.setSeq(seq + 1);
-            customList.setPointer(pointer);
-            customList.setSortBy(MusicDB.ORDER_TYPE_TIME);
-            MusicDBUtil.getInstance(context).insertOrReplaceCustomList(customList);
+            final int seq = AppDBUtil.getIns(context).optCustomList().queryMaxSeq();
+            final int pointer = list != null ? getPointer(list) : AppDB.CUSTOM_MUSIC_INDEX;
+            CustomListModel customListModel = new CustomListModel();
+            customListModel.setName(name);
+            customListModel.setCount((long) 0);
+            customListModel.setSeq(seq + 1);
+            customListModel.setPointer(pointer);
+            customListModel.setSortType(AppDB.ORDER_TYPE_TIME);
+            AppDBUtil.getIns(context).optCustomList().insertOrReplace(customListModel);
         } else {
             Util.toast(context.getApplicationContext(), "歌单已满！");
             return false;
@@ -89,9 +89,9 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
     /**
      * 插入新的歌曲列表--查找未用Table
      */
-    private int getPointer(List<CustomList> list) {
-        int a = MusicDB.CUSTOM_MUSIC_INDEX;
-        for (CustomList custom : list) {
+    private int getPointer(List<CustomListModel> list) {
+        int a = AppDB.CUSTOM_MUSIC_INDEX;
+        for (CustomListModel custom : list) {
             if (custom.getPointer() != a) {
                 return a;
             }

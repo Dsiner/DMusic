@@ -10,10 +10,9 @@ import com.d.music.common.preferences.Preferences;
 import com.d.music.local.adapter.SongAdapter;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.service.MusicControl;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.sort.SideBar;
 import com.d.music.view.sort.SortUtil;
@@ -32,12 +31,12 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
     private Preferences p;
     private SongHeaderView header;
     private SortUtil sortUtil;
-    private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
-    private boolean isSubPull;//为了同步设置，需要重新刷新
+    private boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+    private boolean isSubPull; // 为了同步设置，需要重新刷新
 
     @Override
     protected void init() {
-        p = Preferences.getInstance(getActivity().getApplicationContext());
+        p = Preferences.getIns(getActivity().getApplicationContext());
         isSubPull = p.getIsSubPull();
         sortUtil = new SortUtil();
         sbSideBar.setOnLetterChangedListener(this);
@@ -46,7 +45,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, MusicDB.LOCAL_ALL_MUSIC);
+        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, AppDB.LOCAL_ALL_MUSIC);
         adapter.setSubPull(isSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override
@@ -59,7 +58,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected void onLoad(int page) {
-        mPresenter.getSong(MusicDB.LOCAL_ALL_MUSIC, sortUtil);
+        mPresenter.getSong(AppDB.LOCAL_ALL_MUSIC, sortUtil);
     }
 
     @Override
@@ -76,13 +75,13 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected void onVisible() {
-        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        MainActivity.getManger().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         super.onVisible();
     }
 
     @Override
     protected void onInvisible() {
-        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+        MainActivity.getManger().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
         super.onInvisible();
     }
 
@@ -118,8 +117,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
     public void onPlayAll() {
         List<MusicModel> datas = commonLoader.getDatas();
         if (datas != null && datas.size() > 0) {
-            MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
-            control.init(mContext.getApplicationContext(), datas, 0, true);
+            MediaControler.getIns(mContext).init(datas, 0, true);
         }
     }
 
@@ -134,16 +132,18 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != MusicDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
+                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
             return;
         }
         setSong(event.list);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onRefreshEvent(RefreshEvent event) {
+    @SuppressWarnings("unused")
+    public void onEventRefresh(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()) {
             return;
         }
@@ -152,7 +152,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     public void onDestroy() {
-        MainActivity.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+        MainActivity.getManger().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
         super.onDestroy();
     }
 }

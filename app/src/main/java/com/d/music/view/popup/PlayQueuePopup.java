@@ -13,10 +13,10 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
-import com.d.music.common.MusicCst;
+import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.play.adapter.PlayQueueAdapter;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     protected void init() {
-        p = Preferences.getInstance(context.getApplicationContext());
+        p = Preferences.getIns(context.getApplicationContext());
         LinearLayout llytQueue = (LinearLayout) rootView.findViewById(R.id.llyt_queue);
         FrameLayout flytPlayMode = (FrameLayout) rootView.findViewById(R.id.flyt_play_mode);
         ivPlayMode = (ImageView) rootView.findViewById(R.id.iv_play_mode);
@@ -51,14 +51,14 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         TextView ivQuit = (TextView) rootView.findViewById(R.id.tv_quit);
         lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
 
-        models = MusicService.getControl(context).getModels();
+        models = MediaControler.getIns(context).list();
         adapter = new PlayQueueAdapter(context, models, R.layout.adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
         int playMode = p.getPlayMode();
         tvCount.setText("(" + (models != null ? models.size() : 0) + "首)");
-        ivPlayMode.setBackgroundResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
-        tvPlayMode.setText(MusicCst.PLAY_MODE[playMode]);
+        ivPlayMode.setBackgroundResource(Constants.PlayMode.PLAY_MODE_DRAWABLE[playMode]);
+        tvPlayMode.setText(Constants.PlayMode.PLAY_MODE[playMode]);
 
         rootView.setOnClickListener(this);
         llytQueue.setOnClickListener(this);
@@ -72,8 +72,8 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         if (++playMode > 3) {
             playMode = 0;
         }
-        ivPlayMode.setBackgroundResource(MusicCst.PLAY_MODE_DRAWABLE[playMode]);
-        tvPlayMode.setText(MusicCst.PLAY_MODE[playMode]);
+        ivPlayMode.setBackgroundResource(Constants.PlayMode.PLAY_MODE_DRAWABLE[playMode]);
+        tvPlayMode.setText(Constants.PlayMode.PLAY_MODE[playMode]);
         p.putPlayMode(playMode);
         return playMode;
     }
@@ -114,8 +114,9 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
                 if (models == null || models.size() <= 0) {
                     return;
                 }
-                MusicService.getControl(context).delelteAll(context);
-                models = MusicService.getControl(context).getModels();
+                MediaControler controler = MediaControler.getIns(context);
+                controler.deleteAll();
+                models = controler.list();
                 adapter.setDatas(models);
                 adapter.notifyDataSetChanged();
                 onCountChange(models != null ? models.size() : 0);

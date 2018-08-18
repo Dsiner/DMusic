@@ -1,10 +1,10 @@
 package com.d.music;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,7 +17,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;
@@ -37,7 +37,10 @@ import cn.feng.skin.manager.loader.SkinManager;
  * MainActivity
  * Created by D on 2017/4/28.
  */
-public class MainActivity extends BaseFragmentActivity implements DrawerListener {
+public class MainActivity extends BaseFragmentActivity {
+    @SuppressLint("StaticFieldLeak")
+    private static FManger fManger;
+
     @BindView(R.id.tv_song_name)
     TextView tvSongName;
     @BindView(R.id.tv_singer)
@@ -50,11 +53,11 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     ImageView ivPlay;
     @BindView(R.id.flyt_menu)
     FrameLayout flytMenu;
+    @BindView(R.id.dl_drawer)
+    DrawerLayout dlDrawer;
 
-    private static DrawerLayout drawer;
-    public static FragmentManager fManger;
-
-    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_sleep, R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
+    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_sleep, R.id.llyt_menu_skin,
+            R.id.llyt_menu_setting, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -64,7 +67,7 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 PlayActivity.openActivity(MainActivity.this);
                 break;
             case R.id.flyt_menu:
-                drawer.openDrawer(Gravity.END);
+                dlDrawer.openDrawer(Gravity.END);
                 break;
             case R.id.llyt_menu_sleep:
                 startActivity(new Intent(MainActivity.this, SleepActivity.class));
@@ -76,7 +79,6 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                // 退出
                 App.exit(getApplicationContext());
                 break;
         }
@@ -103,55 +105,38 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
         }
         StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         EventBus.getDefault().register(this);
-        fManger = getSupportFragmentManager();
-        drawer = (DrawerLayout) findViewById(R.id.dl_drawer);
-        replace(new MainFragment());
-        drawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
-        drawer.addDrawerListener(this);
+        fManger = new FManger(dlDrawer, getSupportFragmentManager());
+        fManger.replace(new MainFragment());
+        dlDrawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
+        dlDrawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                View content = dlDrawer.getChildAt(0);
+                float scale = 1 - slideOffset;
+                float rightScale = 0.8f + scale * 0.2f;
+                float leftScale = 1 - 0.3f * scale;
+
+                ViewHelper.setScaleX(drawerView, leftScale);
+                ViewHelper.setScaleY(drawerView, leftScale);
+
+                ViewHelper.setTranslationX(content, -drawerView.getMeasuredWidth() * slideOffset);
+                ViewHelper.setPivotX(content, content.getMeasuredWidth());
+                ViewHelper.setPivotY(content, content.getMeasuredHeight() / 2);
+                content.invalidate();
+                ViewHelper.setScaleX(content, rightScale);
+                ViewHelper.setScaleY(content, rightScale);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        tvSongName.setText(MusicService.getControl(getApplicationContext()).getCurSongName());
-        tvSinger.setText(MusicService.getControl(getApplicationContext()).getCurSinger());
-        Preferences p = Preferences.getInstance(getApplicationContext());
+        tvSongName.setText(MediaControler.getIns(mContext).getSongName());
+        tvSinger.setText(MediaControler.getIns(mContext).getArtistName());
+        Preferences p = Preferences.getIns(getApplicationContext());
         flytMenu.setVisibility(p.getIsShowMenuIcon() ? View.VISIBLE : View.GONE);
         tvStroke.setText(p.getSignature());
-    }
-
-    @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-        View content = drawer.getChildAt(0);
-        View menu = drawerView;
-        float scale = 1 - slideOffset;
-        float rightScale = 0.8f + scale * 0.2f;
-        float leftScale = 1 - 0.3f * scale;
-
-        ViewHelper.setScaleX(menu, leftScale);
-        ViewHelper.setScaleY(menu, leftScale);
-
-        ViewHelper.setTranslationX(content, -menu.getMeasuredWidth() * slideOffset);
-        ViewHelper.setPivotX(content, content.getMeasuredWidth());
-        ViewHelper.setPivotY(content, content.getMeasuredHeight() / 2);
-        content.invalidate();
-        ViewHelper.setScaleX(content, rightScale);
-        ViewHelper.setScaleY(content, rightScale);
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
     }
 
     @Override
@@ -162,10 +147,20 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onEventMainThread(MusicInfoEvent event) {
         if (event != null && tvSongName != null && tvSinger != null) {
             tvSongName.setText(event.songName);
-            tvSinger.setText(event.singer);
+            tvSinger.setText(event.artistName);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fManger.getBackStackEntryCount() <= 1) {
+            finish();
+        } else {
+            fManger.popBackStack();
         }
     }
 
@@ -177,35 +172,56 @@ public class MainActivity extends BaseFragmentActivity implements DrawerListener
     }
 
     private void releaseResource() {
-        drawer = null;
         fManger = null;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (fManger.getBackStackEntryCount() <= 1) {
-            finish();
-        } else {
-            popBackStack();
+    /**
+     * GetManger
+     */
+    public static FManger getManger() {
+        if (fManger == null) {
+            return new FManger(null, null);
         }
+        return fManger;
     }
 
-    public static void setDrawerLockMode(int lockMode) {
-        if (drawer != null) {
+
+    public static class FManger {
+        private DrawerLayout drawer;
+        private FragmentManager fragmentManager;
+
+        FManger(DrawerLayout drawer, FragmentManager fragmentManager) {
+            this.drawer = drawer;
+            this.fragmentManager = fragmentManager;
+        }
+
+        public void setDrawerLockMode(int lockMode) {
+            if (drawer == null) {
+                return;
+            }
             drawer.setDrawerLockMode(lockMode);
         }
-    }
 
-    public static void replace(Fragment fragment) {
-        if (fManger != null) {
-            fManger.beginTransaction().replace(R.id.framement, fragment)
+        public void replace(Fragment fragment) {
+            if (fragmentManager == null) {
+                return;
+            }
+            fragmentManager.beginTransaction().replace(R.id.framement, fragment)
                     .addToBackStack(null).commitAllowingStateLoss();
         }
-    }
 
-    public static void popBackStack() {
-        if (fManger != null) {
-            fManger.popBackStack();
+        public void popBackStack() {
+            if (fragmentManager == null) {
+                return;
+            }
+            fragmentManager.popBackStack();
+        }
+
+        int getBackStackEntryCount() {
+            if (fragmentManager == null) {
+                return 0;
+            }
+            return fragmentManager.getBackStackEntryCount();
         }
     }
 }

@@ -16,13 +16,13 @@ import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
 import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
-import com.d.music.common.MusicCst;
+import com.d.music.common.Constants;
 import com.d.music.local.adapter.HandleAdapter;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.SortTypeEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.media.SyncUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.media.SyncManager;
 import com.d.music.utils.StatusBarCompat;
 import com.d.music.view.popup.AddToListPopup;
 
@@ -39,7 +39,8 @@ import cn.feng.skin.manager.loader.SkinManager;
  * 歌曲列表排序、管理
  * Created by D on 2017/4/28.
  */
-public class HandleActivity extends BaseActivity<MvpBasePresenter> implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
+public class HandleActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
     @BindView(R.id.tv_title_right)
@@ -69,8 +70,8 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 tvRight.setTag(isAll);
                 int count = 0;
                 for (MusicModel model : models) {
-                    model.isSortChecked = isAll || !model.isSortChecked;
-                    if (model.isSortChecked) {
+                    model.exIsSortChecked = isAll || !model.exIsSortChecked;
+                    if (model.exIsSortChecked) {
                         count++;
                     }
                 }
@@ -86,11 +87,11 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 }
                 List<MusicModel> list = new ArrayList<>();
                 for (MusicModel musicModel : models) {
-                    if (musicModel.isSortChecked) {
+                    if (musicModel.exIsSortChecked) {
                         list.add(musicModel);
                     }
                 }
-                new AddToListPopup(this, list, type).show();
+                new AddToListPopup(this,type, list ).show();
                 break;
             case R.id.llyt_delete:
                 int c = adapter.getCount();
@@ -101,9 +102,9 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
                 showLoading();
                 for (int i = models.size() - 1; i >= 0; i--) {
                     MusicModel m = models.get(i);
-                    if (m.isSortChecked) {
+                    if (m.exIsSortChecked) {
                         models.remove(m);
-                        if (type == MusicDB.COLLECTION_MUSIC) {
+                        if (type == AppDB.COLLECTION_MUSIC) {
                             modelsFav.add(m);
                         }
                         c--;
@@ -117,11 +118,11 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
             case R.id.llyt_revoke:
                 showLoading();
                 models.clear();
-                models.addAll(MusicCst.models);
+                models.addAll(Constants.Heap.models);
                 for (MusicModel model : models) {
-                    model.isSortChecked = false;
+                    model.exIsSortChecked = false;
                 }
-                if (type == MusicDB.COLLECTION_MUSIC) {
+                if (type == AppDB.COLLECTION_MUSIC) {
                     modelsFav.clear();
                 }
                 setCount(0);
@@ -154,17 +155,17 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         initTitle();
 
         models = new ArrayList<>();
         modelsFav = new ArrayList<>();
-        models.addAll(MusicCst.models);
+        models.addAll(Constants.Heap.models);
         adapter = new HandleAdapter(mContext, models, R.layout.adapter_handler);
         adapter.setOnStartDragListener(this);
         adapter.setOnChangeListener(this);
         rvList.setHasFixedSize(true);
-        rvList.setLayoutManager(new LinearLayoutManager(this));//为RecyclerView指定布局管理对象
+        rvList.setLayoutManager(new LinearLayoutManager(this));
         rvList.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
@@ -190,7 +191,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
 
     @Override
     public void onDelete(MusicModel model) {
-        if (type == MusicDB.COLLECTION_MUSIC) {
+        if (type == AppDB.COLLECTION_MUSIC) {
             modelsFav.add(model);
         }
     }
@@ -203,9 +204,10 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Override
     public void finish() {
         EventBus.getDefault().post(new MusicModelEvent(type, models));
-        EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_CUSTOM));//按自定义排序
-        if (type == MusicDB.COLLECTION_MUSIC) {
-            SyncUtil.unCollected(getApplicationContext(), modelsFav);
+        // 按自定义排序
+        EventBus.getDefault().post(new SortTypeEvent(type, AppDB.ORDER_TYPE_CUSTOM));
+        if (type == AppDB.COLLECTION_MUSIC) {
+            SyncManager.unCollected(getApplicationContext(), modelsFav);
         }
         super.finish();
     }
@@ -213,13 +215,13 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter> implements Mv
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 
     @Override
     protected void onDestroy() {
-        if (MusicCst.models != null) {
-            MusicCst.models.clear();
+        if (Constants.Heap.models != null) {
+            Constants.Heap.models.clear();
         }
         super.onDestroy();
     }

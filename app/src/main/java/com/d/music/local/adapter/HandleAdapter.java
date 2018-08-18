@@ -9,7 +9,7 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.itemtouchhelper.ItemTouchHelperViewHolder;
 import com.d.music.R;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,14 +40,14 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
     @Override
     public void convert(int position, final CommonHolder holder, final MusicModel item) {
         holder.setText(R.id.tv_song_name, item.songName);
-        holder.setText(R.id.tv_singer, item.singer);
-        holder.setChecked(R.id.cb_check, item.isSortChecked);
+        holder.setText(R.id.tv_singer, item.artistName);
+        holder.setChecked(R.id.cb_check, item.exIsSortChecked);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item.isSortChecked = !item.isSortChecked;
-                holder.setChecked(R.id.cb_check, item.isSortChecked);
-                if (item.isSortChecked) {
+                item.exIsSortChecked = !item.exIsSortChecked;
+                holder.setChecked(R.id.cb_check, item.exIsSortChecked);
+                if (item.exIsSortChecked) {
                     count++;
                 } else {
                     count--;
@@ -91,7 +91,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
     @Override
     public void onItemDismiss(int position) {
         MusicModel model = mDatas.get(position);
-        if (model.isSortChecked && count > 0) {
+        if (model.exIsSortChecked && count > 0) {
             count--;
         }
         if (listener != null) {

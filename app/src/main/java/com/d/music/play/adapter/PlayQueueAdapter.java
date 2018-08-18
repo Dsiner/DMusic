@@ -7,8 +7,8 @@ import com.d.lib.common.module.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.media.controler.MediaControler;
 
 import java.util.List;
 
@@ -23,17 +23,17 @@ public class PlayQueueAdapter extends CommonAdapter<MusicModel> {
     @Override
     public void convert(final int position, CommonHolder holder, MusicModel item) {
         holder.setText(R.id.tv_song_name, item.songName);
-        holder.setText(R.id.tv_singer, "-- " + item.singer);
+        holder.setText(R.id.tv_singer, "-- " + item.artistName);
         holder.setViewOnClickListener(R.id.llyt_queue, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MusicService.getControl(mContext).playPosition(position);
+                MediaControler.getIns(mContext).play(position);
             }
         });
         holder.setViewOnClickListener(R.id.iv_delete, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MusicService.getControl(mContext).delelteByPosition(mContext, position);
+                MediaControler.getIns(mContext).delete(position);
                 notifyDataSetChanged();
                 if (listener != null) {
                     listener.onCountChange(mDatas.size());

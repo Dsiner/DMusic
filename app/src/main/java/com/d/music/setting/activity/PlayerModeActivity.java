@@ -35,7 +35,6 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
     private int index;
     private Preferences p;
     private RadioAdapter adapter;
-    private List<RadioModel> datas;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right})
     public void onClickListener(View v) {
@@ -99,7 +98,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
             return;
         }
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        p = Preferences.getInstance(getApplicationContext());
+        p = Preferences.getIns(getApplicationContext());
         index = p.getPlayerMode();
         adapter = new RadioAdapter(this, getDatas(), R.layout.adapter_radio);
         adapter.setIndex(index);
@@ -108,7 +107,7 @@ public class PlayerModeActivity extends BaseActivity<MvpBasePresenter> implement
     }
 
     private List<RadioModel> getDatas() {
-        datas = new ArrayList<>();
+        List<RadioModel> datas = new ArrayList<>();
         RadioModel model0 = new RadioModel();
         model0.content = "普通模式";
         model0.isChecked = index == 0;

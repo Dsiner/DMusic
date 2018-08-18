@@ -12,7 +12,8 @@ android {
         versionName rootProject.ext.versionName
         vectorDrawables.useSupportLibrary = true
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86" //选择要添加的对应cpu类型的.so库
+            // 选择要添加的对应cpu类型的.so库
+            abiFilters "armeabi", "armeabi-v7a", "x86"
         }
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -42,11 +43,11 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            //混淆
+            // 混淆
             minifyEnabled true
-            //ZipAlign优化
+            // ZipAlign优化
             zipAlignEnabled true
-            //移除无用的resource文件
+            // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release

@@ -1,7 +1,6 @@
 package com.d.music.local.fragment;
 
 import android.Manifest;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -22,7 +21,7 @@ import com.d.music.local.adapter.DirAdapter;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.utils.fileutil.FileUtil;
 
 import java.util.ArrayList;
@@ -36,6 +35,8 @@ import butterknife.OnClick;
  * Created by D on 2017/4/29.
  */
 public class CustomScanFragment extends BaseFragment<ScanPresenter> implements IScanView, DirAdapter.OnPathListener {
+    public final static String ARG_TYPE = "type";
+
     @BindView(R.id.llyt_dir)
     LinearLayout llytDir;
     @BindView(R.id.llyt_scan_now)
@@ -51,6 +52,14 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     private DirAdapter adapter;
     private List<FileModel> models;
 
+    public static CustomScanFragment getInstance(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_TYPE, type);
+        CustomScanFragment fragment = new CustomScanFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
     public void OnClickLister(final View view) {
         if (ClickUtil.isFastDoubleClick()) {
@@ -59,32 +68,28 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         switch (view.getId()) {
             case R.id.llyt_dir:
             case R.id.llyt_scan_now:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    PermissionCompat.with(mActivity).requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            .subscribeOn(PermissionSchedulers.io())
-                            .observeOn(PermissionSchedulers.mainThread())
-                            .requestPermissions(new PermissionCallback<Permission>() {
-                                @Override
-                                public void onNext(Permission permission) {
-                                    if (getActivity() == null || getActivity().isFinishing()) {
-                                        return;
-                                    }
-                                    if (permission.granted) {
-                                        // `permission.name` is granted !
-                                        sw(view.getId());
-                                    } else if (permission.shouldShowRequestPermissionRationale) {
-                                        // Denied permission without ask never again
-                                        Util.toast(getActivity().getApplicationContext(), "Denied permission!");
-                                    } else {
-                                        // Denied permission with ask never again
-                                        // Need to go to the settings
-                                        Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
-                                    }
+                PermissionCompat.with(mActivity).requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribeOn(PermissionSchedulers.io())
+                        .observeOn(PermissionSchedulers.mainThread())
+                        .requestPermissions(new PermissionCallback<Permission>() {
+                            @Override
+                            public void onNext(Permission permission) {
+                                if (getActivity() == null || getActivity().isFinishing()) {
+                                    return;
                                 }
-                            });
-                } else {
-                    sw(view.getId());
-                }
+                                if (permission.granted) {
+                                    // `permission.name` is granted !
+                                    sw(view.getId());
+                                } else if (permission.shouldShowRequestPermissionRationale) {
+                                    // Denied permission without ask never again
+                                    Util.toast(getActivity().getApplicationContext(), "Denied permission!");
+                                } else {
+                                    // Denied permission with ask never again
+                                    // Need to go to the settings
+                                    Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
+                                }
+                            }
+                        });
                 break;
         }
     }
@@ -130,7 +135,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            type = bundle.getInt("type");
+            type = bundle.getInt(ARG_TYPE);
         }
     }
 

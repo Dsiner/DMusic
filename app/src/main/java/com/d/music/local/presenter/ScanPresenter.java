@@ -8,11 +8,10 @@ import com.d.music.local.view.IScanView;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.events.SortTypeEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.media.MusicFactory;
-import com.d.music.module.media.SyncUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.module.media.media.MusicFactory;
 import com.d.music.utils.fileutil.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,9 +22,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -49,13 +49,28 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<FileModel>>() {
+                .subscribe(new Observer<List<FileModel>>() {
                     @Override
-                    public void accept(@NonNull List<FileModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<FileModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setDatas(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -70,35 +85,44 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(mContext, type).getMusic(paths);
-                list = SyncUtil.upCollected(mContext, list);//更新收藏字段
-                MusicDBUtil.getInstance(mContext).deleteAll(type);
-                MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(list, type);
-                MusicDBUtil.getInstance(mContext).updateCusListCount(type, list != null ? list.size() : 0);
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_TIME);//默认按时间排序
-                EventBus.getDefault().post(new SortTypeEvent(type, MusicDB.ORDER_TYPE_TIME));
+                List<MusicModel> list = MusicFactory.createFactory(mContext).query(paths);
+                AppDBUtil.getIns(mContext).optMusic().deleteAll(type);
+                AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(type, list);
+                AppDBUtil.getIns(mContext).optCustomList().updateCount(type, list.size());
+                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_TIME); // 默认按时间排序
+                EventBus.getDefault().post(new SortTypeEvent(type, AppDB.ORDER_TYPE_TIME));
 
-                //更新首页自定义列表
+                // 更新首页自定义列表
                 EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
-
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
                 e.onNext(list);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
-                        MusicModelEvent event = new MusicModelEvent(type, list);
-                        EventBus.getDefault().post(event);
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
+                        EventBus.getDefault().post(new MusicModelEvent(type, list));
 
                         if (getView() == null) {
                             return;
                         }
                         getView().closeLoading();
                         getView().setMusics(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

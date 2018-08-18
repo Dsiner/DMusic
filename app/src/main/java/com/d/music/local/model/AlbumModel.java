@@ -8,7 +8,7 @@ import com.d.lib.common.module.mvp.model.BaseModel;
  */
 public class AlbumModel extends BaseModel {
     public int id;
-    public String album; //专辑名
-    public int count; //歌曲数
-    public boolean isChecked;//额外属性：是否选中
+    public String album; // 专辑名
+    public int count; // 歌曲数
+    public boolean isChecked; // 额外属性：是否选中
 }

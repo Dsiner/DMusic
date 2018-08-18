@@ -13,7 +13,7 @@ public class Preferences extends AbstractPreference {
         super(context);
     }
 
-    public static Preferences getInstance(Context context) {
+    public static Preferences getIns(Context context) {
         if (instance == null) {
             synchronized (Preferences.class) {
                 if (instance == null) {

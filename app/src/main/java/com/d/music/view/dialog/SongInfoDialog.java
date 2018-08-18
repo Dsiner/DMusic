@@ -8,7 +8,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 
 /**
  * SongInfoDialog
@@ -47,15 +47,15 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
             return;
         }
         tvSongName.setText(model.getSongName());
-        tvSinger.setText(model.getSinger());
-        tvAlbum.setText(model.getAlbum());
-        long duration = model.getDuration() / 1000;
+        tvSinger.setText(model.getArtistName());
+        tvAlbum.setText(model.getAlbumName());
+        long duration = model.getFileDuration() / 1000;
         long minute = duration / 60;
         long second = duration % 60;
 
         tvDuration.setText(String.format("%02d:%02d", minute, second));// 格式待转
         tvFilePostfix.setText(model.getFilePostfix());
-        tvSize.setText(Util.formatSize(model.getSize()));// 格式待转
+        tvSize.setText(Util.formatSize(model.getFileSize()));// 格式待转
         tvUrl.setText(model.getUrl());
     }
 

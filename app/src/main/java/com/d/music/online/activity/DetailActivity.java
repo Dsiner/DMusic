@@ -20,8 +20,6 @@ public class DetailActivity extends BaseFragmentActivity {
     public final static int TYPE_BILL = 0;
     public final static int TYPE_RADIO = 1;
 
-    private int type;
-
     public static void openActivity(Context context, int type, String... args) {
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra("type", type);
@@ -47,7 +45,7 @@ public class DetailActivity extends BaseFragmentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             findViewById(R.id.fragment_content).setFitsSystemWindows(true);
         }
-        type = getIntent().getIntExtra("type", 0);
+        int type = getIntent().getIntExtra("type", 0);
         String args = getIntent().getStringExtra("args");
         String title = getIntent().getStringExtra("title");
 

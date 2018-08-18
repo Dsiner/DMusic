@@ -6,7 +6,7 @@ ext {
     versionCode = 4
     versionName = "1.0.3"
 
-    //Library Version
+    // Library Version
     multidexVersion = "1.0.1"
     supportVersion = '25.3.1'
 

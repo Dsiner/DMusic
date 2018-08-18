@@ -1,6 +1,5 @@
 package com.d.music.local.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.common.MusicCst;
+import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.local.activity.HandleActivity;
 import com.d.music.local.activity.ScanActivity;
@@ -22,11 +21,10 @@ import com.d.music.local.view.ISongView;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.events.SortTypeEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.service.MusicControl;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.dialog.MenuDialog;
@@ -45,18 +43,42 @@ import butterknife.OnClick;
  * SongFragment
  * Created by D on 2017/4/30.
  */
-public class SongFragment extends AbsFragment<MusicModel, SongPresenter> implements ISongView, SongHeaderView.OnHeaderListener {
+public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
+        implements ISongView, SongHeaderView.OnHeaderListener {
+    public final static String ARG_TYPE = "type";
+    public final static String ARG_TAB = "tab";
+    public final static String ARG_TITLE = "title";
+
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
 
     private int type;
-    private int tab;//本地歌曲tab(0-3)
+    private int tab; // 本地歌曲tab(0-3)
     private Preferences p;
     private String title;
     private SongHeaderView header;
     private int orderType;
-    private boolean isNeedReLoad;//为了同步收藏状态，需要重新加载数据
-    private boolean isSubPull;//为了同步设置，需要重新刷新
+    private boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+    private boolean isSubPull; // 为了同步设置，需要重新刷新
+
+    public static SongFragment getInstance(int type, String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_TITLE, title);
+        bundle.putInt(ARG_TYPE, type);
+        SongFragment fragment = new SongFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static SongFragment getInstance(int type, int tab, String title) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_TYPE, type);
+        bundle.putInt(ARG_TAB, tab);
+        bundle.putString(ARG_TITLE, title);
+        SongFragment fragment = new SongFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
@@ -65,7 +87,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
         }
         switch (v.getId()) {
             case R.id.iv_title_left:
-                MainActivity.popBackStack();
+                MainActivity.getManger().popBackStack();
                 break;
         }
     }
@@ -99,9 +121,9 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     @Override
     protected void init() {
         initTitle();
-        p = Preferences.getInstance(getActivity().getApplicationContext());
+        p = Preferences.getIns(getActivity().getApplicationContext());
         isSubPull = p.getIsSubPull();
-        orderType = MusicDBUtil.getInstance(mContext.getApplicationContext()).queryCusListSoryType(type);
+        orderType = AppDBUtil.getIns(mContext.getApplicationContext()).optCustomList().querySoryType(type);
         super.init();
     }
 
@@ -122,7 +144,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     protected void initList() {
         header = new SongHeaderView(mContext);
         header.setVisibility(View.GONE);
-        if (type == MusicDB.LOCAL_ALL_MUSIC) {
+        if (type == AppDB.LOCAL_ALL_MUSIC) {
             header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         }
         header.setOnHeaderListener(this);
@@ -163,12 +185,12 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
         Bundle bundle = getArguments();
         title = "Song";
         if (bundle != null) {
-            type = bundle.getInt("type");
-            tab = bundle.getInt("tab");
-            title = bundle.getString("title");
+            type = bundle.getInt(ARG_TYPE);
+            tab = bundle.getInt(ARG_TAB);
+            title = bundle.getString(ARG_TITLE);
         }
         tlTitle.setText(R.id.tv_title_title, title);
-        if (type == MusicDB.LOCAL_ALL_MUSIC || type == MusicDB.COLLECTION_MUSIC) {
+        if (type == AppDB.LOCAL_ALL_MUSIC || type == AppDB.COLLECTION_MUSIC) {
             tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
         }
         tlTitle.setOnMenuListener(new MenuDialog.OnMenuListener() {
@@ -178,9 +200,9 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
                 View time = v.findViewById(R.id.iv_sort_time_check);
                 View custom = v.findViewById(R.id.iv_sort_custom_check);
                 if (name != null && time != null && custom != null) {
-                    name.setVisibility(orderType == MusicDB.ORDER_TYPE_NAME ? View.VISIBLE : View.INVISIBLE);
-                    time.setVisibility(orderType == MusicDB.ORDER_TYPE_TIME ? View.VISIBLE : View.INVISIBLE);
-                    custom.setVisibility(orderType == MusicDB.ORDER_TYPE_CUSTOM ? View.VISIBLE : View.INVISIBLE);
+                    name.setVisibility(orderType == AppDB.ORDER_TYPE_NAME ? View.VISIBLE : View.INVISIBLE);
+                    time.setVisibility(orderType == AppDB.ORDER_TYPE_TIME ? View.VISIBLE : View.INVISIBLE);
+                    custom.setVisibility(orderType == AppDB.ORDER_TYPE_CUSTOM ? View.VISIBLE : View.INVISIBLE);
                 }
             }
 
@@ -191,22 +213,19 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
                 }
                 switch (v.getId()) {
                     case R.id.menu_sort_name:
-                        orderType = MusicDB.ORDER_TYPE_NAME;
-                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_NAME);
+                        orderType = AppDB.ORDER_TYPE_NAME;
+                        mPresenter.getSong(type, AppDB.ORDER_TYPE_NAME);
                         break;
                     case R.id.menu_sort_time:
-                        orderType = MusicDB.ORDER_TYPE_TIME;
-                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_TIME);
+                        orderType = AppDB.ORDER_TYPE_TIME;
+                        mPresenter.getSong(type, AppDB.ORDER_TYPE_TIME);
                         break;
                     case R.id.menu_sort_custom:
-                        orderType = MusicDB.ORDER_TYPE_CUSTOM;
-                        mPresenter.getSong(type, MusicDB.ORDER_TYPE_CUSTOM);
+                        orderType = AppDB.ORDER_TYPE_CUSTOM;
+                        mPresenter.getSong(type, AppDB.ORDER_TYPE_CUSTOM);
                         break;
                     case R.id.menu_scan:
-                        Activity activity = getActivity();
-                        Intent intent = new Intent(activity, ScanActivity.class);
-                        intent.putExtra("type", type);
-                        activity.startActivity(intent);
+                        ScanActivity.startActivity(getActivity(), type);
                         break;
                 }
             }
@@ -222,8 +241,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     public void onPlayAll() {
         List<MusicModel> datas = adapter.getDatas();
         if (datas != null && datas.size() > 0) {
-            MusicControl control = MusicService.getControl(getActivity().getApplicationContext());
-            control.init(mContext.getApplicationContext(), datas, 0, true);
+            MediaControler.getIns(mContext).init(datas, 0, true);
         }
     }
 
@@ -233,11 +251,11 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
         if (datas == null || datas.size() <= 0) {
             return;
         }
-        if (MusicCst.models == null) {
-            MusicCst.models = new ArrayList<MusicModel>();
+        if (Constants.Heap.models == null) {
+            Constants.Heap.models = new ArrayList<>();
         }
-        MusicCst.models.clear();
-        MusicCst.models.addAll(datas);
+        Constants.Heap.models.clear();
+        Constants.Heap.models.addAll(datas);
         Intent intent = new Intent(getActivity(), HandleActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("title", title);
@@ -245,6 +263,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
                 || event.type != type || mPresenter == null) {
@@ -255,7 +274,8 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onRefreshEvent(RefreshEvent event) {
+    @SuppressWarnings("unused")
+    public void onEventRefresh(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
                 || event.type == type || event.event != RefreshEvent.SYNC_COLLECTIONG) {
             return;
@@ -264,7 +284,8 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter> impleme
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onSortTypeEvent(SortTypeEvent event) {
+    @SuppressWarnings("unused")
+    public void onEventSortType(SortTypeEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
                 || event.type != type) {
             return;

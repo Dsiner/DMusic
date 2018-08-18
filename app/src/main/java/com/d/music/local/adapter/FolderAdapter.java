@@ -1,7 +1,6 @@
 package com.d.music.local.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 
 import com.d.lib.common.module.repeatclick.OnClickFastListener;
@@ -11,7 +10,7 @@ import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.local.model.FolderModel;
-import com.d.music.module.greendao.db.MusicDB;
+import com.d.music.module.greendao.db.AppDB;
 
 import java.util.List;
 
@@ -32,14 +31,7 @@ public class FolderAdapter extends CommonAdapter<FolderModel> {
         holder.setViewOnClickListener(R.id.llyt_folder, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("title", item.folder);
-                bundle.putInt("type", MusicDB.LOCAL_ALL_MUSIC);
-                bundle.putInt("tab", 3);
-                SongFragment songFragment = new SongFragment();
-                songFragment.setArguments(bundle);
-
-                MainActivity.replace(songFragment);
+                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.LOCAL_ALL_MUSIC, 3, item.folder));
             }
         });
     }

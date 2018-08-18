@@ -5,7 +5,7 @@ import com.d.music.R;
 import com.d.music.local.adapter.SingerAdapter;
 import com.d.music.local.model.SingerModel;
 import com.d.music.module.events.MusicModelEvent;
-import com.d.music.module.greendao.db.MusicDB;
+import com.d.music.module.greendao.db.AppDB;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,9 +42,10 @@ public class LMSingerFragment extends AbstractLMFragment<SingerModel> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != MusicDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
+                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
             return;
         }
         mPresenter.getSinger();

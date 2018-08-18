@@ -4,10 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-/**
- * SQLUtil
- * Created by D on 2017/5/4.
- */
 public class SQLUtil {
     public static synchronized Cursor findBySQL(SQLiteDatabase db, String... sql) {
         checkConditionsCorrect(sql);

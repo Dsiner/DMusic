@@ -12,7 +12,6 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.music.R;
-import com.d.music.common.MusicCst;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.skin.SkinUtil;
 import com.d.music.setting.adapter.SkinAdapter;
@@ -91,7 +90,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     protected void init() {
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        index = Preferences.getInstance(getApplicationContext()).getSkin();
+        index = Preferences.getIns(getApplicationContext()).getSkin();
         adapter = new SkinAdapter(this, getDatas(index), R.layout.adapter_skin);
         adapter.setIndex(index);
         rvList.setLayoutManager(new GridLayoutManager(this, 3));
@@ -118,7 +117,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     private List<RadioModel> getDatas(int index) {
         List<RadioModel> datas = new ArrayList<>();
-        for (int i = -1; i < MusicCst.SKIN_COUNT; i++) {
+        for (int i = -1; i < SkinUtil.SKIN_COUNT; i++) {
             RadioModel model = new RadioModel();
             model.color = getSkinColor(i);
             model.isChecked = (i == index);

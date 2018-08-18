@@ -13,7 +13,7 @@ import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.presenter.LMMusicPresenter;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.view.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;

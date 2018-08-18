@@ -4,7 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.d.music.local.model.FileModel;
-import com.d.music.module.media.MediaUtil;
+import com.d.music.module.media.media.MusicFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,15 +38,16 @@ public class FileUtil {
     /**
      * 获取文件夹列表
      *
-     * @param path:path
-     * @param withCount:是否同步获取该路径下歌曲数
-     * @return models:文件夹列表
+     * @param path:      path
+     * @param withCount: 是否同步获取该路径下歌曲数
+     * @return 文件夹列表
      */
     public static List<FileModel> getFiles(String path, boolean withCount) {
-        List<FileModel> models = new ArrayList<FileModel>();
+        List<FileModel> models = new ArrayList<>();
         File file = new File(path);
         if (!file.exists() || !file.isDirectory()) {
-            return models;//如果当前path不存在，或不是路径，直接返回空的models
+            // 如果当前path不存在，或不是路径，直接返回空的models
+            return models;
         }
         File[] files = file.listFiles();
         if (files != null) {
@@ -89,7 +90,7 @@ public class FileUtil {
     }
 
     public static List<FileModel> getFilterFiles(List<String> paths) {
-        List<FileModel> models = new ArrayList<FileModel>();
+        List<FileModel> models = new ArrayList<>();
         for (String path : paths) {
             File file = new File(path);
             if (!file.exists()) {
@@ -123,7 +124,7 @@ public class FileUtil {
                     List<FileModel> ms = getFilterFiles(f.getAbsolutePath());
                     if (ms != null && ms.size() > 0) {
                         if (models == null) {
-                            models = new ArrayList<FileModel>();
+                            models = new ArrayList<>();
                         }
                         models.addAll(ms);
                     }
@@ -131,7 +132,7 @@ public class FileUtil {
                     FileModel m = getFilterFile(f.getAbsolutePath());
                     if (m != null) {
                         if (models == null) {
-                            models = new ArrayList<FileModel>();
+                            models = new ArrayList<>();
                         }
                         models.add(m);
                     }
@@ -143,14 +144,12 @@ public class FileUtil {
 
     private static FileModel getFilterFile(String path) {
         FileModel model = null;
-        for (String format : MediaUtil.imageFormatSet) {
-            if (path.endsWith(format)) {
-                model = new FileModel();
-                model.absolutePath = path;
-                model.name = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
-                model.postfix = path.substring(path.lastIndexOf(".") - 1);
-                model.type = FileModel.TYPE_FILTER;
-            }
+        if (MusicFactory.Media.endsWith(path)) {
+            model = new FileModel();
+            model.absolutePath = path;
+            model.name = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+            model.postfix = path.substring(path.lastIndexOf(".") - 1);
+            model.type = FileModel.TYPE_FILTER;
         }
         return model;
     }
@@ -176,10 +175,8 @@ public class FileUtil {
                 if (f.isDirectory()) {
                     count += getMusicCountLoop(p);
                 } else {
-                    for (String format : MediaUtil.imageFormatSet) {
-                        if (p.endsWith(format)) {
-                            count++;
-                        }
+                    if (MusicFactory.Media.endsWith(p)) {
+                        count++;
                     }
                 }
             }

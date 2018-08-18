@@ -3,9 +3,9 @@ package com.d.music.module.utils;
 import android.content.Context;
 
 import com.d.lib.common.utils.Util;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.media.SyncUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.media.SyncManager;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.view.dialog.SongInfoDialog;
 import com.d.music.view.popup.AddToListPopup;
@@ -22,25 +22,26 @@ public class MoreUtil {
     /**
      * 添加到歌单
      *
-     * @param context:context
-     * @param model：model
-     * @param type:当前列表标识-排除本列表
+     * @param context: context
+     * @param type:    当前列表标识 - 排除本列表
+     * @param model:   model
      */
-    public static void addToList(Context context, MusicModel model, int type) {
+    public static void addToList(Context context, int type, MusicModel model) {
         List<MusicModel> list = new ArrayList<>();
         list.add(model);
-        new AddToListPopup(context, list, type).show();
+        new AddToListPopup(context, type, list).show();
     }
 
     /**
      * 收藏/取消收藏
      */
-    public static void collect(Context context, MusicModel model, int type, boolean isTip) {
+    public static void collect(Context context, int type, MusicModel model, boolean isTip) {
         model.isCollected = !model.isCollected;
-        if (type != MusicDB.MUSIC) {
-            PlayActivity.isNeedReLoad = true;//通知PlayActivity播放页刷新
+        if (type != AppDB.MUSIC) {
+            // 通知PlayActivity播放页刷新
+            PlayActivity.isNeedReLoad = true;
         }
-        SyncUtil.upCollected(context.getApplicationContext(), model, type);//数据库操作
+        SyncManager.updateCollected(context.getApplicationContext(), type, model);
         if (!isTip) {
             return;
         }

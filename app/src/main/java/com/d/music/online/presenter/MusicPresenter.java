@@ -8,7 +8,7 @@ import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.listener.AsyncCallBack;
 import com.d.music.api.API;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.online.model.BillSongsModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsModel;
@@ -47,7 +47,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                 // Tips: ID mapping to URL
                                 music.url = model.song_id;
                                 music.songName = model.title;
-                                music.singer = model.author;
+                                music.artistName = model.author;
                                 billSongsRespModel.datas.add(music);
                             }
                         }
@@ -91,7 +91,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                 // Tips: ID mapping to URL
                                 music.url = model.songid;
                                 music.songName = model.title;
-                                music.singer = model.artist;
+                                music.artistName = model.artist;
                                 radioSongsRespModel.datas.add(music);
                             }
                         }

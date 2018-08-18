@@ -1,7 +1,7 @@
 package com.d.music.local.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,9 +16,9 @@ import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.CustomList;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.view.dialog.NewListDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,27 +29,27 @@ import java.util.List;
  * CustomListAdapter
  * Created by D on 2017/5/6.
  */
-public class CustomListAdapter extends CommonAdapter<CustomList> {
+public class CustomListAdapter extends CommonAdapter<CustomListModel> {
     private SlideManager manager;
     private RefreshEvent event;
 
-    public CustomListAdapter(Context context, List<CustomList> datas, MultiItemTypeSupport<CustomList> multiItemTypeSupport) {
+    public CustomListAdapter(Context context, List<CustomListModel> datas, MultiItemTypeSupport<CustomListModel> multiItemTypeSupport) {
         super(context, datas, multiItemTypeSupport);
         manager = new SlideManager();
         event = new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST);
     }
 
     @Override
-    public void convert(final int position, CommonHolder holder, final CustomList item) {
+    public void convert(final int position, CommonHolder holder, final CustomListModel item) {
         if (holder.mLayoutId == R.layout.adapter_custom_list) {
-            holder.setText(R.id.tv_list_name, item.listName);
-            holder.setText(R.id.tv_song_count, (item.songCount != null ? item.songCount : 0) + "首");
+            holder.setText(R.id.tv_list_name, item.name);
+            holder.setText(R.id.tv_song_count, (item.count != null ? item.count : 0) + "首");
             final SlideLayout slSlide = holder.getView(R.id.sl_slide);
-            slSlide.setOpen(item.isOpen, false);
+            slSlide.setOpen(item.exIsOpen, false);
             slSlide.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
                 @Override
                 public void onChange(SlideLayout layout, boolean isOpen) {
-                    item.isOpen = isOpen;
+                    item.exIsOpen = isOpen;
                     manager.onChange(layout, isOpen);
                 }
 
@@ -82,17 +82,12 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
                         slSlide.close();
                         return;
                     }
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title", item.listName);
-                    bundle.putInt("type", item.pointer);
-                    SongFragment songFragment = new SongFragment();
-                    songFragment.setArguments(bundle);
-
-                    MainActivity.replace(songFragment);
+                    MainActivity.getManger().replace(SongFragment.getInstance(item.pointer, item.name));
                 }
             });
         } else if (holder.mLayoutId == R.layout.adapter_custom_list_add) {
             holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+                @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     return manager.closeAll(null);
@@ -107,19 +102,19 @@ public class CustomListAdapter extends CommonAdapter<CustomList> {
         }
     }
 
-    private void delete(final CustomList item) {
+    private void delete(final CustomListModel item) {
         TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
-                MusicDBUtil.getInstance(mContext).delete(MusicDB.CUSTOM_LIST, item);
-                MusicDBUtil.getInstance(mContext).deleteAll(item.pointer);
+                AppDBUtil.getIns(mContext).optMusic().delete(AppDB.CUSTOM_LIST, item);
+                AppDBUtil.getIns(mContext).optMusic().deleteAll(item.pointer);
             }
         });
     }
 
-    private void stick(final CustomList item) {
-        item.seq = MusicDBUtil.getInstance(mContext).queryCustomListMinSeq() - 1;
-        MusicDBUtil.getInstance(mContext).insertOrReplaceCustomList(item);
+    private void stick(final CustomListModel item) {
+        item.seq = AppDBUtil.getIns(mContext).optCustomList().queryMinSeq() - 1;
+        AppDBUtil.getIns(mContext).optCustomList().insertOrReplace(item);
         EventBus.getDefault().post(event);
     }
 

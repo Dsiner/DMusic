@@ -5,8 +5,8 @@ import android.database.Cursor;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.music.local.view.IMainView;
-import com.d.music.module.greendao.music.CustomList;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.module.greendao.util.AppDBUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -29,17 +30,17 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
     }
 
     public void getCustomList(final boolean isShowAdd) {
-        Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
+        Observable.create(new ObservableOnSubscribe<List<CustomListModel>>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<List<CustomList>> e) throws Exception {
-                List<CustomList> list = new ArrayList<CustomList>();
-                List<CustomList> query = MusicDBUtil.getInstance(mContext).queryAllCustomList();
+            public void subscribe(@NonNull ObservableEmitter<List<CustomListModel>> e) throws Exception {
+                List<CustomListModel> list = new ArrayList<>();
+                List<CustomListModel> query = AppDBUtil.getIns(mContext).optCustomList().queryAll();
                 if (query != null) {
                     list.addAll(query);
                 }
                 if (isShowAdd) {
-                    CustomList add = new CustomList();
-                    add.pointer = -1;//-1:add type
+                    CustomListModel add = new CustomListModel();
+                    add.pointer = -1; // -1: add type
                     list.add(add);
                 }
                 e.onNext(list);
@@ -47,13 +48,28 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<CustomList>>() {
+                .subscribe(new Observer<List<CustomListModel>>() {
                     @Override
-                    public void accept(@NonNull List<CustomList> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<CustomListModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setCustomList(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -63,7 +79,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT COUNT(*) FROM LOCAL_ALL_MUSIC");
+                Cursor cursor = AppDBUtil.getIns(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM LOCAL_ALL_MUSIC");
                 Integer count = 0;
                 if (cursor != null && cursor.moveToFirst()) {
                     int indexCount = cursor.getColumnIndex("COUNT(*)");
@@ -79,13 +95,28 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Integer>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
-                    public void accept(@NonNull Integer count) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer count) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setLocalAllCount(count);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -95,7 +126,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT COUNT(*) FROM COLLECTION_MUSIC");
+                Cursor cursor = AppDBUtil.getIns(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM COLLECTION_MUSIC");
                 Integer count = 0;
                 if (cursor != null && cursor.moveToFirst()) {
                     int indexCount = cursor.getColumnIndex("COUNT(*)");
@@ -111,13 +142,28 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Integer>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
-                    public void accept(@NonNull Integer count) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer count) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setCollectionCount(count);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

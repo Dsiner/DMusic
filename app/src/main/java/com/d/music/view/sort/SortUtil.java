@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 import com.github.promeg.pinyinhelper.Pinyin;
 
 import java.util.Collections;
@@ -34,13 +34,13 @@ public class SortUtil {
         }
         int firstVisibleItemPosition = ((LinearLayoutManager) manager).findFirstVisibleItemPosition();
 
-        int[] value = letterMap.get(datas.get(firstVisibleItemPosition).letter);
+        int[] value = letterMap.get(datas.get(firstVisibleItemPosition).exLetter);
         int nextSectionPosition = value != null ? value[1] : -1;
         if (firstVisibleItemPosition != lastFirstVisibleItem) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
             params.topMargin = 0;
             layout.setLayoutParams(params);
-            tvLetter.setText(datas.get(firstVisibleItemPosition).letter);
+            tvLetter.setText(datas.get(firstVisibleItemPosition).exLetter);
         }
         if (nextSectionPosition == firstVisibleItemPosition + 1) {
             View childView = recyclerView.getChildAt(0);
@@ -99,18 +99,18 @@ public class SortUtil {
             } else if (!letter.matches("[A-Z]")) {
                 letter = "#";
             }
-            bean.pinyin = pinyin;
-            bean.letter = letter;
-            bean.isLetter = false;
+            bean.exPinyin = pinyin;
+            bean.exLetter = letter;
+            bean.exIsLetter = false;
         }
         Collections.sort(list, new PinyinComparator());
         String key = null;
         int[] value = null;//is[0]:thisSectionPosition,is[1]:nextSectionPosition
         for (int i = 0; i < count; i++) {
             MusicModel b = list.get(i);
-            if (!TextUtils.equals(key, b.letter)) {
-                key = b.letter;
-                b.isLetter = true;
+            if (!TextUtils.equals(key, b.exLetter)) {
+                key = b.exLetter;
+                b.exIsLetter = true;
                 if (value != null) {
                     value[1] = i;
                 }

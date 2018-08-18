@@ -10,8 +10,8 @@ import com.d.music.local.model.AlbumModel;
 import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;
@@ -20,9 +20,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -42,25 +43,41 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
+                List<MusicModel> list = AppDBUtil.getIns(mContext).optMusic()
+                        .queryAll(type);
                 if (list == null) {
-                    list = new ArrayList<MusicModel>();
+                    list = new ArrayList<>();
                 }
                 if (sortUtil != null) {
-                    sortUtil.sortDatas(list);//重新排序
+                    sortUtil.sortDatas(list); // 重新排序
                 }
                 e.onNext(list);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -72,11 +89,12 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         Observable.create(new ObservableOnSubscribe<List<SingerModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<SingerModel>> e) throws Exception {
-                List<SingerModel> list = new ArrayList<SingerModel>();
-                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY SINGER");
-                if (null != cursor && cursor.moveToFirst()) {
+                List<SingerModel> list = new ArrayList<>();
+                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                        .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ARTIST_NAME");
+                if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        int indexSinger = cursor.getColumnIndex("SINGER");
+                        int indexSinger = cursor.getColumnIndex("ARTIST_NAME");
                         int indexCount = cursor.getColumnIndex("COUNT(*)");
                         if (indexSinger != -1 && indexCount != -1) {
                             SingerModel model = new SingerModel();
@@ -97,18 +115,28 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<SingerModel>>() {
+                .subscribe(new Observer<List<SingerModel>>() {
                     @Override
-                    public void accept(@NonNull List<SingerModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<SingerModel> list) {
                         if (getView() == null) {
                             return;
                         }
-                        if (list.size() <= 0) {
-                            getView().setState(DSLayout.STATE_EMPTY);
-                        } else {
-                            getView().setState(DSLayout.GONE);
-                        }
                         getView().setSinger(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -120,11 +148,12 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         Observable.create(new ObservableOnSubscribe<List<AlbumModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<AlbumModel>> e) throws Exception {
-                List<AlbumModel> list = new ArrayList<AlbumModel>();
-                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ALBUM");
-                if (null != cursor && cursor.moveToFirst()) {
+                List<AlbumModel> list = new ArrayList<>();
+                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                        .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ALBUM_NAME");
+                if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        int indexAlbum = cursor.getColumnIndex("ALBUM");
+                        int indexAlbum = cursor.getColumnIndex("ALBUM_NAME");
                         int indexCount = cursor.getColumnIndex("COUNT(*)");
                         if (indexAlbum != -1 && indexCount != -1) {
                             AlbumModel albumModel = new AlbumModel();
@@ -144,9 +173,14 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<AlbumModel>>() {
+                .subscribe(new Observer<List<AlbumModel>>() {
                     @Override
-                    public void accept(@NonNull List<AlbumModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<AlbumModel> list) {
                         if (getView() == null) {
                             return;
                         }
@@ -156,6 +190,16 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                             getView().setState(DSLayout.GONE);
                         }
                         getView().setAlbum(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -167,11 +211,12 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         Observable.create(new ObservableOnSubscribe<List<FolderModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<FolderModel>> e) throws Exception {
-                List<FolderModel> list = new ArrayList<FolderModel>();
-                Cursor cursor = MusicDBUtil.getInstance(mContext).queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY FOLDER");
-                if (null != cursor && cursor.moveToFirst()) {
+                List<FolderModel> list = new ArrayList<>();
+                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                        .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY FILE_FOLDER");
+                if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        int indexFolder = cursor.getColumnIndex("FOLDER");
+                        int indexFolder = cursor.getColumnIndex("FILE_FOLDER");
                         int indexCount = cursor.getColumnIndex("COUNT(*)");
                         if (indexFolder != -1 && indexCount != -1) {
                             FolderModel model = new FolderModel();
@@ -191,34 +236,43 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<FolderModel>>() {
+                .subscribe(new Observer<List<FolderModel>>() {
                     @Override
-                    public void accept(@NonNull List<FolderModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<FolderModel> list) {
                         if (getView() == null) {
                             return;
                         }
-                        if (list.size() <= 0) {
-                            getView().setState(DSLayout.STATE_EMPTY);
-                        } else {
-                            getView().setState(DSLayout.GONE);
-                        }
                         getView().setFolder(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
 
-    public void subPullUp(final List<MusicModel> datas) {
+    public void subPullUp(@android.support.annotation.NonNull final List<MusicModel> datas) {
         if (getView() != null) {
             getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = new ArrayList<MusicModel>();
-                list.addAll(datas);
+                List<MusicModel> list = new ArrayList<>(datas);
                 for (MusicModel m : list) {
                     if (m != null) {
-                        m.isChecked = false;
+                        m.exIsChecked = false;
                     }
                 }
                 e.onNext(list);
@@ -226,13 +280,28 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setSong(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

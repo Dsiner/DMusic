@@ -16,9 +16,10 @@
 
 ## Todo
 - [x] Support online music list.
-- [x] Support MV online play.
-- [x] Support music download.
-- [ ] Music online search, play, cache, download, etc.
+- [x] Support online MV play.
+- [x] Support online music download.
+- [x] Support online music play.
+- [ ] Support online search, cache, etc.
 
 ## Dependencies
 - [Common](https://github.com/Dsiner/Common)

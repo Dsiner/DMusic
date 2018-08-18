@@ -11,13 +11,13 @@
     </style>
 
     <style name="activityAnim">
-        <!--打开新的Activity并进入新的Activity展示的动画-->
+        <!-- 打开新的Activity并进入新的Activity展示的动画 -->
         <item name="android:activityOpenEnterAnimation">@anim/push_right_in</item>
-        <!--打开新的Activity并销毁之前的Activity展示的动画-->
+        <!-- 打开新的Activity并销毁之前的Activity展示的动画 -->
         <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
-        <!--关闭当前Activity进入上一个Activity展示的动画-->
+        <!-- 关闭当前Activity进入上一个Activity展示的动画 -->
         <item name="android:activityCloseEnterAnimation">@anim/push_left_in</item>
-        <!--关闭当前Activity时展示的动画-->
+        <!-- 关闭当前Activity时展示的动画 -->
         <item name="android:activityCloseExitAnimation">@anim/push_right_out</item>
     </style>
 

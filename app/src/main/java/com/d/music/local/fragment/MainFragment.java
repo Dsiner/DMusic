@@ -3,7 +3,6 @@ package com.d.music.local.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -28,11 +27,11 @@ import com.d.music.local.presenter.MainPresenter;
 import com.d.music.local.view.IMainView;
 import com.d.music.module.events.MusicModelEvent;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.CustomList;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
-import com.d.music.module.media.MusicFactory;
+import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.module.media.media.MusicFactory;
 import com.d.music.online.activity.OnlineActivity;
 import com.d.music.utils.fileutil.FileUtil;
 
@@ -48,9 +47,10 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -85,17 +85,11 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
         switch (v.getId()) {
             case R.id.rlyt_local:
                 // 本地音乐
-                LocalAllFragment lFragment = new LocalAllFragment();
-                MainActivity.replace(lFragment);
+                MainActivity.getManger().replace(new LocalAllFragment());
                 break;
             case R.id.rlyt_collection:
                 // 我的收藏
-                Bundle bundle = new Bundle();
-                bundle.putString("title", "我的收藏");
-                bundle.putInt("type", MusicDB.COLLECTION_MUSIC);
-                SongFragment sFragment = new SongFragment();
-                sFragment.setArguments(bundle);
-                MainActivity.replace(sFragment);
+                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.COLLECTION_MUSIC, "我的收藏"));
                 break;
             case R.id.rlyt_online:
                 // 音乐馆
@@ -127,9 +121,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
 
     @Override
     protected void init() {
-        p = Preferences.getInstance(getActivity().getApplicationContext());
+        p = Preferences.getIns(getActivity().getApplicationContext());
         isShowAdd = p.getIsShowAdd();
-        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomList>(), new MultiItemTypeSupport<CustomList>() {
+        adapter = new CustomListAdapter(getActivity(), new ArrayList<CustomListModel>(), new MultiItemTypeSupport<CustomListModel>() {
             @Override
             public int getLayoutId(int viewType) {
                 switch (viewType) {
@@ -141,8 +135,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
             }
 
             @Override
-            public int getItemViewType(int position, CustomList customList) {
-                return customList.pointer;
+            public int getItemViewType(int position, CustomListModel customListModel) {
+                return customListModel.pointer;
             }
         });
         lvList.setAdapter(adapter);
@@ -185,6 +179,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onEvent(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing() || mPresenter == null) {
             return;
@@ -200,7 +195,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     @Override
-    public void setCustomList(List<CustomList> models) {
+    public void setCustomList(List<CustomListModel> models) {
         adapter.setDatas(models);
         adapter.notifyDataSetChanged();
     }
@@ -222,33 +217,32 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     private void scanAll() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            PermissionCompat.with(getActivity()).
-                    requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribeOn(PermissionSchedulers.io())
-                    .observeOn(PermissionSchedulers.mainThread())
-                    .requestPermissions(new PermissionCallback<Permission>() {
-                        @Override
-                        public void onNext(Permission permission) {
-                            if (getActivity() == null || getActivity().isFinishing()) {
-                                return;
-                            }
-                            if (permission.granted) {
-                                // `permission.name` is granted !
-                                doInBackground(getActivity(), MusicDB.LOCAL_ALL_MUSIC);
-                            } else if (permission.shouldShowRequestPermissionRationale) {
-                                // Denied permission without ask never again
-                                Util.toast(getActivity().getApplicationContext(), "Denied permission!");
-                            } else {
-                                // Denied permission with ask never again
-                                // Need to go to the settings
-                                Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
-                            }
+        PermissionCompat.with(getActivity()).
+                requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.INTERNET)
+                .subscribeOn(PermissionSchedulers.io())
+                .observeOn(PermissionSchedulers.mainThread())
+                .requestPermissions(new PermissionCallback<Permission>() {
+                    @Override
+                    public void onNext(Permission permission) {
+                        if (getActivity() == null || getActivity().isFinishing()) {
+                            return;
                         }
-                    });
-        } else {
-            doInBackground(getActivity(), MusicDB.LOCAL_ALL_MUSIC);
-        }
+                        if (permission.granted) {
+                            // `permission.name` is granted !
+                            doInBackground(getActivity(), AppDB.LOCAL_ALL_MUSIC);
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // Denied permission without ask never again
+                            Util.toast(getActivity().getApplicationContext(), "Denied permission!");
+                        } else {
+                            // Denied permission with ask never again
+                            // Need to go to the settings
+                            Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
+                        }
+                    }
+                });
     }
 
     private void doInBackground(final Context context, final int type) {
@@ -262,27 +256,38 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<String> paths = new ArrayList<>();
                 paths.add(FileUtil.getRootPath());
-                List<MusicModel> list = (List<MusicModel>) MusicFactory.createFactory(context, type).getMusic(paths);
-                MusicDBUtil.getInstance(context).deleteAll(type);
-                MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(list, type);
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
+                List<MusicModel> list = MusicFactory.createFactory(context).query(paths);
+                AppDBUtil.getIns(context).optMusic().deleteAll(type);
+                AppDBUtil.getIns(context).optMusic().insertOrReplaceInTx(type, list);
                 e.onNext(list);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (tvLocalAllCount != null && pbrLoading != null) {
                             tvLocalAllCount.setVisibility(View.VISIBLE);
                             pbrLoading.setVisibility(View.GONE);
                             setLocalAllCount(list.size());
                         }
-                        MusicModelEvent event = new MusicModelEvent(type, list);
-                        EventBus.getDefault().post(event);
+                        EventBus.getDefault().post(new MusicModelEvent(type, list));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

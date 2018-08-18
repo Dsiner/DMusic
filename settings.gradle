@@ -1,4 +1,4 @@
 include ':app', ':lib_common',
-        ':greendao',
+        ':lib_greendao_generator',
         ':lib_rxnet', ':lib_xrv', ':lib_commenplayer'
 

@@ -13,7 +13,7 @@ import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.adapter.DetailAdapter;
 import com.d.music.online.model.BillSongsRespModel;

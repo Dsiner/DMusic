@@ -2,7 +2,7 @@ package com.d.music.local.view;
 
 
 import com.d.lib.common.module.mvp.MvpView;
-import com.d.music.module.greendao.music.CustomList;
+import com.d.music.module.greendao.bean.CustomListModel;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Created by D on 2016/6/4.
  */
 public interface IMainView extends MvpView {
-    void setCustomList(List<CustomList> models);
+    void setCustomList(List<CustomListModel> models);
 
     void setLocalAllCount(int count);
 

@@ -1,6 +1,7 @@
 package com.d.music.local.activity;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -24,11 +25,19 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/4/29.
  */
 public class ScanActivity extends BaseFragmentActivity implements OnClickListener {
+    public final static String ARG_TYPE = "type";
+
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
+
+    public static void startActivity(Context context, int type) {
+        Intent intent = new Intent(context, ScanActivity.class);
+        intent.putExtra(ARG_TYPE, type);
+        context.startActivity(intent);
+    }
 
     @OnClick({R.id.iv_title_left})
     public void onClick(View v) {
@@ -49,15 +58,11 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(ScanActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        int type = getIntent().getIntExtra("type", 0);
+        StatusBarCompat.compat(ScanActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        int type = getIntent().getIntExtra(ARG_TYPE, 0);
         ULog.d("type" + type);
         initTitle();
-        Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
-        Fragment scanFragment = new ScanFragment();
-        scanFragment.setArguments(bundle);
-        replaceFragment(scanFragment);
+        replaceFragment(ScanFragment.getInstance(type));
     }
 
     private void initTitle() {
@@ -74,7 +79,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 
     @Override

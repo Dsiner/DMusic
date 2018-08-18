@@ -1,6 +1,5 @@
 package com.d.music.view.popup;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,10 +15,10 @@ import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.CustomList;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.play.adapter.AddToListAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,9 +29,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -48,7 +48,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
      */
     private List<MusicModel> models;
 
-    public AddToListPopup(Context context, List<MusicModel> models, int type) {
+    public AddToListPopup(Context context, int type,List<MusicModel> models) {
         super(context, R.layout.dialog_add_to_list);
         this.models = models;
         queryListNot(type);
@@ -63,7 +63,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
         ldlLoading = (LoadingLayout) rootView.findViewById(R.id.ldl_loading);
         LRecyclerView lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
-        adapter = new AddToListAdapter(context, new ArrayList<CustomList>(), R.layout.adapter_add_to_list);
+        adapter = new AddToListAdapter(context, new ArrayList<CustomListModel>(), R.layout.adapter_add_to_list);
         lrvList.setAdapter(adapter);
 
         rootView.findViewById(R.id.tv_ok).setOnClickListener(this);
@@ -106,13 +106,12 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
         }
     }
 
-    @SuppressLint("CheckResult")
     private void queryListNot(final int notType) {
         showLoading();
-        Observable.create(new ObservableOnSubscribe<List<CustomList>>() {
+        Observable.create(new ObservableOnSubscribe<List<CustomListModel>>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<List<CustomList>> e) throws Exception {
-                List<CustomList> list = MusicDBUtil.getInstance(context).queryAllCustomList(notType);
+            public void subscribe(@NonNull ObservableEmitter<List<CustomListModel>> e) throws Exception {
+                List<CustomListModel> list = AppDBUtil.getIns(context).optCustomList().queryAllNot(notType);
                 if (list == null) {
                     list = new ArrayList<>();
                 }
@@ -121,9 +120,14 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<CustomList>>() {
+                .subscribe(new Observer<List<CustomListModel>>() {
                     @Override
-                    public void accept(@NonNull List<CustomList> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<CustomListModel> list) {
                         if (context == null || ((Activity) context).isFinishing() || adapter == null) {
                             return;
                         }
@@ -131,29 +135,38 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                         adapter.setDatas(list);
                         adapter.notifyDataSetChanged();
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
     }
 
-    @SuppressLint("CheckResult")
     private void addTo() {
         showLoading();
         Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
                 Boolean isEmpty = true;
-                List<CustomList> list = adapter.getDatas();// 除当前列表外的自定义列表队列
+                List<CustomListModel> list = adapter.getDatas();// 除当前列表外的自定义列表队列
                 if (list != null) {
-                    for (CustomList b : list) {
-                        if (!b.isChecked) {
+                    for (CustomListModel b : list) {
+                        if (!b.exIsChecked) {
                             continue;
                         }
                         isEmpty = false;
-                        MusicDBUtil.getInstance(context).insertOrReplaceMusicInTx(MusicModel.clone(models, b.pointer), b.pointer);
+                        AppDBUtil.getIns(context).optMusic().insertOrReplaceInTx(b.pointer, models);
 
-                        //更新首页自定义列表歌曲数
-                        final int index = b.pointer - MusicDB.CUSTOM_MUSIC_INDEX;
-                        if (index >= 0 && index < MusicDB.CUSTOM_MUSIC_COUNT) {
-                            Cursor cursor = MusicDBUtil.getInstance(context).queryBySQL("SELECT COUNT(*) FROM CUSTOM_MUSIC" + index);
+                        // 更新首页自定义列表歌曲数
+                        final int index = b.pointer - AppDB.CUSTOM_MUSIC_INDEX;
+                        if (index >= 0 && index < AppDB.CUSTOM_MUSIC_COUNT) {
+                            Cursor cursor = AppDBUtil.getIns(context).optMusic().queryBySQL("SELECT COUNT(*) FROM CUSTOM_MUSIC" + index);
                             Integer count = 0;
                             if (cursor != null && cursor.moveToFirst()) {
                                 int indexCount = cursor.getColumnIndex("COUNT(*)");
@@ -164,7 +177,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                             if (cursor != null) {
                                 cursor.close();
                             }
-                            MusicDBUtil.getInstance(context).updateCusListCount(b.pointer, count);
+                            AppDBUtil.getIns(context).optCustomList().updateCount(b.pointer, count);
                         }
                     }
                 }
@@ -173,9 +186,14 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
+                .subscribe(new Observer<Boolean>() {
                     @Override
-                    public void accept(@NonNull Boolean isEmpty) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean isEmpty) {
                         if (context == null || ((Activity) context).isFinishing()) {
                             return;
                         }
@@ -184,10 +202,20 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                             Util.toast(context, "请先选择");
                         } else {
                             Util.toast(context, "成功添加");
-                            //更新首页自定义列表
+                            // 更新首页自定义列表
                             EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                             dismiss();
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

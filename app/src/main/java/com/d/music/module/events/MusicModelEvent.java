@@ -1,11 +1,11 @@
 package com.d.music.module.events;
 
-import com.d.music.module.greendao.music.base.MusicModel;
+import com.d.music.module.greendao.bean.MusicModel;
 
 import java.util.List;
 
 /**
- * scan list
+ * Scan list
  * Created by D on 2017/5/9.
  */
 public class MusicModelEvent {

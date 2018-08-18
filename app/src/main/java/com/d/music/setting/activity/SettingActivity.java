@@ -86,7 +86,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
     protected void init() {
         StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
         initTitle();
-        p = Preferences.getInstance(SettingActivity.this);
+        p = Preferences.getIns(SettingActivity.this);
         rlModeAutoPlay.setOpen(p.getIsAutoPlay());
         rlModeSub.setOpen(p.getIsSubPull());
         rlModeAdd.setOpen(p.getIsShowAdd());

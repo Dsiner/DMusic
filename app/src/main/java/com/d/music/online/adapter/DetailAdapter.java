@@ -15,9 +15,8 @@ import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.api.API;
 import com.d.music.common.Constants;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.service.MusicControl;
-import com.d.music.module.service.MusicService;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.online.model.SongInfoRespModel;
 import com.d.music.view.dialog.OperationDialog;
 
@@ -38,7 +37,7 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
     public void convert(int position, CommonHolder holder, final MusicModel item) {
         holder.setText(R.id.tv_seq, "" + (position + 1));
         holder.setText(R.id.tv_title, "" + item.songName);
-        holder.setText(R.id.tv_singer, "" + item.singer);
+        holder.setText(R.id.tv_singer, "" + item.artistName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,13 +81,13 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
                         // FIXME: @dsiner 在线播放 2018/8/16
                         SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
                         MusicModel model = new MusicModel();
-                        model.singer = song.artistName;
-                        model.songName = song.songName;
+                        model.type = MusicModel.TYPE_BAIDU;
                         model.url = song.songLink;
+                        model.songName = song.songName;
+                        model.artistName = song.artistName;
                         List<MusicModel> datas = new ArrayList<>();
                         datas.add(model);
-                        MusicControl control = MusicService.getControl(mContext.getApplicationContext());
-                        control.init(mContext.getApplicationContext(), datas, 0, true);
+                        MediaControler.getIns(mContext).init(datas, 0, true);
                     }
 
                     @Override

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.play.view.IPlayView;
 import com.d.music.utils.fileutil.FileUtil;
 import com.d.music.view.lrc.DefaultLrcParser;
@@ -24,9 +24,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -44,21 +45,36 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(MusicDB.MUSIC);
+                List<MusicModel> list = AppDBUtil.getIns(mContext).optMusic().queryAll(AppDB.MUSIC);
                 if (list == null) {
-                    list = new ArrayList<MusicModel>();
+                    list = new ArrayList<>();
                 }
-                e.onNext(list);//非空
+                e.onNext(list);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().reLoad(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -67,7 +83,8 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
         if (getView() == null || model == null) {
             return;
         }
-        final String path = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl : model.folder + "/" + model.songName + ".lrc";
+        final String path = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl
+                : model.fileFolder + "/" + model.songName + ".lrc";
         lrcUrl = path;
         Observable.create(new ObservableOnSubscribe<List<LrcRow>>() {
             @Override
@@ -77,20 +94,35 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                     list = DefaultLrcParser.getInstance().getLrcRows(converfile(path));
                 }
                 if (list == null) {
-                    list = new ArrayList<LrcRow>();
+                    list = new ArrayList<>();
                 }
                 e.onNext(list);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<LrcRow>>() {
+                .subscribe(new Observer<List<LrcRow>>() {
                     @Override
-                    public void accept(@NonNull List<LrcRow> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<LrcRow> list) {
                         if (getView() == null || !TextUtils.equals(lrcUrl, path)) {
                             return;
                         }
                         getView().setLrcRows(path, list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -99,7 +131,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
         File file = new File(path);
         FileInputStream fis = null;
         BufferedInputStream bis = null;
-        BufferedReader reader = null;
+        BufferedReader reader;
         String text = null;
         try {
             fis = new FileInputStream(file);

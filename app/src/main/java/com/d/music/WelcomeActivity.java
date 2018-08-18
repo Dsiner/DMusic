@@ -1,5 +1,6 @@
 package com.d.music;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -39,7 +40,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         }
         switch (v.getId()) {
             case R.id.btn_start:
-                //启动音乐主界面
+                // 启动音乐主界面
                 gotoMain();
                 break;
         }
@@ -60,18 +61,19 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         return this;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     protected void init() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view0 = inflater.inflate(R.layout.welcome_page0, null);
-        View view1 = inflater.inflate(R.layout.welcome_page1, null);
-        View view2 = inflater.inflate(R.layout.welcome_page2, null);
-        view2.findViewById(R.id.btn_start).setOnClickListener(this);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        final View page0 = inflater.inflate(R.layout.welcome_page0, null);
+        final View page1 = inflater.inflate(R.layout.welcome_page1, null);
+        final View page2 = inflater.inflate(R.layout.welcome_page2, null);
+        page2.findViewById(R.id.btn_start).setOnClickListener(this);
 
-        final List<View> views = new ArrayList<View>();
-        views.add(view0);
-        views.add(view1);
-        views.add(view2);
+        final List<View> pages = new ArrayList<>();
+        pages.add(page0);
+        pages.add(page1);
+        pages.add(page2);
 
         PagerAdapter pagerAdapter = new PagerAdapter() {
 
@@ -82,18 +84,18 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
             @Override
             public int getCount() {
-                return views.size();
+                return pages.size();
             }
 
             @Override
             public void destroyItem(View container, int position, Object object) {
-                ((ViewPager) container).removeView(views.get(position));
+                ((ViewPager) container).removeView(pages.get(position));
             }
 
             @Override
             public Object instantiateItem(View container, int position) {
-                ((ViewPager) container).addView(views.get(position));
-                return views.get(position);
+                ((ViewPager) container).addView(pages.get(position));
+                return pages.get(position);
             }
         };
         page.setAdapter(pagerAdapter);
@@ -127,7 +129,8 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
     }
 
     private void gotoMain() {
-        MusicService.startService(getApplicationContext());//开启service服务
+        // 开启Service服务
+        MusicService.startService(getApplicationContext());
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

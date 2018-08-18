@@ -6,9 +6,9 @@ import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.lib.common.view.DSLayout;
 import com.d.music.local.view.ISongView;
-import com.d.music.module.greendao.db.MusicDB;
-import com.d.music.module.greendao.music.base.MusicModel;
-import com.d.music.module.greendao.util.MusicDBUtil;
+import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.greendao.db.AppDB;
+import com.d.music.module.greendao.util.AppDBUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -32,8 +33,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
     }
 
     public void getSong(final int type, final int tab, final String sortKey, final int orderType) {
-        if (type >= MusicDB.CUSTOM_MUSIC_INDEX && type < MusicDB.CUSTOM_MUSIC_INDEX + MusicDB.CUSTOM_MUSIC_COUNT) {
-            //自定义歌曲
+        if (type >= AppDB.CUSTOM_MUSIC_INDEX && type < AppDB.CUSTOM_MUSIC_INDEX + AppDB.CUSTOM_MUSIC_COUNT) {
+            // 自定义歌曲
             getSong(type, orderType);
             return;
         }
@@ -44,20 +45,20 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = null;
-                if (type == MusicDB.LOCAL_ALL_MUSIC && tab > 0) {
+                if (type == AppDB.LOCAL_ALL_MUSIC && tab > 0) {
                     switch (tab) {
                         case 1:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllBySinger(sortKey);
+                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllBySinger(sortKey);
                             break;
                         case 2:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByAlbum(sortKey);
+                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByAlbum(sortKey);
                             break;
                         case 3:
-                            list = MusicDBUtil.getInstance(mContext).queryLocalAllByFolder(sortKey);
+                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByFolder(sortKey);
                             break;
                     }
                 } else {
-                    list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllMusic(type);
+                    list = AppDBUtil.getIns(mContext).optMusic().queryAll(type);
                 }
                 if (list == null) {
                     list = new ArrayList<>();
@@ -67,13 +68,28 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setData(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -91,9 +107,9 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, orderType);
-                List<MusicModel> list = null;
-                list = (List<MusicModel>) MusicDBUtil.getInstance(mContext).queryAllCustomMusic(type, orderType);
+                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, orderType);
+                List<MusicModel> list = AppDBUtil.getIns(mContext).optCustomList()
+                        .queryAllCustomMusic(type, orderType);
                 if (list == null) {
                     list = new ArrayList<>();
                 }
@@ -102,13 +118,28 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setData(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -121,12 +152,12 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             @Override
             public void run() {
                 for (MusicModel model : models) {
-                    model.isSortChecked = false;
+                    model.exIsSortChecked = false;
                 }
-                MusicDBUtil.getInstance(mContext).deleteAll(type);
-                MusicDBUtil.getInstance(mContext).insertOrReplaceMusicInTx(MusicModel.clone(models, type), type);
-                MusicDBUtil.getInstance(mContext).updateCusListCount(type, models.size());
-                MusicDBUtil.getInstance(mContext).updateCusListSoryByType(type, MusicDB.ORDER_TYPE_CUSTOM);//按自定义排序
+                AppDBUtil.getIns(mContext).optMusic().deleteAll(type);
+                AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(type, models);
+                AppDBUtil.getIns(mContext).optCustomList().updateCount(type, models.size());
+                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_CUSTOM);//按自定义排序
             }
         });
     }
@@ -134,18 +165,17 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
     /**
      * 所有下拉菜单，收起
      */
-    public void subPullUp(final List<MusicModel> datas) {
+    public void subPullUp(@android.support.annotation.NonNull final List<MusicModel> datas) {
         if (getView() != null) {
             getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = new ArrayList<MusicModel>();
-                list.addAll(datas);
+                List<MusicModel> list = new ArrayList<>(datas);
                 for (MusicModel m : list) {
                     if (m != null) {
-                        m.isChecked = false;
+                        m.exIsChecked = false;
                     }
                 }
                 e.onNext(list);
@@ -153,13 +183,28 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MusicModel>>() {
+                .subscribe(new Observer<List<MusicModel>>() {
                     @Override
-                    public void accept(@NonNull List<MusicModel> list) throws Exception {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MusicModel> list) {
                         if (getView() == null) {
                             return;
                         }
                         getView().setData(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }

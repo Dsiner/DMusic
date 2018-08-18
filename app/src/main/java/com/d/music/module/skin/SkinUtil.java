@@ -2,7 +2,6 @@ package com.d.music.module.skin;
 
 import android.content.Context;
 
-import com.d.music.common.MusicCst;
 import com.d.music.common.preferences.Preferences;
 
 import java.io.File;
@@ -15,9 +14,10 @@ import cn.feng.skin.manager.loader.SkinManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -25,16 +25,23 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/6/17.
  */
 public class SkinUtil {
+    // dmusicskin_0、dmusicskin_1、dmusicskin_2...dmusicskin_n皮肤包如此命名
+    public static final String SKIN_NAME = "dmusicskin_";
+    // 皮肤包拼接后缀名
+    public static final String SKIN_NAME_POSTFIX = ".skin";
+    // 皮肤包总数目
+    public static final int SKIN_COUNT = 18;
+
     public static void restoreDefaultTheme() {
         SkinManager.getInstance().restoreDefaultTheme();
     }
 
     /**
-     * skin init
+     * Skin Init
      */
     public static void initSkin(final Context context) {
         SkinManager.getInstance().init(context.getApplicationContext());
-        final Preferences p = Preferences.getInstance(context.getApplicationContext());
+        final Preferences p = Preferences.getIns(context.getApplicationContext());
         if (p.getSkinLoaded()) {
             SkinManager.getInstance().load();
             return;
@@ -46,8 +53,8 @@ public class SkinUtil {
                 InputStream in = null;
                 FileOutputStream out = null;
                 int success = 0;
-                for (int i = 0; i < MusicCst.SKIN_COUNT; i++) {
-                    String name = MusicCst.SKIN_NAME + i + MusicCst.SKIN_NAME_POSTFIX;
+                for (int i = 0; i < SKIN_COUNT; i++) {
+                    String name = SKIN_NAME + i + SKIN_NAME_POSTFIX;
                     File file = new File(root + "/" + name);
                     if (!file.exists()) {
                         try {
@@ -74,18 +81,33 @@ public class SkinUtil {
                         success++;
                     }
                 }
-                emitter.onNext(success == MusicCst.SKIN_COUNT);
+                emitter.onNext(success == SKIN_COUNT);
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
+                .subscribe(new Observer<Boolean>() {
                     @Override
-                    public void accept(@NonNull Boolean success) throws Exception {
-                        if (success) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
                             p.putSkinLoaded(true);
                         }
                         load(context, p.getSkin());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -95,9 +117,9 @@ public class SkinUtil {
     }
 
     public static void load(final Context context, final int type, final ILoaderListener callback) {
-        if (type >= 0 && type < MusicCst.SKIN_COUNT) {
+        if (type >= 0 && type < SKIN_COUNT) {
             String root = getRoot(context);
-            String skin = root + "/" + MusicCst.SKIN_NAME + type + MusicCst.SKIN_NAME_POSTFIX;
+            String skin = root + "/" + SKIN_NAME + type + SKIN_NAME_POSTFIX;
             File file = new File(skin);
             if (!file.exists()) {
                 SkinManager.getInstance().load();
@@ -116,7 +138,7 @@ public class SkinUtil {
 
                 @Override
                 public void onSuccess() {
-                    Preferences.getInstance(context).putSkin(type);
+                    Preferences.getIns(context).putSkin(type);
                     if (callback != null) {
                         callback.onSuccess();
                     }
@@ -131,7 +153,7 @@ public class SkinUtil {
             });
         } else {
             SkinManager.getInstance().restoreDefaultTheme();
-            Preferences.getInstance(context).putSkin(type);
+            Preferences.getIns(context).putSkin(type);
             if (callback != null) {
                 callback.onSuccess();
             }

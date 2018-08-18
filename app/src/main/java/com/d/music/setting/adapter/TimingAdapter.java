@@ -1,11 +1,13 @@
 package com.d.music.setting.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
+import com.d.music.common.preferences.Preferences;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.view.dialog.TimingDialog;
 
@@ -39,7 +41,20 @@ public class TimingAdapter extends CommonAdapter<RadioModel> {
             @Override
             public void onClick(View v) {
                 if (position == getItemCount() - 1) {
-                    new TimingDialog(mContext).show();
+                    TimingDialog dialog = new TimingDialog(mContext);
+                    dialog.setOnTimingListener(new TimingDialog.OnTimingListener() {
+                        @Override
+                        public void onSubmit(long time) {
+                            Preferences.getIns(mContext.getApplicationContext()).putSleepType(6);
+                            ((Activity) mContext).finish();
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
+                    dialog.show();
                     return;
                 }
                 if (!item.isChecked) {

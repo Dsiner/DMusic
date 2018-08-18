@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
-import com.d.music.common.MusicCst;
+import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.service.MusicService;
 import com.d.music.play.activity.PlayActivity;
@@ -23,8 +23,6 @@ import java.lang.ref.WeakReference;
  * Created by D on 2017/4/28.
  */
 public class SplashActivity extends Activity {
-    private WeakHandler handler;
-    private Preferences p;
     // Splash时间
     private final int delayTime = 2500;
     private boolean isBackPressed;
@@ -32,8 +30,8 @@ public class SplashActivity extends Activity {
     static class WeakHandler extends Handler {
         WeakReference<SplashActivity> weakReference;
 
-        public WeakHandler(SplashActivity activity) {
-            weakReference = new WeakReference<SplashActivity>(activity);
+        WeakHandler(SplashActivity activity) {
+            weakReference = new WeakReference<>(activity);
         }
 
         @Override
@@ -57,26 +55,26 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         // 沉浸式状态栏
         StatusBarCompat.compat(SplashActivity.this, Color.parseColor("#ececec"));
-        p = Preferences.getInstance(getApplicationContext());
-        handler = new WeakHandler(this);
+        Preferences p = Preferences.getIns(getApplicationContext());
+        WeakHandler handler = new WeakHandler(this);
         if (p.getIsFirst()) {
             // 首次安装启动
-            MusicCst.playerMode = MusicCst.PLAYER_MODE_NORMAL;
+            Constants.PlayerMode.mode = Constants.PlayerMode.PLAYER_MODE_NORMAL;
             startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
             finish();
             return;
         }
         if (!MusicService.isRunning()) {
             // 第一次启动
-            MusicCst.playerMode = p.getPlayerMode();
+            Constants.PlayerMode.mode = p.getPlayerMode();
         }
-        switch (MusicCst.playerMode) {
-            case MusicCst.PLAYER_MODE_MINIMALIST:
+        switch (Constants.PlayerMode.mode) {
+            case Constants.PlayerMode.PLAYER_MODE_MINIMALIST:
                 MusicService.startService(getApplicationContext());
                 PlayActivity.openActivity(SplashActivity.this);
                 finish();
                 break;
-            case MusicCst.PLAYER_MODE_NOTIFICATION:
+            case Constants.PlayerMode.PLAYER_MODE_NOTIFICATION:
                 MusicService.startService(getApplicationContext());
                 finish();
                 break;

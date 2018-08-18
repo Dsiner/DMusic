@@ -13,15 +13,10 @@ import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.events.SleepFinishEvent;
 import com.d.music.module.service.MusicService;
 import com.d.music.setting.adapter.TimingAdapter;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +26,7 @@ import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
- * PlayerModeActivity
+ * SleepActivity
  * Created by D on 2017/6/13.
  */
 public class SleepActivity extends BaseActivity<MvpBasePresenter> implements MvpView, TimingAdapter.OnChangeListener {
@@ -129,9 +124,8 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        EventBus.getDefault().register(this);
-        p = Preferences.getInstance(getApplicationContext());
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        p = Preferences.getIns(getApplicationContext());
         index = p.getSleepType();
         tvContent.setText("关闭");
         ivCheck.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
@@ -183,23 +177,9 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
         ivCheck.setVisibility(View.GONE);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SleepFinishEvent event) {
-        if (event == null || isFinishing()) {
-            return;
-        }
-        finish();
-    }
-
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-    }
-
-    @Override
-    protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
     }
 }
