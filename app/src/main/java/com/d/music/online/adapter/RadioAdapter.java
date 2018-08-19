@@ -34,7 +34,7 @@ public class RadioAdapter extends CommonAdapter<RadioModel> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DetailActivity.openActivity(mContext, DetailActivity.TYPE_RADIO, item.ch_name, item.name);
+                DetailActivity.openActivity(mContext, DetailActivity.TYPE_RADIO, item.ch_name, item.name, item.thumb);
             }
         });
     }

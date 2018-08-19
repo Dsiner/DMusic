@@ -12,7 +12,7 @@ public class MusicModel extends BaseModel {
     public final static int TYPE_BAIDU = 1;
     public final static int TYPE_NETEASE = 2;
 
-    public String url;
+    public String url = "";
     public Integer type = TYPE_LOCAL;
     public Integer seq = 0;
     public String songId;

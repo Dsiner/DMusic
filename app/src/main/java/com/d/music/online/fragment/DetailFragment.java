@@ -39,7 +39,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     ImageView ivCover;
 
     private int type;
-    private String title, args;
+    private String channel, title, cover;
     private SongHeaderView header;
 
     @OnClick({R.id.iv_title_left})
@@ -78,9 +78,10 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     protected void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            type = bundle.getInt("type", DetailActivity.TYPE_BILL);
-            args = bundle.getString("args");
-            title = bundle.getString("title");
+            type = bundle.getInt(DetailActivity.ARG_TYPE, DetailActivity.TYPE_BILL);
+            channel = bundle.getString(DetailActivity.ARG_CHANNEL);
+            title = bundle.getString(DetailActivity.ARG_TITLE);
+            cover = bundle.getString(DetailActivity.ARG_COVER);
         }
         tlTitle.setText(R.id.tv_title_title, !TextUtils.isEmpty(title) ? title : "音乐");
         super.init();
@@ -101,14 +102,18 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     @Override
     protected void onLoad(int page) {
         if (type == DetailActivity.TYPE_BILL) {
-            mPresenter.getBillSongs(args, page);
+            mPresenter.getBillSongs(channel, page);
         } else if (type == DetailActivity.TYPE_RADIO) {
-            mPresenter.getRadioSongs(args, page);
+            mPresenter.getRadioSongs(channel, page);
         }
     }
 
     @Override
     public void setInfo(BillSongsRespModel info) {
+        if (!TextUtils.isEmpty(cover)) {
+            setCover(cover);
+            return;
+        }
         if (info == null || info.billboard == null || info.billboard.pic_s260 == null) {
             return;
         }
@@ -117,6 +122,10 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     public void setInfo(RadioSongsRespModel info) {
+        if (!TextUtils.isEmpty(cover)) {
+            setCover(cover);
+            return;
+        }
         if (info == null || info.result == null || info.result.songlist == null
                 || info.result.songlist.size() <= 0
                 || info.result.songlist.get(0) == null) {

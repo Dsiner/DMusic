@@ -39,14 +39,17 @@ public class MediaControler implements IMediaControler {
     private Context mContext;
     private Preferences mPreferences;
     private MediaPlayerManager mMediaPlayerManager;
+    private MediaPresenter mPresenter;
     private List<MusicModel> mDatas = new ArrayList<>();
     private int mPosition;
     private int mStatus;
 
     private MediaControler(Context context) {
         mContext = context.getApplicationContext();
-        mPreferences = Preferences.getIns(context.getApplicationContext());
+        mPreferences = Preferences.getIns(mContext);
         mMediaPlayerManager = MediaPlayerManager.getIns();
+        mPresenter = new MediaPresenter(mContext);
+        mPresenter.attachView(this);
     }
 
     public static MediaControler getIns(Context context) {
@@ -115,6 +118,15 @@ public class MediaControler implements IMediaControler {
         return mDatas;
     }
 
+    @Nullable
+    @Override
+    public MusicModel getModel() {
+        if (mDatas.size() <= 0) {
+            return null;
+        }
+        return mDatas.get(mPosition);
+    }
+
     @Override
     public void seekTo(int msec) {
         mMediaPlayerManager.seekTo(msec);
@@ -132,15 +144,28 @@ public class MediaControler implements IMediaControler {
         if (isEmpty()) {
             return;
         }
-        mMediaPlayerManager.play(mDatas.get(mPosition).url, new MediaPlayerManager.OnMediaPlayerListener() {
+        mStatus = Constants.PlayStatus.PLAY_STATUS_PLAYING;
+        if (mDatas.get(mPosition).type != MusicModel.TYPE_LOCAL) {
+            mMediaPlayerManager.reset();
+            mPresenter.play(mDatas.get(mPosition), next);
+        } else {
+            play(mDatas.get(mPosition).url, next);
+        }
+        sendBroadcast();
+        // 保存当前播放位置
+        mPreferences.putLastPlayPosition(mPosition);
+    }
+
+    public void play(final String url, final boolean next) {
+        mMediaPlayerManager.play(url, new MediaPlayerManager.OnMediaPlayerListener() {
             @Override
             public void onLoading(MediaPlayer mp, String url) {
-                mStatus = Constants.PlayStatus.PLAY_STATUS_PLAYING;
+
             }
 
             @Override
             public void onPrepared(MediaPlayer mp, String url) {
-                mStatus = Constants.PlayStatus.PLAY_STATUS_PLAYING;
+
             }
 
             @Override
@@ -163,9 +188,6 @@ public class MediaControler implements IMediaControler {
 
             }
         });
-        sendBroadcast();
-        // 保存当前播放位置
-        mPreferences.putLastPlayPosition(mPosition);
     }
 
     @Override
@@ -316,13 +338,6 @@ public class MediaControler implements IMediaControler {
         return mPosition;
     }
 
-    @Nullable
-    public MusicModel getModel() {
-        if (mDatas.size() <= 0) {
-            return null;
-        }
-        return mDatas.get(mPosition);
-    }
 
     public String getSongName() {
         return mDatas.size() > 0 ? mDatas.get(mPosition).songName : "";
@@ -378,5 +393,20 @@ public class MediaControler implements IMediaControler {
     public void onDestroy() {
         stop();
         reset();
+    }
+
+    @Override
+    public void setState(int state) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void closeLoading() {
+
     }
 }

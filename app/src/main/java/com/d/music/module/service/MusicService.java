@@ -402,6 +402,7 @@ public class MusicService extends Service {
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        unregisterReceiver(broadcast);
         isRunning = false;
         stopForeground(true);
         super.onDestroy();

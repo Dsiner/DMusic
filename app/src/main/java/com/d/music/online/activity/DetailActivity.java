@@ -17,18 +17,26 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2018/8/12.
  */
 public class DetailActivity extends BaseFragmentActivity {
+    public final static String ARG_TYPE = "type";
+    public final static String ARG_CHANNEL = "channel";
+    public final static String ARG_TITLE = "title";
+    public final static String ARG_COVER = "cover";
+
     public final static int TYPE_BILL = 0;
     public final static int TYPE_RADIO = 1;
 
     public static void openActivity(Context context, int type, String... args) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra("type", type);
+        intent.putExtra(ARG_TYPE, type);
         if (args != null) {
             if (args.length > 0) {
-                intent.putExtra("args", args[0]);
+                intent.putExtra(ARG_CHANNEL, args[0]);
             }
             if (args.length > 1) {
-                intent.putExtra("title", args[1]);
+                intent.putExtra(ARG_TITLE, args[1]);
+            }
+            if (args.length > 2) {
+                intent.putExtra(ARG_COVER, args[2]);
             }
         }
         context.startActivity(intent);
@@ -45,15 +53,17 @@ public class DetailActivity extends BaseFragmentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             findViewById(R.id.fragment_content).setFitsSystemWindows(true);
         }
-        int type = getIntent().getIntExtra("type", 0);
-        String args = getIntent().getStringExtra("args");
-        String title = getIntent().getStringExtra("title");
+        int type = getIntent().getIntExtra(ARG_TYPE, TYPE_BILL);
+        String channel = getIntent().getStringExtra(ARG_CHANNEL);
+        String title = getIntent().getStringExtra(ARG_TITLE);
+        String cover = getIntent().getStringExtra(ARG_COVER);
 
         DetailFragment fragment = new DetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
-        bundle.putString("args", args);
-        bundle.putString("title", title);
+        bundle.putInt(ARG_TYPE, type);
+        bundle.putString(ARG_CHANNEL, channel);
+        bundle.putString(ARG_TITLE, title);
+        bundle.putString(ARG_COVER, cover);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_content, fragment).commitAllowingStateLoss();

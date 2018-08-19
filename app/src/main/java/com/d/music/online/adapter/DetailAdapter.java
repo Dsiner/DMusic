@@ -34,14 +34,14 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
     }
 
     @Override
-    public void convert(int position, CommonHolder holder, final MusicModel item) {
+    public void convert(final int position, CommonHolder holder, final MusicModel item) {
         holder.setText(R.id.tv_seq, "" + (position + 1));
         holder.setText(R.id.tv_title, "" + item.songName);
         holder.setText(R.id.tv_singer, "" + item.artistName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                play(item);
+                MediaControler.getIns(mContext).init(getDatas(), position, true);
             }
         });
         holder.setViewOnClickListener(R.id.iv_more, new View.OnClickListener() {
@@ -67,39 +67,9 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
         });
     }
 
-    private void play(final MusicModel item) {
+    private void download1(final MusicModel model) {
         Params params = new Params(API.SongInfo.rtpType);
-        params.addParam(API.SongInfo.songIds, item.url);
-        RxNet.get(API.SongInfo.rtpType, params)
-                .request(new SimpleCallBack<SongInfoRespModel>() {
-                    @Override
-                    public void onSuccess(SongInfoRespModel response) {
-                        if (response.data == null || response.data.songList == null
-                                || response.data.songList.size() <= 0) {
-                            return;
-                        }
-                        // FIXME: @dsiner 在线播放 2018/8/16
-                        SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
-                        MusicModel model = new MusicModel();
-                        model.type = MusicModel.TYPE_BAIDU;
-                        model.url = song.songLink;
-                        model.songName = song.songName;
-                        model.artistName = song.artistName;
-                        List<MusicModel> datas = new ArrayList<>();
-                        datas.add(model);
-                        MediaControler.getIns(mContext).init(datas, 0, true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
-    }
-
-    private void download1(final MusicModel item) {
-        Params params = new Params(API.SongInfo.rtpType);
-        params.addParam(API.SongInfo.songIds, item.url);
+        params.addParam(API.SongInfo.songIds, model.songId);
         RxNet.get(API.SongInfo.rtpType, params)
                 .request(new SimpleCallBack<SongInfoRespModel>() {
                     @Override

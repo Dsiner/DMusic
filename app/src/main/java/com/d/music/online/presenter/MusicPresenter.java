@@ -1,6 +1,7 @@
 package com.d.music.online.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.d.lib.common.module.loader.CommonLoader;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
@@ -28,10 +29,10 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         super(context);
     }
 
-    public void getBillSongs(String type, int page) {
+    public void getBillSongs(String channel, int page) {
         Params params = new Params(API.BaiduBillSongs.rtpType);
         params.addParam(API.BaiduBillSongs.method, API.Baidu.METHOD_GET_BILL_LIST);
-        params.addParam(API.BaiduBillSongs.type, type);
+        params.addParam(API.BaiduBillSongs.type, channel);
         params.addParam(API.BaiduBillSongs.offset, "" + (CommonLoader.PAGE_COUNT * (page - 1)));
         params.addParam(API.BaiduBillSongs.size, "" + CommonLoader.PAGE_COUNT);
         RxNet.get(API.BaiduBillSongs.rtpType, params)
@@ -44,10 +45,15 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                             List<BillSongsModel> song_list = billSongsRespModel.song_list;
                             for (BillSongsModel model : song_list) {
                                 MusicModel music = new MusicModel();
-                                // Tips: ID mapping to URL
+                                music.type = MusicModel.TYPE_BAIDU;
                                 music.url = model.song_id;
+                                music.songId = model.song_id;
                                 music.songName = model.title;
+                                music.artistId = model.artist_id;
                                 music.artistName = model.author;
+                                music.albumId = model.album_id;
+                                music.albumName = model.album_title;
+                                music.albumUrl = model.pic_small;
                                 billSongsRespModel.datas.add(music);
                             }
                         }
@@ -73,11 +79,11 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                 });
     }
 
-    public void getRadioSongs(String args, int page) {
+    public void getRadioSongs(String channel, int page) {
         Params params = new Params(API.RadioChannelSongs.rtpType);
         params.addParam(API.RadioChannelSongs.pn, "" + 0);
         params.addParam(API.RadioChannelSongs.rn, "" + 10);
-        params.addParam(API.RadioChannelSongs.channelname, args);
+        params.addParam(API.RadioChannelSongs.channelname, channel);
         RxNet.get(API.RadioChannelSongs.rtpType, params)
                 .request(new AsyncCallBack<RadioSongsRespModel, RadioSongsRespModel>() {
 
@@ -87,11 +93,17 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                         if (radioSongsRespModel.result.songlist != null) {
                             List<RadioSongsModel> songlist = radioSongsRespModel.result.songlist;
                             for (RadioSongsModel model : songlist) {
+                                if (model == null || TextUtils.isEmpty(model.songid)) {
+                                    continue;
+                                }
                                 MusicModel music = new MusicModel();
-                                // Tips: ID mapping to URL
+                                music.type = MusicModel.TYPE_BAIDU;
                                 music.url = model.songid;
+                                music.songId = model.songid;
                                 music.songName = model.title;
+                                music.artistId = model.artist_id;
                                 music.artistName = model.artist;
+                                music.albumUrl = model.thumb;
                                 radioSongsRespModel.datas.add(music);
                             }
                         }

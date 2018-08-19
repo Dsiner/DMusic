@@ -1,9 +1,14 @@
 package com.d.music.view.lrc;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,16 +28,18 @@ public class DefaultLrcParser implements ILrcParser {
     private DefaultLrcParser() {
     }
 
-    /***
+    /**
      * 将歌词文件里面的字符串 解析成一个List<LrcRow>
      */
+    @NonNull
     @Override
-    public List<LrcRow> getLrcRows(String str) {
+    public List<LrcRow> getLrcRows(String path) {
+        String str = converfile(path, "utf-8");
         if (TextUtils.isEmpty(str)) {
-            return null;
+            return new ArrayList<>();
         }
-        BufferedReader br = new BufferedReader(new StringReader(str));
         List<LrcRow> lrcRows = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new StringReader(str));
         String lrcLine;
         try {
             while ((lrcLine = br.readLine()) != null) {
@@ -52,7 +59,7 @@ public class DefaultLrcParser implements ILrcParser {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         } finally {
             try {
                 br.close();
@@ -61,5 +68,71 @@ public class DefaultLrcParser implements ILrcParser {
             }
         }
         return lrcRows;
+    }
+
+    private String converfile(String path) {
+        return converfile(path, null);
+    }
+
+    private String converfile(String path, String charsetName) {
+        File file = new File(path);
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        BufferedReader reader;
+        String text = null;
+        try {
+            fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis);
+            bis.mark(4);
+            byte[] first3bytes = new byte[3];
+            //找到文档的前三个字节并自动判断文档类型
+            bis.read(first3bytes);
+            bis.reset();
+            if (TextUtils.isEmpty(charsetName)) {
+                charsetName = getCharset(first3bytes);
+            }
+            reader = new BufferedReader(new InputStreamReader(bis, charsetName));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            text = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return text;
+    }
+
+    @NonNull
+    private String getCharset(byte[] first3bytes) {
+        String charsetName;
+        if (first3bytes[0] == (byte) 0xEF && first3bytes[1] == (byte) 0xBB && first3bytes[2] == (byte) 0xBF) {
+            charsetName = "utf-8";
+        } else if (first3bytes[0] == (byte) 0xFF && first3bytes[1] == (byte) 0xFE) {
+            charsetName = "unicode";
+        } else if (first3bytes[0] == (byte) 0xFE && first3bytes[1] == (byte) 0xFF) {
+            charsetName = "utf-16be";
+        } else if (first3bytes[0] == (byte) 0xFF && first3bytes[1] == (byte) 0xFF) {
+            charsetName = "utf-16le";
+        } else {
+            charsetName = "GBK";
+        }
+        return charsetName;
     }
 }

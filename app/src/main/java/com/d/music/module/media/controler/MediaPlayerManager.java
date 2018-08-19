@@ -172,6 +172,11 @@ public class MediaPlayerManager {
         return duration;
     }
 
+    public void reset() {
+        source = "";
+        mediaPlayer.reset(); // 重置
+    }
+
     private void release() {
         source = "";
         if (mediaPlayer != null) {
