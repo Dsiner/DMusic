@@ -34,7 +34,7 @@ public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePrese
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_local;
+        return R.layout.module_local_fragment_local;
     }
 
     @Override

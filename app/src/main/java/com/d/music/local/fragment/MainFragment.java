@@ -100,7 +100,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_main;
+        return R.layout.module_common_fragment_main;
     }
 
     @Override
@@ -128,9 +128,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
             public int getLayoutId(int viewType) {
                 switch (viewType) {
                     case -1:
-                        return R.layout.adapter_custom_list_add;
+                        return R.layout.module_local_adapter_custom_list_add;
                     default:
-                        return R.layout.adapter_custom_list;
+                        return R.layout.module_local_adapter_custom_list;
                 }
             }
 

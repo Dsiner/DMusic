@@ -44,7 +44,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     private void init(Context context) {
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Util.dip2px(context, 50)));
         setOrientation(HORIZONTAL);
-        View root = LayoutInflater.from(context).inflate(R.layout.layout_song, this);
+        View root = LayoutInflater.from(context).inflate(R.layout.module_local_layout_song, this);
         flytPlayAll = (FrameLayout) root.findViewById(R.id.flyt_header_song_play_all);
         llytPlayAll = (LinearLayout) root.findViewById(R.id.llyt_header_song_play_all);
         tvSongCount = (TextView) root.findViewById(R.id.tv_header_song_count);

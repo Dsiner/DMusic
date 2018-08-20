@@ -97,7 +97,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_sleep;
+        return R.layout.module_setting_activity_sleep;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
         index = p.getSleepType();
         tvContent.setText("关闭");
         ivCheck.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
-        adapter = new TimingAdapter(this, getDatas(), R.layout.adapter_radio);
+        adapter = new TimingAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
         adapter.setIndex(index - 1);
         adapter.setOnChangeListener(this);
         lrvList.showAsList();

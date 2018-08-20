@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin">
+
+    <LinearLayout
+        android:id="@+id/llyt_more_cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:background="@color/lib_pub_color_main"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/lib_pub_dimen_margin"
+        android:paddingRight="@dimen/lib_pub_dimen_margin"
+        skin:enable="true">
+
+        <LinearLayout
+            android:id="@+id/llyt_collect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/module_common_ic_song_fav" />
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/module_common_collection"
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llyt_add_to_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/module_common_ic_song_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/module_common_add_to_list"
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/module_common_ic_song_ring" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/module_common_set_ring"
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llyt_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/module_common_ic_song_info" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/module_common_song_info"
+                android:textColor="@color/lib_pub_color_white"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

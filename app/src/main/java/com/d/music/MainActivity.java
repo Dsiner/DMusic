@@ -86,7 +86,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_main;
+        return R.layout.module_common_activity_main;
     }
 
     @Override

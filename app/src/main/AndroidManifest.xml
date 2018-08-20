@@ -10,7 +10,7 @@
         android:name="com.d.music.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/module_common_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -37,19 +37,8 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.d.music.play.activity.PlayActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.d.music.local.activity.ScanActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.d.music.local.activity.HandleActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
+
+        <!-- Setting -->
         <activity
             android:name="com.d.music.setting.activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -67,12 +56,22 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.d.music.setting.activity.PlayerModeActivity"
+            android:name="com.d.music.setting.activity.ModeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.d.music.setting.activity.AboutActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+
+        <!-- Local -->
+        <activity
+            android:name="com.d.music.local.activity.ScanActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.d.music.local.activity.HandleActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
 
@@ -90,5 +89,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!-- Play -->
+        <activity
+            android:name="com.d.music.play.activity.PlayActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

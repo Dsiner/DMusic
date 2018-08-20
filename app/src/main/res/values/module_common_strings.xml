@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="module_common_app_name">畅听音乐</string>
+
+    <string name="module_common_play_all">播放全部</string>
+    <string name="module_common_collection">收藏</string>
+    <string name="module_common_add_to_list">加入歌单</string>
+    <string name="module_common_set_ring">设为铃声</string>
+    <string name="module_common_song_info">歌曲信息</string>
+</resources>

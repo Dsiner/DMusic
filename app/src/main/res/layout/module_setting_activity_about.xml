@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_bg_sub">
+
+    <com.d.music.view.TitleLayout
+        android:id="@+id/tl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
+        app:lib_pub_tl_middleText="关于畅听音乐"
+        skin:enable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/lib_pub_dimen_margin">
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@color/lib_pub_color_main"
+            android:src="@drawable/module_common_ic_launcher_about"
+            skin:enable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+            android:gravity="center"
+            android:text="(Android)"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="版本号：v1.0.3"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_main"
+            skin:enable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:gravity="center"
+            android:text="追求速度、简约和安全的\n本地音乐播放器"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_link"
+        android:gravity="center"
+        android:text="Copyright@D"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_small"
+        skin:enable="true" />
+
+    <TextView
+        android:id="@+id/tv_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
+        android:gravity="center"
+        android:text="Open Source@github.com/Dsiner"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_small"
+        skin:enable="true" />
+</RelativeLayout>

@@ -64,7 +64,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_mv_info_like" />
+                android:src="@drawable/module_online_ic_mv_info_like" />
 
             <TextView
                 android:id="@+id/tv_mv_info_like_count"
@@ -86,7 +86,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_mv_info_download" />
+                android:src="@drawable/module_online_ic_mv_info_download" />
 
             <TextView
                 android:id="@+id/tv_mv_info_sub_count"
@@ -108,7 +108,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_mv_info_comment" />
+                android:src="@drawable/module_online_ic_mv_info_comment" />
 
             <TextView
                 android:id="@+id/tv_mv_info_comment_count"
@@ -130,7 +130,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_mv_info_share" />
+                android:src="@drawable/module_online_ic_mv_info_share" />
 
             <TextView
                 android:id="@+id/tv_mv_info_share_count"

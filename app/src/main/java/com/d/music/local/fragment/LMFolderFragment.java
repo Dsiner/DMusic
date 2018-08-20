@@ -21,7 +21,7 @@ public class LMFolderFragment extends AbstractLMFragment<FolderModel> {
 
     @Override
     protected CommonAdapter<FolderModel> getAdapter() {
-        return new FolderAdapter(mContext, new ArrayList<FolderModel>(), R.layout.adapter_folder);
+        return new FolderAdapter(mContext, new ArrayList<FolderModel>(), R.layout.module_local_adapter_folder);
     }
 
     @Override

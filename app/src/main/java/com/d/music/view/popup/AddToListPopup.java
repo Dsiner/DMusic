@@ -49,7 +49,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
     private List<MusicModel> models;
 
     public AddToListPopup(Context context, int type,List<MusicModel> models) {
-        super(context, R.layout.dialog_add_to_list);
+        super(context, R.layout.module_play_dialog_add_to_list);
         this.models = models;
         queryListNot(type);
     }
@@ -63,7 +63,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
         ldlLoading = (LoadingLayout) rootView.findViewById(R.id.ldl_loading);
         LRecyclerView lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
-        adapter = new AddToListAdapter(context, new ArrayList<CustomListModel>(), R.layout.adapter_add_to_list);
+        adapter = new AddToListAdapter(context, new ArrayList<CustomListModel>(), R.layout.module_play_adapter_add_to_list);
         lrvList.setAdapter(adapter);
 
         rootView.findViewById(R.id.tv_ok).setOnClickListener(this);

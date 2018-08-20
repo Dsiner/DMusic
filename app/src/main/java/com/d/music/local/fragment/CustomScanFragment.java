@@ -117,7 +117,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_custom_scan;
+        return R.layout.module_local_fragment_scan_custom;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     @Override
     protected void init() {
         models = new ArrayList<>();
-        adapter = new DirAdapter(getActivity(), models, R.layout.adapter_dir);
+        adapter = new DirAdapter(getActivity(), models, R.layout.module_local_adapter_dir);
         adapter.setOnPathListener(this);
         lrvList.setAdapter(adapter);
     }

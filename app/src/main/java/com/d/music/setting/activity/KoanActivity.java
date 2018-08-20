@@ -46,7 +46,7 @@ public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_koan;
+        return R.layout.module_setting_activity_koan;
     }
 
     @Override

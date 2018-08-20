@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_translucent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/v_blank"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:id="@+id/rlyt_add_to_list"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/lib_pub_color_white">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="添加到歌单"
+            android:textColor="@color/lib_pub_color_black"
+            android:textSize="@dimen/lib_pub_dimen_text_main" />
+
+        <ImageView
+            android:id="@+id/quit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:padding="18dp"
+            android:src="@drawable/module_common_ic_delete_small" />
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_main"
+            skin:enable="true" />
+
+        <com.d.lib.xrv.LRecyclerView
+            android:id="@+id/lrv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_ok"
+            android:layout_below="@+id/tv_title" />
+
+        <com.d.lib.common.view.loading.LoadingLayout
+            android:id="@+id/ldl_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lib_pub_color_white"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

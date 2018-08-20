@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_bg_main">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/module_common_bg_welcome20"
+        app:layout_heightPercent="64%"
+        app:layout_marginBottomPercent="32%"
+        app:layout_marginLeftPercent="5%"
+        app:layout_marginRightPercent="5%" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_above="@+id/iv_dot3"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        app:layout_marginBottomPercent="6%"
+        app:layout_marginLeftPercent="21%"
+        app:layout_marginRightPercent="21%">
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/module_common_corner_wel"
+            android:text="开启畅听之旅"
+            android:textColor="#718CAF"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_dot3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/module_common_bg_welcome21"
+        android:visibility="invisible"
+        app:layout_heightPercent="5%"
+        app:layout_marginBottomPercent="6%"
+        app:layout_widthPercent="90%" />
+</android.support.percent.PercentRelativeLayout>

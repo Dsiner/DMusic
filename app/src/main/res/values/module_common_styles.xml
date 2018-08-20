@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/lib_pub_color_trans</item>
+        <item name="colorPrimaryDark">@color/lib_pub_color_trans</item>
+        <item name="colorAccent">@color/lib_pub_color_main</item>
+        <item name="android:alertDialogTheme">@style/lib_pub_dialog_style</item>
+        <item name="android:windowAnimationStyle">@style/activityAnim</item>
+    </style>
+
+    <style name="activityAnim">
+        <!-- 打开新的Activity并进入新的Activity展示的动画 -->
+        <item name="android:activityOpenEnterAnimation">@anim/module_common_push_right_in</item>
+        <!-- 打开新的Activity并销毁之前的Activity展示的动画 -->
+        <item name="android:activityOpenExitAnimation">@anim/module_common_push_left_out</item>
+        <!-- 关闭当前Activity进入上一个Activity展示的动画 -->
+        <item name="android:activityCloseEnterAnimation">@anim/module_common_push_left_in</item>
+        <!-- 关闭当前Activity时展示的动画 -->
+        <item name="android:activityCloseExitAnimation">@anim/module_common_push_right_out</item>
+    </style>
+
+    <style name="AnimTop" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/module_common_pop_top_in</item>
+        <item name="android:windowExitAnimation">@anim/module_common_pop_top_out</item>
+    </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/module_common_pop_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/module_common_pop_bottom_out</item>
+    </style>
+    <!-- 实现无动画效果的Progress提示框 -->
+    <style name="SongInfoDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 模糊 -->
+    </style>
+
+    <!-- 实现无动画效果的Progress提示框背景模糊 -->
+    <style name="BlurBgDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+    </style>
+
+    <!-- 实现由上至下折叠弹出并位于屏幕顶部的提示框 -->
+    <style name="PopTopInDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 模糊 -->
+        <item name="android:windowAnimationStyle">@style/AnimTop</item>
+        <!-- 设置对话框弹出和消失的动画 -->
+    </style>
+
+    <!-- 实现由下至上弹出并位于屏幕底部的提示框 -->
+    <style name="PopButtomInDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFullscreen">true</item>
+        <!-- 填充屏幕 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog的windowFrame框为无 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否显示title -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 对话框背景透明 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 背景是否模糊显示 -->
+        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
+        <!-- 设置对话框弹出和消失的动画 -->
+    </style>
+
+    <style name="listview_style">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0px</item>
+        <item name="android:listSelector">@color/lib_pub_color_trans</item>
+    </style>
+
+    <style name="popupAnimation" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/module_common_dialog_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/module_common_dialog_fade_out</item>
+    </style>
+
+    <style name="TextApperance.Album.Title" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textSize">29sp</item>
+    </style>
+</resources>

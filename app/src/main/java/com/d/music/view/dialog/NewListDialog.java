@@ -38,7 +38,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.dialog_new_list;
+        return R.layout.module_local_dialog_new_list;
     }
 
     @Override

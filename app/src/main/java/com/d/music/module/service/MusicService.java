@@ -32,7 +32,7 @@ import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.module.media.controler.MediaControler;
 import com.d.music.module.media.controler.MediaPlayerManager;
 import com.d.music.play.activity.PlayActivity;
-import com.d.music.setting.activity.PlayerModeActivity;
+import com.d.music.setting.activity.ModeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -213,7 +213,7 @@ public class MusicService extends Service {
     private void updateNotification(Bitmap bitmap, String songName, String artistName, int status) {
         Intent intent;
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION) {
-            intent = new Intent(this, PlayerModeActivity.class);
+            intent = new Intent(this, ModeActivity.class);
         } else if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
             intent = new Intent(this, PlayActivity.class);
         } else {
@@ -226,7 +226,7 @@ public class MusicService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 builder.setPriority(Notification.PRIORITY_HIGH);
             }
-            builder.setSmallIcon(R.drawable.ic_launcher); // 设置图标
+            builder.setSmallIcon(R.drawable.module_common_ic_launcher); // 设置图标
             builder.setTicker(""); // 手机状态栏的提示
             builder.setContentIntent(pintent); // 点击后的意图
 
@@ -243,7 +243,7 @@ public class MusicService extends Service {
         } else {
             // API Level >= 4 (Android 1.6) && API Level < 16 (Android 4.1)
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.module_common_ic_launcher)
                     .setTicker("")
                     .setWhen(System.currentTimeMillis());
 
@@ -258,16 +258,16 @@ public class MusicService extends Service {
 
     @android.support.annotation.NonNull
     private RemoteViews getRemoteViews(Bitmap bitmap, String songName, String artistName, int status) {
-        RemoteViews rv = new RemoteViews(getPackageName(), R.layout.notification);
+        RemoteViews rv = new RemoteViews(getPackageName(), R.layout.module_play_notification);
         if (bitmap != null) {
             rv.setImageViewBitmap(R.id.image, bitmap);
         } else {
-            rv.setImageViewResource(R.id.image, R.drawable.ic_notification_icon);
+            rv.setImageViewResource(R.id.image, R.drawable.module_play_ic_notification);
         }
         if (status == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
-            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.ic_notification_pause);
+            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.module_play_ic_notification_pause);
         } else if (status == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
-            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.ic_notification_play);
+            rv.setImageViewResource(R.id.tv_play_pause, R.drawable.module_play_ic_notification_play);
         }
         rv.setTextViewText(R.id.title, songName);
         rv.setTextViewText(R.id.text, artistName);

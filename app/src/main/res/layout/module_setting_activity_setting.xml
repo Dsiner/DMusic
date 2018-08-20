@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_bg_sub"
+    android:orientation="vertical">
+
+    <com.d.music.view.TitleLayout
+        android:id="@+id/tl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
+        app:lib_pub_tl_middleText="title"
+        skin:enable="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_koan"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="心印"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                android:visibility="gone"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="夜间模式"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_skin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="换肤"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_sleep"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="睡眠定时"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_auto_play"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="启动时自动播放"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_player_mode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="模式选择"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+                android:background="@color/lib_pub_color_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_sub"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="显示下拉菜单"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_add"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="显示新建歌单"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_rotate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                android:visibility="gone"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="头像/封面自动旋转"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_shake"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                android:visibility="gone"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="晃动手机切歌"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_mode_menu"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="gone"
+                app:lib_pub_rl_text="显示首页弹出菜单按钮"
+                app:lib_pub_rl_toggleVisibility="visible" />
+
+            <include layout="@layout/lib_pub_layout_line" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+                android:background="@color/lib_pub_color_line" />
+
+            <com.d.lib.common.view.RowLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                android:visibility="gone"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="帮助中心"
+                app:lib_pub_rl_toggleVisibility="gone" />
+
+            <com.d.lib.common.view.RowLayout
+                android:id="@+id/rl_about"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lib_pub_dimen_row_height"
+                android:background="@color/lib_pub_color_bg_main"
+                app:lib_pub_rl_gotoVisibility="visible"
+                app:lib_pub_rl_text="关于畅听音乐"
+                app:lib_pub_rl_toggleVisibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

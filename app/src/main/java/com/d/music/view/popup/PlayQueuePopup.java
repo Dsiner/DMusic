@@ -36,7 +36,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
     private List<MusicModel> models;
 
     public PlayQueuePopup(Context context) {
-        super(context, R.layout.popup_play_queue, R.style.AnimBottom);
+        super(context, R.layout.module_play_popup_play_queue, R.style.AnimBottom);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
 
         models = MediaControler.getIns(context).list();
-        adapter = new PlayQueueAdapter(context, models, R.layout.adapter_play_queue, this);
+        adapter = new PlayQueueAdapter(context, models, R.layout.module_play_adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
         int playMode = p.getPlayMode();

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="module_play_dimen_notifi_height">64dp</dimen>
+    <dimen name="module_play_dimen_notifi_icon">19.2dp</dimen>
+    <dimen name="module_play_dimen_notifi_exit_icon">11.78dp</dimen>
+
+    <dimen name="module_play_dimen_queue_height">36dp</dimen>
+</resources>

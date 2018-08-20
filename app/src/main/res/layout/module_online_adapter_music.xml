@@ -22,7 +22,7 @@
         android:layout_alignParentRight="true"
         android:padding="17dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_more" />
+        android:src="@drawable/module_common_ic_more" />
 
     <LinearLayout
         android:layout_width="match_parent"

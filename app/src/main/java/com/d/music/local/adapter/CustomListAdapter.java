@@ -41,7 +41,7 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
 
     @Override
     public void convert(final int position, CommonHolder holder, final CustomListModel item) {
-        if (holder.mLayoutId == R.layout.adapter_custom_list) {
+        if (holder.mLayoutId == R.layout.module_local_adapter_custom_list) {
             holder.setText(R.id.tv_list_name, item.name);
             holder.setText(R.id.tv_song_count, (item.count != null ? item.count : 0) + "首");
             final SlideLayout slSlide = holder.getView(R.id.sl_slide);
@@ -85,7 +85,7 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                     MainActivity.getManger().replace(SongFragment.getInstance(item.pointer, item.name));
                 }
             });
-        } else if (holder.mLayoutId == R.layout.adapter_custom_list_add) {
+        } else if (holder.mLayoutId == R.layout.module_local_adapter_custom_list_add) {
             holder.itemView.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override

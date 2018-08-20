@@ -14,7 +14,7 @@ import com.d.music.module.media.controler.MediaControler;
 import com.d.music.module.service.MusicService;
 import com.d.music.module.skin.SkinUtil;
 import com.d.music.play.activity.PlayActivity;
-import com.d.music.setting.activity.PlayerModeActivity;
+import com.d.music.setting.activity.ModeActivity;
 
 /**
  * Application
@@ -58,7 +58,7 @@ public class App extends Application {
         } else if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
             exit(appContext, PlayActivity.class);
         } else {
-            exit(appContext, PlayerModeActivity.class);
+            exit(appContext, ModeActivity.class);
         }
     }
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llyt_dir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
+            android:src="@drawable/module_local_ic_scan_dir_back"
+            skin:enable="true" />
+
+        <TextView
+            android:id="@+id/tv_current_dir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:gravity="center_vertical"
+            android:text="/storage/emulated/0/"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <com.d.lib.xrv.LRecyclerView
+        android:id="@+id/lrv_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llyt_scan_now"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:background="@color/lib_pub_color_main"
+                android:src="@drawable/module_local_ic_scan_now"
+                skin:enable="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+                android:gravity="center_vertical"
+                android:text="立即扫描"
+                android:textColor="@color/lib_pub_color_main"
+                android:textSize="@dimen/lib_pub_dimen_text_sub"
+                skin:enable="true" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

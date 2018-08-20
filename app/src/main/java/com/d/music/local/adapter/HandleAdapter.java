@@ -68,8 +68,8 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
         holder.setOnItemTouchListener(new ItemTouchHelperViewHolder() {
             @Override
             public void onItemSelected() {
-                holder.setImageResource(R.id.iv_handler, R.drawable.ic_sort_handler_press);
-                holder.setBackground(R.id.cb_check, R.drawable.selector_toggle_press);
+                holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler_press);
+                holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle_press);
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lib_pub_color_dgray));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(0.6f);
@@ -78,8 +78,8 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
 
             @Override
             public void onItemClear() {
-                holder.setImageResource(R.id.iv_handler, R.drawable.ic_sort_handler);
-                holder.setBackground(R.id.cb_check, R.drawable.selector_toggle);
+                holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler);
+                holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle);
                 holder.itemView.setBackgroundColor(0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(1f);

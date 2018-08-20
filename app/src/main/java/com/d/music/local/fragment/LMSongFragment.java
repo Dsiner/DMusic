@@ -45,7 +45,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.adapter_song, AppDB.LOCAL_ALL_MUSIC);
+        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.module_local_adapter_song, AppDB.LOCAL_ALL_MUSIC);
         adapter.setSubPull(isSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override

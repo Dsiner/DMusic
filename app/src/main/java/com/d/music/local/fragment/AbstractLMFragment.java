@@ -32,7 +32,7 @@ public abstract class AbstractLMFragment<M extends BaseModel> extends AbsLazyFra
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_local_sort;
+        return R.layout.module_local_fragment_local_sort;
     }
 
     @Override

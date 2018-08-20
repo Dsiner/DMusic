@@ -24,7 +24,7 @@ public class MenuDialog implements View.OnClickListener {
     private OnMenuListener listener;
 
     public MenuDialog(Context context, int layoutRes) {
-        rootView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.dialog_more, null);
+        rootView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.module_common_dialog_more, null);
         rootView.setOnClickListener(this);
         initMenu(context, layoutRes);
 

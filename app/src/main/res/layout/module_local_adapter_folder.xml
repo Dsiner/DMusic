@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llyt_folder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/module_common_dimen_item_local_icon"
+            android:layout_height="@dimen/module_common_dimen_item_local_icon"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:background="@color/lib_pub_color_main"
+            android:src="@drawable/module_local_ic_scan_dir_icon"
+            skin:enable="true" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_folder_dir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:text="Music"
+                android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+            <TextView
+                android:id="@+id/tv_folder_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="0首"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/lib_pub_layout_line" />
+</LinearLayout>

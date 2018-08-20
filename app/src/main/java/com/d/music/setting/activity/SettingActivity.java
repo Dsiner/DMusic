@@ -59,7 +59,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
                 startActivity(new Intent(SettingActivity.this, SleepActivity.class));
                 break;
             case R.id.rl_player_mode:
-                startActivity(new Intent(SettingActivity.this, PlayerModeActivity.class));
+                startActivity(new Intent(SettingActivity.this, ModeActivity.class));
                 break;
             case R.id.rl_about:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));
@@ -69,7 +69,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_setting;
+        return R.layout.module_setting_activity_setting;
     }
 
     @Override

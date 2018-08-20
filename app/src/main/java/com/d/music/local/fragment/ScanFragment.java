@@ -81,7 +81,7 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_scan;
+        return R.layout.module_local_fragment_scan;
     }
 
     @Override

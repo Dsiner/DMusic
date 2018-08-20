@@ -93,7 +93,7 @@ public class SplashActivity extends Activity {
 
     private void initView() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.module_common_activity_splash);
         findViewById(R.id.iv_splash).setVisibility(View.VISIBLE);
     }
 

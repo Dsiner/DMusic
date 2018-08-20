@@ -31,7 +31,7 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.dialog_timing;
+        return R.layout.module_setting_dialog_timing;
     }
 
     @Override

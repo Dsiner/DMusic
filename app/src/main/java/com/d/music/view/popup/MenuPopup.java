@@ -11,7 +11,7 @@ import com.d.music.R;
 public class MenuPopup extends AbstractPopup {
 
     public MenuPopup(Context context) {
-        super(context, R.layout.dialog_more, R.style.PopTopInDialog);
+        super(context, R.layout.module_common_dialog_more, R.style.PopTopInDialog);
     }
 
     @Override

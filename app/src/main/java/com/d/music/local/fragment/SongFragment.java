@@ -94,7 +94,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_song;
+        return R.layout.module_local_fragment_song;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.adapter_song, type);
+        SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.module_local_adapter_song, type);
         adapter.setSubPull(isSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override

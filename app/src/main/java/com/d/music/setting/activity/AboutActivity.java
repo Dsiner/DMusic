@@ -32,7 +32,7 @@ public class AboutActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_about;
+        return R.layout.module_setting_activity_about;
     }
 
     @Override

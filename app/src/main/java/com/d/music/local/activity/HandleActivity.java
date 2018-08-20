@@ -140,7 +140,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_handle;
+        return R.layout.module_local_activity_handle;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
         models = new ArrayList<>();
         modelsFav = new ArrayList<>();
         models.addAll(Constants.Heap.models);
-        adapter = new HandleAdapter(mContext, models, R.layout.adapter_handler);
+        adapter = new HandleAdapter(mContext, models, R.layout.module_local_adapter_handler);
         adapter.setOnStartDragListener(this);
         adapter.setOnChangeListener(this);
         rvList.setHasFixedSize(true);

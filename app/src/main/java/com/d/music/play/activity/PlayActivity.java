@@ -35,7 +35,7 @@ import com.d.music.module.utils.MoreUtil;
 import com.d.music.play.adapter.PlayQueueAdapter;
 import com.d.music.play.presenter.PlayPresenter;
 import com.d.music.play.view.IPlayView;
-import com.d.music.setting.activity.PlayerModeActivity;
+import com.d.music.setting.activity.ModeActivity;
 import com.d.music.utils.StatusBarCompat;
 import com.d.music.view.dialog.OperationDialog;
 import com.d.music.view.lrc.LrcRow;
@@ -96,7 +96,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         context.startActivity(intent);
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NORMAL) {
             if (context instanceof Activity) {
-                ((Activity) context).overridePendingTransition(R.anim.push_bottom_in, R.anim.push_stay);
+                ((Activity) context).overridePendingTransition(R.anim.module_common_push_bottom_in, R.anim.module_common_push_stay);
             }
         }
     }
@@ -157,7 +157,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_play;
+        return R.layout.module_play_activity_play;
     }
 
     @Override
@@ -213,11 +213,11 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
         if (status == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
             // 正在播放
-            ivPlayPause.setImageResource(R.drawable.ic_play_pause);
+            ivPlayPause.setImageResource(R.drawable.module_play_ic_play_pause);
             rotationAnimator();
         } else {
             // 无列表播放/暂停
-            ivPlayPause.setImageResource(R.drawable.ic_play_play);
+            ivPlayPause.setImageResource(R.drawable.module_play_ic_play_play);
             if (animator != null && animator.isRunning()) {
                 animator.cancel();
             }
@@ -234,7 +234,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     private void resetFav(boolean isCollected) {
-        int fav = isCollected ? R.drawable.ic_play_fav_cover : R.drawable.ic_play_fav;
+        int fav = isCollected ? R.drawable.module_play_ic_play_fav_cover : R.drawable.module_play_ic_play_fav;
         ivColect.setImageDrawable(getResources().getDrawable(fav));
     }
 
@@ -273,8 +273,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 .item(item != null && item.isCollected ? "已收藏" : "收藏"));
         datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_INFO, true));
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
-            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_CHANGE_MODE, "模式切换", R.drawable.ic_song_edit_m));
-            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_EXIT, "退出", R.drawable.ic_menu_exit));
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_CHANGE_MODE, "模式切换", R.drawable.module_common_ic_song_edit_m));
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_EXIT, "退出", R.drawable.module_setting_ic_menu_exit));
         }
         OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NIGHT, "", datas,
                 new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
@@ -287,7 +287,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                         } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
                             MoreUtil.showInfo(mContext, item);
                         } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
-                            startActivity(new Intent(mContext, PlayerModeActivity.class));
+                            startActivity(new Intent(mContext, ModeActivity.class));
                         } else if (bean.type == OperationDialog.Bean.TYPE_EXIT) {
                             App.exit(mContext);
                         }
@@ -442,10 +442,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     private void togglePlay(boolean isPlay) {
         if (isPlay) {
-            ivPlayPause.setImageResource(R.drawable.ic_play_pause);
+            ivPlayPause.setImageResource(R.drawable.module_play_ic_play_pause);
             rotationAnimator();
         } else {
-            ivPlayPause.setImageResource(R.drawable.ic_play_play);
+            ivPlayPause.setImageResource(R.drawable.module_play_ic_play_play);
             if (animator != null && animator.isRunning()) {
                 animator.cancel();
             }
@@ -456,7 +456,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     public void finish() {
         super.finish();
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NORMAL) {
-            overridePendingTransition(R.anim.push_stay, R.anim.push_bottom_out);
+            overridePendingTransition(R.anim.module_common_push_stay, R.anim.module_common_push_bottom_out);
         } else {
             overridePendingTransition(0, 0);
         }

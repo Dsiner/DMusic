@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <com.d.music.view.TitleLayout
+        android:id="@+id/tl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_middleRes="@layout/module_common_layout_title_main"
+        skin:enable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/lib_pub_dimen_margin">
+
+        <RelativeLayout
+            android:id="@+id/rlyt_local"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/lib_pub_color_main"
+            android:gravity="center_vertical"
+            skin:enable="true">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/module_common_ic_local_decorate" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:src="@drawable/module_common_ic_local" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="57dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="本地音乐"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
+
+                <TextView
+                    android:id="@+id/tv_local_all_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:singleLine="true"
+                    android:text="0首"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+                <ProgressBar
+                    android:id="@+id/pbr_loading"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="1dp"
+                    android:indeterminateDrawable="@drawable/module_common_ic_loading"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_collection"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
+            android:layout_weight="1"
+            android:background="@color/lib_pub_color_main"
+            android:gravity="center_vertical"
+            skin:enable="true">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:src="@drawable/module_common_ic_fav" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="57dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我的收藏"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
+
+                <TextView
+                    android:id="@+id/tv_collection_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="0首"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/lib_pub_dimen_margin">
+
+        <RelativeLayout
+            android:id="@+id/rlyt_online"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/lib_pub_color_main"
+            skin:enable="true">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/module_common_ic_online_decorate" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+                android:scaleType="centerCrop"
+                android:src="@drawable/module_common_ic_online" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="57dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="音乐馆"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_sub" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:singleLine="true"
+                    android:text="0首"
+                    android:textColor="@color/lib_pub_color_white"
+                    android:textSize="@dimen/lib_pub_dimen_text_small"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="1dp"
+                    android:indeterminateDrawable="@drawable/module_common_ic_loading"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/lib_pub_dimen_margin"
+        android:paddingRight="@dimen/lib_pub_dimen_margin"
+        android:text="自建歌单"
+        android:textColor="@color/lib_pub_color_main"
+        android:textSize="@dimen/lib_pub_dimen_text_sub"
+        skin:enable="true" />
+
+    <com.d.lib.xrv.LRecyclerView
+        android:id="@+id/lv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/lib_pub_dimen_margin" />
+</LinearLayout>

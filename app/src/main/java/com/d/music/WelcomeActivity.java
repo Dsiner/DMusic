@@ -48,7 +48,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_welcome;
+        return R.layout.module_common_activity_welcome;
     }
 
     @Override
@@ -65,9 +65,9 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
     @Override
     protected void init() {
         final LayoutInflater inflater = LayoutInflater.from(this);
-        final View page0 = inflater.inflate(R.layout.welcome_page0, null);
-        final View page1 = inflater.inflate(R.layout.welcome_page1, null);
-        final View page2 = inflater.inflate(R.layout.welcome_page2, null);
+        final View page0 = inflater.inflate(R.layout.module_common_welcome_page0, null);
+        final View page1 = inflater.inflate(R.layout.module_common_welcome_page1, null);
+        final View page2 = inflater.inflate(R.layout.module_common_welcome_page2, null);
         page2.findViewById(R.id.btn_start).setOnClickListener(this);
 
         final List<View> pages = new ArrayList<>();
@@ -113,17 +113,17 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
     private void invalidateDots(int position) {
         switch (position) {
             case 0:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
             case 1:
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
+                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
             case 2:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.dot_wel_cover));
+                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
         }
     }

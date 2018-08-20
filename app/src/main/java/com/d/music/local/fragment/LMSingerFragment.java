@@ -21,7 +21,7 @@ public class LMSingerFragment extends AbstractLMFragment<SingerModel> {
 
     @Override
     protected CommonAdapter<SingerModel> getAdapter() {
-        return new SingerAdapter(mContext, new ArrayList<SingerModel>(), R.layout.adapter_singer);
+        return new SingerAdapter(mContext, new ArrayList<SingerModel>(), R.layout.module_local_adapter_singer);
     }
 
     @Override

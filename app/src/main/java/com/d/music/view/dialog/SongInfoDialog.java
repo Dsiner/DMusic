@@ -26,7 +26,7 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.dialog_song_info;
+        return R.layout.module_play_dialog_song_info;
     }
 
     @Override

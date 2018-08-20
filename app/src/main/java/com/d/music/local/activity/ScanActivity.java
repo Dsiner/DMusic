@@ -53,7 +53,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_scan;
+        return R.layout.module_local_activity_scan;
     }
 
     @Override

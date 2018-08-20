@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_bg_sub"
+    android:orientation="vertical">
+
+    <com.d.music.view.TitleLayout
+        android:id="@+id/tl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
+        app:lib_pub_tl_middleText="心印"
+        app:lib_pub_tl_rightText="确定"
+        skin:enable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_row_height"
+        android:background="@color/lib_pub_color_bg_main"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
+            android:singleLine="true"
+            android:text="签名："
+            android:textColor="@color/lib_pub_color_black"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
+
+        <EditText
+            android:id="@+id/et_signature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lib_pub_color_trans"
+            android:hint="singular"
+            android:padding="6dp"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <include layout="@layout/lib_pub_layout_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_row_height"
+        android:background="@color/lib_pub_color_bg_main"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
+            android:singleLine="true"
+            android:text="简笔："
+            android:textColor="@color/lib_pub_color_black"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
+
+        <EditText
+            android:id="@+id/et_stroke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lib_pub_color_trans"
+            android:hint="be simple or wonderful"
+            android:padding="6dp"
+            android:textColor="@color/lib_pub_color_main"
+            android:textSize="@dimen/lib_pub_dimen_text_sub"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <include layout="@layout/lib_pub_layout_line" />
+</LinearLayout>

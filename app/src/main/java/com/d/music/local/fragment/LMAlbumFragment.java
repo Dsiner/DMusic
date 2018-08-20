@@ -33,7 +33,7 @@ public class LMAlbumFragment extends AbstractLMFragment<AlbumModel> {
 
     @Override
     protected CommonAdapter<AlbumModel> getAdapter() {
-        return new AlbumAdapter(mContext, new ArrayList<AlbumModel>(), R.layout.adapter_album);
+        return new AlbumAdapter(mContext, new ArrayList<AlbumModel>(), R.layout.module_local_adapter_album);
     }
 
     @Override
