@@ -29,7 +29,8 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         holder.setTextColor(R.id.tv_seq, position < 3 ? ContextCompat.getColor(mContext, R.color.lib_pub_color_red)
                 : ContextCompat.getColor(mContext, R.color.lib_pub_color_text_sub));
         holder.setText(R.id.tv_singer, "" + item.name);
-        holder.setText(R.id.tv_score, "热度:" + item.score);
+        holder.setText(R.id.tv_score, mContext.getResources().getString(R.string.module_common_heat)
+                + item.score);
         Glide.with(mContext)
                 .load(item.img1v1Url)
                 .apply(new RequestOptions().dontAnimate())

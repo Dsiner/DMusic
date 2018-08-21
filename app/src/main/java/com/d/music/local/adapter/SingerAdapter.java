@@ -8,12 +8,12 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.MainActivity;
 import com.d.music.R;
+import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.local.model.SingerModel;
 import com.d.music.module.greendao.db.AppDB;
 
 import java.util.List;
-
 
 public class SingerAdapter extends CommonAdapter<SingerModel> {
 
@@ -28,7 +28,8 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         holder.setViewOnClickListener(R.id.llyt_singer, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.LOCAL_ALL_MUSIC, 1, item.singer));
+                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.LOCAL_ALL_MUSIC,
+                        AbstractLMFragment.TYPE_SINGER, item.singer));
             }
         });
     }

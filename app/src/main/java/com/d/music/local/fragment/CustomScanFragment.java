@@ -107,7 +107,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                     }
                 }
                 if (paths.size() <= 0) {
-                    Util.toast(mContext, "请先选择扫描路径");
+                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select_scan_path));
                     return;
                 }
                 mPresenter.scan(paths, type);

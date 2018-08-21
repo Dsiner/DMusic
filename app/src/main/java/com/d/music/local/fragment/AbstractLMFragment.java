@@ -27,6 +27,11 @@ import butterknife.BindView;
  * Created by D on 2017/4/30.
  */
 public abstract class AbstractLMFragment<M extends BaseModel> extends AbsLazyFragment<M, LMMusicPresenter> implements ILMMusicView {
+    public final static int TYPE_SONG = 0;
+    public final static int TYPE_SINGER = 1;
+    public final static int TYPE_ALBUM = 2;
+    public final static int TYPE_FOLDER = 3;
+
     @BindView(R.id.sb_sidebar)
     SideBar sbSideBar;
 

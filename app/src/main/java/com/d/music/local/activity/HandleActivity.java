@@ -1,5 +1,6 @@
 package com.d.music.local.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,9 @@ import cn.feng.skin.manager.loader.SkinManager;
  */
 public class HandleActivity extends BaseActivity<MvpBasePresenter>
         implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
+    public final static String ARG_TYPE = "type";
+    public final static String ARG_TITLE = "title";
+
     @BindView(R.id.tl_title)
     TitleLayout tlTitle;
     @BindView(R.id.tv_title_right)
@@ -54,6 +58,13 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     private List<MusicModel> modelsFav;
     private HandleAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
+
+    public static void startActivity(Context context, int type, String title) {
+        Intent intent = new Intent(context, HandleActivity.class);
+        intent.putExtra(ARG_TYPE, type);
+        intent.putExtra(ARG_TITLE, title);
+        context.startActivity(intent);
+    }
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.llyt_add_to_list,
             R.id.llyt_delete, R.id.llyt_revoke})
@@ -76,13 +87,14 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
                     }
                 }
                 setCount(count);
-                tvRight.setText(isAll ? "反选" : "全选");
+                tvRight.setText(isAll ? getResources().getString(R.string.module_common_inverse_selection)
+                        : getResources().getString(R.string.module_common_select_all));
                 adapter.setCount(count);
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.llyt_add_to_list:
                 if (adapter.getCount() <= 0) {
-                    Util.toast(mContext, "请先选择");
+                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select));
                     return;
                 }
                 List<MusicModel> list = new ArrayList<>();
@@ -91,12 +103,12 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
                         list.add(musicModel);
                     }
                 }
-                new AddToListPopup(this,type, list ).show();
+                new AddToListPopup(this, type, list).show();
                 break;
             case R.id.llyt_delete:
                 int c = adapter.getCount();
                 if (c <= 0) {
-                    Util.toast(mContext, "请先选择");
+                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select));
                     return;
                 }
                 showLoading();
@@ -134,7 +146,8 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     }
 
     private void setCount(int count) {
-        String mark = count > 0 ? " (已选" + count + ")" : "";
+        String mark = count > 0 ? getResources().getString(R.string.module_common_selected_left)
+                + count + getResources().getString(R.string.module_common_selected_right) : "";
         tlTitle.setText(R.id.tv_title_title, title + mark);
     }
 
@@ -176,12 +189,12 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     private void initTitle() {
         Intent intent = getIntent();
         if (intent != null) {
-            type = intent.getIntExtra("type", 0);
-            title = intent.getStringExtra("title");
+            type = intent.getIntExtra(ARG_TYPE, 0);
+            title = intent.getStringExtra(ARG_TITLE);
         }
         tlTitle.setText(R.id.tv_title_title, title);
         tvRight.setTag(false);
-        tvRight.setText("全选");
+        tvRight.setText(getResources().getString(R.string.module_common_select_all));
     }
 
     @Override

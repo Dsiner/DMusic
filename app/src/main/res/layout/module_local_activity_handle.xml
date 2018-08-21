@@ -14,7 +14,7 @@
         android:background="@color/lib_pub_color_main"
         app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
         app:lib_pub_tl_middleText="title"
-        app:lib_pub_tl_rightText="全选"
+        app:lib_pub_tl_rightText="@string/module_common_select_all"
         skin:enable="true" />
 
     <android.support.v7.widget.RecyclerView

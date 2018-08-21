@@ -48,7 +48,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
      */
     private List<MusicModel> models;
 
-    public AddToListPopup(Context context, int type,List<MusicModel> models) {
+    public AddToListPopup(Context context, int type, List<MusicModel> models) {
         super(context, R.layout.module_play_dialog_add_to_list);
         this.models = models;
         queryListNot(type);
@@ -199,9 +199,9 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                         }
                         closeLoading();
                         if (isEmpty) {
-                            Util.toast(context, "请先选择");
+                            Util.toast(context, context.getResources().getString(R.string.module_common_please_select));
                         } else {
-                            Util.toast(context, "成功添加");
+                            Util.toast(context, context.getResources().getString(R.string.module_common_add_success));
                             // 更新首页自定义列表
                             EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                             dismiss();

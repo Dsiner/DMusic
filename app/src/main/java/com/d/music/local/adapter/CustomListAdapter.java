@@ -43,7 +43,8 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
     public void convert(final int position, CommonHolder holder, final CustomListModel item) {
         if (holder.mLayoutId == R.layout.module_local_adapter_custom_list) {
             holder.setText(R.id.tv_list_name, item.name);
-            holder.setText(R.id.tv_song_count, (item.count != null ? item.count : 0) + "首");
+            holder.setText(R.id.tv_song_count, String.format(mContext.getResources().getString(R.string.module_common_song_unit_format),
+                    (item.count != null ? item.count : 0)));
             final SlideLayout slSlide = holder.getView(R.id.sl_slide);
             slSlide.setOpen(item.exIsOpen, false);
             slSlide.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {

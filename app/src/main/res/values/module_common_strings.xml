@@ -7,4 +7,50 @@
     <string name="module_common_add_to_list">加入歌单</string>
     <string name="module_common_set_ring">设为铃声</string>
     <string name="module_common_song_info">歌曲信息</string>
+
+    <string name="module_common_select_all">全选</string>
+    <string name="module_common_inverse_selection">反选</string>
+    <string name="module_common_please_select">请先选择</string>
+    <string name="module_common_selected_left"> (已选</string>
+    <string name="module_common_selected_right">)</string>
+
+    <string name="module_common_scan_music">扫描歌曲</string>
+    <string name="module_common_please_select_scan_path">请先选择扫描路径</string>
+    <string name="module_common_add_success">成功添加</string>
+
+    <string name="module_common_song_unit_format">%d首</string>
+
+    <string name="module_common_music">音乐</string>
+    <string name="module_common_song">歌曲</string>
+    <string name="module_common_singer">歌手</string>
+    <string name="module_common_album">专辑</string>
+    <string name="module_common_folder">文件夹</string>
+    <string name="module_common_local_song">本地歌曲</string>
+
+    <string name="module_common_online_recommend">个性推荐</string>
+    <string name="module_common_online_singer">歌手</string>
+    <string name="module_common_online_rank">排行榜</string>
+    <string name="module_common_online_radio">电台</string>
+    <string name="module_common_online_mv">MV</string>
+
+    <string name="module_common_music_hall">音乐馆</string>
+
+    <string name="module_common_play_count">播放次数: </string>
+    <string name="module_common_10thousand">万</string>
+
+    <string name="module_common_heat">热度:</string>
+
+    <string name="module_common_tips">提示</string>
+    <string name="module_common_tips_mode_switch">模式切换将于重启后生效,是否立即关闭？</string>
+    <string name="module_common_close_now">立即关闭</string>
+    <string name="module_common_not_now">暂不</string>
+
+    <string name="module_common_mode_normal">普通模式</string>
+    <string name="module_common_mode_minimalist">极简模式</string>
+    <string name="module_common_mode_notification">通知栏模式</string>
+
+    <string name="module_common_setting">设置</string>
+    <string name="module_common_skinning_error">╯﹏╰很抱歉，换肤失败了</string>
+    <string name="module_common_skinning">正在换肤>></string>
+    <string name="module_common_close">关闭</string>
 </resources>

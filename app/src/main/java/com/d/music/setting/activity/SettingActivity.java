@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         initTitle();
         p = Preferences.getIns(SettingActivity.this);
         rlModeAutoPlay.setOpen(p.getIsAutoPlay());
@@ -104,7 +104,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     private void initTitle() {
         TextView tvTitle = (TextView) tlTitle.findViewById(R.id.tv_title_title);
-        tvTitle.setText("设置");
+        tvTitle.setText(getResources().getString(R.string.module_common_setting));
         tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
     }
 
@@ -135,6 +135,6 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 }

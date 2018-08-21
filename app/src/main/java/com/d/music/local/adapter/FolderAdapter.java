@@ -8,6 +8,7 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.MainActivity;
 import com.d.music.R;
+import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.local.model.FolderModel;
 import com.d.music.module.greendao.db.AppDB;
@@ -31,7 +32,8 @@ public class FolderAdapter extends CommonAdapter<FolderModel> {
         holder.setViewOnClickListener(R.id.llyt_folder, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.LOCAL_ALL_MUSIC, 3, item.folder));
+                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.LOCAL_ALL_MUSIC,
+                        AbstractLMFragment.TYPE_FOLDER, item.folder));
             }
         });
     }

@@ -40,7 +40,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
                 }
                 if (isShowAdd) {
                     CustomListModel add = new CustomListModel();
-                    add.pointer = -1; // -1: add type
+                    add.pointer = -1; // -1: Add type
                     list.add(add);
                 }
                 e.onNext(list);

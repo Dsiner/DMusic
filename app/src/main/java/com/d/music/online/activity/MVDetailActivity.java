@@ -16,11 +16,13 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2018/8/13.
  */
 public class MVDetailActivity extends BaseFragmentActivity {
+    public final static String ARG_ID = "id";
+
     private MVDetailFragment fragment;
 
     public static void openActivity(Context context, long id) {
         Intent intent = new Intent(context, MVDetailActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra(ARG_ID, id);
         context.startActivity(intent);
     }
 
@@ -32,10 +34,10 @@ public class MVDetailActivity extends BaseFragmentActivity {
     @Override
     protected void init() {
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_black));
-        long id = getIntent().getLongExtra("id", 0);
+        long id = getIntent().getLongExtra(ARG_ID, 0);
         fragment = new MVDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("id", id);
+        bundle.putLong(ARG_ID, id);
         fragment.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction()

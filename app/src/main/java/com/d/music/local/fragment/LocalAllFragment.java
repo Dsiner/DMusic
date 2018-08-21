@@ -35,7 +35,10 @@ public class LocalAllFragment extends AbstractLocalAllFragment {
 
     @Override
     protected List<String> getTitles() {
-        return Arrays.asList("歌曲", "歌手", "专辑", "文件夹");
+        return Arrays.asList(getResources().getString(R.string.module_common_song),
+                getResources().getString(R.string.module_common_singer),
+                getResources().getString(R.string.module_common_album),
+                getResources().getString(R.string.module_common_folder));
     }
 
     @Override
@@ -55,7 +58,7 @@ public class LocalAllFragment extends AbstractLocalAllFragment {
     }
 
     private void initTitle() {
-        tlTitle.setText(R.id.tv_title_title, "本地歌曲");
+        tlTitle.setText(R.id.tv_title_title, getResources().getString(R.string.module_common_local_song));
         tlTitle.setVisibility(R.id.iv_title_left, View.VISIBLE);
         tlTitle.setVisibility(R.id.iv_title_right, View.VISIBLE);
         tlTitle.setOnMenuListener(new MenuDialog.OnMenuListener() {

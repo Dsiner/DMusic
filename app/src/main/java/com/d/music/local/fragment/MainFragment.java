@@ -202,12 +202,12 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
 
     @Override
     public void setLocalAllCount(int count) {
-        tvLocalAllCount.setText(count + "首");
+        tvLocalAllCount.setText(String.format(mContext.getResources().getString(R.string.module_common_song_unit_format), count));
     }
 
     @Override
     public void setCollectionCount(int count) {
-        tvCollectionCount.setText(count + "首");
+        tvCollectionCount.setText(String.format(mContext.getResources().getString(R.string.module_common_song_unit_format), count));
     }
 
     @Override

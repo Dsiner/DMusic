@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="@dimen/lib_pub_dimen_margin"
-            android:text="扫描歌曲"
+            android:text="@string/module_common_scan_music"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>

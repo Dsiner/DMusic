@@ -22,6 +22,7 @@ import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
+import com.d.music.online.activity.MVDetailActivity;
 import com.d.music.online.adapter.MVDetailAdapter;
 import com.d.music.online.model.MVDetailModel;
 import com.d.music.online.model.MVInfoModel;
@@ -112,7 +113,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
     protected void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            id = bundle.getLong("id", 0);
+            id = bundle.getLong(MVDetailActivity.ARG_ID, 0);
         }
         super.init();
         height916 = (int) (Util.getScreenSize(mActivity)[0] * 9f / 16f);

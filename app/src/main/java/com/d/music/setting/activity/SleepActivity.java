@@ -127,7 +127,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         p = Preferences.getIns(getApplicationContext());
         index = p.getSleepType();
-        tvContent.setText("关闭");
+        tvContent.setText(getResources().getString(R.string.module_common_close));
         ivCheck.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
         adapter = new TimingAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
         adapter.setIndex(index - 1);
@@ -180,6 +180,6 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 }

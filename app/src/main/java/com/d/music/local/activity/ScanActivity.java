@@ -66,7 +66,7 @@ public class ScanActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     private void initTitle() {
-        tlTitle.setText(R.id.tv_title_title, "扫描歌曲");
+        tlTitle.setText(R.id.tv_title_title, getResources().getString(R.string.module_common_scan_music));
     }
 
     public void replaceFragment(Fragment fragment) {

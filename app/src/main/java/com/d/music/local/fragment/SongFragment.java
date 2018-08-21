@@ -1,6 +1,5 @@
 package com.d.music.local.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -183,7 +182,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     private void initTitle() {
         Bundle bundle = getArguments();
-        title = "Song";
+        title = getResources().getString(R.string.module_common_song);
         if (bundle != null) {
             type = bundle.getInt(ARG_TYPE);
             tab = bundle.getInt(ARG_TAB);
@@ -256,10 +255,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
         }
         Constants.Heap.models.clear();
         Constants.Heap.models.addAll(datas);
-        Intent intent = new Intent(getActivity(), HandleActivity.class);
-        intent.putExtra("type", type);
-        intent.putExtra("title", title);
-        getActivity().startActivity(intent);
+        HandleActivity.startActivity(getActivity(), type, title);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

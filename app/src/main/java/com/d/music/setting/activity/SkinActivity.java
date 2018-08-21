@@ -65,7 +65,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
                     @Override
                     public void onFailed() {
                         closeLoading();
-                        Util.toast(SkinActivity.this, "╯﹏╰很抱歉，换肤失败了");
+                        Util.toast(getApplicationContext(), getResources().getString(R.string.module_common_skinning_error));
                     }
                 });
                 break;
@@ -89,7 +89,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @Override
     protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         index = Preferences.getIns(getApplicationContext()).getSkin();
         adapter = new SkinAdapter(this, getDatas(index), R.layout.module_setting_adapter_skin);
         adapter.setIndex(index);
@@ -101,7 +101,8 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     public void showLoading() {
         if (dialog == null) {
-            dialog = AlertDialogFactory.createFactory(this).getLoadingDialog("正在换肤>>");
+            dialog = AlertDialogFactory.createFactory(this)
+                    .getLoadingDialog(getResources().getString(R.string.module_common_skinning));
         }
         if (!dialog.isShowing()) {
             dialog.show();
@@ -172,6 +173,6 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 }

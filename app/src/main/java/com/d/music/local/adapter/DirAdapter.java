@@ -26,7 +26,8 @@ public class DirAdapter extends CommonAdapter<FileModel> {
     @Override
     public void convert(int position, final CommonHolder holder, final FileModel item) {
         holder.setText(R.id.tv_dir, item.name);
-        holder.setText(R.id.tv_music_count, item.musicCount + "首");
+        holder.setText(R.id.tv_music_count, String.format(mContext.getResources().getString(R.string.module_common_song_unit_format),
+                item.musicCount));
         holder.setChecked(R.id.cb_check, item.isChecked);
         holder.setViewOnClickListener(R.id.ll_dir_sub, new OnClickFastListener() {
             @Override

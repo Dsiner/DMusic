@@ -5,6 +5,7 @@ import android.content.Context;
 import com.d.lib.common.module.mvp.MvpBasePresenter;
 import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.lib.common.view.DSLayout;
+import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.view.ISongView;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
@@ -45,24 +46,22 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = null;
-                if (type == AppDB.LOCAL_ALL_MUSIC && tab > 0) {
+                if (type == AppDB.LOCAL_ALL_MUSIC && tab > AbstractLMFragment.TYPE_SONG) {
                     switch (tab) {
-                        case 1:
+                        case AbstractLMFragment.TYPE_SINGER:
                             list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllBySinger(sortKey);
                             break;
-                        case 2:
+                        case AbstractLMFragment.TYPE_ALBUM:
                             list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByAlbum(sortKey);
                             break;
-                        case 3:
+                        case AbstractLMFragment.TYPE_FOLDER:
                             list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByFolder(sortKey);
                             break;
                     }
                 } else {
                     list = AppDBUtil.getIns(mContext).optMusic().queryAll(type);
                 }
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
+                list = list != null ? list : new ArrayList<MusicModel>();
                 e.onNext(list);
                 e.onComplete();
             }
@@ -97,8 +96,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
     /**
      * 获取歌曲
      *
-     * @param type:仅限自定义歌曲
-     * @param orderType:排序类型:按名称、时间、自定义
+     * @param type:      仅限自定义歌曲
+     * @param orderType: 排序类型:按名称、时间、自定义
      */
     public void getSong(final int type, final int orderType) {
         if (getView() != null) {
@@ -110,9 +109,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 AppDBUtil.getIns(mContext).optCustomList().updateortType(type, orderType);
                 List<MusicModel> list = AppDBUtil.getIns(mContext).optCustomList()
                         .queryAllCustomMusic(type, orderType);
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
+                list = list != null ? list : new ArrayList<MusicModel>();
                 e.onNext(list);
                 e.onComplete();
             }
@@ -157,7 +154,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 AppDBUtil.getIns(mContext).optMusic().deleteAll(type);
                 AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(type, models);
                 AppDBUtil.getIns(mContext).optCustomList().updateCount(type, models.size());
-                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_CUSTOM);//按自定义排序
+                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_CUSTOM); // 按自定义排序
             }
         });
     }

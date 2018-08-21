@@ -55,7 +55,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     }
 
     public void setSongCount(int count) {
-        tvSongCount.setText(count + "首");
+        tvSongCount.setText(String.format(getResources().getString(R.string.module_common_song_unit_format), count));
     }
 
     public void setVisibility(int resId, int visibility) {

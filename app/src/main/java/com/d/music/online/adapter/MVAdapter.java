@@ -27,7 +27,8 @@ public class MVAdapter extends CommonAdapter<MVModel> {
 
     @Override
     public void convert(int position, CommonHolder holder, final MVModel item) {
-        holder.setText(R.id.tv_play_count, "播放次数: " + formatPlayCount(item.playCount));
+        holder.setText(R.id.tv_play_count, mContext.getResources().getString(R.string.module_common_play_count)
+                + formatPlayCount(item.playCount));
         holder.setText(R.id.tv_seq, "" + (position + 1));
         holder.setTextColor(R.id.tv_seq, position < 3 ? ContextCompat.getColor(mContext, R.color.lib_pub_color_red)
                 : ContextCompat.getColor(mContext, R.color.lib_pub_color_white));
@@ -49,6 +50,6 @@ public class MVAdapter extends CommonAdapter<MVModel> {
         if (count < 10000) {
             return "" + count;
         }
-        return count / 10000 + "." + count / 1000 % 10 + "万";
+        return count / 10000 + "." + count / 1000 % 10 + mContext.getResources().getString(R.string.module_common_10thousand);
     }
 }

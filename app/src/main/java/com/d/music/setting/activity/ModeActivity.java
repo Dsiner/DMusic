@@ -47,23 +47,27 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
                 break;
             case R.id.tv_title_right:
                 int mode = adapter.getIndex();
-                if (mode >= 0 && mode <= 2) {
+                if (mode >= RadioModel.MODE_NORMAL && mode <= RadioModel.MODE_NOTIFICATION) {
                     p.putPlayerMode(mode);
                 }
-                AlertDialogFactory.createFactory(ModeActivity.this).getAlertDialog("提示",
-                        "模式切换将于重启后生效,是否立即关闭？", "立即关闭", "暂不", new AlertDialogFactory.OnClickListener() {
-                            @Override
-                            public void onClick(AlertDialog dlg, View v) {
-                                dlg.dismiss();
-                                App.exit(getApplicationContext());
-                            }
-                        }, new AlertDialogFactory.OnClickListener() {
-                            @Override
-                            public void onClick(AlertDialog dlg, View v) {
-                                dlg.dismiss();
-                                finish();
-                            }
-                        });
+                AlertDialogFactory.createFactory(ModeActivity.this)
+                        .getAlertDialog(getResources().getString(R.string.module_common_tips),
+                                getResources().getString(R.string.module_common_tips_mode_switch),
+                                getResources().getString(R.string.module_common_close_now),
+                                getResources().getString(R.string.module_common_not_now),
+                                new AlertDialogFactory.OnClickListener() {
+                                    @Override
+                                    public void onClick(AlertDialog dlg, View v) {
+                                        dlg.dismiss();
+                                        App.exit(getApplicationContext());
+                                    }
+                                }, new AlertDialogFactory.OnClickListener() {
+                                    @Override
+                                    public void onClick(AlertDialog dlg, View v) {
+                                        dlg.dismiss();
+                                        finish();
+                                    }
+                                });
                 break;
         }
     }
@@ -97,7 +101,7 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         p = Preferences.getIns(getApplicationContext());
         index = p.getPlayerMode();
         adapter = new ModeAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
@@ -109,16 +113,16 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     private List<RadioModel> getDatas() {
         List<RadioModel> datas = new ArrayList<>();
         RadioModel model0 = new RadioModel();
-        model0.content = "普通模式";
-        model0.isChecked = index == 0;
+        model0.content = getResources().getString(R.string.module_common_mode_normal);
+        model0.isChecked = index == RadioModel.MODE_NORMAL;
 
         RadioModel model1 = new RadioModel();
-        model1.content = "极简模式";
-        model1.isChecked = index == 1;
+        model1.content = getResources().getString(R.string.module_common_mode_minimalist);
+        model1.isChecked = index == RadioModel.MODE_MINIMALIST;
 
         RadioModel model2 = new RadioModel();
-        model2.content = "通知栏模式";
-        model2.isChecked = index == 2;
+        model2.content = getResources().getString(R.string.module_common_mode_notification);
+        model2.isChecked = index == RadioModel.MODE_NOTIFICATION;
 
         datas.add(model0);
         datas.add(model1);
@@ -129,6 +133,6 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     public void onThemeUpdate() {
         super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
     }
 }
