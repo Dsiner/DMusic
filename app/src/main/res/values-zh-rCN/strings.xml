@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Module_Common -->
+    <string name="module_common_app_name">畅听音乐</string>
+    <string name="module_common_dmusic">畅听</string>
+    <string name="module_common_welcome_start">开启畅听之旅</string>
+    <string name="module_common_local_music">本地音乐</string>
+    <string name="module_common_my_collection">我的收藏</string>
+    <string name="module_common_music_hall">音乐馆</string>
+    <string name="module_common_custom_list">自建歌单</string>
+    <string name="module_common_select_all">全选</string>
+    <string name="module_common_inverse_selection">反选</string>
+    <string name="module_common_please_select">请先选择</string>
+    <string name="module_common_selected_left"> (已选</string>
+    <string name="module_common_selected_right">)</string>
+    <string name="module_common_song_unit_format">%d首</string>
+
+    <string name="module_common_stick">置顶</string>
+    <string name="module_common_collected">已收藏</string>
+    <string name="module_common_collect">收藏</string>
+    <string name="module_common_setting">设置</string>
+    <string name="module_common_close">关闭</string>
+    <string name="module_common_sweep">清空</string>
+    <string name="module_common_exit">退出</string>
+
+    <string name="module_common_tips">提示</string>
+
+    <!-- Module_Setting -->
+    <string name="module_common_version">版本号：v1.0.3</string>
+    <string name="module_common_introduction">追求速度、简约和安全的\n本地音乐播放器</string>
+    <string name="module_common_koan">心印</string>
+    <string name="module_common_signature">签名：</string>
+    <string name="module_common_stroke">简笔：</string>
+    <string name="module_common_sleep_timing">睡眠定时</string>
+    <string name="module_common_sleep_waiting_time">睡眠等待时间(分钟)</string>
+    <string name="module_common_night_mode">夜间模式</string>
+    <string name="module_common_skin_resurfacing">换肤</string>
+    <string name="module_common_skinning">正在换肤>></string>
+    <string name="module_common_skinning_error">╯﹏╰很抱歉，换肤失败了</string>
+    <string name="module_common_play_automatically_at_startup">启动时自动播放</string>
+    <string name="module_common_mode_selection">模式选择</string>
+    <string name="module_common_show_drop_down_menu">显示下拉菜单</string>
+    <string name="module_common_show_new_song_list_button">显示新建歌单</string>
+    <string name="module_common_avatar_cover_auto_rotation">头像/封面自动旋转</string>
+    <string name="module_common_shake_the_phone_to_cut_songs">晃动手机切歌</string>
+    <string name="module_common_show_home_page_popup_button">显示首页弹出菜单按钮</string>
+    <string name="module_common_help_center">帮助中心</string>
+    <string name="module_common_about_dmusic">关于畅听音乐</string>
+
+    <string name="module_common_mode_normal">普通模式</string>
+    <string name="module_common_mode_minimalist">极简模式</string>
+    <string name="module_common_mode_notification">通知栏模式</string>
+    <string name="module_common_mode_switch">模式切换</string>
+    <string name="module_common_tips_mode_switch">模式切换将于重启后生效,是否立即关闭？</string>
+    <string name="module_common_close_now">立即关闭</string>
+    <string name="module_common_not_now">暂不</string>
+
+    <!-- Module_Local -->
+    <string name="module_common_local_song">本地歌曲</string>
+
+    <string name="module_common_music">音乐</string>
+    <string name="module_common_song">歌曲</string>
+    <string name="module_common_singer">歌手</string>
+    <string name="module_common_album">专辑</string>
+    <string name="module_common_folder">文件夹</string>
+
+    <string name="module_common_new_song_list">新建歌单</string>
+    <string name="module_common_up_to_40_characters">最长40个字符</string>
+    <string name="module_common_add_success">成功添加</string>
+
+    <string name="module_common_sort_by_name">按名称排序</string>
+    <string name="module_common_sort_by_time">按时间排序</string>
+    <string name="module_common_sort_by_custom">自定义排序</string>
+
+    <string name="module_common_full_scan">全盘扫描</string>
+    <string name="module_common_custom_scan">自定义扫描</string>
+    <string name="module_common_scan_now">立即扫描</string>
+    <string name="module_common_scan_music">扫描歌曲</string>
+    <string name="module_common_please_select_scan_path">请先选择扫描路径</string>
+
+    <!-- Module_Online -->
+    <string name="module_common_online_recommend">个性推荐</string>
+    <string name="module_common_online_singer">歌手</string>
+    <string name="module_common_online_rank">排行榜</string>
+    <string name="module_common_online_radio">电台</string>
+    <string name="module_common_online_mv">MV</string>
+
+    <string name="module_common_heat">热度:</string>
+    <string name="module_common_play_count">播放次数: </string>
+    <string name="module_common_10thousand">万</string>
+    <string name="module_common_related_version">相关版本</string>
+
+    <!-- Module_Play -->
+    <string name="module_common_song_info">歌曲信息</string>
+    <string name="module_common_song_info_song">歌曲:</string>
+    <string name="module_common_song_info_singer">歌手:</string>
+    <string name="module_common_song_info_album">专辑:</string>
+    <string name="module_common_song_info_file_postfix">文件格式:</string>
+    <string name="module_common_song_info_file_duration">歌曲时长:</string>
+    <string name="module_common_song_info_file_size">文件大小:</string>
+    <string name="module_common_song_info_file_folder">存放目录:</string>
+
+    <string name="module_common_play_all">播放全部</string>
+    <string name="module_common_add_to_list">加入歌单</string>
+    <string name="module_common_set_ring">设为铃声</string>
+    <string name="module_common_set_lrc">设置歌词</string>
+    <string name="module_common_delete">删除</string>
+    <string name="module_common_edit">编辑</string>
+    <string name="module_common_download">下载</string>
+    <string name="module_common_search_lrc">歌词搜索</string>
+
+    <string name="module_common_add_to_song_list">添加到歌单</string>
+
+</resources>

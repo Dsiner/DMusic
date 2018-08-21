@@ -24,7 +24,7 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="添加到歌单"
+            android:text="@string/module_common_add_to_song_list"
             android:textColor="@color/lib_pub_color_black"
             android:textSize="@dimen/lib_pub_dimen_text_main" />
 
@@ -42,7 +42,7 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:text="确定"
+            android:text="@string/lib_pub_ok"
             android:textColor="@color/lib_pub_color_main"
             android:textSize="@dimen/lib_pub_dimen_text_main"
             skin:enable="true" />

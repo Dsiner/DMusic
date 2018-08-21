@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0.5"
-        android:text="新建歌单"
+        android:text="@string/module_common_new_song_list"
         android:textColor="@color/lib_pub_color_black"
         android:textSize="@dimen/lib_pub_dimen_text_sub" />
 </LinearLayout>

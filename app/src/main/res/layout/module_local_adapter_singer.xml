@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="夏洛特烦恼"
+                android:text="Singer"
                 android:textSize="@dimen/lib_pub_dimen_text_small" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="金志文-夏洛特烦恼.mp3"
+                android:text="song.mp3"
                 android:textSize="@dimen/lib_pub_dimen_text_mini" />
         </LinearLayout>
     </LinearLayout>

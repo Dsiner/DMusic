@@ -29,7 +29,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/lib_pub_dimen_margin"
         android:singleLine="true"
-        android:text="普通模式"
+        android:text="Item"
         android:textColor="@color/lib_pub_color_black"
         android:textSize="@dimen/lib_pub_dimen_text_sub" />
 

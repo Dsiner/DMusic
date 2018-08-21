@@ -21,7 +21,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="夏洛特烦恼"
+            android:text="Song"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="16dp" />
 
@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="--金志文"
+            android:text="--Singer"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="12dp" />
     </LinearLayout>

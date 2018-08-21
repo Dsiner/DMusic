@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/lib_pub_dimen_item_height"
             android:gravity="center"
-            android:text="歌曲信息"
+            android:text="@string/module_common_song_info"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_main" />
 
@@ -48,7 +48,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="歌曲:"
+                        android:text="@string/module_common_song_info_song"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:text="夏洛特烦恼"
+                        android:text="Song"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -71,7 +71,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="歌手:"
+                        android:text="@string/module_common_song_info_singer"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                         android:layout_weight="1"
-                        android:text="金志文"
+                        android:text="Singer"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="专辑:"
+                        android:text="@string/module_common_song_info_album"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                         android:layout_weight="1"
-                        android:text="未知专辑"
+                        android:text="Album"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -118,7 +118,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="文件格式:"
+                        android:text="@string/module_common_song_info_file_postfix"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="歌曲时长:"
+                        android:text="@string/module_common_song_info_file_duration"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                         android:layout_weight="1"
-                        android:text="03:12"
+                        android:text="00:00"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -164,7 +164,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="文件大小:"
+                        android:text="@string/module_common_song_info_file_size"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                         android:layout_weight="1"
-                        android:text="7.34MB"
+                        android:text="0.00MB"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -187,7 +187,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="存放目录:"
+                        android:text="module_common_song_info_file_folder"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
@@ -197,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                         android:layout_weight="1"
-                        android:text="/storage/emulated/0/ttod/song/金志文-夏洛特烦恼.mp3"
+                        android:text="/storage/emulated/0/song.mp3"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
                 </LinearLayout>
@@ -210,7 +210,7 @@
             android:layout_height="@dimen/lib_pub_dimen_item_height"
             android:background="@color/lib_pub_color_white"
             android:gravity="center"
-            android:text="确定"
+            android:text="@string/lib_pub_ok"
             android:textColor="@color/lib_pub_color_main"
             android:textSize="@dimen/lib_pub_dimen_text_sub"
             skin:enable="true" />

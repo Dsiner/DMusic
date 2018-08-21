@@ -31,7 +31,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="畅听"
+            android:text="@string/module_common_dmusic"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_main" />
     </LinearLayout>
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="睡眠定时"
+            android:text="@string/module_common_sleep_timing"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="夜间模式"
+            android:text="@string/module_common_night_mode"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>

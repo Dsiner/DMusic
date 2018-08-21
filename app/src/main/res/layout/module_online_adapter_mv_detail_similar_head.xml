@@ -5,6 +5,6 @@
     android:gravity="center"
     android:paddingBottom="20dp"
     android:paddingTop="20dp"
-    android:text="相关版本"
+    android:text="@string/module_common_related_version"
     android:textColor="@color/lib_pub_color_text_main"
     android:textSize="@dimen/lib_pub_dimen_text_small" />

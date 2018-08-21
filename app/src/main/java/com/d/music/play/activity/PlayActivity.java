@@ -268,13 +268,16 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private void showMore() {
         final MusicModel item = control.getModel();
         final List<OperationDialog.Bean> datas = new ArrayList<>();
-        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_ADDLIST, true));
-        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_FAV, true)
-                .item(item != null && item.isCollected ? "已收藏" : "收藏"));
-        datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_INFO, true));
+        datas.add(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_ADDLIST, true));
+        datas.add(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_FAV, true)
+                .item(item != null && item.isCollected ? getResources().getString(R.string.module_common_collected)
+                        : getResources().getString(R.string.module_common_collect)));
+        datas.add(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, true));
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
-            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_CHANGE_MODE, "模式切换", R.drawable.module_common_ic_song_edit_m));
-            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_EXIT, "退出", R.drawable.module_setting_ic_menu_exit));
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_CHANGE_MODE,
+                    getResources().getString(R.string.module_common_mode_switch), R.drawable.module_common_ic_song_edit_m));
+            datas.add(new OperationDialog.Bean(OperationDialog.Bean.TYPE_EXIT,
+                    getResources().getString(R.string.module_common_exit), R.drawable.module_setting_ic_menu_exit));
         }
         OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NIGHT, "", datas,
                 new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
@@ -347,7 +350,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         // 停止拖动
         progressChanged(seekBar.getProgress());
         lrc.seekTo(seekBar.getProgress(), true);
-        ULog.v("跳转到1：" + seekBar.getProgress());
+        ULog.v("to：" + seekBar.getProgress());
     }
 
     /**
@@ -358,7 +361,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             MusicService.progressLock = false; // 解锁
             return;
         }
-        ULog.v("跳转到:--" + progress);
+        ULog.v("to:--" + progress);
         Intent intent = new Intent();
         intent.setAction(Constants.PlayFlag.MUSIC_SEEK_TO_TIME);
         intent.putExtra("progress", progress);

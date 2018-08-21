@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Module_Common -->
+    <string name="module_common_app_name">DMusic</string>
+    <string name="module_common_dmusic">DMusic</string>
+    <string name="module_common_welcome_start">Open a listening tour</string>
+    <string name="module_common_local_music">Local</string>
+    <string name="module_common_my_collection">Collection</string>
+    <string name="module_common_music_hall">Online</string>
+    <string name="module_common_custom_list">Song list</string>
+    <string name="module_common_select_all">Select all</string>
+    <string name="module_common_inverse_selection">Inverse</string>
+    <string name="module_common_please_select">Please choose first</string>
+    <string name="module_common_selected_left"> (Selected</string>
+    <string name="module_common_selected_right">)</string>
+    <string name="module_common_song_unit_format">%d</string>
+
+    <string name="module_common_stick">Stick</string>
+    <string name="module_common_collected">Collected</string>
+    <string name="module_common_collect">Collect</string>
+    <string name="module_common_setting">Setting</string>
+    <string name="module_common_close">Close</string>
+    <string name="module_common_sweep">Sweep</string>
+    <string name="module_common_exit">Exit</string>
+
+    <string name="module_common_tips">Tips</string>
+
+    <!-- Module_Setting -->
+    <string name="module_common_version">Version：v1.0.3</string>
+    <string name="module_common_introduction">Local music player that pursues speed, \n simplicity and security</string>
+    <string name="module_common_koan">Koan</string>
+    <string name="module_common_signature">Signature：</string>
+    <string name="module_common_stroke">Stroke：</string>
+    <string name="module_common_sleep_timing">Sleep timing</string>
+    <string name="module_common_sleep_waiting_time">Sleep waiting time (minutes)</string>
+    <string name="module_common_night_mode">Night mode</string>
+    <string name="module_common_skin_resurfacing">Skin resurfacing</string>
+    <string name="module_common_skinning">Skin resurfacing>></string>
+    <string name="module_common_skinning_error">╯﹏╰Sorry, the skinning failed.</string>
+    <string name="module_common_play_automatically_at_startup">Play automatically at startup</string>
+    <string name="module_common_mode_selection">Mode selection</string>
+    <string name="module_common_show_drop_down_menu">Show drop down menu</string>
+    <string name="module_common_show_new_song_list_button">Show new song list</string>
+    <string name="module_common_avatar_cover_auto_rotation">Cover rotation automatically</string>
+    <string name="module_common_shake_the_phone_to_cut_songs">Shake the phone to cut songs</string>
+    <string name="module_common_show_home_page_popup_button">Show home page popup button</string>
+    <string name="module_common_help_center">Help center</string>
+    <string name="module_common_about_dmusic">About DMusic</string>
+
+    <string name="module_common_mode_normal">Normal mode</string>
+    <string name="module_common_mode_minimalist">Minimalist mode</string>
+    <string name="module_common_mode_notification">Notification mode</string>
+    <string name="module_common_mode_switch">Mode switch</string>
+    <string name="module_common_tips_mode_switch">Mode switching will take effect after restart, will it be closed immediately?</string>
+    <string name="module_common_close_now">Close now</string>
+    <string name="module_common_not_now">Not yet</string>
+
+    <!-- Module_Local -->
+    <string name="module_common_local_song">Local song</string>
+
+    <string name="module_common_music">Music</string>
+    <string name="module_common_song">Song</string>
+    <string name="module_common_singer">Singer</string>
+    <string name="module_common_album">Album</string>
+    <string name="module_common_folder">Folder</string>
+
+    <string name="module_common_new_song_list">New song list</string>
+    <string name="module_common_up_to_40_characters">Up to 40 characters</string>
+    <string name="module_common_add_success">Successfully added</string>
+
+    <string name="module_common_sort_by_name">Sort by name</string>
+    <string name="module_common_sort_by_time">Sort by time</string>
+    <string name="module_common_sort_by_custom">Custom sort</string>
+
+    <string name="module_common_full_scan">Full scan</string>
+    <string name="module_common_custom_scan">Custom scan</string>
+    <string name="module_common_scan_now">Scan now</string>
+    <string name="module_common_scan_music">Scan song</string>
+    <string name="module_common_please_select_scan_path">Please select the scan path first.</string>
+
+    <!-- Module_Online -->
+    <string name="module_common_online_recommend">Personality recommendation</string>
+    <string name="module_common_online_singer">Singer</string>
+    <string name="module_common_online_rank">Rank</string>
+    <string name="module_common_online_radio">Radio</string>
+    <string name="module_common_online_mv">MV</string>
+
+    <string name="module_common_heat">Heat:</string>
+    <string name="module_common_play_count">Views: </string>
+    <string name="module_common_10thousand">w</string>
+    <string name="module_common_related_version">Related version</string>
+
+    <!-- Module_Play -->
+    <string name="module_common_song_info">Song info</string>
+    <string name="module_common_song_info_song">Song:</string>
+    <string name="module_common_song_info_singer">Singer:</string>
+    <string name="module_common_song_info_album">Album:</string>
+    <string name="module_common_song_info_file_postfix">File Postfix:</string>
+    <string name="module_common_song_info_file_duration">Duration:</string>
+    <string name="module_common_song_info_file_size">File size:</string>
+    <string name="module_common_song_info_file_folder">Path:</string>
+
+    <string name="module_common_play_all">Play all</string>
+    <string name="module_common_add_to_list">Add to list</string>
+    <string name="module_common_set_ring">Set ring</string>
+    <string name="module_common_set_lrc">Set lrc</string>
+    <string name="module_common_delete">Delete</string>
+    <string name="module_common_edit">Edit</string>
+    <string name="module_common_download">Download</string>
+    <string name="module_common_search_lrc">Search lrc</string>
+
+    <string name="module_common_add_to_song_list">Add to song list</string>
+
+</resources>

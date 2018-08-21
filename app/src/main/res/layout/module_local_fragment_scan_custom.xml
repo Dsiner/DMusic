@@ -66,7 +66,7 @@
                 android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
                 android:layout_marginRight="@dimen/lib_pub_dimen_margin"
                 android:gravity="center_vertical"
-                android:text="立即扫描"
+                android:text="@string/module_common_scan_now"
                 android:textColor="@color/lib_pub_color_main"
                 android:textSize="@dimen/lib_pub_dimen_text_sub"
                 skin:enable="true" />

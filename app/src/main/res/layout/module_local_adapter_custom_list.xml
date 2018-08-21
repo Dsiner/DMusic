@@ -38,7 +38,7 @@
                 android:id="@+id/tv_list_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="默认列表"
+                android:text="Default list"
                 android:textColor="@color/lib_pub_color_black"
                 android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="0首"
+                android:text="0"
                 android:textColor="@color/lib_pub_color_black"
                 android:textSize="@dimen/lib_pub_dimen_text_small" />
         </LinearLayout>
@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:background="#C7C7CD"
             android:gravity="center"
-            android:text="置顶"
+            android:text="@string/module_common_stick"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:background="#FF3A30"
             android:gravity="center"
-            android:text="删除"
+            android:text="@string/module_common_delete"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>

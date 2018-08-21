@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Module_Common -->
+    <dimen name="module_common_dimen_item_icon">18dp</dimen>
+    <dimen name="module_common_dimen_item_local_icon">22dp</dimen>
+
+
+    <!-- Module_Setting -->
+
+
+    <!-- Module_Local -->
+
+
+    <!-- Module_Online -->
+
+
+    <!-- Module_Play -->
     <dimen name="module_play_dimen_notifi_height">64dp</dimen>
     <dimen name="module_play_dimen_notifi_icon">19.2dp</dimen>
     <dimen name="module_play_dimen_notifi_exit_icon">11.78dp</dimen>
-
     <dimen name="module_play_dimen_queue_height">36dp</dimen>
 </resources>

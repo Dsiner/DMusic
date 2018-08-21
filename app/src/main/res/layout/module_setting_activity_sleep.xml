@@ -13,8 +13,8 @@
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:background="@color/lib_pub_color_main"
         app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
-        app:lib_pub_tl_middleText="睡眠定时"
-        app:lib_pub_tl_rightText="确定"
+        app:lib_pub_tl_middleText="@string/module_common_sleep_timing"
+        app:lib_pub_tl_rightText="@string/lib_pub_ok"
         skin:enable="true" />
 
     <include

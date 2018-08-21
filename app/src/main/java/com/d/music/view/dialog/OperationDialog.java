@@ -139,55 +139,56 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
             return this;
         }
 
-        public Bean with(int type, boolean night) {
+        public Bean with(Context context, int type, boolean night) {
+            context = context.getApplicationContext();
             this.type = type;
             switch (type) {
                 case TYPE_ADDLIST:
-                    this.item = "加到歌单";
+                    this.item = context.getResources().getString(R.string.module_common_add_to_list);
                     this.drawble = night ? R.drawable.module_common_ic_song_addlist_m : R.drawable.module_common_ic_song_addlist_lm;
                     break;
                 case TYPE_FAV:
-                    this.item = "收藏";
+                    this.item = context.getResources().getString(R.string.module_common_collect);
                     this.drawble = night ? R.drawable.module_common_ic_song_fav_m : R.drawable.module_common_ic_song_fav_lm;
                     break;
                 case TYPE_RING:
-                    this.item = "设置铃声";
+                    this.item = context.getResources().getString(R.string.module_common_set_ring);
                     this.drawble = night ? R.drawable.module_common_ic_song_ring_m : R.drawable.module_common_ic_song_ring_lm;
                     break;
                 case TYPE_ADJUSTLRC:
-                    this.item = "调整歌词";
+                    this.item = context.getResources().getString(R.string.module_common_set_lrc);
                     this.drawble = night ? R.drawable.module_common_ic_song_adjust_lrc_m : R.drawable.module_common_ic_song_adjust_lrc_lm;
                     break;
                 case TYPE_INFO:
-                    this.item = "歌曲信息";
+                    this.item = context.getResources().getString(R.string.module_common_song_info);
                     this.drawble = night ? R.drawable.module_common_ic_song_info_m : R.drawable.module_common_ic_song_info_lm;
                     break;
                 case TYPE_DELETE:
-                    this.item = "删除";
+                    this.item = context.getResources().getString(R.string.module_common_delete);
                     this.drawble = night ? R.drawable.module_common_ic_song_delete_m : R.drawable.module_common_ic_song_delete_lm;
                     break;
                 case TYPE_EDIT:
-                    this.item = "编辑";
+                    this.item = context.getResources().getString(R.string.module_common_edit);
                     this.drawble = night ? R.drawable.module_common_ic_song_edit_m : R.drawable.module_common_ic_song_edit_lm;
                     break;
                 case TYPE_DOWNLOAD:
-                    this.item = "下载";
+                    this.item = context.getResources().getString(R.string.module_common_download);
                     this.drawble = night ? R.drawable.module_common_ic_song_edit_m : R.drawable.module_common_ic_song_edit_lm;
                     break;
                 case TYPE_SEARCH_LRC:
-                    this.item = "歌词搜索";
+                    this.item = context.getResources().getString(R.string.module_common_search_lrc);
                     this.drawble = night ? R.drawable.module_common_ic_song_search_lrc_m : R.drawable.module_common_ic_song_search_lrc_lm;
                     break;
                 case TYPE_CHANGE_MODE:
-                    this.item = "模式切换";
+                    this.item = context.getResources().getString(R.string.module_common_mode_switch);
                     this.drawble = night ? R.drawable.module_common_ic_song_edit_m : R.drawable.module_common_ic_song_edit_lm;
                     break;
                 case TYPE_SETTING:
-                    this.item = "设置";
+                    this.item = context.getResources().getString(R.string.module_common_setting);
                     this.drawble = night ? R.drawable.module_common_ic_song_edit_m : R.drawable.module_common_ic_song_edit_lm;
                     break;
                 case TYPE_EXIT:
-                    this.item = "退出";
+                    this.item = context.getResources().getString(R.string.module_common_exit);
                     this.drawble = night ? R.drawable.module_setting_ic_menu_exit : R.drawable.module_setting_ic_menu_exit;
                     break;
             }

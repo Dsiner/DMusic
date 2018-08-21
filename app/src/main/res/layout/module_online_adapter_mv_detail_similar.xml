@@ -19,7 +19,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:lines="1"
-        android:text="播放:3.7万"
+        android:text="Views:3.7w"
         android:textColor="@color/lib_pub_color_white"
         android:textSize="10dp" />
 
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:text="榜单"
+            android:text="Title"
             android:textColor="@color/lib_pub_color_text_main"
             android:textSize="13dp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="歌手"
+            android:text="Singer"
             android:textSize="11dp" />
     </LinearLayout>
 

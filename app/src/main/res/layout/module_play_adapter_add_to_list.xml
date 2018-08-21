@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="默认列表"
+            android:text="Default list"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
         <FrameLayout

@@ -48,7 +48,7 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onClick(View v) {
                 final List<OperationDialog.Bean> datas = new ArrayList<>();
-                datas.add(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_DOWNLOAD, false));
+                datas.add(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_DOWNLOAD, false));
                 OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "", datas,
                         new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
                             @Override

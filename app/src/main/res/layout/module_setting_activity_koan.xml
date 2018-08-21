@@ -13,8 +13,8 @@
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:background="@color/lib_pub_color_main"
         app:lib_pub_tl_leftDrawable="@drawable/module_common_ic_title_back"
-        app:lib_pub_tl_middleText="心印"
-        app:lib_pub_tl_rightText="确定"
+        app:lib_pub_tl_middleText="@string/module_common_koan"
+        app:lib_pub_tl_rightText="@string/lib_pub_ok"
         skin:enable="true" />
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="签名："
+            android:text="@string/module_common_signature"
             android:textColor="@color/lib_pub_color_black"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/lib_pub_color_trans"
-            android:hint="singular"
+            android:hint="Singular"
             android:padding="6dp"
             android:textColor="@color/lib_pub_color_main"
             android:textSize="@dimen/lib_pub_dimen_text_sub"
@@ -61,7 +61,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="简笔："
+            android:text="@string/module_common_stroke"
             android:textColor="@color/lib_pub_color_black"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/lib_pub_color_trans"
-            android:hint="be simple or wonderful"
+            android:hint="Be simple or wonderful"
             android:padding="6dp"
             android:textColor="@color/lib_pub_color_main"
             android:textSize="@dimen/lib_pub_dimen_text_sub"

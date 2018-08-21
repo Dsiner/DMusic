@@ -39,7 +39,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     private Preferences p;
     private TimingAdapter adapter;
-    private int index;
+    private int sleepType;
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.rlyt_first})
     public void onClickListener(View v) {
@@ -51,12 +51,12 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
                 finish();
                 break;
             case R.id.tv_title_right:
-                if (index < 0 || index > 6) {
+                if (sleepType < 0 || sleepType > 6) {
                     return;
                 }
                 MusicService.startService(getApplicationContext());
                 long time = 0;
-                switch (index) {
+                switch (sleepType) {
                     case 0:
                         time = 0;
                         break;
@@ -78,17 +78,17 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
                 }
                 MusicService.timing(getApplicationContext(), false, 0);
                 MusicService.timing(getApplicationContext(), time > 0, time);
-                p.putSleepType(index);
+                p.putSleepType(sleepType);
                 finish();
                 break;
             case R.id.rlyt_first:
-                if (index == 0) {
+                if (sleepType == 0) {
                     return;
                 }
                 ivCheck.setVisibility(View.VISIBLE);
                 adapter.setIndex(-1);
-                if (index - 1 >= 0 && index - 1 < adapter.getDatas().size()) {
-                    adapter.getDatas().get(index - 1).isChecked = false;
+                if (sleepType - 1 >= 0 && sleepType - 1 < adapter.getDatas().size()) {
+                    adapter.getDatas().get(sleepType - 1).isChecked = false;
                 }
                 adapter.notifyDataSetChanged();
                 break;
@@ -126,54 +126,31 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
         }
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         p = Preferences.getIns(getApplicationContext());
-        index = p.getSleepType();
+        sleepType = p.getSleepType();
         tvContent.setText(getResources().getString(R.string.module_common_close));
-        ivCheck.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
+        ivCheck.setVisibility(sleepType == 0 ? View.VISIBLE : View.GONE);
         adapter = new TimingAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
-        adapter.setIndex(index - 1);
+        adapter.setIndex(sleepType - 1);
         adapter.setOnChangeListener(this);
         lrvList.showAsList();
         lrvList.setAdapter(adapter);
     }
 
     private List<RadioModel> getDatas() {
+        String[] values = getResources().getStringArray(R.array.module_setting_timing_values);
         List<RadioModel> datas = new ArrayList<>();
-        RadioModel model0 = new RadioModel();
-        model0.content = "10分钟";
-        model0.isChecked = index == 1;
-
-        RadioModel model1 = new RadioModel();
-        model1.content = "20分钟";
-        model1.isChecked = index == 2;
-
-        RadioModel model2 = new RadioModel();
-        model2.content = "30分钟";
-        model2.isChecked = index == 3;
-
-        RadioModel model3 = new RadioModel();
-        model3.content = "1小时";
-        model3.isChecked = index == 4;
-
-        RadioModel model4 = new RadioModel();
-        model4.content = "1.5小时";
-        model4.isChecked = index == 5;
-
-        RadioModel model5 = new RadioModel();
-        model5.content = "自定义";
-        model5.isChecked = index == 6;
-
-        datas.add(model0);
-        datas.add(model1);
-        datas.add(model2);
-        datas.add(model3);
-        datas.add(model4);
-        datas.add(model5);
+        for (int i = 0; i < 6; i++) {
+            RadioModel model = new RadioModel();
+            model.content = values[i];
+            model.isChecked = (sleepType == i + 1);
+            datas.add(model);
+        }
         return datas;
     }
 
     @Override
     public void onChange(int index) {
-        this.index = index + 1;
+        sleepType = index + 1;
         ivCheck.setVisibility(View.GONE);
     }
 

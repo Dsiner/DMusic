@@ -11,7 +11,7 @@
         android:id="@+id/llyt_queue"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_queque_bg"
+        android:background="@color/color_queue_bg"
         android:orientation="vertical"
         app:layout_heightPercent="61.8%">
 
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="列表循环"
+                    android:text="All repeat"
                     android:textColor="@color/lib_pub_color_white"
                     android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:gravity="center"
-                    android:text=" (227首)"
+                    android:text=" (227)"
                     android:textColor="@color/lib_pub_color_white"
                     android:textSize="@dimen/lib_pub_dimen_text_small" />
             </LinearLayout>
@@ -69,7 +69,7 @@
                 android:gravity="center"
                 android:paddingLeft="@dimen/lib_pub_dimen_margin"
                 android:paddingRight="@dimen/lib_pub_dimen_margin"
-                android:text="清空"
+                android:text="@string/module_common_sweep"
                 android:textColor="@color/lib_pub_color_white"
                 android:textSize="@dimen/lib_pub_dimen_text_sub" />
         </LinearLayout>
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="关闭"
+            android:text="@string/module_common_close"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>

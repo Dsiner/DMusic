@@ -94,7 +94,7 @@
             android:layout_marginTop="2dp"
             android:paddingLeft="10dp"
             android:singleLine="true"
-            android:text="FireFly"
+            android:text="Title"
             android:textColor="#222222"
             android:textSize="@dimen/lib_pub_dimen_text_small" />
 
@@ -106,7 +106,7 @@
             android:layout_marginTop="1.5dp"
             android:paddingLeft="10dp"
             android:singleLine="true"
-            android:text="Shawn McDonald"
+            android:text="Singer"
             android:textColor="#888888"
             android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </RelativeLayout>

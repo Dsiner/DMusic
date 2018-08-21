@@ -56,10 +56,10 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
             public void onClick(View v) {
                 if (!isSubPull) {
                     OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
-                            Arrays.asList(new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_ADDLIST, false),
-                                    new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_FAV, false)
+                            Arrays.asList(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_ADDLIST, false),
+                                    new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_FAV, false)
                                             .item(item.isCollected ? "已收藏" : "收藏"),
-                                    new OperationDialog.Bean().with(OperationDialog.Bean.TYPE_INFO, false)),
+                                    new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, false)),
                             new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
                                 @Override
                                 public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {

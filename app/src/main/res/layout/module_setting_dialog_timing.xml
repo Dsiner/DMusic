@@ -19,7 +19,7 @@
             android:layout_marginBottom="3dp"
             android:layout_marginTop="@dimen/lib_pub_dimen_margin"
             android:gravity="center"
-            android:text="睡眠等待时间(分钟)"
+            android:text="@string/module_common_sleep_waiting_time"
             android:textColor="@color/lib_pub_color_black"
             android:textSize="@dimen/lib_pub_dimen_text_main" />
 

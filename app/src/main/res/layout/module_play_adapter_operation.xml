@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="删除"
+        android:text="@string/module_common_delete"
         android:textColor="@color/color_popup_more"
         android:textSize="@dimen/lib_pub_dimen_text_mini" />
 </LinearLayout>

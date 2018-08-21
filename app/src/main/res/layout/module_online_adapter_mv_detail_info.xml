@@ -11,7 +11,7 @@
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="@dimen/lib_pub_dimen_margin"
-        android:text="IsLand Love"
+        android:text="Song"
         android:textColor="@color/lib_pub_color_text_main"
         android:textSize="16dp" />
 
@@ -22,7 +22,7 @@
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="2dp"
-        android:text="Dou"
+        android:text="Singer"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
 
@@ -33,7 +33,7 @@
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="2dp"
-        android:text="2018-08-12    2259次播放"
+        android:text="2018-08-12    2259"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
 
@@ -44,7 +44,7 @@
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="6dp"
-        android:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
+        android:text="Content"
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="12dp" />
 

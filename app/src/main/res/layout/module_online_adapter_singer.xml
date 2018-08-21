@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="陈粒"
+            android:text="Singer"
             android:textColor="@color/lib_pub_color_text_main"
             android:textSize="@dimen/lib_pub_dimen_text_small" />
 
@@ -48,7 +48,7 @@
             android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="热度:814100"
+            android:text="Hot:814100"
             android:textColor="@color/lib_pub_color_text_sub"
             android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </LinearLayout>
