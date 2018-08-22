@@ -3,12 +3,9 @@ package com.d.music.play.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -19,18 +16,17 @@ import com.d.lib.common.module.mvp.MvpView;
 import com.d.lib.common.module.mvp.base.BaseActivity;
 import com.d.lib.common.module.repeatclick.ClickUtil;
 import com.d.lib.common.utils.Util;
-import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
+import com.d.music.module.events.ProgressEvent;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.media.controler.MediaControler;
 import com.d.music.module.media.controler.MediaPlayerManager;
-import com.d.music.module.service.MusicService;
 import com.d.music.module.utils.MoreUtil;
 import com.d.music.play.adapter.PlayQueueAdapter;
 import com.d.music.play.presenter.PlayPresenter;
@@ -60,8 +56,7 @@ import butterknife.OnClick;
  * PlayActivity
  * Created by D on 2017/4/29.
  */
-public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView,
-        SeekBar.OnSeekBarChangeListener, PlayQueueAdapter.IQueueListener {
+public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayView, PlayQueueAdapter.IQueueListener {
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.lrcv_lrc)
@@ -86,9 +81,8 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     private MediaControler control;
     private ObjectAnimator animator;
     private PlayQueuePopup queuePopup;
-    private PlayerReceiver playerReceiver;
-    private boolean isRegisterReceiver; // 是否注册了广播监听器
     public static boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+    private boolean progressLock;
 
     public static void openActivity(Context context) {
         Intent intent = new Intent(context, PlayActivity.class);
@@ -112,6 +106,9 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 finish();
                 break;
             case R.id.iv_more:
+                if (control.list().size() <= 0) {
+                    return;
+                }
                 showMore();
                 break;
             case R.id.iv_play_collect:
@@ -121,38 +118,40 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 if (control.list().size() <= 0) {
                     return;
                 }
-                Intent prev = new Intent(Constants.PlayFlag.PLAYER_CONTROL_PREV);
-                prev.putExtra("flag", Constants.PlayFlag.PLAY_FLAG_PRE);
-                sendBroadcast(prev);
+                control.prev();
                 break;
             case R.id.iv_play_play_pause:
                 if (control.list().size() <= 0) {
                     return;
                 }
-                Intent playPause = new Intent(Constants.PlayFlag.PLAYER_CONTROL_PLAY_PAUSE);
-                playPause.putExtra("flag", Constants.PlayFlag.PLAY_FLAG_PLAY_PAUSE);
-                sendBroadcast(playPause);
+                if (control.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
+                    control.pause();
+                } else if (control.getStatus() == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
+                    control.start();
+                }
                 break;
             case R.id.iv_play_next:
                 if (control.list().size() <= 0) {
                     return;
                 }
-                Intent next = new Intent(Constants.PlayFlag.PLAYER_CONTROL_NEXT);
-                next.putExtra("flag", Constants.PlayFlag.PLAY_FLAG_NEXT);
-                sendBroadcast(next);
+                control.next();
                 break;
             case R.id.iv_play_queue:
+                if (control.list().size() <= 0) {
+                    return;
+                }
                 showQueue();
                 break;
         }
     }
 
     private void collect(boolean isTip) {
-        if (control != null && control.getModel() != null) {
-            MusicModel item = control.getModel();
-            MoreUtil.collect(getApplicationContext(), type, item, isTip);
-            resetFav(item.isCollected);
+        if (control.getModel() == null) {
+            return;
         }
+        MusicModel item = control.getModel();
+        MoreUtil.collect(getApplicationContext(), type, item, isTip);
+        resetFav(item.isCollected);
     }
 
     @Override
@@ -186,12 +185,55 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         }
         StatusBarCompat.compat(this, Color.parseColor("#ff000000"));
         EventBus.getDefault().register(this);
-        registerReceiver();
-        control = MediaControler.getIns(getApplicationContext());
-        seekBar.setOnSeekBarChangeListener(this);
+        control = MediaControler.getIns(this);
+        initSeekBar();
         initLrcListener();
-        onPlayModeChange(Preferences.getIns(getApplicationContext()).getPlayMode());
         initAlbum();
+        onPlayModeChange(Preferences.getIns(getApplicationContext()).getPlayMode());
+    }
+
+    private void initSeekBar() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
+                // 数值改变
+                tvTimeStart.setText(String.format("%02d:%02d", progress / 1000 / 60, progress / 1000 % 60));
+                lrc.seekTo(progress, fromUser);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // 开始拖动
+                progressLock = true; // 加锁
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 停止拖动
+                progressLock = false; // 解锁
+
+                if (control.list().size() <= 0) {
+                    return;
+                }
+                final int currentPosition = seekBar.getProgress();
+                control.seekTo(currentPosition);
+
+                lrc.seekTo(seekBar.getProgress(), true);
+            }
+        });
+    }
+
+    private void initLrcListener() {
+        lrc.setOnSeekChangeListener(new LrcView.OnSeekChangeListener() {
+            @Override
+            public void onProgressChanged(int progress) {
+                if (progress >= 0 && progress <= seekBar.getMax()) {
+                    seekBar.setProgress(progress);
+                }
+                control.seekTo(progress);
+            }
+        });
     }
 
     private void initAlbum() {
@@ -229,25 +271,13 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         super.onResume();
         if (isNeedReLoad) {
             isNeedReLoad = false;
-            mPresenter.reLoad();
+            mPresenter.overLoad();
         }
     }
 
     private void resetFav(boolean isCollected) {
         int fav = isCollected ? R.drawable.module_play_ic_play_fav_cover : R.drawable.module_play_ic_play_fav;
         ivColect.setImageDrawable(getResources().getDrawable(fav));
-    }
-
-    private void initLrcListener() {
-        lrc.setOnSeekChangeListener(new LrcView.OnSeekChangeListener() {
-            @Override
-            public void onProgressChanged(int progress) {
-                if (progress >= 0 && progress <= seekBar.getMax()) {
-                    seekBar.setProgress(progress);
-                }
-                control.seekTo(progress);
-            }
-        });
     }
 
     private void showQueue() {
@@ -288,6 +318,9 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                         } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
                             collect(true);
                         } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
+                            if (item == null) {
+                                return;
+                            }
                             MoreUtil.showInfo(mContext, item);
                         } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
                             startActivity(new Intent(mContext, ModeActivity.class));
@@ -301,15 +334,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
                     }
                 });
-    }
-
-    private void registerReceiver() {
-        // 定义和注册广播接收器
-        playerReceiver = new PlayerReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.PlayFlag.MUSIC_CURRENT_POSITION);
-        registerReceiver(playerReceiver, filter);
-        isRegisterReceiver = true;
     }
 
     private void rotationAnimator() {
@@ -331,43 +355,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         });
     }
 
-    @SuppressLint("DefaultLocale")
-    @Override
-    public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-        // 数值改变
-        tvTimeStart.setText(String.format("%02d:%02d", progress / 1000 / 60, progress / 1000 % 60));
-        lrc.seekTo(progress, fromUser);
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // 开始拖动
-        MusicService.progressLock = true; // 加锁
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // 停止拖动
-        progressChanged(seekBar.getProgress());
-        lrc.seekTo(seekBar.getProgress(), true);
-        ULog.v("to：" + seekBar.getProgress());
-    }
-
-    /**
-     * 播放进度改变
-     */
-    public void progressChanged(int progress) {
-        if (control == null || control.list().size() <= 0) {
-            MusicService.progressLock = false; // 解锁
-            return;
-        }
-        ULog.v("to:--" + progress);
-        Intent intent = new Intent();
-        intent.setAction(Constants.PlayFlag.MUSIC_SEEK_TO_TIME);
-        intent.putExtra("progress", progress);
-        sendBroadcast(intent);
-    }
-
     @Override
     public void onPlayModeChange(int playMode) {
         if (ivPlayQueue != null) {
@@ -385,7 +372,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     @Override
-    public void reLoad(List<MusicModel> list) {
+    public void overLoad(List<MusicModel> list) {
         if (list.size() > 0) {
             MediaControler control = MediaControler.getIns(mContext);
             control.overLoad(list);
@@ -395,7 +382,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     @Override
-    public void setLrcRows(String path, List<LrcRow> lrcRows) {
+    public void setLrcRows(List<LrcRow> lrcRows) {
         lrc.setLrcRows(lrcRows);
         lrc.seekTo(1000, true);
     }
@@ -405,42 +392,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         lrc.seekTo(progress, false);
     }
 
-    /**
-     * 用来接收从service传回来的广播的内部类
-     */
-    public class PlayerReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
-                return;
-            }
-            if (TextUtils.equals(intent.getAction(), Constants.PlayFlag.MUSIC_CURRENT_POSITION)) {
-                int currentPosition = intent.getIntExtra("currentPosition", 0);
-                int duration = intent.getIntExtra("duration", 0);
-                tvTimeStart.setText(Util.formatTime(currentPosition));
-                setProgress(currentPosition, duration);
-                lrc.seekTo(currentPosition, false);
-            }
-        }
-    }
-
     private void setProgress(int currentPosition, int duration) {
-        tvTimeEnd.setText(Util.formatTime(duration));
         seekBar.setMax(duration);
         seekBar.setProgress(currentPosition);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
-    public void onEventMainThread(MusicInfoEvent event) {
-        if (event == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
-            return;
-        }
-        MusicModel model = control.getModel();
-        tvTitle.setText(model != null ? model.songName : "");
-        resetFav(model != null ? model.isCollected : false);
-        mPresenter.getLrcRows(model);
-        togglePlay(model != null && event.status == Constants.PlayStatus.PLAY_STATUS_PLAYING);
+        tvTimeEnd.setText(Util.formatTime(duration));
     }
 
     private void togglePlay(boolean isPlay) {
@@ -455,6 +410,39 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onEventMainThread(MusicInfoEvent event) {
+        if (event == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
+            return;
+        }
+        if (event.type == MusicInfoEvent.TYPE_STATE) {
+            final MusicModel model = control.getModel();
+            tvTitle.setText(model != null ? model.songName : "");
+            resetFav(model != null ? model.isCollected : false);
+            mPresenter.getLrcRows(model);
+            togglePlay(model != null && event.status == Constants.PlayStatus.PLAY_STATUS_PLAYING);
+        } else if (event.type == MusicInfoEvent.TYPE_LRC) {
+            mPresenter.getLrcRows(control.getModel());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onEventProgress(ProgressEvent event) {
+        if (event == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
+            return;
+        }
+        if (progressLock) {
+            return;
+        }
+        final int currentPosition = event.currentPosition;
+        final int duration = event.duration;
+        tvTimeStart.setText(Util.formatTime(currentPosition));
+        setProgress(currentPosition, duration);
+        lrc.seekTo(currentPosition, false);
+    }
+
     @Override
     public void finish() {
         super.finish();
@@ -467,12 +455,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
 
     @Override
     protected void onDestroy() {
-        if (isRegisterReceiver) {
-            isRegisterReceiver = false;
-            if (playerReceiver != null) {
-                unregisterReceiver(playerReceiver);
-            }
-        }
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

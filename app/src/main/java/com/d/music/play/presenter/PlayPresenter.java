@@ -4,9 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.music.common.Constants;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.module.media.HitTarget;
 import com.d.music.play.view.IPlayView;
 import com.d.music.utils.fileutil.FileUtil;
 import com.d.music.view.lrc.DefaultLrcParser;
@@ -29,13 +31,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/6/2.
  */
 public class PlayPresenter extends MvpBasePresenter<IPlayView> {
-    private String lrcUrl;
 
     public PlayPresenter(Context context) {
         super(context);
     }
 
-    public void reLoad() {
+    public void overLoad() {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
@@ -58,7 +59,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().reLoad(list);
+                        getView().overLoad(list);
                     }
 
                     @Override
@@ -77,36 +78,34 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
         if (getView() == null || model == null) {
             return;
         }
-        final String path = !TextUtils.isEmpty(model.lrcUrl) ? model.lrcUrl
-                : model.fileFolder + "/" + model.songName + ".lrc";
-        lrcUrl = path;
-        Observable.create(new ObservableOnSubscribe<List<LrcRow>>() {
+        final String path = HitTarget.hitLrc(model);
+        Observable.create(new ObservableOnSubscribe<LrcModel>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<List<LrcRow>> e) throws Exception {
-                List<LrcRow> list = null;
+            public void subscribe(@NonNull ObservableEmitter<LrcModel> e) throws Exception {
+                LrcModel lrcModel = new LrcModel();
+                lrcModel.model = model;
+                lrcModel.lrcRows = new ArrayList<>();
                 if (FileUtil.isFileExist(path)) {
-                    list = DefaultLrcParser.getInstance().getLrcRows(path);
+                    lrcModel.lrcRows = DefaultLrcParser.getInstance().getLrcRows(path);
                 }
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
-                e.onNext(list);
+                lrcModel.lrcRows = lrcModel.lrcRows != null ? lrcModel.lrcRows : new ArrayList<LrcRow>();
+                e.onNext(lrcModel);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<LrcRow>>() {
+                .subscribe(new Observer<LrcModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<LrcRow> list) {
-                        if (getView() == null || !TextUtils.equals(lrcUrl, path)) {
+                    public void onNext(LrcModel lrcModel) {
+                        if (getView() == null || lrcModel.model != model) {
                             return;
                         }
-                        getView().setLrcRows(path, list);
+                        getView().setLrcRows(lrcModel.lrcRows);
                     }
 
                     @Override
@@ -121,5 +120,25 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                 });
     }
 
+    @android.support.annotation.NonNull
+    private String hitLrc(MusicModel model, String tempPath) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = model.lrcUrl;
+        }
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = model.fileFolder + "/" + model.songName + ".lrc";
+        }
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = Constants.Path.download + model.songName + ".lrc";
+        }
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = Constants.Path.cache + model.songName + ".lrc";
+        }
+        return tempPath;
+    }
 
+    static class LrcModel {
+        MusicModel model;
+        List<LrcRow> lrcRows;
+    }
 }

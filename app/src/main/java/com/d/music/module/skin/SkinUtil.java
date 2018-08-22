@@ -26,9 +26,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class SkinUtil {
     // dmusicskin_0、dmusicskin_1、dmusicskin_2...dmusicskin_n皮肤包如此命名
-    public static final String SKIN_NAME = "dmusicskin_";
+    private static final String SKIN_NAME = "dmusicskin_";
     // 皮肤包拼接后缀名
-    public static final String SKIN_NAME_POSTFIX = ".skin";
+    private static final String SKIN_NAME_POSTFIX = ".skin";
     // 皮肤包总数目
     public static final int SKIN_COUNT = 18;
 

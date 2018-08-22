@@ -12,9 +12,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
@@ -30,7 +28,6 @@ import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.module.media.controler.MediaControler;
-import com.d.music.module.media.controler.MediaPlayerManager;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
 
@@ -38,7 +35,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,22 +52,20 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class MusicService extends Service {
-    public static boolean progressLock = false;
-    private static boolean isRunning;
+    private static boolean mIsRunning;
 
-    private MediaControler control;
-    private MusicBinder binder;
-    private NotificationManager manager;
-    private int notification_ID;
-    private WeakHandler handler = new WeakHandler(this);
-    private ControlBroadcast broadcast;
+    private MediaControler mControl;
+    private MusicBinder mBinder;
+    private NotificationManager mManager;
+    private int mNotification_ID;
+    private ControlBroadcast mBroadcast;
 
     public static boolean isRunning() {
-        return isRunning;
+        return mIsRunning;
     }
 
     public static void startService(Context context) {
-        if (context == null || isRunning) {
+        if (context == null || mIsRunning) {
             return;
         }
         // 开启service服务
@@ -100,58 +94,19 @@ public class MusicService extends Service {
         }
     }
 
-    private static class WeakHandler extends Handler {
-        WeakReference<MusicService> weakReference;
-
-        WeakHandler(MusicService service) {
-            weakReference = new WeakReference<>(service);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            MusicService theService = weakReference.get();
-            if (theService != null && MusicService.isRunning()) {
-                switch (msg.what) {
-                    case 1:
-                        MediaPlayerManager mediaManager = theService.control.getMediaManager();
-                        if (mediaManager != null
-                                && theService.control.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
-                            // 获取当前音乐播放的位置
-                            int currentPosition = mediaManager.getCurrentPosition();
-                            // 获取当前音乐播放总时间
-                            int duration = mediaManager.getDuration();
-                            Intent intent = new Intent();
-                            intent.setAction(Constants.PlayFlag.MUSIC_CURRENT_POSITION);
-                            intent.putExtra("currentPosition", currentPosition);
-                            intent.putExtra("duration", duration);
-                            if (!progressLock) {
-                                // 给PlayerActivity发送广播
-                                theService.sendBroadcast(intent);
-                            }
-                        }
-                        theService.handler.sendEmptyMessageDelayed(1, 1000);
-                        break;
-                }
-            }
-            super.handleMessage(msg);
-        }
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
-        return binder;
+        return mBinder;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mIsRunning = true;
         EventBus.getDefault().register(this);
-        isRunning = true;
-        if (control == null) {
-            control = MediaControler.getIns(getApplicationContext());
-        }
-        binder = new MusicBinder();
-        broadcast = new ControlBroadcast();
+        mControl = MediaControler.getIns(getApplicationContext());
+        mBinder = new MusicBinder();
+        mBroadcast = new ControlBroadcast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_PLAY_PAUSE);
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_PREV);
@@ -159,12 +114,15 @@ public class MusicService extends Service {
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_EXIT);
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_TIMING);
         filter.addAction(Constants.PlayFlag.PLAYER_RELOAD);
-        filter.addAction(Constants.PlayFlag.MUSIC_SEEK_TO_TIME);
-        registerReceiver(broadcast, filter);
+        registerReceiver(mBroadcast, filter);
 
-        notification_ID = 6671;
-        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotification_ID = 6671;
+        mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        loadMusic();
+    }
+
+    private void loadMusic() {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
@@ -187,7 +145,7 @@ public class MusicService extends Service {
                         Preferences p = Preferences.getIns(getApplicationContext());
                         boolean play = Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION
                                 || (p.getIsAutoPlay() && list.size() > 0);
-                        control.init(list, p.getLastPlayPosition(), play);
+                        mControl.init(list, p.getLastPlayPosition(), play);
                     }
 
                     @Override
@@ -238,8 +196,8 @@ public class MusicService extends Service {
             } else {
                 notification = builder.getNotification();
             }
-            manager.notify(notification_ID, notification);
-            startForeground(notification_ID, notification); // 自定义的notification_ID不能为0
+            mManager.notify(mNotification_ID, notification);
+            startForeground(mNotification_ID, notification); // 自定义的notification_ID不能为0
         } else {
             // API Level >= 4 (Android 1.6) && API Level < 16 (Android 4.1)
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -251,8 +209,8 @@ public class MusicService extends Service {
             builder.setContent(rv);
             Notification notification;
             notification = builder.getNotification();
-            manager.notify(notification_ID, notification);
-            startForeground(notification_ID, notification); // 自定义的notification_ID不能为0
+            mManager.notify(mNotification_ID, notification);
+            startForeground(mNotification_ID, notification); // 自定义的notification_ID不能为0
         }
     }
 
@@ -300,14 +258,7 @@ public class MusicService extends Service {
      */
     public void cancleNotification() {
         // Can not work beacauseof "startForeground"!
-        manager.cancel(notification_ID);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        handler.removeMessages(1);
-        handler.sendEmptyMessageDelayed(1, 1000);
-        return super.onStartCommand(intent, flags, startId);
+        mManager.cancel(mNotification_ID);
     }
 
     public class MusicBinder extends Binder {
@@ -316,7 +267,7 @@ public class MusicService extends Service {
         }
 
         public MediaControler getinstanceMusicControlUtils() {
-            return control;
+            return mControl;
         }
     }
 
@@ -336,17 +287,17 @@ public class MusicService extends Service {
                     ULog.d("flags" + flag + "");
                     switch (flag) {
                         case Constants.PlayFlag.PLAY_FLAG_PLAY_PAUSE:
-                            if (control.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
-                                control.pause();
-                            } else if (control.getStatus() == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
-                                control.start();
+                            if (mControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
+                                mControl.pause();
+                            } else if (mControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
+                                mControl.start();
                             }
                             break;
                         case Constants.PlayFlag.PLAY_FLAG_NEXT:
-                            control.next();
+                            mControl.next();
                             break;
                         case Constants.PlayFlag.PLAY_FLAG_PRE:
-                            control.prev();
+                            mControl.prev();
                             break;
                         case Constants.PlayFlag.PLAY_FLAG_EXIT:
                             App.exit(getApplicationContext()); // 退出应用
@@ -357,28 +308,16 @@ public class MusicService extends Service {
                     App.exit(getApplicationContext()); // 退出应用
                     break;
                 case Constants.PlayFlag.PLAYER_RELOAD:
-                    updateNotif(Constants.PlayStatus.PLAY_STATUS_PLAYING); // 正在播放
-                    break;
-                case Constants.PlayFlag.MUSIC_SEEK_TO_TIME:
-                    final MediaPlayerManager mediaManager = control.getMediaManager();
-                    if (mediaManager != null) {
-                        int currentPosttion = intent.getIntExtra("progress", 0);
-                        if (currentPosttion / 1000 >= mediaManager.getDuration() / 1000) {
-                            control.next();
-                        } else {
-                            control.seekTo(currentPosttion);
-                        }
-                    }
-                    progressLock = false; // 解锁
+                    updateNotification(Constants.PlayStatus.PLAY_STATUS_PLAYING); // 正在播放
                     break;
             }
         }
     }
 
-    private void updateNotif(int status) {
+    private void updateNotification(int status) {
         switch (status) {
             case Constants.PlayStatus.PLAY_STATUS_STOP:
-                updateNotification(null, control.getSongName(), control.getArtistName(), status);
+                updateNotification(null, mControl.getSongName(), mControl.getArtistName(), status);
                 // 取消通知栏
                 cancleNotification();
                 break;
@@ -386,7 +325,7 @@ public class MusicService extends Service {
             case Constants.PlayStatus.PLAY_STATUS_PAUSE:
                 // 正在播放/暂停
                 // 更新Notification的显示
-                updateNotification(null, control.getSongName(), control.getArtistName(), status);
+                updateNotification(null, mControl.getSongName(), mControl.getArtistName(), status);
                 break;
         }
     }
@@ -394,16 +333,16 @@ public class MusicService extends Service {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEventMainThread(MusicInfoEvent event) {
-        if (event != null && isRunning && event.isUpdateNotif) {
-            updateNotif(event.status); // 正在播放
+        if (event != null && mIsRunning && event.isUpdateNotif) {
+            updateNotification(event.status); // 正在播放
         }
     }
 
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        unregisterReceiver(broadcast);
-        isRunning = false;
+        unregisterReceiver(mBroadcast);
+        mIsRunning = false;
         stopForeground(true);
         super.onDestroy();
     }

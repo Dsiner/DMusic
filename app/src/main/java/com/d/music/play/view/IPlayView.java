@@ -12,9 +12,9 @@ import java.util.List;
  * Created by D on 2017/6/2.
  */
 public interface IPlayView extends MvpView {
-    void reLoad(List<MusicModel> list);
+    void overLoad(List<MusicModel> list);
 
-    void setLrcRows(String path, List<LrcRow> lrcRows);
+    void setLrcRows(List<LrcRow> lrcRows);
 
     void seekTo(int progress);
 }

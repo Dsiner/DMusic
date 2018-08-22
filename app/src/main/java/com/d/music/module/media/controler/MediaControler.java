@@ -3,18 +3,22 @@ package com.d.music.module.media.controler;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.d.lib.common.module.taskscheduler.TaskScheduler;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;
+import com.d.music.module.events.ProgressEvent;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.greendao.util.AppDBUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,18 +42,59 @@ public class MediaControler implements IMediaControler {
 
     private Context mContext;
     private Preferences mPreferences;
-    private MediaPlayerManager mMediaPlayerManager;
-    private MediaPresenter mPresenter;
+    private Player mPlayer;
     private List<MusicModel> mDatas = new ArrayList<>();
     private int mPosition;
     private int mStatus;
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private ProgressRunable mProgressTask;
+    private ProgressEvent mProgressEvent = new ProgressEvent();
+
+    static class ProgressRunable implements Runnable {
+        WeakReference<MediaControler> weakRef;
+
+        ProgressRunable(MediaControler mediaControler) {
+            weakRef = new WeakReference<>(mediaControler);
+        }
+
+        @Override
+        public void run() {
+            if (isDestroyed()) {
+                return;
+            }
+            MediaControler theControler = weakRef.get();
+            MediaPlayerManager mediaManager = theControler.getMediaManager();
+            if (mediaManager != null && theControler.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
+                // 获取当前音乐播放的位置
+                theControler.mProgressEvent.currentPosition = mediaManager.getCurrentPosition();
+                // 获取当前音乐播放总时间
+                theControler.mProgressEvent.duration = mediaManager.getDuration();
+                EventBus.getDefault().post(theControler.mProgressEvent);
+            }
+            theControler.restartProgressTask();
+        }
+
+        boolean isDestroyed() {
+            return weakRef == null || weakRef.get() == null;
+        }
+    }
+
+    private void restartProgressTask() {
+        stopProgressTask();
+        mHandler.postDelayed(mProgressTask, 1000);
+    }
+
+    private void stopProgressTask() {
+        mHandler.removeCallbacks(mProgressTask);
+    }
+
     private MediaControler(Context context) {
         mContext = context.getApplicationContext();
         mPreferences = Preferences.getIns(mContext);
-        mMediaPlayerManager = MediaPlayerManager.getIns();
-        mPresenter = new MediaPresenter(mContext);
-        mPresenter.attachView(this);
+        mPlayer = new Player(mContext);
+        mProgressTask = new ProgressRunable(this);
+        restartProgressTask();
     }
 
     public static MediaControler getIns(Context context) {
@@ -106,6 +151,7 @@ public class MediaControler implements IMediaControler {
                 });
     }
 
+    @Override
     public void overLoad(@android.support.annotation.NonNull List<MusicModel> list) {
         mDatas.clear();
         mDatas.addAll(list);
@@ -129,7 +175,7 @@ public class MediaControler implements IMediaControler {
 
     @Override
     public void seekTo(int msec) {
-        mMediaPlayerManager.seekTo(msec);
+        mPlayer.excute(new Player.Action(Player.STATE_SEEKTO, msec));
     }
 
     @Override
@@ -145,19 +191,7 @@ public class MediaControler implements IMediaControler {
             return;
         }
         mStatus = Constants.PlayStatus.PLAY_STATUS_PLAYING;
-        if (mDatas.get(mPosition).type != MusicModel.TYPE_LOCAL) {
-            mMediaPlayerManager.reset();
-            mPresenter.play(mDatas.get(mPosition), next);
-        } else {
-            play(mDatas.get(mPosition).url, next);
-        }
-        sendBroadcast();
-        // 保存当前播放位置
-        mPreferences.putLastPlayPosition(mPosition);
-    }
-
-    public void play(final String url, final boolean next) {
-        mMediaPlayerManager.play(url, new MediaPlayerManager.OnMediaPlayerListener() {
+        mPlayer.setOnMediaPlayerListener(new MediaPlayerManager.OnMediaPlayerListener() {
             @Override
             public void onLoading(MediaPlayer mp, String url) {
 
@@ -188,25 +222,29 @@ public class MediaControler implements IMediaControler {
 
             }
         });
+        mPlayer.excute(new Player.Action(Player.STATE_PLAY, mDatas.get(mPosition)));
+        sendBroadcast();
+        // 保存当前播放位置
+        mPreferences.putLastPlayPosition(mPosition);
     }
 
     @Override
     public void start() {
         mStatus = Constants.PlayStatus.PLAY_STATUS_PLAYING;
-        mMediaPlayerManager.start();
+        mPlayer.excute(new Player.Action(Player.STATE_START));
         sendBroadcast();
     }
 
     @Override
     public void pause() {
         mStatus = Constants.PlayStatus.PLAY_STATUS_PAUSE;
-        mMediaPlayerManager.pause();
+        mPlayer.excute(new Player.Action(Player.STATE_PAUSE));
         sendBroadcast();
     }
 
     @Override
     public boolean isPlaying() {
-        return mMediaPlayerManager.isPlaying();
+        return mPlayer.isPlaying();
     }
 
     @Override
@@ -290,7 +328,8 @@ public class MediaControler implements IMediaControler {
 
     @Override
     public void stop() {
-        mMediaPlayerManager.stop();
+        mStatus = Constants.PlayStatus.PLAY_STATUS_STOP;
+        mPlayer.excute(new Player.Action(Player.STATE_STOP));
     }
 
     @Override
@@ -305,7 +344,7 @@ public class MediaControler implements IMediaControler {
             calculate(position);
             mPosition--;
         } else if (position == mPosition) {
-            final boolean isPlaying = mMediaPlayerManager.isPlaying();
+            final boolean isPlaying = isPlaying();
             stop();
             count = calculate(position);
             if (isEmpty()) {
@@ -338,7 +377,6 @@ public class MediaControler implements IMediaControler {
         return mPosition;
     }
 
-
     public String getSongName() {
         return mDatas.size() > 0 ? mDatas.get(mPosition).songName : "";
     }
@@ -352,7 +390,7 @@ public class MediaControler implements IMediaControler {
     }
 
     public MediaPlayerManager getMediaManager() {
-        return mMediaPlayerManager;
+        return mPlayer.getMediaManager();
     }
 
     private int calculate(int position) {
@@ -391,22 +429,8 @@ public class MediaControler implements IMediaControler {
     }
 
     public void onDestroy() {
+        stopProgressTask();
         stop();
         reset();
-    }
-
-    @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void closeLoading() {
-
     }
 }

@@ -14,6 +14,7 @@ import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.module.media.controler.MediaControler;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.adapter.DetailAdapter;
 import com.d.music.online.model.BillSongsRespModel;
@@ -89,14 +90,30 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     protected void initList() {
-        header = new SongHeaderView(mContext);
-        header.setVisibility(View.GONE);
+        initHead();
         xrvList.setCanRefresh(false);
         if (type == DetailActivity.TYPE_RADIO) {
             xrvList.setCanLoadMore(false);
         }
         xrvList.addHeaderView(header);
         super.initList();
+    }
+
+    private void initHead() {
+        header = new SongHeaderView(mContext);
+        header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
+        header.setVisibility(View.GONE);
+        header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
+            @Override
+            public void onPlayAll() {
+                MediaControler.getIns(mContext).init(commonLoader.getDatas(), 0, true);
+            }
+
+            @Override
+            public void onHandle() {
+
+            }
+        });
     }
 
     @Override

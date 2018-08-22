@@ -18,6 +18,7 @@ public class MediaPlayerManager {
 
     private MediaPlayer mediaPlayer;
     private String source;
+    private boolean isPrepared;
 
     private MediaPlayerManager() {
         mediaPlayer = new MediaPlayer();
@@ -49,6 +50,9 @@ public class MediaPlayerManager {
     @UiThread
     public void play(final Object obj, final String url, final OnMediaPlayerListener listener) {
         if (TextUtils.isEmpty(url)) {
+            if (listener != null) {
+                listener.onError(mediaPlayer, url);
+            }
             return;
         }
         source = url;
@@ -57,15 +61,13 @@ public class MediaPlayerManager {
         }
         final WeakReference<Object> weakRef = new WeakReference<>(obj);
         try {
+            isPrepared = false;
             mediaPlayer.reset(); // 重置
             mediaPlayer.setDataSource(url);
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    if (isDestroy(url, weakRef)) {
-                        return;
-                    }
-                    mediaPlayer.start();
+                    isPrepared = true;
                     if (listener != null) {
                         listener.onPrepared(mediaPlayer, url);
                     }
@@ -74,9 +76,7 @@ public class MediaPlayerManager {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    if (isDestroy(url, weakRef)) {
-                        return false;
-                    }
+                    isPrepared = false;
                     if (listener != null) {
                         listener.onError(mediaPlayer, url);
                     }
@@ -86,9 +86,6 @@ public class MediaPlayerManager {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (isDestroy(url, weakRef)) {
-                        return;
-                    }
                     if (listener != null) {
                         listener.onCompletion(mediaPlayer, url);
                     }
@@ -97,6 +94,7 @@ public class MediaPlayerManager {
             mediaPlayer.prepareAsync();
         } catch (Throwable e) {
             e.printStackTrace();
+            isPrepared = false;
             mediaPlayer.reset(); // 重置
             if (listener != null) {
                 listener.onError(mediaPlayer, url);
@@ -119,14 +117,21 @@ public class MediaPlayerManager {
     }
 
     public void seekTo(int msec) {
-        int duration = mediaPlayer.getDuration(); // 毫秒
-        if (msec >= 0 && msec <= duration) {
-            mediaPlayer.seekTo(msec);
+        try {
+            if (!isPrepared()) {
+                return;
+            }
+            int duration = mediaPlayer.getDuration(); // 毫秒
+            if (msec >= 0 && msec <= duration) {
+                mediaPlayer.seekTo(msec);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
     private boolean isPrepared() {
-        return true;
+        return isPrepared;
     }
 
     public void start() {
@@ -155,29 +160,41 @@ public class MediaPlayerManager {
     }
 
     public int getCurrentPosition() {
-        if (!mediaPlayer.isPlaying()) {
+        try {
+            if (!isPrepared()) {
+                return 0;
+            }
+            int position = mediaPlayer.getCurrentPosition();
+            position = Math.max(position, 0);
+            return position;
+        } catch (Throwable e) {
+            e.printStackTrace();
             return 0;
         }
-        int position = mediaPlayer.getCurrentPosition();
-        position = Math.max(position, 0);
-        return position;
     }
 
     public int getDuration() {
-        if (!mediaPlayer.isPlaying()) {
+        try {
+            if (!isPrepared()) {
+                return 0;
+            }
+            int duration = mediaPlayer.getDuration();
+            duration = Math.max(duration, 0);
+            return duration;
+        } catch (Throwable e) {
+            e.printStackTrace();
             return 0;
         }
-        int duration = mediaPlayer.getDuration();
-        duration = Math.max(duration, 0);
-        return duration;
     }
 
     public void reset() {
+        isPrepared = false;
         source = "";
         mediaPlayer.reset(); // 重置
     }
 
     private void release() {
+        isPrepared = false;
         source = "";
         if (mediaPlayer != null) {
             mediaPlayer.release();

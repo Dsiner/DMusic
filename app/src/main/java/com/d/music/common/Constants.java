@@ -73,9 +73,6 @@ public class Constants {
         public static final String PLAYER_CONTROL_PREV = "com.d.music.action.player_control_prev"; // 上一首
         public static final String PLAYER_CONTROL_EXIT = "com.d.music.action.player_control_exit"; // 退出应用
         public static final String PLAYER_CONTROL_TIMING = "com.d.music.action.player_control_timing"; // 睡眠定时
-
-        public static final String MUSIC_CURRENT_POSITION = "com.d.music.action.music_current_position"; // 用来接收service的广播
-        public static final String MUSIC_SEEK_TO_TIME = "com.d.music.action.music_seek_to_time"; // 用来发送SeekBar进度改变广播，播放时间跳转
     }
 
     /**

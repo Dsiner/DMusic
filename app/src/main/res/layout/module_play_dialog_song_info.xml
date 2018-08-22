@@ -187,7 +187,7 @@
                     <TextView
                         android:layout_width="76dp"
                         android:layout_height="wrap_content"
-                        android:text="module_common_song_info_file_folder"
+                        android:text="@string/module_common_song_info_file_folder"
                         android:textColor="@color/lib_pub_color_white"
                         android:textSize="16.5dp" />
 
