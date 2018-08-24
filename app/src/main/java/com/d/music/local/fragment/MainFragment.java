@@ -33,7 +33,7 @@ import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.module.media.media.MusicFactory;
 import com.d.music.online.activity.OnlineActivity;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

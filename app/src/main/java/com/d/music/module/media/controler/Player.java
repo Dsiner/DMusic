@@ -19,7 +19,7 @@ import com.d.music.module.events.MusicInfoEvent;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.media.HitTarget;
 import com.d.music.online.model.SongInfoRespModel;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

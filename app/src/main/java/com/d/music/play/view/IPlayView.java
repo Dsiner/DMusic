@@ -14,7 +14,5 @@ import java.util.List;
 public interface IPlayView extends MvpView {
     void overLoad(List<MusicModel> list);
 
-    void setLrcRows(List<LrcRow> lrcRows);
-
-    void seekTo(int progress);
+    void setLrcRows(List<LrcRow> lrcRows, int currentPosition);
 }

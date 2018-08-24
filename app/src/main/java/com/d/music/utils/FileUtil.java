@@ -1,4 +1,4 @@
-package com.d.music.utils.fileutil;
+package com.d.music.utils;
 
 import android.os.Environment;
 import android.text.TextUtils;

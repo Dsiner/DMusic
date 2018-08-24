@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.d.music.common.Constants;
 import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 
 /**
  * HitTagget

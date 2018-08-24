@@ -25,7 +25,7 @@ import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
- * PlayerModeActivity
+ * ModeActivity
  * Created by D on 2017/6/13.
  */
 public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpView {

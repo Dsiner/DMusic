@@ -187,7 +187,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         EventBus.getDefault().register(this);
         control = MediaControler.getIns(this);
         initSeekBar();
-        initLrcListener();
+        initLrc();
         initAlbum();
         onPlayModeChange(Preferences.getIns(getApplicationContext()).getPlayMode());
     }
@@ -224,7 +224,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         });
     }
 
-    private void initLrcListener() {
+    private void initLrc() {
         lrc.setOnSeekChangeListener(new LrcView.OnSeekChangeListener() {
             @Override
             public void onProgressChanged(int progress) {
@@ -234,10 +234,20 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                 control.seekTo(progress);
             }
         });
+
+        MediaPlayerManager mediaManager = control.getMediaManager();
+        final int status = control.getStatus();
+        if (mediaManager != null && (status == Constants.PlayStatus.PLAY_STATUS_PLAYING
+                || status == Constants.PlayStatus.PLAY_STATUS_PAUSE)) {
+            mPresenter.getLrcRows(control.getModel());
+        }
     }
 
     private void initAlbum() {
         tvTitle.setText(control.getSongName());
+        MusicModel model = control.getModel();
+        resetFav(model != null ? model.isCollected : false);
+
         MediaPlayerManager mediaManager = control.getMediaManager();
         final int status = control.getStatus();
         if (mediaManager != null && (status == Constants.PlayStatus.PLAY_STATUS_PLAYING
@@ -245,10 +255,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             final int duration = mediaManager.getDuration();
             final int currentPosition = mediaManager.getCurrentPosition();
             setProgress(currentPosition, duration);
-            tvTimeStart.setText(Util.formatTime(currentPosition));
-            MusicModel model = control.getModel();
-            resetFav(model != null ? model.isCollected : false);
-            mPresenter.getLrcRows(model);
         } else {
             setProgress(0, 0);
         }
@@ -366,7 +372,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     public void onCountChange(int count) {
         if (count <= 0) {
             setProgress(0, 0);
-            tvTimeStart.setText(Util.formatTime(0));
             lrc.setLrcRows(new ArrayList<LrcRow>());
         }
     }
@@ -382,19 +387,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     }
 
     @Override
-    public void setLrcRows(List<LrcRow> lrcRows) {
-        lrc.setLrcRows(lrcRows);
-        lrc.seekTo(1000, true);
-    }
-
-    @Override
-    public void seekTo(int progress) {
-        lrc.seekTo(progress, false);
+    public void setLrcRows(List<LrcRow> lrcRows, int currentPosition) {
+        lrc.setLrcRows(lrcRows, currentPosition);
     }
 
     private void setProgress(int currentPosition, int duration) {
         seekBar.setMax(duration);
         seekBar.setProgress(currentPosition);
+        tvTimeStart.setText(Util.formatTime(currentPosition));
         tvTimeEnd.setText(Util.formatTime(duration));
     }
 
@@ -438,7 +438,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         }
         final int currentPosition = event.currentPosition;
         final int duration = event.duration;
-        tvTimeStart.setText(Util.formatTime(currentPosition));
         setProgress(currentPosition, duration);
         lrc.seekTo(currentPosition, false);
     }

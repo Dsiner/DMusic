@@ -8,7 +8,7 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.local.model.FileModel;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 
 import java.util.List;
 

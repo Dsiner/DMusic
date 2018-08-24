@@ -18,12 +18,7 @@ import java.util.List;
  * DefaultLrcParser
  * Edited by D on 2017/5/16.
  */
-public class DefaultLrcParser implements ILrcParser {
-    private static final DefaultLrcParser instance = new DefaultLrcParser();
-
-    public static DefaultLrcParser getInstance() {
-        return instance;
-    }
+public class DefaultLrcParser {
 
     private DefaultLrcParser() {
     }
@@ -32,8 +27,7 @@ public class DefaultLrcParser implements ILrcParser {
      * 将歌词文件里面的字符串 解析成一个List<LrcRow>
      */
     @NonNull
-    @Override
-    public List<LrcRow> getLrcRows(String path) {
+    public static List<LrcRow> getLrcRows(String path) {
         String str = converfile(path, "utf-8");
         if (TextUtils.isEmpty(str)) {
             return new ArrayList<>();
@@ -70,11 +64,11 @@ public class DefaultLrcParser implements ILrcParser {
         return lrcRows;
     }
 
-    private String converfile(String path) {
+    private static String converfile(String path) {
         return converfile(path, null);
     }
 
-    private String converfile(String path, String charsetName) {
+    private static String converfile(String path, String charsetName) {
         File file = new File(path);
         FileInputStream fis = null;
         BufferedInputStream bis = null;
@@ -120,7 +114,7 @@ public class DefaultLrcParser implements ILrcParser {
     }
 
     @NonNull
-    private String getCharset(byte[] first3bytes) {
+    private static String getCharset(byte[] first3bytes) {
         String charsetName;
         if (first3bytes[0] == (byte) 0xEF && first3bytes[1] == (byte) 0xBB && first3bytes[2] == (byte) 0xBF) {
             charsetName = "utf-8";

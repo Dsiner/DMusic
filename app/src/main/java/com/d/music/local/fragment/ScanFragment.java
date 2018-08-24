@@ -19,7 +19,7 @@ import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
 import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;

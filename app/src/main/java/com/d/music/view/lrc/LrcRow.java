@@ -16,19 +16,22 @@ public class LrcRow implements Comparable<LrcRow> {
 
     /**
      * 开始时间 为00:10:00
-     ***/
+     */
     private String timeStr;
+
     /**
      * 开始时间 毫米数  00:10:00  为10000
-     **/
+     */
     private int time;
+
     /**
      * 歌词内容
-     **/
+     */
     private String content;
+
     /**
      * 该行歌词显示的总时间
-     **/
+     */
     private int totalTime;
 
     public LrcRow() {
@@ -83,11 +86,11 @@ public class LrcRow implements Comparable<LrcRow> {
         if (lrcLine == null || !lrcLine.startsWith("[") || lrcLine.indexOf("]") != 9) {
             return null;
         }
-        //最后一个"]"
+        // 最后一个"]"
         int lastIndexOfRightBracket = lrcLine.lastIndexOf("]");
-        //歌词内容
+        // 歌词内容
         String content = lrcLine.substring(lastIndexOfRightBracket + 1, lrcLine.length());
-        //截取出歌词时间，并将"[" 和"]" 替换为"-"   [offset:0]
+        // 截取出歌词时间，并将"[" 和"]" 替换为"-"   [offset:0]
         ULog.d("lrcLine=" + lrcLine);
         // -03:33.02--00:36.37-
         String times = lrcLine.substring(0, lastIndexOfRightBracket + 1).replace("[", "-").replace("]", "-");
@@ -126,7 +129,6 @@ public class LrcRow implements Comparable<LrcRow> {
 
     @Override
     public String toString() {
-        return "LrcRow [timeStr=" + timeStr + ", time=" + time + ", content="
-                + content + "]";
+        return "LrcRow [timeStr=" + timeStr + ", time=" + time + ", content=" + content + "]";
     }
 }

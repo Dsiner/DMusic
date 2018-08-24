@@ -9,8 +9,10 @@ import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;
 import com.d.music.module.greendao.util.AppDBUtil;
 import com.d.music.module.media.HitTarget;
+import com.d.music.module.media.controler.MediaControler;
+import com.d.music.module.media.controler.MediaPlayerManager;
 import com.d.music.play.view.IPlayView;
-import com.d.music.utils.fileutil.FileUtil;
+import com.d.music.utils.FileUtil;
 import com.d.music.view.lrc.DefaultLrcParser;
 import com.d.music.view.lrc.LrcRow;
 
@@ -86,7 +88,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                 lrcModel.model = model;
                 lrcModel.lrcRows = new ArrayList<>();
                 if (FileUtil.isFileExist(path)) {
-                    lrcModel.lrcRows = DefaultLrcParser.getInstance().getLrcRows(path);
+                    lrcModel.lrcRows = DefaultLrcParser.getLrcRows(path);
                 }
                 lrcModel.lrcRows = lrcModel.lrcRows != null ? lrcModel.lrcRows : new ArrayList<LrcRow>();
                 e.onNext(lrcModel);
@@ -105,7 +107,14 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
                         if (getView() == null || lrcModel.model != model) {
                             return;
                         }
-                        getView().setLrcRows(lrcModel.lrcRows);
+                        MediaControler control = MediaControler.getIns(mContext);
+                        MediaPlayerManager mediaManager = control.getMediaManager();
+                        final int status = control.getStatus();
+                        if (mediaManager != null && (status == Constants.PlayStatus.PLAY_STATUS_PLAYING
+                                || status == Constants.PlayStatus.PLAY_STATUS_PAUSE)) {
+                            final int currentPosition = mediaManager.getCurrentPosition();
+                            getView().setLrcRows(lrcModel.lrcRows, currentPosition);
+                        }
                     }
 
                     @Override
