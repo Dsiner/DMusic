@@ -1,12 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     resourcePrefix 'lib_pub_'
-    publishNonDefault true
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -36,21 +33,20 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    compile files('libs/android-skin-loader-lib.jar')
-    debugCompile project(path: ':lib_xrv', configuration: 'debug')
-    releaseCompile project(path: ':lib_xrv', configuration: 'release')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compile rootProject.ext.dependencies.support_appcompat_v7
-    compile rootProject.ext.dependencies.gson
-    compile rootProject.ext.dependencies.nineoldandroids
-    compile rootProject.ext.dependencies.butterknife
-    annotationProcessor rootProject.ext.dependencies.butterknife_compiler
-    compile rootProject.ext.dependencies.glide
-    compile rootProject.ext.dependencies.glide_integration
-    annotationProcessor rootProject.ext.dependencies.glide_compiler
+    api files('libs/android-skin-loader-lib.jar')
+    api project(':lib_xrv')
+    api rootProject.ext.dependencies.support_v4
+    api rootProject.ext.dependencies.support_appcompat_v7
+    api rootProject.ext.dependencies.support_recyclerview_v7
+    api rootProject.ext.dependencies.support_design
+    api rootProject.ext.dependencies.gson
+    api rootProject.ext.dependencies.nineoldandroids
+    api rootProject.ext.dependencies.butterknife
+    api rootProject.ext.dependencies.glide
+    api rootProject.ext.dependencies.glide_integration
 }

@@ -2,10 +2,8 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     resourcePrefix 'lib_xrv_'
-    publishNonDefault true
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -34,12 +32,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    compile rootProject.ext.dependencies.support_recyclerview_v7
-    compile rootProject.ext.dependencies.support_design
-    compile rootProject.ext.dependencies.nineoldandroids
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    compileOnly rootProject.ext.dependencies.support_recyclerview_v7
+    compileOnly rootProject.ext.dependencies.support_design
+    compileOnly rootProject.ext.dependencies.nineoldandroids
 }

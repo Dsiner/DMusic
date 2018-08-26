@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.d.music"
@@ -60,32 +59,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    debugCompile project(path: ':lib_common', configuration: 'debug')
-    debugCompile project(path: ':lib_rxnet', configuration: 'debug')
-    debugCompile project(path: ':lib_commenplayer', configuration: 'debug')
-    releaseCompile project(path: ':lib_common', configuration: 'release')
-    releaseCompile project(path: ':lib_rxnet', configuration: 'release')
-    releaseCompile project(path: ':lib_commenplayer', configuration: 'release')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compile rootProject.ext.dependencies.support_v4
-    compile rootProject.ext.dependencies.support_appcompat_v7
-    compile rootProject.ext.dependencies.support_design
-    compile rootProject.ext.dependencies.support_percent
-    compile rootProject.ext.dependencies.support_constraint_layout
+    implementation project(':lib_common')
+    implementation project(':lib_rxnet')
+    implementation project(':lib_commenplayer')
 
-    compile rootProject.ext.dependencies.butterknife
+    implementation rootProject.ext.dependencies.support_v4
+    implementation rootProject.ext.dependencies.support_appcompat_v7
+    implementation rootProject.ext.dependencies.support_percent
+    implementation rootProject.ext.dependencies.support_constraint_layout
+
+    implementation rootProject.ext.dependencies.eventbus
+    implementation rootProject.ext.dependencies.greendao
+    implementation rootProject.ext.dependencies.tinypinyin
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
-    compile rootProject.ext.dependencies.eventbus
-    compile rootProject.ext.dependencies.greendao
-    compile rootProject.ext.dependencies.tinypinyin
+    annotationProcessor rootProject.ext.dependencies.glide_compiler
 
-    compile rootProject.ext.dependencies.rxjava
-    compile rootProject.ext.dependencies.rxandroid
-
-    compile rootProject.ext.dependencies.slidelayout
+    implementation rootProject.ext.dependencies.slidelayout
 }

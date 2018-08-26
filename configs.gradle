@@ -1,8 +1,7 @@
 ext {
     compileSdkVersion = 25
-    buildToolsVersion = '25.0.3'
     minSdkVersion = 9
-    targetSdkVersion = 23
+    targetSdkVersion = 25
     versionCode = 4
     versionName = "1.0.3"
 
@@ -14,6 +13,7 @@ ext {
             android_skin_loader       : files('libs/android-skin-loader-lib.jar'),
             support_multidex          : "com.android.support:multidex:${multidexVersion}",
             support_v4                : "com.android.support:support-v4:${supportVersion}",
+            support_annotations       : "com.android.support:support-annotations:${supportVersion}",
             support_design            : "com.android.support:design:${supportVersion}",
             support_percent           : "com.android.support:percent:${supportVersion}",
             support_appcompat_v7      : "com.android.support:appcompat-v7:${supportVersion}",

@@ -2,10 +2,8 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     resourcePrefix 'lib_rxnet_'
-    publishNonDefault true
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -34,22 +32,22 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    compile rootProject.ext.dependencies.support_appcompat_v7
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compile rootProject.ext.dependencies.rxjava
-    compile rootProject.ext.dependencies.rxandroid
+    implementation rootProject.ext.dependencies.support_appcompat_v7
 
-    compile rootProject.ext.dependencies.gson
-    compile rootProject.ext.dependencies.okhttp
-    compile rootProject.ext.dependencies.okhttp_logging_interceptor
+    api rootProject.ext.dependencies.rxjava
+    api rootProject.ext.dependencies.rxandroid
 
-    compile rootProject.ext.dependencies.retrofit
-    compile rootProject.ext.dependencies.retrofit_adapter_rxjava2
-    compile rootProject.ext.dependencies.retrofit_converter_gson //json转换
-    compile rootProject.ext.dependencies.retrofit_converter_scalars //String类型转换
+    api rootProject.ext.dependencies.gson
+    api rootProject.ext.dependencies.okhttp
+    api rootProject.ext.dependencies.okhttp_logging_interceptor
+
+    api rootProject.ext.dependencies.retrofit
+    api rootProject.ext.dependencies.retrofit_adapter_rxjava2
+    api rootProject.ext.dependencies.retrofit_converter_gson // json转换
+    api rootProject.ext.dependencies.retrofit_converter_scalars // String类型转换
 }
