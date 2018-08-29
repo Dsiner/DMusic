@@ -24,7 +24,7 @@
     <color name="lib_pub_color_destroy_press">#D5604D</color>
 
     <color name="lib_pub_color_text_main">#030303</color>
-    <color name="lib_pub_color_text_sub">#FF888888</color>
+    <color name="lib_pub_color_text_sub">#7F7F7F</color>
     <color name="lib_pub_color_text_hint">#CCCCCC</color>
     <color name="lib_pub_color_text_disable">#A7AAB1</color>
     <color name="lib_pub_color_text_dialog_content">#5E5F64</color>

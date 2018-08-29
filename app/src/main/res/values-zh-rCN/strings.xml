@@ -89,6 +89,7 @@
     <string name="module_common_play_count">播放次数: </string>
     <string name="module_common_10thousand">万</string>
     <string name="module_common_related_version">相关版本</string>
+    <string name="module_common_comment">评论</string>
 
     <!-- Module_Play -->
     <string name="module_common_song_info">歌曲信息</string>

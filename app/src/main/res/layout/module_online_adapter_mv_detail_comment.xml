@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/iv_mv_comment_cover"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="8dp" />
 
@@ -19,8 +19,8 @@
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:singleLine="true"
         android:text="Nick"
-        android:textColor="#666666"
-        android:textSize="12dp" />
+        android:textColor="#7D7D7D"
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/tv_mv_comment_time"
@@ -29,9 +29,10 @@
         android:layout_below="@+id/tv_mv_comment_user"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+        android:layout_marginTop="1dp"
         android:text="2017-09-25 15:21"
-        android:textColor="#666666"
-        android:textSize="9dp" />
+        android:textColor="#7D7D7D"
+        android:textSize="10dp" />
 
     <TextView
         android:id="@+id/tv_mv_comment_content"
@@ -42,9 +43,10 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:layout_marginTop="6dp"
+        android:lineSpacingExtra="3dp"
         android:text="Content"
         android:textColor="@color/lib_pub_color_text_main"
-        android:textSize="12dp" />
+        android:textSize="14dp" />
 
     <View
         android:layout_width="match_parent"

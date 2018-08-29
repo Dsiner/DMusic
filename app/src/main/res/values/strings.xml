@@ -89,6 +89,7 @@
     <string name="module_common_play_count">Views: </string>
     <string name="module_common_10thousand">w</string>
     <string name="module_common_related_version">Related version</string>
+    <string name="module_common_comment">Comment</string>
 
     <!-- Module_Play -->
     <string name="module_common_song_info">Song info</string>
