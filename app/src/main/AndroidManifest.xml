@@ -90,6 +90,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!-- Transfer -->
+        <activity
+            android:name="com.d.music.transfer.activity.TransferActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+
         <!-- Play -->
         <activity
             android:name="com.d.music.play.activity.PlayActivity"

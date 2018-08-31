@@ -22,6 +22,7 @@ import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;
 import com.d.music.setting.activity.SleepActivity;
+import com.d.music.transfer.activity.TransferActivity;
 import com.d.music.utils.StatusBarCompat;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -56,8 +57,8 @@ public class MainActivity extends BaseFragmentActivity {
     @BindView(R.id.dl_drawer)
     DrawerLayout dlDrawer;
 
-    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_sleep, R.id.llyt_menu_skin,
-            R.id.llyt_menu_setting, R.id.llyt_menu_exit})
+    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_transfer, R.id.llyt_menu_sleep,
+            R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
         if (ClickUtil.isFastDoubleClick()) {
             return;
@@ -68,6 +69,9 @@ public class MainActivity extends BaseFragmentActivity {
                 break;
             case R.id.flyt_menu:
                 dlDrawer.openDrawer(Gravity.END);
+                break;
+            case R.id.llyt_menu_transfer:
+                startActivity(new Intent(MainActivity.this, TransferActivity.class));
                 break;
             case R.id.llyt_menu_sleep:
                 startActivity(new Intent(MainActivity.this, SleepActivity.class));

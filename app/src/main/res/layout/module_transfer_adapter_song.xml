@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="46dp">
-
-    <TextView
-        android:id="@+id/tv_seq"
-        android:layout_width="46dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="@color/lib_pub_color_text_sub"
-        android:textSize="14dp"
-        android:textStyle="bold" />
+    android:layout_height="46dp"
+    android:paddingLeft="@dimen/lib_pub_dimen_margin"
+    android:paddingRight="@dimen/lib_pub_dimen_margin">
 
     <ImageView
         android:id="@+id/iv_more"

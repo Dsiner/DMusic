@@ -7,6 +7,7 @@
     <string name="module_common_local_music">本地音乐</string>
     <string name="module_common_my_collection">我的收藏</string>
     <string name="module_common_music_hall">音乐馆</string>
+    <string name="module_common_transfer">传输列表</string>
     <string name="module_common_custom_list">自建歌单</string>
     <string name="module_common_select_all">全选</string>
     <string name="module_common_inverse_selection">反选</string>
@@ -90,6 +91,10 @@
     <string name="module_common_10thousand">万</string>
     <string name="module_common_related_version">相关版本</string>
     <string name="module_common_comment">评论</string>
+
+    <!-- Module_Transfer -->
+    <string name="module_common_transfer_downloading">正在下载</string>
+    <string name="module_common_transfer_downloaded">已下载</string>
 
     <!-- Module_Play -->
     <string name="module_common_song_info">歌曲信息</string>

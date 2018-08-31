@@ -21,6 +21,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@color/lib_pub_color_main"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_common_ic_launcher_nemu"
             skin:enable="true" />
 
@@ -37,6 +38,30 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llyt_menu_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:scaleType="centerCrop"
+            android:src="@drawable/module_online_ic_mv_info_download" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:singleLine="true"
+            android:text="@string/module_common_download"
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llyt_menu_sleep"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -47,7 +72,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_setting_ic_menu_sleep" />
 
         <TextView
@@ -71,7 +96,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_setting_ic_menu_night" />
 
         <TextView
@@ -95,7 +120,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_setting_ic_menu_skin" />
 
         <TextView
@@ -103,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="换肤"
+            android:text="@string/module_common_skin_resurfacing"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
@@ -119,7 +144,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_setting_ic_menu_setting" />
 
         <TextView
@@ -127,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="设置"
+            android:text="@string/module_common_setting"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
@@ -148,7 +173,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/module_setting_ic_menu_exit" />
 
         <TextView
@@ -156,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
-            android:text="退出"
+            android:text="@string/module_common_exit"
             android:textColor="@color/lib_pub_color_white"
             android:textSize="@dimen/lib_pub_dimen_text_main" />
     </LinearLayout>
