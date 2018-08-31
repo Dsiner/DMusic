@@ -57,7 +57,7 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonHolder
     public CommonHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layoutId = mLayoutId;
         if (multiItemTypeSupport != null) {
-            //multiType
+            // MultiType
             if (mDatas != null && mDatas.size() > 0) {
                 layoutId = multiItemTypeSupport.getLayoutId(viewType);
             }
@@ -81,28 +81,28 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonHolder
     }
 
     /**
-     * @param position:position
-     * @param holder:holder
-     * @param item:position对应的数据item
+     * @param position: Position
+     * @param holder:   Holder
+     * @param item:     Position对应的数据
      */
     public abstract void convert(int position, CommonHolder holder, T item);
 
     /**
-     * 3-1:Just for ItemTouch (optional)
+     * 3-1: Just for ItemTouch (optional)
      */
     public void setOnStartDragListener(OnStartDragListener startDragListener) {
         this.startDragListener = startDragListener;
     }
 
     /**
-     * 3-2:Just for ItemTouch (optional)
+     * 3-2: Just for ItemTouch (optional)
      */
     @Override
     public void onItemDismiss(int position) {
     }
 
     /**
-     * 3-3:Just for ItemTouch (optional)
+     * 3-3: Just for ItemTouch (optional)
      */
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {

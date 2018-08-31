@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
+
     /**
      * 显示格式化日期模板
      */
@@ -145,7 +146,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             public void run() {
                 reset();
             }
-        }, 100);//回弹时间
+        }, 100); // 回弹时间
     }
 
     public void setVisibleHeight(int height) {
@@ -166,7 +167,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     public void onMove(float delta) {
         if (getVisibleHeight() > 0 || delta > 0) {
             setVisibleHeight((int) delta + getVisibleHeight());
-            if (mState <= ListState.STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
+            if (mState <= ListState.STATE_RELEASE_TO_REFRESH) {
+                // 未处于刷新状态，更新箭头
                 if (getVisibleHeight() > mMeasuredHeight) {
                     setState(ListState.STATE_RELEASE_TO_REFRESH);
                 } else {
@@ -189,7 +191,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             setState(ListState.STATE_REFRESHING);
             isOnRefresh = true;
         }
-        // refreshing and header isn't shown fully. do nothing.
+        // Refreshing and header isn't shown fully. do nothing.
 //        if (mState == ListState.STATE_REFRESHING && height <= mMeasuredHeight) {
 //            //return;
 //        }

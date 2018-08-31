@@ -101,7 +101,9 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    // some times we need to override this
+    /**
+     * Sometimes we need to override this
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
         if (isHeader(position) || isRefreshHeader(position)) {
@@ -166,12 +168,16 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return -1;
     }
 
-    //判断一个type是否为HeaderType
+    /**
+     * 判断一个type是否为HeaderType
+     */
     private boolean isHeaderType(int itemViewType) {
         return mHeaderViews.size() > 0 && sHeaderTypes.contains(itemViewType);
     }
 
-    //根据header的ViewType判断是哪个header
+    /**
+     * 根据Header的ViewType判断是哪个Header
+     */
     private View getHeaderViewByType(int itemType) {
         if (!isHeaderType(itemType)) {
             return null;
@@ -179,7 +185,9 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mHeaderViews.get(itemType - IRecyclerView.HEADER_INIT_INDEX);
     }
 
-    //判断是否是XRecyclerView保留的itemViewType
+    /**
+     * 判断是否是XRecyclerView保留的ItemViewType
+     */
     private boolean isReservedItemViewType(int itemViewType) {
         return itemViewType == IRecyclerView.TYPE_REFRESH_HEADER
                 || itemViewType == IRecyclerView.TYPE_FOOTER

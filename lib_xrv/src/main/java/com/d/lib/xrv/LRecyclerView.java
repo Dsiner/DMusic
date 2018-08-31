@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 /**
- * LRecyclerView-listview
+ * LRecyclerView - ListView
  * Created by D on 2017/4/25.
  */
 public class LRecyclerView extends ARecyclerView {

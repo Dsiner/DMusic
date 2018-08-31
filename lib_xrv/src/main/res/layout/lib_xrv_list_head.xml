@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><!-- RecyclerView的头部 -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="bottom">
 
-    <!-- 内容 -->
+    <!-- Content -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
 
-        <!-- 箭头图像、进度条 -->
+        <!-- Arrow image, progress bar -->
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/lib_xrv_ic_pulltorefresh_arrow" />
 
-            <!-- 进度条 -->
+            <!-- Progress bar -->
             <com.d.lib.xrv.view.LoadingView
                 android:id="@+id/ldv_loading"
                 android:layout_width="20dp"
@@ -35,7 +35,7 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-        <!-- 提示、最近更新 -->
+        <!-- Prompt, recent update -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <!-- 提示 -->
+            <!-- Prompt -->
             <TextView
                 android:id="@+id/tv_head_tip"
                 android:layout_width="wrap_content"
@@ -52,13 +52,13 @@
                 android:textColor="@color/lib_xrv_pull_refresh_text"
                 android:textSize="15sp" />
 
-            <!-- 最近更新 -->
+            <!-- Recently updated -->
             <TextView
                 android:id="@+id/tv_head_last_update_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="上次更新:"
+                android:text="@string/lib_xrv_list_header_last_time"
                 android:textColor="@color/lib_xrv_pull_refresh_text"
                 android:textSize="13sp" />
         </LinearLayout>

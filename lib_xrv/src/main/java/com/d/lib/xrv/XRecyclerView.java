@@ -34,11 +34,18 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
     private IRecyclerView.LoadingListener listener;
 
-    private /*static*/ List<Integer> headerTypes;//每个header必须有不同的type,不然滚动的时候顺序会变化
+    /**
+     * 每个header必须有不同的type,不然滚动的时候顺序会变化
+     */
+    private /*static*/ List<Integer> headerTypes;
     private ArrayList<View> headers;
     private ArrowRefreshHeader refreshHeader;
     private View footer;
-    private View emptyView;//adapter没有数据的时候显示,类似于listView的emptyView
+
+    /**
+     * adapter没有数据的时候显示,类似于listView的emptyView
+     */
+    private View emptyView;
     private WrapAdapter wrapAdapter;
 
     private DataObserver dataObserver;
@@ -176,7 +183,9 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
         dataObserver.onChanged();
     }
 
-    //避免用户自己调用getAdapter() 引起的ClassCastException
+    /**
+     * 避免用户自己调用getAdapter() 引起的ClassCastException
+     */
     @Override
     public Adapter getAdapter() {
         if (wrapAdapter != null) {
@@ -195,7 +204,9 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return (wrapAdapter.isHeader(position) || wrapAdapter.isFooter(position) || wrapAdapter.isRefreshHeader(position))
+                        return (wrapAdapter.isHeader(position)
+                                || wrapAdapter.isFooter(position)
+                                || wrapAdapter.isRefreshHeader(position))
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
@@ -267,7 +278,7 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
                 break;
             default:
                 mLastY = -1;
-                // reset
+                // Reset
                 if (isOnTop() && canRefresh && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     if (refreshHeader.releaseAction()) {
                         if (listener != null) {
@@ -303,7 +314,7 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
                     headers,
                     refreshHeader,
                     footer,
-                    headerTypes);//synchronize
+                    headerTypes); // Synchronize
         }
     }
 
@@ -312,14 +323,14 @@ public class XRecyclerView extends ARecyclerView implements LoadingMoreFooter.On
             dataObserver.setArgs(this,
                     wrapAdapter,
                     emptyView,
-                    canLoadMore);//synchronize
+                    canLoadMore); // Synchronize
         }
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //解决和CollapsingToolbarLayout冲突的问题
+        // 解决和CollapsingToolbarLayout冲突的问题
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
         while (p != null) {

@@ -33,7 +33,7 @@ public abstract class ARecyclerView extends RecyclerView {
     public abstract void installFooter();
 
     /**
-     * listview展现形式
+     * ListView展现形式
      */
     public void showAsList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

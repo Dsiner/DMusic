@@ -1,13 +1,13 @@
 package com.d.lib.xrv.view;
 
 /**
- * state
+ * ListState
  * Created by D on 2017/4/25.
  */
-
 public class ListState {
+
     /**
-     * header
+     * Header
      */
     public final static int STATE_NORMAL = 0x00;
     public final static int STATE_RELEASE_TO_REFRESH = 0x01;
@@ -15,7 +15,7 @@ public class ListState {
     public final static int STATE_DONE = 0x03;
 
     /**
-     * footer
+     * Footer
      */
     public final static int STATE_LOADING = 0x10;
     public final static int STATE_COMPLETE = 0x11;

@@ -11,7 +11,7 @@ import android.view.View;
 import com.d.lib.xrv.R;
 
 /**
- * Loading
+ * LoadingView
  * Created by Administrator on 2016/8/27.
  */
 public class LoadingView extends View {
