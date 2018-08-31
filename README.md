@@ -25,16 +25,13 @@
 - [Common](https://github.com/Dsiner/Common)
 - [greenDAO](https://github.com/greenrobot/greenDAO)
 - [RxJava2](https://github.com/ReactiveX/RxJava)
-
 - [PercentLayout]()
 - [ConstraintLayout]()
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
 - [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
 - [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
-
 - [EventBus](https://github.com/greenrobot/EventBus)
 - [TinyPinyin](https://github.com/promeG/TinyPinyin)
-
 - [PermissionCompat](https://github.com/Dsiner/PermissionCompat)
 - [xrv](https://github.com/Dsiner/xRecyclerViewF)
 - [SlideLayout](https://github.com/Dsiner/SlideLayout)
@@ -43,7 +40,7 @@
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution
 
-## About DMusic  ——畅听音乐(中文名) v1.0.3
+## About DMusic v1.0.3
 
 ##### ----The pursuit of speed, simplicity and security of the local music player----
 
