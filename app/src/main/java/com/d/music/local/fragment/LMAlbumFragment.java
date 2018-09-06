@@ -1,6 +1,6 @@
 package com.d.music.local.fragment;
 
-import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.local.adapter.AlbumAdapter;

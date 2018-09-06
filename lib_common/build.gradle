@@ -20,7 +20,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -39,14 +38,34 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     api files('libs/android-skin-loader-lib.jar')
+    api project(':lib_rxnet')
     api project(':lib_xrv')
-    api rootProject.ext.dependencies.support_v4
-    api rootProject.ext.dependencies.support_appcompat_v7
-    api rootProject.ext.dependencies.support_recyclerview_v7
-    api rootProject.ext.dependencies.support_design
-    api rootProject.ext.dependencies.gson
-    api rootProject.ext.dependencies.nineoldandroids
-    api rootProject.ext.dependencies.butterknife
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.glide_integration
+
+    // ----- Support -----
+    api rootProject.ext.dependencies.support_v4
+    api rootProject.ext.dependencies.support_appcompat_v7
+    api rootProject.ext.dependencies.support_design
+    api rootProject.ext.dependencies.support_recyclerview_v7
+
+    // ----- Common -----
+    api rootProject.ext.dependencies.gson
+    api rootProject.ext.dependencies.nineoldandroids
+
+    // ----- Component -----
+    // View binding
+    api rootProject.ext.dependencies.butterknife
+    // Image loading
+    api rootProject.ext.dependencies.glide
+    api rootProject.ext.dependencies.glide_integration
+    annotationProcessor rootProject.ext.dependencies.glide_compiler
+//    // Pull down refresh, load more
+//    api rootProject.ext.dependencies.xrv
+//    // Network request
+//    api rootProject.ext.dependencies.rxnet
+    // Runtime permissions
+    api rootProject.ext.dependencies.permissioncompat
+    // Thread pool management
+    api rootProject.ext.dependencies.taskscheduler
 }

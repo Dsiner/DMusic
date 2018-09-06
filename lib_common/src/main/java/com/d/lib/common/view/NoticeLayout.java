@@ -73,7 +73,7 @@ public class NoticeLayout extends RelativeLayout {
     }
 
     /**
-     * 设置文本内容
+     * Set text content
      */
     public void setText(CharSequence text) {
         tvContent.setText(text);

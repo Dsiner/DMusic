@@ -65,7 +65,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation project(':lib_common')
-    implementation project(':lib_rxnet')
     implementation project(':lib_commenplayer')
 
     implementation rootProject.ext.dependencies.support_v4

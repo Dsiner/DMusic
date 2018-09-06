@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
@@ -61,7 +61,7 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

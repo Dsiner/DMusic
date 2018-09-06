@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
  * Created by D on 2017/4/29.
  */
 public abstract class AbstractPopup extends PopupWindow implements View.OnKeyListener {
+
     /**
      * Must be Activity
      */
@@ -35,12 +36,12 @@ public abstract class AbstractPopup extends PopupWindow implements View.OnKeyLis
     /**
      * Create a new popup window
      *
-     * @param context        context
-     * @param resource       the popup's layout resource
-     * @param width          the popup's width
-     * @param height         the popup's height
-     * @param focusable      true if the popup can be focused, false otherwise
-     * @param animationStyle animation style to use when the popup appears
+     * @param context        Context
+     * @param resource       The popup's layout resource
+     * @param width          The popup's width
+     * @param height         The popup's height
+     * @param focusable      True if the popup can be focused, false otherwise
+     * @param animationStyle Animation style to use when the popup appears
      *                       and disappears.  Set to -1 for the default animation, 0 for no
      *                       animation, or a resource identifier for an explicit animation.
      */

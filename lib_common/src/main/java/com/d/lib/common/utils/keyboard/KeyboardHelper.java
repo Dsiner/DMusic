@@ -21,6 +21,7 @@ import com.d.lib.common.utils.ViewHelper;
  */
 public class KeyboardHelper {
     private static final String TAG = "QMUIKeyboardHelper";
+
     /**
      * 显示软键盘的延迟时间
      */
@@ -101,7 +102,7 @@ public class KeyboardHelper {
                 int heightDiff = activityRoot.getRootView().getHeight() - r.height();
                 boolean isOpen = heightDiff > visibleThreshold;
                 if (isOpen == wasOpened) {
-                    //keyboard state has not changed
+                    // Keyboard state has not changed
                     return;
                 }
                 wasOpened = isOpen;
@@ -149,14 +150,14 @@ public class KeyboardHelper {
         }
 
         /**
-         * soft keyboard pop...
+         * Soft keyboard pop...
          */
         public void onPop() {
 
         }
 
         /**
-         * soft keyboard close...
+         * Soft keyboard close...
          */
         public void onClose() {
 

@@ -1,7 +1,7 @@
 package com.d.music.online.fragment;
 
-import com.d.lib.common.module.loader.AbsLazyFragment;
-import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.component.loader.AbsLazyFragment;
+import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.online.adapter.BillAdapter;

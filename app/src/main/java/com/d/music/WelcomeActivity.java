@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.module.service.MusicService;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

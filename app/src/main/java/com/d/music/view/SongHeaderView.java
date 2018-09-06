@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
 
@@ -67,7 +67,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.App;
@@ -84,7 +84,7 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

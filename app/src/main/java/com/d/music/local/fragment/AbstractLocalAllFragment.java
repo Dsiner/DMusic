@@ -5,9 +5,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseFragment;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseFragment;
 import com.d.lib.common.view.tab.ScrollTab;
 import com.d.music.R;
 import com.d.music.view.TitleLayout;

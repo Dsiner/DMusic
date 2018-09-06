@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.d.lib.common.module.netstate.NetCompat;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.netstate.NetCompat;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.greendao.util.AppDBUtil;
@@ -29,7 +29,7 @@ public class App extends Application {
         // 初始化数据库
         AppDBUtil.getIns(getApplicationContext());
         // 防双击间隔设置
-        ClickUtil.setDelayTime(350);
+        ClickFast.setDelayTime(350);
         // 加载皮肤
         SkinUtil.initSkin(getApplicationContext());
         // 网络监听

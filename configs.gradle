@@ -43,6 +43,10 @@ ext {
             retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:2.3.0",
             retrofit_converter_scalars: "com.squareup.retrofit2:converter-scalars:2.3.0",
 
+            xrv                       : "com.dsiner.lib:xrv:1.1.2",
+            rxnet                     : "com.dsiner.lib:rxnet:1.1.1",
+            permissioncompat          : "com.dsiner.lib:permissioncompat:1.0.1",
+            taskscheduler             : "com.dsiner.lib:taskscheduler:1.0.1",
             slidelayout               : "com.dsiner.lib:slidelayout:1.0.2"
     ]
 

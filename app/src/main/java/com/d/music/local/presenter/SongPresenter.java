@@ -2,8 +2,8 @@ package com.d.music.local.presenter;
 
 import android.content.Context;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.taskscheduler.TaskScheduler;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.common.view.DSLayout;
 import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.view.ISongView;

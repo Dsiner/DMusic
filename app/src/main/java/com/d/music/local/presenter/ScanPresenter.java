@@ -2,7 +2,7 @@ package com.d.music.local.presenter;
 
 import android.content.Context;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.view.IScanView;
 import com.d.music.module.events.MusicModelEvent;
@@ -79,9 +79,6 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
      * 扫描音乐文件
      */
     public void scan(final List<String> paths, final int type) {
-        if (getView() != null) {
-            getView().showLoading();
-        }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
@@ -111,7 +108,6 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().closeLoading();
                         getView().setMusics(list);
                     }
 

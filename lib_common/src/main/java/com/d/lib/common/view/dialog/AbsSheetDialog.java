@@ -60,10 +60,11 @@ public abstract class AbsSheetDialog<T> extends AbstractDialog {
     protected abstract void initView(View rootView);
 
     public interface OnItemClickListener<T> {
+
         /**
          * Click item
          *
-         * @param position: from 0 to datas.size()-1;
+         * @param position From 0 to datas.size()-1;
          */
         void onClick(Dialog dlg, int position, T item);
 

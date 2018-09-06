@@ -94,10 +94,11 @@ public class AlertSubDialog extends AbstractDialog {
     }
 
     public interface OnCheckListener {
+
         /**
          * Click ok
          *
-         * @param isChecked: isChecked
+         * @param isChecked isChecked
          */
         void onSubmit(Dialog dlg, boolean isChecked);
 

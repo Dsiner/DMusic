@@ -17,10 +17,12 @@ import java.util.List;
 /**
  * BottomDialog
  * Created by D on 2017/7/27.
+ * <p>
  * Modify by whb:
- * <p>需要显示标题则调用含有title参数的构造方法BottomDialog(Context context, List<String> datas,String title)
- * 不需要显示时则调用BottomDialog(Context context, List<String> datas)构造方法，或上面方法传入title=null或""
- * </p>
+ * To display the title, call the constructor
+ * BottomDialog(Context context, String title, List<Bean> datas) with the title parameter.
+ * Call the BottomDialog(Context context, List<Bean> datas) constructor when no display is required,
+ * or pass the title=null or "" method above.
  */
 public class BottomVerSheetDialog extends AbsSheetDialog<BottomVerSheetDialog.Bean> {
     private boolean isChecked;

@@ -29,5 +29,5 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/lib_pub_dimen_margin"
         android:scaleType="centerCrop"
-        android:src="@drawable/lib_pub_circle_msg_number" />
+        android:src="@drawable/lib_pub_ic_hook" />
 </RelativeLayout>

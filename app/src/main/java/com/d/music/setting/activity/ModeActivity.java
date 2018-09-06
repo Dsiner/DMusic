@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
@@ -38,7 +38,7 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
 
     @OnClick({R.id.iv_title_left, R.id.tv_title_right})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

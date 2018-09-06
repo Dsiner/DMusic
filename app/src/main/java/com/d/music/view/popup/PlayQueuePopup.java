@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
@@ -93,7 +93,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

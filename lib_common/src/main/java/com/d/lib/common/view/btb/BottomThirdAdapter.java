@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.lib.common.module.lv.CommonHolder;
+import com.d.lib.common.component.lv.CommonHolder;
 
 import java.util.ArrayList;
 import java.util.List;

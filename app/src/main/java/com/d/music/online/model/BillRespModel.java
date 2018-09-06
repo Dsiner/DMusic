@@ -1,6 +1,6 @@
 package com.d.music.online.model;
 
-import com.d.lib.common.module.mvp.model.BaseRespModel;
+import com.d.lib.common.component.mvp.model.BaseRespModel;
 
 import java.util.List;
 

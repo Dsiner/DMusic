@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * Log工具类，可以打印Log日志类名，方法名，行号
+ * Log tool, you can print the log log class name, method name, line number.
  */
 public class ULog {
     public static boolean DEVELOP_MODE = true;

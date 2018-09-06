@@ -80,14 +80,14 @@ public class RowLayout extends RelativeLayout {
     }
 
     /**
-     * 设置文本内容
+     * Set text content
      */
     public void setText(CharSequence text) {
         tvContent.setText(text);
     }
 
     /**
-     * 设置辅助文本内容
+     * Set auxiliary text content
      */
     public void setHint(CharSequence text, int visibility) {
         if (visibilityGoto != VISIBLE) {
@@ -97,7 +97,7 @@ public class RowLayout extends RelativeLayout {
     }
 
     /**
-     * 设置红点文本内容
+     * Set red dot text content
      */
     public void setNumber(CharSequence text, int visibility) {
         if (visibilityGoto != VISIBLE) {
@@ -108,14 +108,14 @@ public class RowLayout extends RelativeLayout {
     }
 
     /**
-     * Toggle按钮设置开闭
+     * Toggle button set to open or close
      */
     public void setOpen(boolean open) {
         tbToggle.setOpen(open);
     }
 
     /**
-     * Toggle按钮开闭状态
+     * Toggle button opening or closing status
      */
     public boolean isOpen() {
         return tbToggle.isOpen();

@@ -1,6 +1,6 @@
 package com.d.music.transfer.model;
 
-import com.d.lib.common.module.mvp.model.BaseModel;
+import com.d.lib.common.component.mvp.model.BaseModel;
 
 /**
  * TransferModel

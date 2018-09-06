@@ -2,9 +2,9 @@ package com.d.music.online.presenter;
 
 import android.content.Context;
 
-import com.d.lib.common.module.loader.CommonLoader;
-import com.d.lib.common.module.loader.IAbsView;
-import com.d.lib.common.module.mvp.MvpBasePresenter;
+import com.d.lib.common.component.loader.CommonLoader;
+import com.d.lib.common.component.loader.IAbsView;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.listener.SimpleCallBack;

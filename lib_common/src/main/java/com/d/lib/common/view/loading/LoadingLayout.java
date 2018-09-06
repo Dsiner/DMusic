@@ -49,8 +49,6 @@ public class LoadingLayout extends LinearLayout {
                 ldvLoading.restart();
                 break;
             case GONE:
-                ldvLoading.stop();
-                break;
             case INVISIBLE:
                 ldvLoading.stop();
                 break;

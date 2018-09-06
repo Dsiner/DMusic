@@ -68,10 +68,11 @@ public class EditDialog extends AbstractDialog {
     }
 
     public interface OnEditListener {
+
         /**
          * Click ok
          *
-         * @param content: content
+         * @param content content
          */
         void onSubmit(Dialog dlg, String content);
 

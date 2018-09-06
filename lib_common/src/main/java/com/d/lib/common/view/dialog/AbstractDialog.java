@@ -32,12 +32,12 @@ public abstract class AbstractDialog extends Dialog {
     /**
      * Creates a dialog window that uses a custom dialog style.
      *
-     * @param context    context
-     * @param themeResId the dialog's layout resource
-     * @param isSetWin   set the gravity of the window
-     * @param gravity    the desired gravity constant
-     * @param width      the dialog's width
-     * @param heith      the dialog's height
+     * @param context    Context
+     * @param themeResId The dialog's layout resource
+     * @param isSetWin   Set the gravity of the window
+     * @param gravity    The desired gravity constant
+     * @param width      The dialog's width
+     * @param heith      The dialog's height
      */
     protected AbstractDialog(@NonNull Context context, @StyleRes int themeResId, boolean isSetWin, int gravity, int width, int heith) {
         super(context, themeResId);
@@ -55,9 +55,9 @@ public abstract class AbstractDialog extends Dialog {
                 dialogWindow.setGravity(gravity);
                 // Get the current layout param of the dialog
                 WindowManager.LayoutParams p = dialogWindow.getAttributes();
-                // set dialog's width
+                // Set dialog's width
                 p.width = width;
-                // set dialog's height
+                // Set dialog's height
                 p.height = heith;
                 dialogWindow.setAttributes(p);
             }

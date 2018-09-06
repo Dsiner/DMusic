@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseFragmentActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.module.events.MusicInfoEvent;
@@ -60,7 +60,7 @@ public class MainActivity extends BaseFragmentActivity {
     @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_transfer, R.id.llyt_menu_sleep,
             R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

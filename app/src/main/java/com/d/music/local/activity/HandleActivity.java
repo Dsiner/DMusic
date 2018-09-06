@@ -8,10 +8,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
@@ -69,7 +69,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.llyt_add_to_list,
             R.id.llyt_delete, R.id.llyt_revoke})
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

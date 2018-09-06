@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 
 import com.d.lib.common.R;
 import com.d.lib.common.utils.Util;
-import com.d.lib.common.utils.log.ULog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/8/25.
  */
 public class ScrollTab extends HorizontalScrollView implements View.OnClickListener, ViewPager.OnPageChangeListener {
+
     /**
      * TAB类型
      */
@@ -51,7 +51,7 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
 
     private int type;
     private boolean isAvag;
-    private float padding;//item内部左右预留间距
+    private float padding; // Item内部左右预留间距
     private String strTitles;
     private int indicatorType;
     private int indicatorColor;
@@ -120,7 +120,7 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
     }
 
     /**
-     * 设置titles
+     * 设置Titles
      */
     public void setTitles(List<String> ts) {
         if (this.items != null && ts != null) {
@@ -280,7 +280,6 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        ULog.d("dsiner_onPageScrolled: position: " + position + " Offset: " + positionOffset);
         if (indicatorType != TYPE_INDICATOR_NONE) {
             this.position = position;
             this.positionOffset = positionOffset;
@@ -290,7 +289,6 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
 
     @Override
     public void onPageSelected(int position) {
-        ULog.d("dsiner_onPageSelected: position: " + position + " Offset: " + positionOffset);
         onChange(position);
         adjustScrollY(position);
         if (indicatorType == TYPE_INDICATOR_NONE) {
@@ -301,7 +299,7 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        ULog.d("dsiner_onPageScrollStateChanged: state: " + state);
+
     }
 
     private void adjustScrollY(int position) {

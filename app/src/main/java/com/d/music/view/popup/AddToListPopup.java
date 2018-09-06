@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.loading.LoadingLayout;
 import com.d.lib.common.view.popup.AbstractPopup;
@@ -73,7 +73,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

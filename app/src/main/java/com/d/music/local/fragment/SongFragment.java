@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.module.loader.AbsFragment;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
@@ -81,7 +81,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
@@ -207,7 +207,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
             @Override
             public void onClick(View v) {
-                if (ClickUtil.isFastDoubleClick()) {
+                if (ClickFast.isFastDoubleClick()) {
                     return;
                 }
                 switch (v.getId()) {

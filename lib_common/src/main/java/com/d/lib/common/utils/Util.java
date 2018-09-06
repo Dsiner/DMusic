@@ -25,59 +25,62 @@ import java.util.List;
  * Created by D on 2017/4/27.
  */
 public class Util {
-    private static int SCREEN_WIDTH;//屏幕宽度
-    private static int SCREEN_HEIGHT;//屏幕宽度
+    private static int SCREEN_WIDTH; // 屏幕宽度
+    private static int SCREEN_HEIGHT; // 屏幕宽度
 
-    private static Gson gson = new Gson();
+    private static class Singleton {
+        private static Gson gson = new Gson();
+    }
 
     public static Gson getGsonIns() {
-        return gson;
+        return Singleton.gson;
     }
 
     /**
      * Toast提示
      *
-     * @param c：   Context
-     * @param msg： String
+     * @param context Context
+     * @param msg     Message
      */
-    public static void toast(Context c, String msg) {
-        if (c == null || TextUtils.isEmpty(msg)) {
+    public static void toast(Context context, String msg) {
+        if (context == null || TextUtils.isEmpty(msg)) {
             return;
         }
-        Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Toast提示
      *
-     * @param c：   Context
-     * @param msg： String
+     * @param context Context
+     * @param msg     Message
      */
-    public static void toastLong(Context c, String msg) {
-        if (c == null || TextUtils.isEmpty(msg)) {
+    public static void toastLong(Context context, String msg) {
+        if (context == null || TextUtils.isEmpty(msg)) {
             return;
         }
-        Toast.makeText(c, msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
     /**
      * Toast提示
      *
-     * @param c：     Context
-     * @param resId： resource id
+     * @param context Context
+     * @param resId   Resource id
      */
-    public static void toast(Context c, int resId) {
-        if (c == null) {
+    public static void toast(Context context, int resId) {
+        if (context == null) {
             return;
         }
-        toast(c, c.getString(resId));
+        toast(context, context.getString(resId));
     }
 
     /**
      * 打印当前代码所在线程信息
      */
     public static void printThread(String tag) {
-        ULog.d(tag + Thread.currentThread().getId() + "--NAME--" + Thread.currentThread().getName());
+        ULog.d(tag + " Current thread--> Id: " + Thread.currentThread().getId()
+                + " Name: " + Thread.currentThread().getName());
     }
 
     /**
@@ -109,8 +112,8 @@ public class Util {
     /**
      * 将sp值转换为px值，保证文字大小不变
      *
-     * @param context:context
-     * @param spValue:DisplayMetrics类中属性scaledDensity）
+     * @param context context
+     * @param spValue DisplayMetrics类中属性scaledDensity
      */
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -121,7 +124,7 @@ public class Util {
      * 获取字体高度
      */
     public static float getTextHeight(Paint p) {
-        Paint.FontMetrics fm = p.getFontMetrics();// 获取字体高度
+        Paint.FontMetrics fm = p.getFontMetrics();
         return (float) ((Math.ceil(fm.descent - fm.top) + 2) / 2);
     }
 
@@ -143,7 +146,6 @@ public class Util {
      *
      * @param number the number to format
      * @param digits the number of digits
-     * @return
      */
     public static String formatDecimal(double number, int digits) {
         number = roundNumber((float) number, digits);
@@ -203,7 +205,7 @@ public class Util {
         Class<?> c = null;
         Object obj = null;
         Field field = null;
-        int x = 0, sbar = 38;// 默认为38，貌似大部分是这样的
+        int x = 0, sbar = 38; // 默认为38，貌似大部分是这样的
         try {
             c = Class.forName("com.android.internal.R$dimen");
             obj = c.newInstance();
@@ -325,16 +327,16 @@ public class Util {
     public static void exit(Context context, int type) {
         switch (type) {
             case 0:
-                //方法1
+                // 方法1
                 System.exit(0);
                 break;
             case 1:
-                //方法2
+                // 方法2
                 int pid = android.os.Process.myPid();
                 android.os.Process.killProcess(pid);
                 break;
             case 2:
-                //方法3
+                // 方法3
                 ActivityManager manager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
                 manager.killBackgroundProcesses(context.getApplicationContext().getPackageName());
                 break;

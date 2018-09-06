@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.music.App;
@@ -98,7 +98,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
     @OnClick({R.id.iv_back, R.id.iv_more, R.id.iv_play_collect, R.id.iv_play_prev,
             R.id.iv_play_play_pause, R.id.iv_play_next, R.id.iv_play_queue})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

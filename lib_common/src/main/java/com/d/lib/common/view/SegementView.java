@@ -36,12 +36,12 @@ public class SegementView extends View {
     private int colorA;
     private int colorB;
 
-    private List<String> TITLES = new ArrayList<>();//variables Titles
+    private List<String> TITLES = new ArrayList<>(); // Variables Titles
     private String strTitles;
     private float textSize;
     private float rectRadius;
     private float divideWidth;
-    private float padding;//variables Background border line width
+    private float padding; // Variables Background border line width
     private int heightText;
     private int curIndex = 0;
     private float dX, dY;
@@ -79,7 +79,7 @@ public class SegementView extends View {
 
     private void init(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            //Disabling hardware acceleration
+            // Disabling hardware acceleration
             setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -96,7 +96,7 @@ public class SegementView extends View {
         paintB.setTextSize(textSize);
         paintB.setTextAlign(Paint.Align.CENTER);
 
-        //Get title height px
+        // Get title height px
         heightText = (int) Util.getTextHeight(paintB);
 
         if (!TextUtils.isEmpty(strTitles)) {
@@ -114,7 +114,7 @@ public class SegementView extends View {
         int size = TITLES.size();
         float space = (1f * width) / size / 2;
 
-        //Background
+        // Background
         rect.set(0, 0, width, height);
         rectF.set(rect);
         canvas.drawRoundRect(rectF, rectRadius, rectRadius, paintA);
@@ -123,7 +123,7 @@ public class SegementView extends View {
         rectF.set(rect);
         canvas.drawRoundRect(rectF, rectRadius, rectRadius, paintB);
 
-        //Slider
+        // Slider
         if (curIndex == 0) {
             canvas.drawRect(space, 0, space * 2, height, paintA);
             rect.set(0, 0, (int) (space * 2), height);
@@ -141,11 +141,11 @@ public class SegementView extends View {
         int starty = (height + heightText) / 2;
         for (int i = 0; i < size; i++) {
             if (i != 0) {
-                //Draw divide line
+                // Draw divide line
                 canvas.drawRect(space * 2 * i - divideWidth / 2, 0,
                         space * 2 * i + divideWidth / 2, height, paintA);
             }
-            //Draw title
+            // Draw title
             canvas.drawText(TITLES.get(i), space * 2 * i + space, starty, curIndex == i ? paintB : paintA);
         }
     }
@@ -218,7 +218,7 @@ public class SegementView extends View {
     /**
      * Switch current Tab
      *
-     * @param index: destination index
+     * @param index destination index
      */
     public void select(int index) {
         if (index < 0 || index > 1) {
@@ -229,8 +229,9 @@ public class SegementView extends View {
     }
 
     public interface OnSelectedListener {
+
         /**
-         * @param index: index
+         * @param index index
          */
         void onSelected(int index);
     }

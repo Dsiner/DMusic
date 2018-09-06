@@ -26,12 +26,12 @@ public class TabTextView extends View implements TabView {
     private float textHeight;
 
     /**
-     * define
+     * Define
      */
-    private int textSize;//title文字大小
-    private int textColor;//title文字颜色
-    private int textColorFocus;//title文字颜色
-    private int padding;//title文字左右预留间距
+    private int textSize; // Title文字大小
+    private int textColor; // Title文字颜色
+    private int textColorFocus; // Title文字颜色
+    private int padding; // Title文字左右预留间距
     private boolean focus;
 
     public TabTextView(Context context) {

@@ -1,7 +1,7 @@
 package com.d.music.local.view;
 
 
-import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.component.mvp.MvpView;
 import com.d.music.module.greendao.bean.CustomListModel;
 
 import java.util.List;

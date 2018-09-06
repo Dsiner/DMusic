@@ -3,7 +3,7 @@ package com.d.music.play.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.d.lib.common.module.repeatclick.OnClickFastListener;
+import com.d.lib.common.component.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;

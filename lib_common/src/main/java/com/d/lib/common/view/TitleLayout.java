@@ -3,6 +3,7 @@ package com.d.lib.common.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IdRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -58,13 +59,13 @@ public class TitleLayout extends RelativeLayout {
         this.context = context;
         rootView = LayoutInflater.from(context).inflate(R.layout.lib_pub_layout_title, this);
 
-        //left
+        // Left
         inflate(context, rootView, texts[0], drawables[0], ress[0],
                 R.id.tv_title_left, R.id.iv_title_left, ALIGN_PARENT_LEFT);
-        //right
+        // Right
         inflate(context, rootView, texts[1], drawables[1], ress[1],
                 R.id.tv_title_right, R.id.iv_title_right, ALIGN_PARENT_RIGHT);
-        //middle
+        // Middle
         inflate(context, rootView, texts[2], drawables[2], ress[2],
                 R.id.tv_title_title, R.id.iv_title_middle, CENTER_IN_PARENT);
     }
@@ -94,21 +95,21 @@ public class TitleLayout extends RelativeLayout {
         }
     }
 
-    public void setVisibility(int resId, int visibility) {
+    public void setVisibility(@IdRes int resId, int visibility) {
         View v = findViewById(resId);
         if (v != null) {
             v.setVisibility(visibility);
         }
     }
 
-    public void setText(int resId, CharSequence text) {
+    public void setText(@IdRes int resId, CharSequence text) {
         View v = findViewById(resId);
         if (v != null && v instanceof TextView) {
             ((TextView) v).setText(text);
         }
     }
 
-    public void setOnClickListener(int resId, final OnClickListener l) {
+    public void setOnClickListener(@IdRes int resId, final OnClickListener l) {
         View v = findViewById(resId);
         if (v != null) {
             v.setOnClickListener(l);

@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseFragment;
-import com.d.lib.common.module.permissioncompat.Permission;
-import com.d.lib.common.module.permissioncompat.PermissionCompat;
-import com.d.lib.common.module.permissioncompat.PermissionSchedulers;
-import com.d.lib.common.module.permissioncompat.callback.PermissionCallback;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseFragment;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
+import com.d.lib.permissioncompat.Permission;
+import com.d.lib.permissioncompat.PermissionCompat;
+import com.d.lib.permissioncompat.PermissionSchedulers;
+import com.d.lib.permissioncompat.callback.PermissionCallback;
 import com.d.music.R;
 import com.d.music.local.activity.ScanActivity;
 import com.d.music.local.model.FileModel;
@@ -46,7 +46,7 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
 
     @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
     public void OnClickLister(final View view) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (view.getId()) {
@@ -114,6 +114,7 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
             case R.id.btn_full_scan:
                 List<String> paths = new ArrayList<>();
                 paths.add(FileUtil.getRootPath());
+                showLoading();
                 mPresenter.scan(paths, type);
                 return;
             case R.id.btn_custom_scan:
@@ -137,6 +138,7 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
 
     @Override
     public void setMusics(List<MusicModel> models) {
+        closeLoading();
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
         }

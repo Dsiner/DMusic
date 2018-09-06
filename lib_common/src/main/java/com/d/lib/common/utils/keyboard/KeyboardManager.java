@@ -13,7 +13,7 @@ import com.d.lib.common.utils.log.ULog;
  * Created by D on 2017/8/16.
  */
 public class KeyboardManager extends AbsKeyboardManager implements View.OnLayoutChangeListener {
-    private int keyHeight;//软键盘弹起后所占高度阀值
+    private int keyHeight; // 软键盘弹起后所占高度阀值
 
     public KeyboardManager(Activity activity, EditText commonInput) {
         super(commonInput);

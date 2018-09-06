@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.MvpBasePresenter;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.base.BaseActivity;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.RowLayout;
 import com.d.lib.common.view.TitleLayout;
 import com.d.music.R;
@@ -42,7 +42,7 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
 
     @OnClick({R.id.iv_title_left, R.id.rl_koan, R.id.rl_skin, R.id.rl_sleep, R.id.rl_player_mode, R.id.rl_about})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

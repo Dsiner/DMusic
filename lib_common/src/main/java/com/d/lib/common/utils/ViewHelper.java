@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ViewHelper {
 
-    // copy from View.generateViewId for API <= 16
+    // Copy from View.generateViewId for API <= 16
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     private static final int[] APPCOMPAT_CHECK_ATTRS = {

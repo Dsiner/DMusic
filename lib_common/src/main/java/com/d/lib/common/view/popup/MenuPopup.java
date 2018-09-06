@@ -101,10 +101,11 @@ public class MenuPopup extends AbstractPopup {
     }
 
     public interface OnMenuListener {
+
         /**
          * Click item
          *
-         * @param position: from 0 to datas.size()-1;
+         * @param position From 0 to datas.size()-1;
          */
         void onClick(PopupWindow popup, int position, String item);
     }

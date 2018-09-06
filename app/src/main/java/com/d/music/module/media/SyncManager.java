@@ -2,7 +2,7 @@ package com.d.music.module.media;
 
 import android.content.Context;
 
-import com.d.lib.common.module.taskscheduler.TaskScheduler;
+import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.module.events.RefreshEvent;
 import com.d.music.module.greendao.bean.MusicModel;
 import com.d.music.module.greendao.db.AppDB;

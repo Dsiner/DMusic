@@ -11,11 +11,11 @@ import com.d.commenplayer.listener.IPlayerListener;
 import com.d.commenplayer.listener.IRenderView;
 import com.d.commenplayer.listener.OnNetListener;
 import com.d.commenplayer.ui.ControlLayout;
-import com.d.lib.common.module.loader.AbsFragment;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.netstate.NetCompat;
-import com.d.lib.common.module.netstate.NetState;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.netstate.NetCompat;
+import com.d.lib.common.component.netstate.NetState;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.common.view.TitleLayout;
@@ -53,7 +53,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
@@ -198,7 +198,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
     public void setInfo(MVDetailModel info) {
         dslDs.setState(DSLayout.GONE);
         xrvList.setVisibility(View.VISIBLE);
-        commonLoader.addToTop(info);
+        commonLoader.addTop(info);
 
         MVInfoModel model = (MVInfoModel) info;
         String url = model.brs._$480;

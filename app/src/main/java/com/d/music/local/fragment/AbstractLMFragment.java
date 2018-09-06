@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.module.loader.AbsLazyFragment;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.mvp.model.BaseModel;
+import com.d.lib.common.component.loader.AbsLazyFragment;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.model.BaseModel;
 import com.d.music.R;
 import com.d.music.local.model.AlbumModel;
 import com.d.music.local.model.FolderModel;

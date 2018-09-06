@@ -3,7 +3,7 @@ package com.d.music.local.fragment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.activity.ScanActivity;
@@ -24,7 +24,7 @@ public class LocalAllFragment extends AbstractLocalAllFragment {
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
@@ -69,7 +69,7 @@ public class LocalAllFragment extends AbstractLocalAllFragment {
 
             @Override
             public void onClick(View v) {
-                if (ClickUtil.isFastDoubleClick()) {
+                if (ClickFast.isFastDoubleClick()) {
                     return;
                 }
                 switch (v.getId()) {

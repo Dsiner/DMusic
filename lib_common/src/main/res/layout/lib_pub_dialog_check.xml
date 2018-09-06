@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lib_pub_color_bg_main">
+        android:background="@color/lib_pub_color_bg_sub">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,20 +32,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/lib_pub_dimen_margin"
+                android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/flyt_toggle"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:descendantFocusability="blocksDescendants">
 
                     <CheckBox
                         android:id="@+id/cb_toggle"
-                        android:layout_width="13dp"
-                        android:layout_height="13dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
                         android:background="@drawable/lib_pub_select_check"
                         android:button="@null"

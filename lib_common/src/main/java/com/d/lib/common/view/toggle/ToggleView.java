@@ -1,6 +1,7 @@
 package com.d.lib.common.view.toggle;
 
 public interface ToggleView {
+
     /**
      * Toggle
      */
@@ -13,8 +14,9 @@ public interface ToggleView {
     void setOnToggleListener(OnToggleListener l);
 
     interface OnToggleListener {
+
         /**
-         * @param isOpen: isOpen
+         * @param isOpen isOpen
          */
         void onToggle(boolean isOpen);
     }

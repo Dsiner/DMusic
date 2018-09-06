@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.module.mvp.base.BaseFragment;
-import com.d.lib.common.module.permissioncompat.Permission;
-import com.d.lib.common.module.permissioncompat.PermissionCompat;
-import com.d.lib.common.module.permissioncompat.PermissionSchedulers;
-import com.d.lib.common.module.permissioncompat.callback.PermissionCallback;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.mvp.base.BaseFragment;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
+import com.d.lib.permissioncompat.Permission;
+import com.d.lib.permissioncompat.PermissionCompat;
+import com.d.lib.permissioncompat.PermissionSchedulers;
+import com.d.lib.permissioncompat.callback.PermissionCallback;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.local.adapter.DirAdapter;
@@ -62,7 +62,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
 
     @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
     public void OnClickLister(final View view) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (view.getId()) {
@@ -110,6 +110,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                     Util.toast(mContext, getResources().getString(R.string.module_common_please_select_scan_path));
                     return;
                 }
+                showLoading();
                 mPresenter.scan(paths, type);
                 break;
         }
@@ -162,6 +163,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
 
     @Override
     public void setMusics(List<MusicModel> models) {
+        closeLoading();
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
         }

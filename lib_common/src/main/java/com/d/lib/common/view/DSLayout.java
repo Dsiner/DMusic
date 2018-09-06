@@ -3,6 +3,8 @@ package com.d.lib.common.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,24 +22,25 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.loading.LoadingLayout;
 
 /**
- * Default Status: 默认态
+ * Default State
  * Created by D on 2017/5/7.
  */
 public class DSLayout extends FrameLayout {
-    /*********** 默认态类型 ************/
-    public final static int STATE_LOADING = 0x10;//默认态：loading态
-    public final static int STATE_EMPTY = 0x11;//默认态：无数据
-    public final static int STATE_NET_ERROR = 0x12;//默认态：网络错误
 
-    /***************** 默认态居中类型 ****************/
+    /*************** Default State type ***************/
+    public final static int STATE_LOADING = 0x10; // Default State: loading state
+    public final static int STATE_EMPTY = 0x11; // Default State: no data
+    public final static int STATE_NET_ERROR = 0x12; // Default State: network error
+
+    /*************** Default State centered type ***************/
     private final static int CENT_TYPE_MAIN = 1;
     private final static int CENT_TYPE_LOCAL = 2;
     private final static float[] AJUST_HEIGHT = new float[]{0, 50, 70};
 
     private int layoutId;
-    private int centerType;//居中类型
-    private float adjustHeightT;//校正高度
-    private float adjustHeightB;//校正高度
+    private int centerType; // Centered type
+    private float adjustHeightT; // Correction height
+    private float adjustHeightB; // Correction height
     private int resIdEmpty, resIdNetError;
 
     private LinearLayout llytDsl;
@@ -89,16 +92,16 @@ public class DSLayout extends FrameLayout {
                 paramsB.height = Util.dip2px(context, AJUST_HEIGHT[CENT_TYPE_LOCAL]);
                 break;
             default:
-                //do nothing, default center 0/0
+                // Do nothing, default center 0/0
                 break;
         }
         if (adjustHeightT != 0 || adjustHeightB != 0) {
-            //优先级大于并覆盖centerType
+            // Priority is greater than and overrides centerType
             paramsT.height = (int) adjustHeightT;
             paramsB.height = (int) adjustHeightB;
         }
-        vT.setLayoutParams(paramsT);//设置顶部校正高度
-        vB.setLayoutParams(paramsB);//设置底部校正高度
+        vT.setLayoutParams(paramsT); // Set the top correction height
+        vB.setLayoutParams(paramsB); // Set bottom correction height
     }
 
     private void showLoading() {
@@ -127,23 +130,23 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * 设置图片
+     * Display image
      */
-    public DSLayout icon(int resId) {
+    public DSLayout icon(@DrawableRes int resId) {
         ivIcon.setImageResource(resId);
         return this;
     }
 
     /**
-     * 设置图片
+     * Display image
      */
-    public DSLayout icon(Drawable drawable) {
+    public DSLayout icon(@Nullable Drawable drawable) {
         ivIcon.setImageDrawable(drawable);
         return this;
     }
 
     /**
-     * 设置图片
+     * Display image
      */
     public DSLayout icon(String url) {
         Glide.with(getContext())
@@ -154,7 +157,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * 设置Gif图
+     * Display Gif
      */
     public DSLayout gif(int resId) {
         Glide.with(getContext())
@@ -165,7 +168,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * 设置Gif图
+     * Display Gif
      */
     public DSLayout gif(String url) {
         Glide.with(getContext())
@@ -176,7 +179,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * 设置提示文本
+     * Set prompt text
      */
     public DSLayout desc(CharSequence text) {
         tvDesc.setText(text);
@@ -184,7 +187,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * 设置按钮文本、显示状态
+     * Set button text, display status
      */
     public DSLayout button(CharSequence text, int visibility) {
         button.setText(text);
@@ -193,7 +196,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * setState
+     * Set state
      */
     public DSLayout setState(int state) {
         switch (state) {

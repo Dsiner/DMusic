@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 
-import com.d.lib.common.module.taskscheduler.TaskScheduler;
+import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.module.events.MusicInfoEvent;

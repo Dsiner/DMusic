@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
+    <com.d.lib.common.view.trans.TransImageView
         android:id="@+id/iv_title_left"
         android:layout_width="@dimen/lib_pub_dimen_title_height"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -10,7 +10,7 @@
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-    <TextView
+    <com.d.lib.common.view.trans.TransTextView
         android:id="@+id/tv_title_left"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -22,7 +22,16 @@
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         android:visibility="gone" />
 
-    <TextView
+    <com.d.lib.common.view.trans.TransImageView
+        android:id="@+id/iv_title_right"
+        android:layout_width="@dimen/lib_pub_dimen_title_height"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:layout_alignParentRight="true"
+        android:padding="2.5dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <com.d.lib.common.view.trans.TransTextView
         android:id="@+id/tv_title_right"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -35,11 +44,10 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/iv_title_right"
-        android:layout_width="@dimen/lib_pub_dimen_title_height"
+        android:id="@+id/iv_title_middle"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
-        android:layout_alignParentRight="true"
-        android:padding="2.5dp"
+        android:layout_centerInParent="true"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
@@ -54,13 +62,5 @@
         android:singleLine="true"
         android:textColor="@color/lib_pub_color_white"
         android:textSize="@dimen/lib_pub_dimen_text_main"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/iv_title_middle"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
         android:visibility="gone" />
 </merge>

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="加载中..."
+            android:text="@string/lib_pub_loading"
             android:textColor="@color/lib_pub_color_main"
             skin:enable="true" />
     </LinearLayout>

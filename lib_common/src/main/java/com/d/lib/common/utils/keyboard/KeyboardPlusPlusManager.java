@@ -42,22 +42,22 @@ public class KeyboardPlusPlusManager extends AbsKeyboardManager {
     @Deprecated
     public static void onScroll(Activity activity, Rect rect, FrameLayout scrollRoot, View scroll) {
         Rect r = new Rect();
-        //需要动态调整的View在屏幕中的位置
+        // 需要动态调整的View在屏幕中的位置
         scroll.getGlobalVisibleRect(r);
 
         DisplayMetrics metric = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        //键盘高度 = 屏幕高度 - popWindow的高度 （需要设置 showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0);）
+        // 键盘高度 = 屏幕高度 - popWindow的高度 （需要设置 showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0);）
         int heightDiff = metric.heightPixels - rect.bottom;
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) scroll.getLayoutParams();
-        //计算需要的偏移量
+        // 计算需要的偏移量
         int offset = heightDiff - (activity.getWindowManager().getDefaultDisplay().getHeight() - r.bottom);
         if (heightDiff == 0) {
             params.bottomMargin = 0;
         } else {
             params.bottomMargin = offset;
         }
-        //通过设置View 的bottomMargin改变其位置
+        // 通过设置View的BottomMargin改变其位置
         scroll.setLayoutParams(params);
     }
 
@@ -91,11 +91,11 @@ public class KeyboardPlusPlusManager extends AbsKeyboardManager {
                         listener.onScroll(r);
                     }
                     activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
-                    //键盘高度 = 屏幕高度 - popWindow的高度 （需要设置 showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0);）
+                    // 键盘高度 = 屏幕高度 - popWindow的高度 （需要设置 showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0);）
                     int heightDiff = metric.heightPixels - r.bottom;
                     boolean isOpen = heightDiff > visibleThreshold;
                     if (isOpen == wasOpened) {
-                        //keyboard state has not changed
+                        // Keyboard state has not changed
                         return;
                     }
                     wasOpened = isOpen;

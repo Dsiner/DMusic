@@ -7,9 +7,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.common.module.loader.AbsFragment;
-import com.d.lib.common.module.mvp.MvpView;
-import com.d.lib.common.module.repeatclick.ClickUtil;
+import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
@@ -45,7 +45,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @OnClick({R.id.iv_title_left})
     public void onClickListener(View v) {
-        if (ClickUtil.isFastDoubleClick()) {
+        if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {

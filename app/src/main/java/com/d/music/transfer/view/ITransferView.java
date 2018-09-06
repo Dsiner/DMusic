@@ -1,6 +1,6 @@
 package com.d.music.transfer.view;
 
-import com.d.lib.common.module.mvp.MvpView;
+import com.d.lib.common.component.mvp.MvpView;
 
 /**
  * ITransferView

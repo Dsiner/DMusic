@@ -2,7 +2,7 @@ package com.d.music.transfer.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.d.lib.common.module.loader.AbsFragmentActivity;
+import com.d.lib.common.component.loader.AbsFragmentActivity;
 import com.d.lib.common.view.TitleLayout;
 import com.d.music.R;
 import com.d.music.transfer.fragment.TransferFragment;
