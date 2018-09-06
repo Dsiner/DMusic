@@ -60,10 +60,6 @@ dependencies {
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.glide_integration
     annotationProcessor rootProject.ext.dependencies.glide_compiler
-//    // Pull down refresh, load more
-//    api rootProject.ext.dependencies.xrv
-//    // Network request
-//    api rootProject.ext.dependencies.rxnet
     // Runtime permissions
     api rootProject.ext.dependencies.permissioncompat
     // Thread pool management
