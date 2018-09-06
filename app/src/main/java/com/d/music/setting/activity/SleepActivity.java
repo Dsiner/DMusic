@@ -13,7 +13,7 @@ import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.service.MusicService;
+import com.d.music.component.service.MusicService;
 import com.d.music.setting.adapter.TimingAdapter;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;

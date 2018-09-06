@@ -3,7 +3,7 @@ package com.d.music.view.sort;
 import android.text.TextUtils;
 
 import com.d.lib.common.utils.log.ULog;
-import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.component.greendao.bean.MusicModel;
 
 import java.util.Comparator;
 

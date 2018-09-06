@@ -3,7 +3,7 @@ package com.d.music.common;
 import android.os.Environment;
 
 import com.d.music.R;
-import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.component.greendao.bean.MusicModel;
 
 import java.util.ArrayList;
 import java.util.List;

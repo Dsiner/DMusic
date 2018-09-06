@@ -9,10 +9,10 @@ import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.media.controler.MediaControler;
-import com.d.music.module.utils.MoreUtil;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.operation.Operater;
 import com.d.music.view.dialog.OperationDialog;
 
 import java.util.Arrays;
@@ -64,11 +64,11 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                                 @Override
                                 public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
                                     if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
-                                        MoreUtil.addToList(mContext, type, item);
+                                        Operater.addToList(mContext, type, item);
                                     } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
                                         collect(item, holder, position);
                                     } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
-                                        MoreUtil.showInfo(mContext, item);
+                                        Operater.showInfo(mContext, item);
                                     }
                                 }
 
@@ -93,19 +93,19 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         holder.setViewOnClickListener(R.id.llyt_add_to_list, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MoreUtil.addToList(mContext, type, item);
+                Operater.addToList(mContext, type, item);
             }
         });
         holder.setViewOnClickListener(R.id.llyt_info, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
-                MoreUtil.showInfo(mContext, item);
+                Operater.showInfo(mContext, item);
             }
         });
     }
 
     private void collect(MusicModel item, CommonHolder holder, int position) {
-        MoreUtil.collect(mContext, type, item, true);
+        Operater.collect(mContext, type, item, true);
         // Status "item.isCollected" is changed
         if (type == AppDB.COLLECTION_MUSIC && !item.isCollected) {
             mDatas.remove(position);

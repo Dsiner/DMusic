@@ -5,11 +5,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.d.lib.common.component.glide.GlideCircleTransform;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
-import com.d.music.module.glide.GlideCircleTransform;
 import com.d.music.online.model.MVCommentModel;
 import com.d.music.online.model.MVDetailModel;
 import com.d.music.online.model.MVInfoModel;

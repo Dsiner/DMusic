@@ -14,7 +14,7 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.module.service.MusicService;
+import com.d.music.component.service.MusicService;
 
 /**
  * TimingDialog

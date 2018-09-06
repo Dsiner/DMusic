@@ -15,8 +15,8 @@ import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.api.API;
 import com.d.music.common.Constants;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.media.controler.MediaControler;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.media.controler.MediaControler;
 import com.d.music.online.model.SongInfoRespModel;
 import com.d.music.view.dialog.OperationDialog;
 

@@ -19,11 +19,11 @@ import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.local.adapter.HandleAdapter;
-import com.d.music.module.events.MusicModelEvent;
-import com.d.music.module.events.SortTypeEvent;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.media.SyncManager;
+import com.d.music.component.events.MusicModelEvent;
+import com.d.music.component.events.SortTypeEvent;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.media.SyncManager;
 import com.d.music.utils.StatusBarCompat;
 import com.d.music.view.popup.AddToListPopup;
 

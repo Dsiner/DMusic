@@ -4,7 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.d.music.local.model.FileModel;
-import com.d.music.module.media.media.MusicFactory;
+import com.d.music.component.media.media.MusicFactory;
 
 import java.io.File;
 import java.io.IOException;

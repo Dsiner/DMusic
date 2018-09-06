@@ -7,7 +7,7 @@ import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.activity.ScanActivity;
-import com.d.music.module.greendao.db.AppDB;
+import com.d.music.component.greendao.db.AppDB;
 import com.d.music.view.dialog.MenuDialog;
 
 import java.util.ArrayList;

@@ -15,10 +15,10 @@ import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.local.fragment.SongFragment;
-import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.bean.CustomListModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.component.events.RefreshEvent;
+import com.d.music.component.greendao.bean.CustomListModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.greendao.util.AppDBUtil;
 import com.d.music.view.dialog.NewListDialog;
 
 import org.greenrobot.eventbus.EventBus;

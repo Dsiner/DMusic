@@ -11,7 +11,7 @@ import com.d.music.R;
 import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.local.model.FolderModel;
-import com.d.music.module.greendao.db.AppDB;
+import com.d.music.component.greendao.db.AppDB;
 
 import java.util.List;
 

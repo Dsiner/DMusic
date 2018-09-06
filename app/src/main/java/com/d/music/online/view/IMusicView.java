@@ -1,7 +1,7 @@
 package com.d.music.online.view;
 
 import com.d.lib.common.component.loader.IAbsView;
-import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsRespModel;
 

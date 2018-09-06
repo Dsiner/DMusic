@@ -4,8 +4,8 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.local.adapter.FolderAdapter;
 import com.d.music.local.model.FolderModel;
-import com.d.music.module.events.MusicModelEvent;
-import com.d.music.module.greendao.db.AppDB;
+import com.d.music.component.events.MusicModelEvent;
+import com.d.music.component.greendao.db.AppDB;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

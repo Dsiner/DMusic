@@ -5,8 +5,8 @@ import android.database.Cursor;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.local.view.IMainView;
-import com.d.music.module.greendao.bean.CustomListModel;
-import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.component.greendao.bean.CustomListModel;
+import com.d.music.component.greendao.util.AppDBUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.music.R;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.skin.SkinUtil;
+import com.d.music.component.skin.SkinUtil;
 import com.d.music.setting.adapter.SkinAdapter;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;

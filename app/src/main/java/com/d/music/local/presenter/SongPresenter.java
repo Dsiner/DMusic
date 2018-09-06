@@ -7,9 +7,9 @@ import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.common.view.DSLayout;
 import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.view.ISongView;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.greendao.util.AppDBUtil;
 
 import java.util.ArrayList;
 import java.util.List;

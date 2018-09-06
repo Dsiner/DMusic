@@ -9,10 +9,10 @@ import com.d.lib.common.component.netstate.NetCompat;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.greendao.util.AppDBUtil;
-import com.d.music.module.media.controler.MediaControler;
-import com.d.music.module.service.MusicService;
-import com.d.music.module.skin.SkinUtil;
+import com.d.music.component.greendao.util.AppDBUtil;
+import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.service.MusicService;
+import com.d.music.component.skin.SkinUtil;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
 

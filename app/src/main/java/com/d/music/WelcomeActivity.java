@@ -12,7 +12,7 @@ import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.base.BaseActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.music.module.service.MusicService;
+import com.d.music.component.service.MusicService;
 
 import java.util.ArrayList;
 import java.util.List;

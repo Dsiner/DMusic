@@ -5,12 +5,12 @@ import android.text.TextUtils;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.common.Constants;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.greendao.util.AppDBUtil;
-import com.d.music.module.media.HitTarget;
-import com.d.music.module.media.controler.MediaControler;
-import com.d.music.module.media.controler.MediaPlayerManager;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.greendao.util.AppDBUtil;
+import com.d.music.component.media.HitTarget;
+import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaPlayerManager;
 import com.d.music.play.view.IPlayView;
 import com.d.music.utils.FileUtil;
 import com.d.music.view.lrc.DefaultLrcParser;

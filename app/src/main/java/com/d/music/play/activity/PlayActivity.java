@@ -21,13 +21,13 @@ import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.events.MusicInfoEvent;
-import com.d.music.module.events.ProgressEvent;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.media.controler.MediaControler;
-import com.d.music.module.media.controler.MediaPlayerManager;
-import com.d.music.module.utils.MoreUtil;
+import com.d.music.component.events.MusicInfoEvent;
+import com.d.music.component.events.ProgressEvent;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaPlayerManager;
+import com.d.music.component.operation.Operater;
 import com.d.music.play.adapter.PlayQueueAdapter;
 import com.d.music.play.presenter.PlayPresenter;
 import com.d.music.play.view.IPlayView;
@@ -150,7 +150,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
             return;
         }
         MusicModel item = control.getModel();
-        MoreUtil.collect(getApplicationContext(), type, item, isTip);
+        Operater.collect(getApplicationContext(), type, item, isTip);
         resetFav(item.isCollected);
     }
 
@@ -320,14 +320,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                     @Override
                     public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
                         if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
-                            MoreUtil.addToList(mContext, type, item);
+                            Operater.addToList(mContext, type, item);
                         } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
                             collect(true);
                         } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
                             if (item == null) {
                                 return;
                             }
-                            MoreUtil.showInfo(mContext, item);
+                            Operater.showInfo(mContext, item);
                         } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
                             startActivity(new Intent(mContext, ModeActivity.class));
                         } else if (bean.type == OperationDialog.Bean.TYPE_EXIT) {

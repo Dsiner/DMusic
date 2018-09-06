@@ -14,10 +14,10 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
-import com.d.music.module.events.RefreshEvent;
-import com.d.music.module.greendao.bean.CustomListModel;
-import com.d.music.module.greendao.db.AppDB;
-import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.component.events.RefreshEvent;
+import com.d.music.component.greendao.bean.CustomListModel;
+import com.d.music.component.greendao.db.AppDB;
+import com.d.music.component.greendao.util.AppDBUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

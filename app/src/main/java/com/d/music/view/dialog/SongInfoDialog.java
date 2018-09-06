@@ -8,7 +8,7 @@ import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.R;
-import com.d.music.module.greendao.bean.MusicModel;
+import com.d.music.component.greendao.bean.MusicModel;
 
 /**
  * SongInfoDialog

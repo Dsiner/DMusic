@@ -12,7 +12,7 @@ import android.view.Window;
 
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.service.MusicService;
+import com.d.music.component.service.MusicService;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.utils.StatusBarCompat;
 

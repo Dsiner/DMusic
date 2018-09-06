@@ -6,7 +6,7 @@ import android.view.View;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.module.greendao.bean.CustomListModel;
+import com.d.music.component.greendao.bean.CustomListModel;
 
 import java.util.List;
 

@@ -15,8 +15,8 @@ import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.media.controler.MediaControler;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.media.controler.MediaControler;
 import com.d.music.play.adapter.PlayQueueAdapter;
 
 import java.util.List;

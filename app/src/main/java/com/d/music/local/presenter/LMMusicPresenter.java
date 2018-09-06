@@ -10,8 +10,8 @@ import com.d.music.local.model.AlbumModel;
 import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.module.greendao.bean.MusicModel;
-import com.d.music.module.greendao.util.AppDBUtil;
+import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.component.greendao.util.AppDBUtil;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;
