@@ -1,5 +1,6 @@
 package com.d.music.transfer.fragment;
 
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.d.lib.common.component.loader.AbsLazyFragment;
@@ -65,6 +66,7 @@ public class TransferFragment extends AbsLazyFragment<TransferModel, TransferPre
 
     private void initHead() {
         header = new SongHeaderView(mContext);
+        header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {

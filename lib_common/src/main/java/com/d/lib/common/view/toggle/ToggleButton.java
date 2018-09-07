@@ -17,8 +17,6 @@ import android.view.animation.LinearInterpolator;
 import com.d.lib.common.R;
 import com.nineoldandroids.animation.ValueAnimator;
 
-import cn.feng.skin.manager.loader.SkinManager;
-
 /**
  * ToggleButton
  * Created by D on 2017/6/6.
@@ -65,7 +63,7 @@ public class ToggleButton extends View implements ToggleView {
     private void initTypedArray(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_ToggleButton);
         colorThumb = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorThumb, ContextCompat.getColor(context, R.color.lib_pub_color_white));
-        colorTrackOpen = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
+        colorTrackOpen = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorTrackOpen, ContextCompat.getColor(context, R.color.lib_pub_color_main));
         colorTrackOff = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorTrackOff, ContextCompat.getColor(context, R.color.lib_pub_color_white));
         colorPadding = typedArray.getColor(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_colorPadding, ContextCompat.getColor(context, R.color.lib_pub_color_hint));
         padding = (int) typedArray.getDimension(R.styleable.lib_pub_ToggleButton_lib_pub_tbtn_padding, 1);

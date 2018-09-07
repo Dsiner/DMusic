@@ -74,7 +74,7 @@ public abstract class AbsSheetDialog<T> extends AbstractDialog {
         void onCancel(Dialog dlg);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener<T> listener) {
         this.listener = listener;
     }
 }

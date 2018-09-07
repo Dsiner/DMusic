@@ -1,6 +1,7 @@
 package com.d.music.online.fragment;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -84,7 +85,8 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
             title = bundle.getString(DetailActivity.ARG_TITLE);
             cover = bundle.getString(DetailActivity.ARG_COVER);
         }
-        tlTitle.setText(R.id.tv_title_title, !TextUtils.isEmpty(title) ? title : "音乐");
+        tlTitle.setText(R.id.tv_title_title, !TextUtils.isEmpty(title) ? title
+                : getResources().getString(R.string.module_common_music));
         super.init();
     }
 
@@ -101,6 +103,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     private void initHead() {
         header = new SongHeaderView(mContext);
+        header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {

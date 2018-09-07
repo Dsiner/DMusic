@@ -28,7 +28,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_item_height"
-        android:background="@color/lib_pub_color_bg_main">
+        android:background="@color/lib_pub_color_bg_sub">
 
         <LinearLayout
             android:id="@+id/llyt_add_to_list"

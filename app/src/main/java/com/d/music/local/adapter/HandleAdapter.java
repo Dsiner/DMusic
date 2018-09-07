@@ -2,6 +2,7 @@ package com.d.music.local.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -70,7 +71,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
             public void onItemSelected() {
                 holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler_press);
                 holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle_press);
-                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lib_pub_color_dgray));
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_dgray));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(0.6f);
                 }
@@ -80,7 +81,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
             public void onItemClear() {
                 holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler);
                 holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle);
-                holder.itemView.setBackgroundColor(0);
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(1f);
                 }

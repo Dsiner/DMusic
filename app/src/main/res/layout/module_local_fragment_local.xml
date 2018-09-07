@@ -21,7 +21,7 @@
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/lib_pub_color_bg_main"
+        android:background="@color/lib_pub_color_bg_sub"
         app:lib_pub_stab_avag="true"
         app:lib_pub_stab_indicatorColor="@color/lib_pub_color_main"
         app:lib_pub_stab_indicatorRadius="1dp"

@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.d.lib.common.R;
 
-import cn.feng.skin.manager.loader.SkinManager;
-
 /**
  * TabViewGroup
  * Created by D on 2017/8/25.
@@ -19,8 +17,6 @@ import cn.feng.skin.manager.loader.SkinManager;
 public class TabViewGroup extends RelativeLayout implements TabView {
     private Context context;
     private TextView tvTitle, tvNumber;
-    private int color, colorCur;
-    private boolean focus;
 
     public TabViewGroup(Context context) {
         super(context);
@@ -39,8 +35,6 @@ public class TabViewGroup extends RelativeLayout implements TabView {
 
     private void init(Context context) {
         this.context = context;
-        this.color = ContextCompat.getColor(context, R.color.lib_pub_color_gray);
-        this.colorCur = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
         View root = LayoutInflater.from(context).inflate(R.layout.lib_pub_view_tab, this);
         tvTitle = (TextView) root.findViewById(R.id.tv_title);
         tvNumber = (TextView) root.findViewById(R.id.tv_number);
@@ -62,16 +56,9 @@ public class TabViewGroup extends RelativeLayout implements TabView {
         tvNumber.setVisibility(visibility);
     }
 
-    public void onThemeUpdate() {
-        colorCur = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-    }
-
     @Override
     public void notifyData(boolean focus) {
-        this.focus = focus;
-        if (tvTitle != null) {
-            tvTitle.setTextColor(focus ? colorCur : color);
-        }
+        tvTitle.setTextColor(ContextCompat.getColor(context, focus ? R.color.lib_pub_color_main : R.color.lib_pub_color_gray));
     }
 
     @Override

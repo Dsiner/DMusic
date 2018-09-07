@@ -4,7 +4,7 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lib_pub_color_bg_sub"
+    android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/rl_koan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_koan"
                 app:lib_pub_rl_toggleVisibility="gone" />
@@ -39,7 +39,7 @@
             <com.d.lib.common.view.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 android:visibility="gone"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_night_mode"
@@ -49,7 +49,7 @@
                 android:id="@+id/rl_skin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_skin_resurfacing"
                 app:lib_pub_rl_toggleVisibility="gone" />
@@ -60,7 +60,7 @@
                 android:id="@+id/rl_sleep"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_sleep_timing"
                 app:lib_pub_rl_toggleVisibility="gone" />
@@ -71,7 +71,7 @@
                 android:id="@+id/rl_mode_auto_play"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_play_automatically_at_startup"
                 app:lib_pub_rl_toggleVisibility="visible" />
@@ -82,7 +82,7 @@
                 android:id="@+id/rl_player_mode"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_mode_selection"
                 app:lib_pub_rl_toggleVisibility="gone" />
@@ -99,7 +99,7 @@
                 android:id="@+id/rl_mode_sub"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_show_drop_down_menu"
                 app:lib_pub_rl_toggleVisibility="visible" />
@@ -110,7 +110,7 @@
                 android:id="@+id/rl_mode_add"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_show_new_song_list_button"
                 app:lib_pub_rl_toggleVisibility="visible" />
@@ -121,7 +121,7 @@
                 android:id="@+id/rl_mode_rotate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 android:visibility="gone"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_avatar_cover_auto_rotation"
@@ -131,7 +131,7 @@
                 android:id="@+id/rl_mode_shake"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 android:visibility="gone"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_shake_the_phone_to_cut_songs"
@@ -141,7 +141,7 @@
                 android:id="@+id/rl_mode_menu"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="gone"
                 app:lib_pub_rl_text="@string/module_common_show_home_page_popup_button"
                 app:lib_pub_rl_toggleVisibility="visible" />
@@ -157,7 +157,7 @@
             <com.d.lib.common.view.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 android:visibility="gone"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_help_center"
@@ -167,7 +167,7 @@
                 android:id="@+id/rl_about"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
-                android:background="@color/lib_pub_color_bg_main"
+                android:background="@color/lib_pub_color_bg_sub"
                 app:lib_pub_rl_gotoVisibility="visible"
                 app:lib_pub_rl_text="@string/module_common_about_dmusic"
                 app:lib_pub_rl_toggleVisibility="gone" />

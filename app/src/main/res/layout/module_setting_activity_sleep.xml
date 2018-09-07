@@ -4,7 +4,7 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lib_pub_color_bg_sub"
+    android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
     <com.d.music.view.TitleLayout
@@ -22,7 +22,7 @@
         layout="@layout/module_setting_adapter_radio"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_row_height"
-        android:background="@color/lib_pub_color_bg_main" />
+        android:background="@color/lib_pub_color_bg_sub" />
 
     <com.d.lib.xrv.LRecyclerView
         android:id="@+id/lrv_list"

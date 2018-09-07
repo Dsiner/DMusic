@@ -14,8 +14,6 @@ import com.d.lib.common.R;
 
 import java.lang.ref.WeakReference;
 
-import cn.feng.skin.manager.loader.SkinManager;
-
 /**
  * Loading
  * Created by Administrator on 2016/8/27.
@@ -160,10 +158,6 @@ public class LoadingView extends View {
     protected void onAttachedToWindow() {
         if (!isFirst) {
             restart();
-        }
-        color = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        if (paint != null) {
-            paint.setColor(color);
         }
         super.onAttachedToWindow();
     }

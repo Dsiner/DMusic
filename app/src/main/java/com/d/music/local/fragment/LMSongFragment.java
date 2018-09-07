@@ -1,5 +1,6 @@
 package com.d.music.local.fragment;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
@@ -7,12 +8,12 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.local.adapter.SongAdapter;
 import com.d.music.component.events.MusicModelEvent;
 import com.d.music.component.events.RefreshEvent;
 import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.greendao.db.AppDB;
 import com.d.music.component.media.controler.MediaControler;
+import com.d.music.local.adapter.SongAdapter;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.sort.SideBar;
 import com.d.music.view.sort.SortUtil;
@@ -45,7 +46,8 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(), R.layout.module_local_adapter_song, AppDB.LOCAL_ALL_MUSIC);
+        SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(),
+                R.layout.module_local_adapter_song, AppDB.LOCAL_ALL_MUSIC);
         adapter.setSubPull(isSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override
@@ -64,6 +66,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
     @Override
     protected void initList() {
         header = new SongHeaderView(mContext);
+        header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);

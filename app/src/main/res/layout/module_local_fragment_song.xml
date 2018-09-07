@@ -4,7 +4,7 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/lib_pub_color_bg_main">
 
     <com.d.music.view.TitleLayout
         android:id="@+id/tl_title"

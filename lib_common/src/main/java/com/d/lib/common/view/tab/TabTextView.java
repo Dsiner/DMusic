@@ -11,8 +11,6 @@ import android.view.View;
 import com.d.lib.common.R;
 import com.d.lib.common.utils.Util;
 
-import cn.feng.skin.manager.loader.SkinManager;
-
 /**
  * TabTextView
  * Created by D on 2017/8/25.
@@ -32,7 +30,6 @@ public class TabTextView extends View implements TabView {
     private int textColor; // Title文字颜色
     private int textColorFocus; // Title文字颜色
     private int padding; // Title文字左右预留间距
-    private boolean focus;
 
     public TabTextView(Context context) {
         this(context, null);
@@ -50,7 +47,7 @@ public class TabTextView extends View implements TabView {
     private void init(Context context) {
         textSize = Util.dip2px(context, 15);
         textColor = ContextCompat.getColor(context, R.color.lib_pub_color_gray);
-        textColorFocus = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
+        textColorFocus = ContextCompat.getColor(context, R.color.lib_pub_color_main);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextAlign(Paint.Align.CENTER);
@@ -79,13 +76,6 @@ public class TabTextView extends View implements TabView {
         setMeasuredDimension(width, height);
     }
 
-    public void onThemeUpdate() {
-        textColorFocus = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        if (paint != null) {
-            paint.setColor(focus ? textColorFocus : textColor);
-        }
-    }
-
     @Override
     public void setText(String text) {
         this.text = text;
@@ -103,7 +93,6 @@ public class TabTextView extends View implements TabView {
 
     @Override
     public void notifyData(boolean focus) {
-        this.focus = focus;
         this.paint.setColor(focus ? textColorFocus : textColor);
         invalidate();
     }

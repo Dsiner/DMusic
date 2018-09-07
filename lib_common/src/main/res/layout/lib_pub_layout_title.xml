@@ -48,16 +48,19 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_title_height"
+        android:layout_marginRight="@dimen/lib_pub_dimen_title_height"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_title_title"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/lib_pub_dimen_title_height"
         android:layout_marginRight="@dimen/lib_pub_dimen_title_height"
+        android:ellipsize="middle"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/lib_pub_color_white"

@@ -21,8 +21,6 @@ import com.d.lib.common.utils.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.feng.skin.manager.loader.SkinManager;
-
 /**
  * ScrollTab
  * Created by D on 2017/8/25.
@@ -104,7 +102,6 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
         setHorizontalScrollBarEnabled(false);
         setOverScrollMode(OVER_SCROLL_NEVER);
         setFillViewport(isAvag);
-        indicatorColor = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
         rectF = new RectF();
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(indicatorColor);
@@ -241,13 +238,6 @@ public class ScrollTab extends HorizontalScrollView implements View.OnClickListe
         }
         if (listener != null) {
             listener.onChange(index, v);
-        }
-    }
-
-    public void onThemeUpdate() {
-        indicatorColor = SkinManager.getInstance().getColor(R.color.lib_pub_color_main);
-        if (paint != null) {
-            paint.setColor(indicatorColor);
         }
     }
 

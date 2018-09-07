@@ -12,11 +12,6 @@ import com.d.music.MainActivity;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
-import com.d.music.local.activity.HandleActivity;
-import com.d.music.local.activity.ScanActivity;
-import com.d.music.local.adapter.SongAdapter;
-import com.d.music.local.presenter.SongPresenter;
-import com.d.music.local.view.ISongView;
 import com.d.music.component.events.MusicModelEvent;
 import com.d.music.component.events.RefreshEvent;
 import com.d.music.component.events.SortTypeEvent;
@@ -24,6 +19,11 @@ import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.greendao.db.AppDB;
 import com.d.music.component.greendao.util.AppDBUtil;
 import com.d.music.component.media.controler.MediaControler;
+import com.d.music.local.activity.HandleActivity;
+import com.d.music.local.activity.ScanActivity;
+import com.d.music.local.adapter.SongAdapter;
+import com.d.music.local.presenter.SongPresenter;
+import com.d.music.local.view.ISongView;
 import com.d.music.view.SongHeaderView;
 import com.d.music.view.TitleLayout;
 import com.d.music.view.dialog.MenuDialog;
@@ -128,7 +128,8 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(), R.layout.module_local_adapter_song, type);
+        SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(),
+                R.layout.module_local_adapter_song, type);
         adapter.setSubPull(isSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override
