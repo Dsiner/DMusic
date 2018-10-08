@@ -6,7 +6,7 @@ import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.MVCommentRespModel;
 import com.d.music.online.model.MVDetailModel;
@@ -31,7 +31,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
         Params params = new Params(API.MvDetailInfo.rtpType);
         params.addParam(API.MvDetailInfo.mvid, "" + id);
         RxNet.get(API.MvDetailInfo.rtpType, params)
-                .request(new SimpleCallBack<MVInfoRespModel>() {
+                .request(new SimpleCallback<MVInfoRespModel>() {
                     @Override
                     public void onSuccess(MVInfoRespModel response) {
                         if (getView() == null) {
@@ -51,7 +51,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
         Params params = new Params(API.SimilarMV.rtpType);
         params.addParam(API.SimilarMV.mvid, "" + id);
         RxNet.get(API.SimilarMV.rtpType, params)
-                .request(new SimpleCallBack<MVSimilarRespModel>() {
+                .request(new SimpleCallback<MVSimilarRespModel>() {
                     @Override
                     public void onSuccess(MVSimilarRespModel response) {
                         if (getView() == null) {
@@ -78,7 +78,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
         Params params = new Params(API.MVComment.rtpType);
         params.addParam(API.MVComment.id, "" + id);
         RxNet.get(API.MVComment.rtpType, params)
-                .request(new SimpleCallBack<MVCommentRespModel>() {
+                .request(new SimpleCallback<MVCommentRespModel>() {
                     @Override
                     public void onSuccess(MVCommentRespModel response) {
                         if (getView() == null) {

@@ -3,7 +3,7 @@ package com.d.lib.rxnet.interceptor;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.d.lib.rxnet.util.Network;
+import com.d.lib.rxnet.utils.Network;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * 离线缓存拦截
+ * Offline cache interception
  */
 public class OfflineCacheInterceptor implements Interceptor {
     private Context context;

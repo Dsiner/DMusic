@@ -7,7 +7,7 @@ import com.d.lib.common.component.loader.IAbsView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.MVModel;
 import com.d.music.online.model.MVRespModel;
@@ -29,7 +29,7 @@ public class MVPresenter extends MvpBasePresenter<IAbsView<MVModel>> {
         params.addParam(API.MVTop.offset, "" + offset);
         params.addParam(API.MVTop.limit, "" + limit);
         RxNet.get(API.MVTop.rtpType, params)
-                .request(new SimpleCallBack<MVRespModel>() {
+                .request(new SimpleCallback<MVRespModel>() {
                     @Override
                     public void onSuccess(MVRespModel response) {
                         if (getView() == null) {

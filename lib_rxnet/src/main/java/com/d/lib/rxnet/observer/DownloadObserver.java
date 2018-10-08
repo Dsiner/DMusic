@@ -1,23 +1,23 @@
 package com.d.lib.rxnet.observer;
 
-import com.d.lib.rxnet.listener.DownloadCallBack;
+import com.d.lib.rxnet.callback.DownloadCallback;
 import com.d.lib.rxnet.request.DownloadRequest;
-import com.d.lib.rxnet.util.RxUtil;
+import com.d.lib.rxnet.utils.Util;
 
 /**
- * Observer with Download CallBack
+ * Observer with Download Callback
  * Created by D on 2017/10/26.
  */
 public class DownloadObserver extends AbsObserver<DownloadRequest.DownloadModel> {
-    private DownloadCallBack callback;
+    private DownloadCallback callback;
 
-    public DownloadObserver(DownloadCallBack callback) {
+    public DownloadObserver(DownloadCallback callback) {
         this.callback = callback;
     }
 
     @Override
     public void onNext(DownloadRequest.DownloadModel m) {
-        RxUtil.printThread("RxNet_theard downloadOnNext: ");
+        Util.printThread("RxNet_theard downloadOnNext");
         callback.onProgress(m.downloadSize, m.totalSize);
     }
 

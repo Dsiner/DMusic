@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lib_player_mobile_network_continue">Currently mobile network, do you want to continue playing?</string>
+    <string name="lib_player_continue_playing">Continue playing</string>
+    <string name="lib_player_play_end_replay">End of playback, replay?</string>
+    <string name="lib_player_replay">Replay</string>
+    <string name="lib_player_play_failed_retry">Play failed, retry?</string>
+    <string name="lib_player_retry">Retry</string>
+</resources>

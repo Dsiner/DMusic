@@ -1,11 +1,12 @@
 package com.d.lib.rxnet.mode;
 
 /**
- * 网络通用状态码定义
+ * Network general status code definition
  */
 public class ApiCode {
+
     /**
-     * 对应HTTP的状态码
+     * Corresponding to HTTP status code
      */
     public static class Http {
         public static final int UNAUTHORIZED = 401;
@@ -19,24 +20,24 @@ public class ApiCode {
     }
 
     /**
-     * Request请求码
+     * Request request code
      */
     public static class Request {
-        //未知错误
+        // Unknown mistake
         public static final int UNKNOWN = 1000;
-        //解析错误
+        // Parsing error
         public static final int PARSE_ERROR = 1001;
-        //网络错误
+        // Network Error
         public static final int NETWORK_ERROR = 1002;
-        //协议出错
+        // Protocol error
         public static final int HTTP_ERROR = 1003;
-        //证书出错
+        // Certificate error
         public static final int SSL_ERROR = 1005;
-        //连接超时
+        // Connection timed out
         public static final int TIMEOUT_ERROR = 1006;
-        //调用错误
+        // Call error
         public static final int INVOKE_ERROR = 1007;
-        //类转换错误
+        // Class conversion error
         public static final int CONVERT_ERROR = 1008;
     }
 }

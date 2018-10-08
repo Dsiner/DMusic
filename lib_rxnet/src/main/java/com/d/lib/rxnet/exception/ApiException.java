@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException;
 import retrofit2.HttpException;
 
 /**
- * API异常
+ * API exception
  */
 public class ApiException extends Exception {
     private final int code;

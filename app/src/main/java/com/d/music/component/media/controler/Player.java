@@ -10,8 +10,8 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.DownloadCallBack;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.R;
 import com.d.music.api.API;
 import com.d.music.common.Constants;
@@ -237,7 +237,7 @@ public class Player {
             Params params = new Params(API.SongInfo.rtpType);
             params.addParam(API.SongInfo.songIds, model.songId);
             RxNet.get(API.SongInfo.rtpType, params)
-                    .request(new SimpleCallBack<SongInfoRespModel>() {
+                    .request(new SimpleCallback<SongInfoRespModel>() {
                         @Override
                         public void onSuccess(SongInfoRespModel response) {
                             if (getView() == null) {
@@ -283,7 +283,7 @@ public class Player {
                     .retryCount(3)
                     .retryDelayMillis(1000)
                     .tag(path + name)
-                    .request(path, name, new DownloadCallBack() {
+                    .request(path, name, new DownloadCallback() {
 
                         @Override
                         public void onProgress(long currentLength, long totalLength) {
@@ -313,7 +313,7 @@ public class Player {
                     .retryCount(3)
                     .retryDelayMillis(1000)
                     .tag(path + name)
-                    .request(path, name, new DownloadCallBack() {
+                    .request(path, name, new DownloadCallback() {
 
                         @Override
                         public void onProgress(long currentLength, long totalLength) {

@@ -1,4 +1,4 @@
--keep class com.d.commenplayer.** {*;}
+-keep class com.d.lib.commenplayer.** {*;}
 
 -keep class tv.danmaku.ijk.media.** {*;}
 

@@ -36,18 +36,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compileOnly rootProject.ext.dependencies.support_annotations
+    api rootProject.ext.dependencies.gson
 
-    implementation rootProject.ext.dependencies.support_appcompat_v7
+    api rootProject.ext.dependencies.okhttp
+    api rootProject.ext.dependencies.okhttp_logging_interceptor
 
     api rootProject.ext.dependencies.rxjava
     api rootProject.ext.dependencies.rxandroid
 
-    api rootProject.ext.dependencies.gson
-    api rootProject.ext.dependencies.okhttp
-    api rootProject.ext.dependencies.okhttp_logging_interceptor
-
     api rootProject.ext.dependencies.retrofit
     api rootProject.ext.dependencies.retrofit_adapter_rxjava2
-    api rootProject.ext.dependencies.retrofit_converter_gson // json转换
-    api rootProject.ext.dependencies.retrofit_converter_scalars // String类型转换
+    api rootProject.ext.dependencies.retrofit_converter_gson
+    api rootProject.ext.dependencies.retrofit_converter_scalars
 }

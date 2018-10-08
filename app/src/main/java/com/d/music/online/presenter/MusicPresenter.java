@@ -7,7 +7,7 @@ import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.AsyncCallBack;
+import com.d.lib.rxnet.callback.AsyncCallback;
 import com.d.music.api.API;
 import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.online.model.BillSongsModel;
@@ -36,7 +36,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         params.addParam(API.BaiduBillSongs.offset, "" + (CommonLoader.PAGE_COUNT * (page - 1)));
         params.addParam(API.BaiduBillSongs.size, "" + CommonLoader.PAGE_COUNT);
         RxNet.get(API.BaiduBillSongs.rtpType, params)
-                .request(new AsyncCallBack<BillSongsRespModel, BillSongsRespModel>() {
+                .request(new AsyncCallback<BillSongsRespModel, BillSongsRespModel>() {
 
                     @Override
                     public BillSongsRespModel apply(BillSongsRespModel billSongsRespModel) throws Exception {
@@ -85,7 +85,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         params.addParam(API.RadioChannelSongs.rn, "" + 10);
         params.addParam(API.RadioChannelSongs.channelname, channel);
         RxNet.get(API.RadioChannelSongs.rtpType, params)
-                .request(new AsyncCallBack<RadioSongsRespModel, RadioSongsRespModel>() {
+                .request(new AsyncCallback<RadioSongsRespModel, RadioSongsRespModel>() {
 
                     @Override
                     public RadioSongsRespModel apply(RadioSongsRespModel radioSongsRespModel) throws Exception {

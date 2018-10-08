@@ -6,62 +6,60 @@ import java.util.Set;
 import io.reactivex.disposables.Disposable;
 
 /**
- * 请求管理，方便中途取消请求
+ * Request management to facilitate mid-way cancellation of requests
  */
 public class ApiManager {
-    private static ApiManager sInstance;
+    private HashMap<Object, Disposable> map;
 
-    private HashMap<Object, Disposable> arrayMaps;
+    private static class Singleton {
+        private final static ApiManager INSTANCE = new ApiManager();
+    }
 
     public static ApiManager get() {
-        if (sInstance == null) {
-            synchronized (ApiManager.class) {
-                if (sInstance == null) {
-                    sInstance = new ApiManager();
-                }
-            }
-        }
-        return sInstance;
+        return Singleton.INSTANCE;
     }
 
     private ApiManager() {
-        arrayMaps = new HashMap<>();
+        map = new HashMap<>();
     }
 
-    public void add(Object tag, Disposable disposable) {
-        arrayMaps.put(tag, disposable);
+    public synchronized void add(Object tag, Disposable disposable) {
+        map.put(tag, disposable);
     }
 
-    public void remove(Object tag) {
-        if (!arrayMaps.isEmpty()) {
-            arrayMaps.remove(tag);
-        }
-    }
-
-    public void removeAll() {
-        if (!arrayMaps.isEmpty()) {
-            arrayMaps.clear();
-        }
-    }
-
-    public void cancel(Object tag) {
-        if (arrayMaps.isEmpty()) {
+    public synchronized void remove(Object tag) {
+        if (map.isEmpty()) {
             return;
         }
-        if (arrayMaps.get(tag) == null) {
+        map.remove(tag);
+    }
+
+    public synchronized void removeAll() {
+        if (map.isEmpty()) {
             return;
         }
-        if (!arrayMaps.get(tag).isDisposed()) {
-            arrayMaps.get(tag).dispose();
-            arrayMaps.remove(tag);
+        map.clear();
+    }
+
+    public synchronized void cancel(Object tag) {
+        if (map.isEmpty()) {
+            return;
+        }
+        Disposable value = map.get(tag);
+        if (value == null) {
+            return;
+        }
+        if (!value.isDisposed()) {
+            value.dispose();
+            map.remove(tag);
         }
     }
 
-    public void cancelAll() {
-        if (arrayMaps.isEmpty()) {
+    public synchronized void cancelAll() {
+        if (map.isEmpty()) {
             return;
         }
-        Set<Object> keys = arrayMaps.keySet();
+        Set<Object> keys = map.keySet();
         for (Object apiKey : keys) {
             cancel(apiKey);
         }

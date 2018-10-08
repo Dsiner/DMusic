@@ -11,10 +11,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * 请求头拦截
+ * Request header interception
  */
 public class HeadersInterceptor implements Interceptor {
     private Map<String, String> headers;
+    private OnHeadInterceptor onHeadInterceptor;
 
     public HeadersInterceptor(Map<String, String> headers) {
         this.headers = headers;
@@ -26,20 +27,28 @@ public class HeadersInterceptor implements Interceptor {
         if (headers != null && headers.size() > 0) {
             Set<String> keys = headers.keySet();
             for (String headerKey : keys) {
-                builder.addHeader(headerKey, headers.get(headerKey)).build();
+                builder.addHeader(headerKey, headers.get(headerKey));
             }
         }
 
-        // TODO: @developer 2017/10/24
-//        addToken(builder);
+        if (onHeadInterceptor != null) {
+            onHeadInterceptor.intercept(builder);
+        }
 
         return chain.proceed(builder.build());
     }
 
-    /**
-     * Token maybe dynamical，you shoule override here
-     */
-    private void addToken(Request.Builder builder) {
-        builder.addHeader("token", "").build();
+    public interface OnHeadInterceptor {
+
+        /**
+         * Some parameters may be dynamic, such as tokens, etc. You shoule override here
+         * builder.addHeader("token", "")
+         */
+        void intercept(Request.Builder builder);
+    }
+
+    public HeadersInterceptor setOnHeadInterceptor(OnHeadInterceptor onHeadInterceptor) {
+        this.onHeadInterceptor = onHeadInterceptor;
+        return this;
     }
 }

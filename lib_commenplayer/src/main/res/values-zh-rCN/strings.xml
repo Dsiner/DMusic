@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lib_player_mobile_network_continue">当前为移动网络，是否继续播放？</string>
+    <string name="lib_player_continue_playing">继续播放</string>
+    <string name="lib_player_play_end_replay">播放结束，是否重新播放？</string>
+    <string name="lib_player_replay">重新播放</string>
+    <string name="lib_player_play_failed_retry">播放失败，是否重试？</string>
+    <string name="lib_player_retry">重试</string>
+</resources>

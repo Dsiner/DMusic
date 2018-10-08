@@ -6,7 +6,7 @@ import com.d.lib.common.component.loader.IAbsView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.RadioModel;
 import com.d.music.online.model.RadioRespModel;
@@ -28,7 +28,7 @@ public class RadioPresenter extends MvpBasePresenter<IAbsView<RadioModel>> {
         params.addParam(API.RadioChannels.method, API.Baidu.METHOD_GET_CATEGORY_LIST);
         params.addParam(API.RadioChannels.format, "json");
         RxNet.get(API.BaiduBill.rtpType, params)
-                .request(new SimpleCallBack<RadioRespModel>() {
+                .request(new SimpleCallback<RadioRespModel>() {
                     @Override
                     public void onSuccess(RadioRespModel response) {
                         if (getView() == null) {

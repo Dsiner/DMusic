@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--调节进度-->
+    <!-- Adjust progress -->
     <LinearLayout
         android:id="@+id/llyt_player_adj_prg"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:progressDrawable="@drawable/lib_player_seekbar_adjust" />
     </LinearLayout>
 
-    <!--调节亮度-->
+    <!-- Adjust brightness -->
     <LinearLayout
         android:id="@+id/llyt_player_adj_brightness"
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             android:progressDrawable="@drawable/lib_player_seekbar_adjust" />
     </LinearLayout>
 
-    <!--调节声音-->
+    <!-- Adjust the sound -->
     <LinearLayout
         android:id="@+id/llyt_player_adj_volume"
         android:layout_width="wrap_content"

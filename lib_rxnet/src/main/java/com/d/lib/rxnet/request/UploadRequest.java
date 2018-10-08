@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.d.lib.rxnet.api.RetrofitAPI;
 import com.d.lib.rxnet.base.ApiManager;
 import com.d.lib.rxnet.base.HttpConfig;
+import com.d.lib.rxnet.base.IRequest;
 import com.d.lib.rxnet.base.RetrofitClient;
 import com.d.lib.rxnet.body.UploadProgressRequestBody;
+import com.d.lib.rxnet.callback.UploadCallback;
 import com.d.lib.rxnet.func.ApiRetryFunc;
+import com.d.lib.rxnet.interceptor.HeadersInterceptor;
 import com.d.lib.rxnet.interceptor.UploadProgressInterceptor;
-import com.d.lib.rxnet.listener.UploadCallBack;
 import com.d.lib.rxnet.mode.MediaTypes;
 import com.d.lib.rxnet.observer.UploadObserver;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -35,21 +38,26 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import retrofit2.Retrofit;
 
 /**
- * New but Default Config
  * Created by D on 2017/10/24.
  */
-public class UploadRequest extends BaseRequest<UploadRequest> {
+public class UploadRequest extends IRequest<UploadRequest> {
     protected Map<String, String> params = new LinkedHashMap<>();
     protected List<MultipartBody.Part> multipartBodyParts = new ArrayList<>();
 
     public UploadRequest(String url) {
         this.url = url;
-        this.config = HttpConfig.getNewDefaultConfig();
+        this.config = HttpConfig.getNewDefault();
     }
 
-    protected void init(UploadCallBack callback) {
+    @Override
+    protected Retrofit getClient() {
+        return RetrofitClient.getRetrofit(config, false);
+    }
+
+    protected void prepare(UploadCallback callback) {
         if (params != null && params.size() > 0) {
             Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
             Map.Entry<String, String> entry;
@@ -61,17 +69,79 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
             }
         }
         config.addNetworkInterceptors(new UploadProgressInterceptor(callback));
-        observable = RetrofitClient.getRetrofit(config).create(RetrofitAPI.class).upload(url, multipartBodyParts);
+        observable = getClient().create(RetrofitAPI.class).upload(url, multipartBodyParts);
     }
 
-    public void request(final UploadCallBack callback) {
+    public void request(final UploadCallback callback) {
         if (callback == null) {
-            throw new NullPointerException("this callback is null!");
+            throw new NullPointerException("This callback must not be null!");
         }
-        init(callback);
+        prepare(callback);
+        requestImpl(observable, config, tag, callback);
+    }
+
+    @Override
+    public UploadRequest baseUrl(String baseUrl) {
+        return super.baseUrl(baseUrl);
+    }
+
+    @Override
+    public UploadRequest headers(Map<String, String> headers) {
+        return super.headers(headers);
+    }
+
+    @Override
+    public UploadRequest headers(HeadersInterceptor.OnHeadInterceptor onHeadInterceptor) {
+        return super.headers(onHeadInterceptor);
+    }
+
+    @Override
+    public UploadRequest connectTimeout(long timeout) {
+        return super.connectTimeout(timeout);
+    }
+
+    @Override
+    public UploadRequest readTimeout(long timeout) {
+        return super.readTimeout(timeout);
+    }
+
+    @Override
+    public UploadRequest writeTimeout(long timeout) {
+        return super.writeTimeout(timeout);
+    }
+
+    @Override
+    public UploadRequest sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        return super.sslSocketFactory(sslSocketFactory);
+    }
+
+    @Override
+    public UploadRequest addInterceptor(Interceptor interceptor) {
+        return super.addInterceptor(interceptor);
+    }
+
+    @Override
+    public UploadRequest addNetworkInterceptors(Interceptor interceptor) {
+        return super.addNetworkInterceptors(interceptor);
+    }
+
+    @Override
+    public UploadRequest retryCount(int retryCount) {
+        return super.retryCount(retryCount);
+    }
+
+    @Override
+    public UploadRequest retryDelayMillis(long retryDelayMillis) {
+        return super.retryDelayMillis(retryDelayMillis);
+    }
+
+    private static void requestImpl(final Observable observable,
+                                    final HttpConfig config,
+                                    final Object tag,
+                                    final UploadCallback callback) {
         DisposableObserver disposableObserver = new UploadObserver(callback);
-        if (super.tag != null) {
-            ApiManager.get().add(super.tag, disposableObserver);
+        if (tag != null) {
+            ApiManager.get().add(tag, disposableObserver);
         }
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -91,7 +161,7 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         return addFile(key, file, null);
     }
 
-    public UploadRequest addFile(String key, File file, UploadCallBack callback) {
+    public UploadRequest addFile(String key, File file, UploadCallback callback) {
         if (key == null || file == null) {
             return this;
         }
@@ -111,7 +181,7 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         return addImageFile(key, file, null);
     }
 
-    public UploadRequest addImageFile(String key, File file, UploadCallBack callback) {
+    public UploadRequest addImageFile(String key, File file, UploadCallback callback) {
         if (key == null || file == null) {
             return this;
         }
@@ -131,7 +201,7 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         return addBytes(key, bytes, name, null);
     }
 
-    public UploadRequest addBytes(String key, byte[] bytes, String name, UploadCallBack callback) {
+    public UploadRequest addBytes(String key, byte[] bytes, String name, UploadCallback callback) {
         if (key == null || bytes == null || name == null) {
             return this;
         }
@@ -151,7 +221,7 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         return addStream(key, inputStream, name, null);
     }
 
-    public UploadRequest addStream(String key, InputStream inputStream, String name, UploadCallBack callback) {
+    public UploadRequest addStream(String key, InputStream inputStream, String name, UploadCallback callback) {
         if (key == null || inputStream == null || name == null) {
             return this;
         }
@@ -167,7 +237,7 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         return this;
     }
 
-    protected RequestBody create(final MediaType mediaType, final InputStream inputStream) {
+    private static RequestBody create(final MediaType mediaType, final InputStream inputStream) {
         return new RequestBody() {
             @Override
             public MediaType contentType() {
@@ -196,81 +266,58 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
         };
     }
 
-    @Override
-    protected UploadRequest baseUrl(String baseUrl) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest headers(Map<String, String> headers) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest connectTimeout(long timeout) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest readTimeout(long timeout) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest writeTimeout(long timeout) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest addInterceptor(Interceptor interceptor) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest addNetworkInterceptors(Interceptor interceptor) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest retryCount(int retryCount) {
-        return this;
-    }
-
-    @Override
-    protected UploadRequest retryDelayMillis(long retryDelayMillis) {
-        return this;
-    }
-
     /**
-     * New
+     * Singleton
      */
-    public static class UploadRequestF extends UploadRequest {
+    public static class Singleton extends IRequest<Singleton> {
+        protected Map<String, String> params = new LinkedHashMap<>();
+        protected List<MultipartBody.Part> multipartBodyParts = new ArrayList<>();
 
-        public UploadRequestF(String url) {
-            super(url);
-            this.config = HttpConfig.getNewDefaultConfig();
+        public Singleton(String url) {
+            this.url = url;
+            this.config = HttpConfig.getNewDefault();
         }
 
         @Override
-        public UploadRequestF addParam(String paramKey, String paramValue) {
+        protected Retrofit getClient() {
+            return RetrofitClient.getTransfer();
+        }
+
+        protected void prepare(UploadCallback callback) {
+            if (params != null && params.size() > 0) {
+                Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
+                Map.Entry<String, String> entry;
+                while (entryIterator.hasNext()) {
+                    entry = entryIterator.next();
+                    if (entry != null) {
+                        multipartBodyParts.add(MultipartBody.Part.createFormData(entry.getKey(), entry.getValue()));
+                    }
+                }
+            }
+            config.addNetworkInterceptors(new UploadProgressInterceptor(callback));
+            observable = getClient().create(RetrofitAPI.class).upload(url, multipartBodyParts);
+        }
+
+        public void request(final UploadCallback callback) {
+            if (callback == null) {
+                throw new NullPointerException("This callback must not be null!");
+            }
+            prepare(callback);
+            requestImpl(observable, config, tag, callback);
+        }
+
+        public Singleton addParam(String paramKey, String paramValue) {
             if (paramKey != null && paramValue != null) {
                 this.params.put(paramKey, paramValue);
             }
             return this;
         }
 
-        @Override
-        public UploadRequestF addFile(String key, File file) {
+        public Singleton addFile(String key, File file) {
             return addFile(key, file, null);
         }
 
-        @Override
-        public UploadRequestF addFile(String key, File file, UploadCallBack callback) {
+        public Singleton addFile(String key, File file, UploadCallback callback) {
             if (key == null || file == null) {
                 return this;
             }
@@ -286,13 +333,11 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
             return this;
         }
 
-        @Override
-        public UploadRequestF addImageFile(String key, File file) {
+        public Singleton addImageFile(String key, File file) {
             return addImageFile(key, file, null);
         }
 
-        @Override
-        public UploadRequestF addImageFile(String key, File file, UploadCallBack callback) {
+        public Singleton addImageFile(String key, File file, UploadCallback callback) {
             if (key == null || file == null) {
                 return this;
             }
@@ -308,13 +353,11 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
             return this;
         }
 
-        @Override
-        public UploadRequestF addBytes(String key, byte[] bytes, String name) {
+        public Singleton addBytes(String key, byte[] bytes, String name) {
             return addBytes(key, bytes, name, null);
         }
 
-        @Override
-        public UploadRequestF addBytes(String key, byte[] bytes, String name, UploadCallBack callback) {
+        public Singleton addBytes(String key, byte[] bytes, String name, UploadCallback callback) {
             if (key == null || bytes == null || name == null) {
                 return this;
             }
@@ -330,13 +373,11 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
             return this;
         }
 
-        @Override
-        public UploadRequestF addStream(String key, InputStream inputStream, String name) {
+        public Singleton addStream(String key, InputStream inputStream, String name) {
             return addStream(key, inputStream, name, null);
         }
 
-        @Override
-        public UploadRequestF addStream(String key, InputStream inputStream, String name, UploadCallBack callback) {
+        public Singleton addStream(String key, InputStream inputStream, String name, UploadCallback callback) {
             if (key == null || inputStream == null || name == null) {
                 return this;
             }
@@ -349,73 +390,6 @@ public class UploadRequest extends BaseRequest<UploadRequest> {
                 MultipartBody.Part part = MultipartBody.Part.createFormData(key, name, requestBody);
                 this.multipartBodyParts.add(part);
             }
-            return this;
-        }
-
-        @Override
-        public UploadRequestF tag(Object tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        /******************* Config *******************/
-        @Override
-        public UploadRequestF baseUrl(String baseUrl) {
-            config.baseUrl(baseUrl);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF headers(Map<String, String> headers) {
-            config.headers(headers);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF connectTimeout(long timeout) {
-            config.connectTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF readTimeout(long timeout) {
-            config.readTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF writeTimeout(long timeout) {
-            config.writeTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF addInterceptor(Interceptor interceptor) {
-            config.addInterceptor(interceptor);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF addNetworkInterceptors(Interceptor interceptor) {
-            config.addNetworkInterceptors(interceptor);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-            config.sslSocketFactory(sslSocketFactory);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF retryCount(int retryCount) {
-            config.retryCount(retryCount);
-            return this;
-        }
-
-        @Override
-        public UploadRequestF retryDelayMillis(long retryDelayMillis) {
-            config.retryDelayMillis(retryDelayMillis);
             return this;
         }
     }

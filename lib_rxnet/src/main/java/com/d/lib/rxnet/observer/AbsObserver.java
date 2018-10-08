@@ -1,12 +1,12 @@
 package com.d.lib.rxnet.observer;
 
 import com.d.lib.rxnet.exception.ApiException;
-import com.d.lib.rxnet.util.RxLog;
+import com.d.lib.rxnet.utils.ULog;
 
 import io.reactivex.observers.DisposableObserver;
 
 /**
- * Abs Observer
+ * Abstract Observer
  */
 abstract class AbsObserver<T> extends DisposableObserver<T> {
 
@@ -15,10 +15,10 @@ abstract class AbsObserver<T> extends DisposableObserver<T> {
 
     @Override
     public void onError(Throwable e) {
-        //print error log
+        // Print error log
         if (e instanceof ApiException) {
             e.printStackTrace();
         }
-        RxLog.e(e.getMessage());
+        ULog.e(e.getMessage());
     }
 }

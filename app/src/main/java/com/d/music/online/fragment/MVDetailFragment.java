@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.commenplayer.CommenPlayer;
-import com.d.commenplayer.listener.IPlayerListener;
-import com.d.commenplayer.listener.IRenderView;
-import com.d.commenplayer.listener.OnNetListener;
-import com.d.commenplayer.ui.ControlLayout;
+import com.d.lib.commenplayer.CommenPlayer;
+import com.d.lib.commenplayer.listener.IPlayerListener;
+import com.d.lib.commenplayer.listener.IRenderView;
+import com.d.lib.commenplayer.listener.OnNetListener;
+import com.d.lib.commenplayer.ui.ControlLayout;
 import com.d.lib.common.component.loader.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.netstate.NetCompat;

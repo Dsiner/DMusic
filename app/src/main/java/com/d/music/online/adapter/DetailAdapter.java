@@ -8,8 +8,8 @@ import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.DownloadCallBack;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
@@ -71,7 +71,7 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
         Params params = new Params(API.SongInfo.rtpType);
         params.addParam(API.SongInfo.songIds, model.songId);
         RxNet.get(API.SongInfo.rtpType, params)
-                .request(new SimpleCallBack<SongInfoRespModel>() {
+                .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
                     public void onSuccess(SongInfoRespModel response) {
                         if (response.data == null || response.data.songList == null
@@ -100,7 +100,7 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
                 .retryCount(3)
                 .retryDelayMillis(1000)
                 .tag(path + name)
-                .request(path, name, new DownloadCallBack() {
+                .request(path, name, new DownloadCallback() {
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {

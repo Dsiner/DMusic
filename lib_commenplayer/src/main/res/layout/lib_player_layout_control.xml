@@ -123,18 +123,25 @@
             android:id="@+id/tv_player_tips_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前为移动网络，是否继续播放？"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center"
+            android:text="@string/lib_player_mobile_network_continue"
             android:textColor="#ffffff"
             android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_player_tips_btn"
-            android:layout_width="66dp"
+            android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/lib_player_corner_bg_control"
             android:gravity="center"
-            android:text="继续播放"
+            android:minWidth="66dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:singleLine="true"
+            android:text="@string/lib_player_continue_playing"
             android:textColor="#ffffff"
             android:textSize="10dp" />
     </LinearLayout>

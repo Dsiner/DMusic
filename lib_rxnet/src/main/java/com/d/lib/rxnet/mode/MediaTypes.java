@@ -3,7 +3,7 @@ package com.d.lib.rxnet.mode;
 import okhttp3.MediaType;
 
 /**
- * MediaType汇总
+ * MediaType
  */
 public class MediaTypes {
     public static final MediaType APPLICATION_ATOM_XML_TYPE = MediaType.parse("application/atom+xml;charset=utf-8");

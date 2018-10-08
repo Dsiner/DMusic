@@ -39,7 +39,10 @@ dependencies {
 
     implementation rootProject.ext.dependencies.support_annotations
     implementation rootProject.ext.dependencies.nineoldandroids
+
+    // Required, enough for most devices.
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
-    //# ExoPlayer as IMediaPlayer: optional, experimental
+
+    // ExoPlayer as IMediaPlayer: optional experimental
     api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
 }

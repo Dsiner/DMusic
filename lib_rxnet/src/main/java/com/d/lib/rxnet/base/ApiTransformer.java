@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 转换器
+ * Transformer
  */
 public class ApiTransformer {
     public static <T> ObservableTransformer<T, T> norTransformer() {
@@ -20,7 +20,7 @@ public class ApiTransformer {
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .retryWhen(new ApiRetryFunc(HttpConfig.getDefaultConfig().retryCount, HttpConfig.getDefaultConfig().retryDelayMillis));
+                        .retryWhen(new ApiRetryFunc(HttpConfig.getDefault().retryCount, HttpConfig.getDefault().retryDelayMillis));
             }
         };
     }

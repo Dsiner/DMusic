@@ -1,10 +1,11 @@
 package com.d.lib.rxnet.body;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
+import com.d.lib.rxnet.callback.UploadCallback;
 import com.d.lib.rxnet.exception.ApiException;
-import com.d.lib.rxnet.listener.UploadCallBack;
-import com.d.lib.rxnet.util.RxLog;
+import com.d.lib.rxnet.utils.ULog;
 
 import java.io.IOException;
 
@@ -20,16 +21,16 @@ import okio.Okio;
 import okio.Sink;
 
 /**
- * 上传进度请求实体类
+ * Upload progress request entity class
  */
 public class UploadProgressRequestBody extends RequestBody {
     private RequestBody requestBody;
-    private UploadCallBack callback;
+    private UploadCallback callback;
     private long lastTime;
 
-    public UploadProgressRequestBody(RequestBody requestBody, UploadCallBack callback) {
+    public UploadProgressRequestBody(RequestBody requestBody, UploadCallback callback) {
         if (requestBody == null || callback == null) {
-            throw new NullPointerException("this requestBody and callback must not null.");
+            throw new NullPointerException("This requestBody and callback must not be null.");
         }
         this.requestBody = requestBody;
         this.callback = callback;
@@ -59,21 +60,22 @@ public class UploadProgressRequestBody extends RequestBody {
     }
 
     private final class CountingSink extends ForwardingSink {
-        //当前字节长度
+        // Current byte length
         private long currentLength = 0L;
-        //总字节长度，避免多次调用contentLength()方法
+        // Total byte length, avoid calling the contentLength() method multiple times
         private long totalLength = 0L;
 
         CountingSink(Sink sink) {
             super(sink);
         }
 
+        @SuppressLint("CheckResult")
         @Override
         public void write(@NonNull Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
-            //增加当前写入的字节数
+            // Increase the number of bytes currently written
             currentLength += byteCount;
-            //获得contentLength的值，后续不再调用
+            // Get the value of contentLength, no longer call later
             if (totalLength == 0) {
                 totalLength = contentLength();
             }
@@ -83,7 +85,7 @@ public class UploadProgressRequestBody extends RequestBody {
                 Observable.just(currentLength).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        RxLog.d("upload progress currentLength:" + currentLength + ",totalLength:" + totalLength);
+                        ULog.d("Upload progress currentLength: " + currentLength + " totalLength: " + totalLength);
                         callback.onProgress(currentLength, totalLength);
                     }
                 }, new Consumer<Throwable>() {

@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import com.d.lib.rxnet.api.RetrofitAPI;
 import com.d.lib.rxnet.base.ApiManager;
 import com.d.lib.rxnet.base.HttpConfig;
+import com.d.lib.rxnet.base.IRequest;
 import com.d.lib.rxnet.base.RetrofitClient;
+import com.d.lib.rxnet.callback.DownloadCallback;
 import com.d.lib.rxnet.func.ApiRetryFunc;
-import com.d.lib.rxnet.listener.DownloadCallBack;
+import com.d.lib.rxnet.interceptor.HeadersInterceptor;
 import com.d.lib.rxnet.observer.DownloadObserver;
 
 import org.reactivestreams.Publisher;
@@ -26,55 +28,71 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
 
 /**
- * New but Default Config
  * Created by D on 2017/10/24.
  */
-public class DownloadRequest extends BaseRequest<DownloadRequest> {
+public class DownloadRequest extends IRequest<DownloadRequest> {
     protected Map<String, String> params;
 
     public DownloadRequest(String url) {
-        this.url = url;
-        this.config = HttpConfig.getDefaultConfig();
+        this(null, url, null);
     }
 
     public DownloadRequest(String url, Map<String, String> params) {
+        this(null, url, params);
+    }
+
+    public DownloadRequest(HttpConfig config, String url, Map<String, String> params) {
         this.url = url;
         this.params = params;
-        this.config = HttpConfig.getDefaultConfig();
+        this.config = config != null ? config : HttpConfig.getNewDefault();
     }
 
-    protected void init() {
+    @Override
+    protected Retrofit getClient() {
+        return RetrofitClient.getRetrofit(config, false);
+    }
+
+    private void prepare() {
         if (params == null) {
-            observable = RetrofitClient.getRetrofitDown(HttpConfig.getDefaultConfig())
-                    .create(RetrofitAPI.class).download(url);
+            observable = getClient().create(RetrofitAPI.class).download(url);
         } else {
-            observable = RetrofitClient.getRetrofitDown(HttpConfig.getDefaultConfig())
-                    .create(RetrofitAPI.class).download(url, params);
+            observable = getClient().create(RetrofitAPI.class).download(url, params);
         }
     }
 
-    public void request(final String path, final String name, final DownloadCallBack callback) {
+    public void request(final String path, final String name, final DownloadCallback callback) {
         if (TextUtils.isEmpty(path)) {
-            throw new IllegalArgumentException("this path can not be empty!");
+            throw new IllegalArgumentException("This path can not be empty!");
         }
         if (TextUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("this name can not be empty!");
+            throw new IllegalArgumentException("This name can not be empty!");
         }
         if (callback == null) {
-            throw new NullPointerException("this callback is null!");
+            throw new NullPointerException("This callback must not be null!");
         }
-        init();
+        prepare();
+        requestImpl(observable, config, path, name, callback, tag);
+    }
+
+
+    private static void requestImpl(final Observable observable,
+                                    final HttpConfig config,
+                                    final String path, final String name,
+                                    final DownloadCallback callback,
+                                    final Object tag) {
         DisposableObserver disposableObserver = new DownloadObserver(callback);
-        if (super.tag != null) {
-            ApiManager.get().add(super.tag, disposableObserver);
+        if (tag != null) {
+            ApiManager.get().add(tag, disposableObserver);
         }
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -102,7 +120,7 @@ public class DownloadRequest extends BaseRequest<DownloadRequest> {
                 .subscribe(disposableObserver);
     }
 
-    private void saveFile(FlowableEmitter<? super DownloadModel> sub, File saveFile, ResponseBody resp) {
+    private static void saveFile(FlowableEmitter<? super DownloadModel> sub, File saveFile, ResponseBody resp) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
@@ -144,53 +162,58 @@ public class DownloadRequest extends BaseRequest<DownloadRequest> {
     }
 
     @Override
-    protected DownloadRequest baseUrl(String baseUrl) {
-        return this;
+    public DownloadRequest baseUrl(String baseUrl) {
+        return super.baseUrl(baseUrl);
     }
 
     @Override
-    protected DownloadRequest headers(Map<String, String> headers) {
-        return this;
+    public DownloadRequest headers(Map<String, String> headers) {
+        return super.headers(headers);
     }
 
     @Override
-    protected DownloadRequest connectTimeout(long timeout) {
-        return this;
+    public DownloadRequest headers(HeadersInterceptor.OnHeadInterceptor onHeadInterceptor) {
+        return super.headers(onHeadInterceptor);
     }
 
     @Override
-    protected DownloadRequest readTimeout(long timeout) {
-        return this;
+    public DownloadRequest connectTimeout(long timeout) {
+        return super.connectTimeout(timeout);
     }
 
     @Override
-    protected DownloadRequest writeTimeout(long timeout) {
-        return this;
+    public DownloadRequest readTimeout(long timeout) {
+        return super.readTimeout(timeout);
     }
 
     @Override
-    protected DownloadRequest addInterceptor(Interceptor interceptor) {
-        return this;
+    public DownloadRequest writeTimeout(long timeout) {
+        return super.writeTimeout(timeout);
     }
 
     @Override
-    protected DownloadRequest addNetworkInterceptors(Interceptor interceptor) {
-        return this;
+    public DownloadRequest sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        return super.sslSocketFactory(sslSocketFactory);
     }
 
     @Override
-    protected DownloadRequest sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-        return this;
+    public DownloadRequest addInterceptor(Interceptor interceptor) {
+        return super.addInterceptor(interceptor);
     }
 
     @Override
-    protected DownloadRequest retryCount(int retryCount) {
-        return this;
+    public DownloadRequest addNetworkInterceptors(Interceptor interceptor) {
+        return super.addNetworkInterceptors(interceptor);
     }
 
     @Override
-    protected DownloadRequest retryDelayMillis(long retryDelayMillis) {
-        return this;
+    public DownloadRequest retryCount(int retryCount) {
+        return super.retryCount(retryCount);
+    }
+
+    @Override
+    public DownloadRequest retryDelayMillis(long retryDelayMillis) {
+        return super.retryDelayMillis(retryDelayMillis);
     }
 
     public static class DownloadModel {
@@ -199,94 +222,46 @@ public class DownloadRequest extends BaseRequest<DownloadRequest> {
     }
 
     /**
-     * New
+     * Singleton
      */
-    public static class DownloadRequestF extends DownloadRequest {
+    public static class Singleton extends IRequest<Singleton> {
+        protected Map<String, String> params;
 
-        public DownloadRequestF(String url) {
-            super(url);
-            this.config = HttpConfig.getNewDefaultConfig();
+        public Singleton(String url) {
+            this(url, null);
         }
 
-        public DownloadRequestF(String url, Map<String, String> params) {
-            super(url, params);
-            this.config = HttpConfig.getNewDefaultConfig();
+        public Singleton(String url, Map<String, String> params) {
+            this.url = url;
+            this.params = params;
+            this.config = config != null ? config : HttpConfig.getNewDefault();
         }
 
         @Override
-        protected void init() {
+        protected Retrofit getClient() {
+            return RetrofitClient.getTransfer();
+        }
+
+        private void prepare() {
             if (params == null) {
-                observable = RetrofitClient.getRetrofitDown(config).create(RetrofitAPI.class).download(url);
+                observable = getClient().create(RetrofitAPI.class).download(url);
             } else {
-                observable = RetrofitClient.getRetrofitDown(config).create(RetrofitAPI.class).download(url, params);
+                observable = getClient().create(RetrofitAPI.class).download(url, params);
             }
         }
 
-        @Override
-        public DownloadRequestF tag(Object tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        /******************* Config *******************/
-        @Override
-        public DownloadRequestF baseUrl(String baseUrl) {
-            config.baseUrl(baseUrl);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF headers(Map<String, String> headers) {
-            config.headers(headers);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF connectTimeout(long timeout) {
-            config.connectTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF readTimeout(long timeout) {
-            config.readTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF writeTimeout(long timeout) {
-            config.writeTimeout(timeout);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF addInterceptor(Interceptor interceptor) {
-            config.addInterceptor(interceptor);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF addNetworkInterceptors(Interceptor interceptor) {
-            config.addNetworkInterceptors(interceptor);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-            config.sslSocketFactory(sslSocketFactory);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF retryCount(int retryCount) {
-            config.retryCount(retryCount);
-            return this;
-        }
-
-        @Override
-        public DownloadRequestF retryDelayMillis(long retryDelayMillis) {
-            config.retryDelayMillis(retryDelayMillis);
-            return this;
+        public void request(final String path, final String name, final DownloadCallback callback) {
+            if (TextUtils.isEmpty(path)) {
+                throw new IllegalArgumentException("This path can not be empty!");
+            }
+            if (TextUtils.isEmpty(name)) {
+                throw new IllegalArgumentException("This name can not be empty!");
+            }
+            if (callback == null) {
+                throw new NullPointerException("This callback must not be null!");
+            }
+            prepare();
+            requestImpl(observable, config, path, name, callback, tag);
         }
     }
 }

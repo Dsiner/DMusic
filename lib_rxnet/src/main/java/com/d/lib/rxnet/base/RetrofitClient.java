@@ -3,7 +3,7 @@ package com.d.lib.rxnet.base;
 import android.text.TextUtils;
 
 import com.d.lib.rxnet.interceptor.HeadersInterceptor;
-import com.d.lib.rxnet.util.RxLog;
+import com.d.lib.rxnet.utils.ULog;
 
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -27,72 +27,60 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by D on 2017/7/14.
  */
 public class RetrofitClient {
-    private static Retrofit retrofit;
 
-    /**
-     * Instance - Default Config
-     */
-    public static synchronized Retrofit getInstance() {
-        if (retrofit == null) {
-            synchronized (RetrofitClient.class) {
-                if (retrofit == null) {
-                    retrofit = getRetrofitDefault();
-                }
-            }
-        }
-        return retrofit;
+    private static class Default {
+        private final static Retrofit INSTANCE = getRetrofit(HttpConfig.getDefault(), true);
+    }
+
+    private static class Transfer {
+        private final static Retrofit INSTANCE = getRetrofit(HttpConfig.getDefault(), false);
     }
 
     /**
-     * New - Default Config
+     * Singleton - Default configuration
      */
-    public static Retrofit getRetrofitDefault() {
-        return getRetrofit(HttpConfig.getDefaultConfig(), true);
+    public static Retrofit getDefault() {
+        return Default.INSTANCE;
     }
 
     /**
-     * New - Download Config（no HttpLoggingInterceptor）
+     * Singleton - Default Transfer configuration
      */
-    public static Retrofit getRetrofitDown(HttpConfig config) {
-        return getRetrofit(config, false);
+    public static Retrofit getTransfer() {
+        return Transfer.INSTANCE;
     }
 
     /**
-     * New - Custom Config
-     */
-    public static Retrofit getRetrofit(HttpConfig config) {
-        return getRetrofit(config, true);
-    }
-
-    /**
-     * New - Custom Config
+     * New instance - Custom configuration
      *
-     * @param config: config
-     * @param log:    add HttpLoggingInterceptor?
-     * @return new Retrofit
+     * @param config Configuration
+     * @param log    Whether to add HttpLoggingInterceptor
+     * @return Retrofit
      */
-    private static Retrofit getRetrofit(HttpConfig config, boolean log) {
+    public static Retrofit getRetrofit(HttpConfig config, boolean log) {
         Retrofit retrofit = new Retrofit.Builder()
-                //设置OKHttpClient,如果不设置会提供一个默认的
+                // Set OKHttpClient, if not set, a default will be provided
                 .client(getOkHttpClient(config.headers,
-                        config.connectTimeout != -1 ? config.connectTimeout : HttpConfig.getDefaultConfig().connectTimeout,
-                        config.readTimeout != -1 ? config.readTimeout : HttpConfig.getDefaultConfig().readTimeout,
-                        config.writeTimeout != -1 ? config.writeTimeout : HttpConfig.getDefaultConfig().writeTimeout,
+                        config.onHeadInterceptor,
+                        config.connectTimeout != -1 ? config.connectTimeout : HttpConfig.getDefault().connectTimeout,
+                        config.readTimeout != -1 ? config.readTimeout : HttpConfig.getDefault().readTimeout,
+                        config.writeTimeout != -1 ? config.writeTimeout : HttpConfig.getDefault().writeTimeout,
                         config.sslSocketFactory,
                         config.interceptors,
                         config.networkInterceptors,
                         log))
-                //设置baseUrl
-                .baseUrl(!TextUtils.isEmpty(config.baseUrl) ? config.baseUrl : HttpConfig.getDefaultConfig().baseUrl)
-                //设置rx
+                // Set base url
+                .baseUrl(!TextUtils.isEmpty(config.baseUrl) ? config.baseUrl : HttpConfig.getDefault().baseUrl)
+                // Set RxJava2CallAdapterFactory
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                //添加转换器
+                // Add converter
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit;
     }
 
     private static OkHttpClient getOkHttpClient(Map<String, String> headers,
+                                                HeadersInterceptor.OnHeadInterceptor onHeadInterceptor,
                                                 long connectTimeout,
                                                 long readTimeout,
                                                 long writeTimeout,
@@ -109,8 +97,8 @@ public class RetrofitClient {
             builder.sslSocketFactory(sslSocketFactory);
         }
 
-        if (headers != null && headers.size() > 0) {
-            builder.addInterceptor(new HeadersInterceptor(headers));
+        if (headers != null && headers.size() > 0 || onHeadInterceptor != null) {
+            builder.addInterceptor(new HeadersInterceptor(headers).setOnHeadInterceptor(onHeadInterceptor));
         }
         if (interceptors != null && interceptors.size() > 0) {
             for (Interceptor interceptor : interceptors) {
@@ -134,8 +122,8 @@ public class RetrofitClient {
 
             @Override
             public void log(String s) {
-                //打印retrofit日志
-                RxLog.d(Config.TAG_LOG + s);
+                // Print retrofit log
+                ULog.d(Config.TAG_LOG + s);
             }
         });
         loggingInterceptor.setLevel(Config.LOG_LEVEL);
@@ -145,7 +133,7 @@ public class RetrofitClient {
     private static SSLSocketFactory getSSLSocketFactory() {
         SSLContext sslContext = null;
         try {
-            //取得TrustManagerFactory的X509密钥管理器实例
+            // Get the X509 Key Manager instance of TrustManagerFactory
             final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(
@@ -169,7 +157,7 @@ public class RetrofitClient {
             return sslContext.getSocketFactory();
         } catch (Exception e) {
             e.printStackTrace();
-            RxLog.e("SslContextFactory:" + e.getMessage());
+            ULog.e("SslContextFactory: " + e.getMessage());
             return null;
         }
     }

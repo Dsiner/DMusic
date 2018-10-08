@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 /**
- * 请求头封装
+ * Request header package
  */
 public class HttpHeaders implements Serializable {
     private static final String FORMAT_HTTP_DATA = "EEE, dd MMM y HH:mm:ss 'GMT'";
@@ -143,7 +143,7 @@ public class HttpHeaders implements Serializable {
     }
 
     public static String getCacheControl(String cacheControl, String pragma) {
-        // first http1.1, second http1.0
+        // First http1.1, second http1.0
         if (cacheControl != null) return cacheControl;
         else if (pragma != null) return pragma;
         else return null;

@@ -14,7 +14,7 @@ import okio.GzipSink;
 import okio.Okio;
 
 /**
- * 包含Gzip压缩的请求拦截
+ * Request interception with Gzip compression
  */
 public class GzipRequestInterceptor implements Interceptor {
     @Override

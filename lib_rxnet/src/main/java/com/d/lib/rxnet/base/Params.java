@@ -16,7 +16,8 @@ public class Params extends LinkedHashMap<String, String> {
     }
 
     public void addParam(String key, String value) {
-        put(key, value == null ? "" : value);//Retrofit2的FeildMap不允许value为空
+        // Retrofit2's FeildMap does not allow value to be null
+        put(key, value == null ? "" : value);
     }
 
     public String getParam(String key) {

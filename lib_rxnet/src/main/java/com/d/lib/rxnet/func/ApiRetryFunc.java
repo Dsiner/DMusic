@@ -1,8 +1,8 @@
 package com.d.lib.rxnet.func;
 
 import com.d.lib.rxnet.base.HttpConfig;
-import com.d.lib.rxnet.util.RxLog;
-import com.d.lib.rxnet.util.RxUtil;
+import com.d.lib.rxnet.utils.ULog;
+import com.d.lib.rxnet.utils.Util;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -21,21 +21,21 @@ public class ApiRetryFunc implements Function<Observable<? extends Throwable>, O
     private int retryCount;
 
     public ApiRetryFunc(int maxRetries, long retryDelayMillis) {
-        this.maxRetries = maxRetries != -1 ? maxRetries : HttpConfig.getDefaultConfig().retryCount;
-        this.retryDelayMillis = retryDelayMillis != -1 ? retryDelayMillis : HttpConfig.getDefaultConfig().retryDelayMillis;
+        this.maxRetries = maxRetries != -1 ? maxRetries : HttpConfig.getDefault().retryCount;
+        this.retryDelayMillis = retryDelayMillis != -1 ? retryDelayMillis : HttpConfig.getDefault().retryDelayMillis;
     }
 
     @Override
     public Observable<?> apply(Observable<? extends Throwable> observable) throws Exception {
-        RxUtil.printThread("RxNet_theard retryInit: ");
+        Util.printThread("RxNet_theard retryInit");
 
         return observable.flatMap(new Function<Throwable, ObservableSource<?>>() {
             @Override
             public ObservableSource<?> apply(Throwable throwable) throws Exception {
-                RxUtil.printThread("RxNet_theard retryApply: ");
+                Util.printThread("RxNet_theard retryApply");
                 if (++retryCount <= maxRetries && (throwable instanceof SocketTimeoutException
                         || throwable instanceof ConnectException)) {
-                    RxLog.d("get response data error, it will try after " + retryDelayMillis
+                    ULog.d("Get response data error, it will try after " + retryDelayMillis
                             + " millisecond, retry count " + retryCount + "/" + maxRetries);
                     return Observable.timer(retryDelayMillis, TimeUnit.MILLISECONDS);
                 }

@@ -6,7 +6,7 @@ import com.d.lib.common.component.loader.IAbsView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.listener.SimpleCallBack;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.BillModel;
 import com.d.music.online.model.BillRespModel;
@@ -28,7 +28,7 @@ public class BillPresenter extends MvpBasePresenter<IAbsView<BillModel>> {
         params.addParam(API.BaiduBill.kflag, "" + 2);
         params.addParam(API.BaiduBill.format, "json");
         RxNet.get(API.BaiduBill.rtpType, params)
-                .request(new SimpleCallBack<BillRespModel>() {
+                .request(new SimpleCallback<BillRespModel>() {
                     @Override
                     public void onSuccess(BillRespModel response) {
                         if (getView() == null) {

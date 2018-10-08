@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.d.commenplayer.media.IjkVideoView
+    <com.d.lib.commenplayer.media.IjkVideoView
         android:id="@+id/ijkplayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.d.commenplayer.ui.TouchLayout
+    <com.d.lib.commenplayer.ui.TouchLayout
         android:id="@+id/tl_touch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.d.commenplayer.ui.ControlLayout
+    <com.d.lib.commenplayer.ui.ControlLayout
         android:id="@+id/cl_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
