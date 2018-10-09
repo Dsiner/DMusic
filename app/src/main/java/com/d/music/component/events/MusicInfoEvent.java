@@ -5,7 +5,6 @@ package com.d.music.component.events;
  * Created by D on 2016/6/6.
  */
 public class MusicInfoEvent {
-    public final static int TYPE_STATE = 0;
     public final static int TYPE_LRC = 1;
 
     public int type;

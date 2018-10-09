@@ -21,6 +21,7 @@ import com.d.music.App;
 import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
+import com.d.music.component.cache.LrcCache;
 import com.d.music.component.events.MusicInfoEvent;
 import com.d.music.component.events.ProgressEvent;
 import com.d.music.component.greendao.bean.MusicModel;
@@ -239,7 +240,10 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         final int status = control.getStatus();
         if (mediaManager != null && (status == Constants.PlayStatus.PLAY_STATUS_PLAYING
                 || status == Constants.PlayStatus.PLAY_STATUS_PAUSE)) {
-            mPresenter.getLrcRows(control.getModel());
+            LrcCache.with(mContext).load(control.getModel())
+                    .placeholder("")
+                    .error("")
+                    .into(lrc);
         }
     }
 
@@ -386,11 +390,6 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         }
     }
 
-    @Override
-    public void setLrcRows(List<LrcRow> lrcRows, int currentPosition) {
-        lrc.setLrcRows(lrcRows, currentPosition);
-    }
-
     private void setProgress(int currentPosition, int duration) {
         seekBar.setMax(duration);
         seekBar.setProgress(currentPosition);
@@ -416,15 +415,14 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
         if (event == null || isFinishing() || mPresenter == null || !mPresenter.isViewAttached()) {
             return;
         }
-        if (event.type == MusicInfoEvent.TYPE_STATE) {
-            final MusicModel model = control.getModel();
-            tvTitle.setText(model != null ? model.songName : "");
-            resetFav(model != null ? model.isCollected : false);
-            mPresenter.getLrcRows(model);
-            togglePlay(model != null && event.status == Constants.PlayStatus.PLAY_STATUS_PLAYING);
-        } else if (event.type == MusicInfoEvent.TYPE_LRC) {
-            mPresenter.getLrcRows(control.getModel());
-        }
+        final MusicModel model = control.getModel();
+        tvTitle.setText(model != null ? model.songName : "");
+        resetFav(model != null ? model.isCollected : false);
+        LrcCache.with(mContext).load(model)
+                .placeholder("")
+                .error("")
+                .into(lrc);
+        togglePlay(model != null && event.status == Constants.PlayStatus.PLAY_STATUS_PLAYING);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

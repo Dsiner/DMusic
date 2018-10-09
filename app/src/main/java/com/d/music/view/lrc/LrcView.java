@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.widget.Scroller;
 
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
+import com.d.music.common.Constants;
+import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaPlayerManager;
+import com.d.music.utils.FileUtil;
 import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.ref.WeakReference;
@@ -26,7 +31,8 @@ import java.util.List;
  * https://github.com/android-lili/CustomLrcView-master
  * Edited by D on 2017/5/16.
  */
-public class LrcView extends View implements ILrcView {
+public class LrcView extends View implements ILrcView,
+        com.d.music.component.cache.listener.LrcView {
     private final String DEFAULT_TEXT = "畅音乐，享自由";
     /***移动一句歌词的持续时间***/
     private final int DURATION_AUTO_SCROLL = 1500;
@@ -79,6 +85,23 @@ public class LrcView extends View implements ILrcView {
 
     private OnClickListener mOnClickListener;
     private OnSeekChangeListener mOnSeekChangeListener;
+
+    @Override
+    public void setLrc(String lrc) {
+        if (TextUtils.isEmpty(lrc) || !FileUtil.isFileExist(lrc)) {
+            setLrcRows(new ArrayList<LrcRow>(), 0);
+            return;
+        }
+        List<LrcRow> lrcRows = DefaultLrcParser.getLrcRows(lrc);
+        MediaControler control = MediaControler.getIns(mContext);
+        MediaPlayerManager mediaManager = control.getMediaManager();
+        final int status = control.getStatus();
+        if (mediaManager != null && (status == Constants.PlayStatus.PLAY_STATUS_PLAYING
+                || status == Constants.PlayStatus.PLAY_STATUS_PAUSE)) {
+            final int currentPosition = mediaManager.getCurrentPosition();
+            setLrcRows(lrcRows, currentPosition);
+        }
+    }
 
     static class UpdateListener implements ValueAnimator.AnimatorUpdateListener {
         private final WeakReference<LrcView> reference;

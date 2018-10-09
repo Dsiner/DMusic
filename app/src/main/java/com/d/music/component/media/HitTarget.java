@@ -15,8 +15,8 @@ public class HitTarget {
 
     @NonNull
     public static String hitLrc(MusicModel model) {
+        final String filePostfix = ".lrc";
         String tempPath = "";
-        String filePostfix = ".lrc";
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
             tempPath = model.lrcUrl;
         }
@@ -29,13 +29,16 @@ public class HitTarget {
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
             tempPath = Constants.Path.cache + model.songName + filePostfix;
         }
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = "";
+        }
         return tempPath;
     }
 
     @NonNull
     public static String hitSong(MusicModel model) {
+        final String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix : ".mp3";
         String tempPath = "";
-        String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix : ".mp3";
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
             tempPath = model.url;
         }
@@ -47,6 +50,9 @@ public class HitTarget {
         }
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
             tempPath = Constants.Path.cache + model.songName + filePostfix;
+        }
+        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+            tempPath = "";
         }
         return tempPath;
     }

@@ -3,7 +3,6 @@ package com.d.music.play.view;
 
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.view.lrc.LrcRow;
 
 import java.util.List;
 
@@ -13,6 +12,4 @@ import java.util.List;
  */
 public interface IPlayView extends MvpView {
     void overLoad(List<MusicModel> list);
-
-    void setLrcRows(List<LrcRow> lrcRows, int currentPosition);
 }

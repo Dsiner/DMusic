@@ -4,20 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
-import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.dialog.AbsSheetDialog;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.DownloadCallback;
-import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.api.API;
-import com.d.music.common.Constants;
 import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.media.controler.MediaControler;
-import com.d.music.online.model.SongInfoRespModel;
+import com.d.music.transfer.manager.TransferManager;
 import com.d.music.view.dialog.OperationDialog;
 
 import java.util.ArrayList;
@@ -54,7 +47,7 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
                             @Override
                             public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
                                 if (bean.type == OperationDialog.Bean.TYPE_DOWNLOAD) {
-                                    download1(item);
+                                    TransferManager.getIns().optSong().add(item);
                                 }
                             }
 
@@ -65,57 +58,5 @@ public class DetailAdapter extends CommonAdapter<MusicModel> {
                         });
             }
         });
-    }
-
-    private void download1(final MusicModel model) {
-        Params params = new Params(API.SongInfo.rtpType);
-        params.addParam(API.SongInfo.songIds, model.songId);
-        RxNet.get(API.SongInfo.rtpType, params)
-                .request(new SimpleCallback<SongInfoRespModel>() {
-                    @Override
-                    public void onSuccess(SongInfoRespModel response) {
-                        if (response.data == null || response.data.songList == null
-                                || response.data.songList.size() <= 0) {
-                            return;
-                        }
-                        SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
-                        // Download song
-                        download2(song.songLink, Constants.Path.song, song.songName + "." + song.format);
-                        // Download lrc
-                        download2(song.lrcLink, Constants.Path.lyric, song.songName + ".lrc");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
-    }
-
-    private void download2(String url, String path, String name) {
-        RxNet.download(url)
-                .connectTimeout(60 * 1000)
-                .readTimeout(60 * 1000)
-                .writeTimeout(60 * 1000)
-                .retryCount(3)
-                .retryDelayMillis(1000)
-                .tag(path + name)
-                .request(path, name, new DownloadCallback() {
-
-                    @Override
-                    public void onProgress(long currentLength, long totalLength) {
-                        ULog.d("dsiner_request onProgresss: --> download: " + currentLength + " total: " + totalLength);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ULog.d("dsiner_request onError " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        ULog.d("dsiner_request onComplete:");
-                    }
-                });
     }
 }

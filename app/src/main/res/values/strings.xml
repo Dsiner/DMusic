@@ -95,6 +95,8 @@
     <!-- Module_Transfer -->
     <string name="module_common_transfer_downloading">Downloading</string>
     <string name="module_common_transfer_downloaded">Downloaded</string>
+    <string name="module_common_transfer_pause_all">Pause all</string>
+    <string name="module_common_transfer_clear_task">Clear task</string>
 
     <!-- Module_Play -->
     <string name="module_common_song_info">Song info</string>

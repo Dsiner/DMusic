@@ -3,8 +3,8 @@ package com.d.music.utils;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.d.music.local.model.FileModel;
 import com.d.music.component.media.media.MusicFactory;
+import com.d.music.local.model.FileModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -217,5 +217,16 @@ public class FileUtil {
     public static boolean isFileExist(String path) {
         File file = new File(path);
         return file.exists();
+    }
+
+    public static boolean renameFile(String path, String dest) {
+        File oldFile = new File(path);
+        File destFile = new File(dest);
+        return oldFile.exists() && !destFile.exists() && oldFile.renameTo(destFile);
+    }
+
+    public static boolean deleteFile(String path) {
+        File file = new File(path);
+        return file.exists() && file.delete();
     }
 }

@@ -32,8 +32,8 @@ public class TransferActivity extends AbsFragmentActivity {
     @Override
     protected List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new TransferFragment());
-        fragments.add(new TransferFragment());
+        fragments.add(TransferFragment.getFragment(TransferFragment.TYPE_SONG));
+        fragments.add(TransferFragment.getFragment(TransferFragment.TYPE_MV));
         return fragments;
     }
 

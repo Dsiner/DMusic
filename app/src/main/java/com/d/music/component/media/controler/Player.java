@@ -5,23 +5,14 @@ import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.util.SparseArray;
 
+import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.lib.common.utils.Util;
-import com.d.lib.common.utils.log.ULog;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.DownloadCallback;
-import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.R;
-import com.d.music.api.API;
-import com.d.music.common.Constants;
-import com.d.music.component.events.MusicInfoEvent;
+import com.d.music.component.cache.LinkCache;
+import com.d.music.component.cache.SongCache;
 import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.media.HitTarget;
-import com.d.music.online.model.SongInfoRespModel;
-import com.d.music.utils.FileUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,10 +32,38 @@ public class Player {
     public final static int STATE_STOP = 6;
 
     private Context mContext;
+    /**
+     * Map used to store Player' tags.
+     */
+    private SparseArray<Object> mKeyedTags;
     private List<Action> mActions = new ArrayList<>();
-    private MediaPlayerManager mMediaPlayerManager;
+    public MediaPlayerManager mMediaPlayerManager;
     private Presenter mPresenter;
-    private MediaPlayerManager.OnMediaPlayerListener mListener;
+    public MediaPlayerManager.OnMediaPlayerListener mListener;
+
+    public Object getTag(int key) {
+        if (mKeyedTags != null) return mKeyedTags.get(key);
+        return null;
+    }
+
+    public void setTag(int key, final Object tag) {
+        // If the package id is 0x00 or 0x01, it's either an undefined package
+        // or a framework id
+        if ((key >>> 24) < 2) {
+            throw new IllegalArgumentException("The key must be an application-specific "
+                    + "resource id.");
+        }
+
+        setKeyedTag(key, tag);
+    }
+
+    private void setKeyedTag(int key, Object tag) {
+        if (mKeyedTags == null) {
+            mKeyedTags = new SparseArray<Object>(2);
+        }
+
+        mKeyedTags.put(key, tag);
+    }
 
     public boolean isPlaying() {
         return mMediaPlayerManager.isPlaying();
@@ -134,7 +153,7 @@ public class Player {
     }
 
     @UiThread
-    private void playImpl(final String url, final boolean next) {
+    public void playImpl(final String url, final boolean next) {
         mMediaPlayerManager.play(url, new MediaPlayerManager.OnMediaPlayerListener() {
             @Override
             public void onLoading(MediaPlayer mp, String url) {
@@ -194,7 +213,7 @@ public class Player {
     }
 
     @UiThread
-    private boolean pop() {
+    public boolean pop() {
         Action ac = mActions.size() > 1 ? mActions.get(mActions.size() - 1) : null;
         mActions.clear();
         if (ac != null) {
@@ -228,112 +247,30 @@ public class Player {
             if (getView() == null) {
                 return;
             }
-            String path = HitTarget.hitSong(model);
-            if (FileUtil.isFileExist(path)) {
-                getView().playImpl(path, next);
-                return;
-            }
+            LinkCache.with(mContext).load(model).listener(getView(), new CacheListener<String>() {
+                @Override
+                public void onLoading() {
 
-            Params params = new Params(API.SongInfo.rtpType);
-            params.addParam(API.SongInfo.songIds, model.songId);
-            RxNet.get(API.SongInfo.rtpType, params)
-                    .request(new SimpleCallback<SongInfoRespModel>() {
-                        @Override
-                        public void onSuccess(SongInfoRespModel response) {
-                            if (getView() == null) {
-                                return;
-                            }
-                            if (response.data == null || response.data.songList == null
-                                    || response.data.songList.size() <= 0) {
-                                onError(new Exception("Get baidu request error."));
-                                return;
-                            }
-                            SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
-                            getView().playImpl(song.songLink, next);
-                            // Download song
-                            downloadSong(model, song.songLink, Constants.Path.cache, song.songName + "." + song.format);
-                            // Download lrc
-                            downloadLrc(model, song.lrcLink, Constants.Path.lyric, song.songName + ".lrc");
-                        }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if (getView() == null) {
-                                return;
-                            }
-                            if (getView().pop()) {
-                                return;
-                            }
-                            if (getView().mListener != null) {
-                                getView().mListener.onError(getView().mMediaPlayerManager.getMediaPlayer(), "");
-                            }
-                            Util.toast(mContext, mContext.getResources().getString(R.string.lib_pub_net_error));
-                        }
-                    });
-        }
+                @Override
+                public void onSuccess(String result) {
+                    model.url = result;
+                    getView().playImpl(model.url, next);
+                }
 
-        private void downloadSong(final MusicModel model, final String url, final String path, final String name) {
-            if (FileUtil.isFileExist(path + name)) {
-                return;
-            }
-            RxNet.download(url)
-                    .connectTimeout(60 * 1000)
-                    .readTimeout(60 * 1000)
-                    .writeTimeout(60 * 1000)
-                    .retryCount(3)
-                    .retryDelayMillis(1000)
-                    .tag(path + name)
-                    .request(path, name, new DownloadCallback() {
-
-                        @Override
-                        public void onProgress(long currentLength, long totalLength) {
-                            ULog.d("dsiner_request onProgresss: --> download: " + currentLength + " total: " + totalLength);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ULog.d("dsiner_request onError " + e.getMessage());
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            ULog.d("dsiner_request onComplete:");
-                        }
-                    });
-        }
-
-        private void downloadLrc(final MusicModel model, final String url, final String path, final String name) {
-            if (FileUtil.isFileExist(path + name)) {
-                return;
-            }
-            RxNet.download(url)
-                    .connectTimeout(60 * 1000)
-                    .readTimeout(60 * 1000)
-                    .writeTimeout(60 * 1000)
-                    .retryCount(3)
-                    .retryDelayMillis(1000)
-                    .tag(path + name)
-                    .request(path, name, new DownloadCallback() {
-
-                        @Override
-                        public void onProgress(long currentLength, long totalLength) {
-                            ULog.d("dsiner_request onProgresss: --> download: " + currentLength + " total: " + totalLength);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ULog.d("dsiner_request onError " + e.getMessage());
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            ULog.d("dsiner_request onComplete:");
-                            model.lrcUrl = path + name;
-                            MusicInfoEvent event = new MusicInfoEvent();
-                            event.type = MusicInfoEvent.TYPE_LRC;
-                            EventBus.getDefault().post(event);
-                        }
-                    });
+                @Override
+                public void onError(Throwable e) {
+                    if (getView().pop()) {
+                        return;
+                    }
+                    if (getView().mListener != null) {
+                        getView().mListener.onError(getView().mMediaPlayerManager.getMediaPlayer(), "");
+                    }
+                    Util.toast(mContext, mContext.getResources().getString(R.string.lib_pub_net_error));
+                }
+            });
+            SongCache.with(mContext).load(model).into(getView());
         }
     }
 }

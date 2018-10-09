@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.d.lib.common.component.cache.Cache;
+import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
 import com.d.lib.common.component.netstate.NetCompat;
 import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.component.greendao.util.AppDBUtil;
@@ -34,6 +37,23 @@ public class App extends Application {
         SkinUtil.initSkin(getApplicationContext());
         // 网络监听
         NetCompat.init(getApplicationContext());
+        // Cache
+        Cache.setThreadPool(new ThreadPool() {
+            @Override
+            public void executeMain(Runnable r) {
+                TaskScheduler.executeMain(r);
+            }
+
+            @Override
+            public void executeTask(Runnable r) {
+                TaskScheduler.executeTask(r);
+            }
+
+            @Override
+            public void executeNew(Runnable r) {
+                TaskScheduler.executeNew(r);
+            }
+        });
     }
 
     /**

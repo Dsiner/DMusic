@@ -95,6 +95,8 @@
     <!-- Module_Transfer -->
     <string name="module_common_transfer_downloading">正在下载</string>
     <string name="module_common_transfer_downloaded">已下载</string>
+    <string name="module_common_transfer_pause_all">全部暂停</string>
+    <string name="module_common_transfer_clear_task">清空任务</string>
 
     <!-- Module_Play -->
     <string name="module_common_song_info">歌曲信息</string>

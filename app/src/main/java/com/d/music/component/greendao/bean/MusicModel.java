@@ -34,15 +34,15 @@ public class MusicModel extends BaseModel {
     /**
      * Extra: Not in the database
      */
-    // 附加属性：是否选中
+    // Extra properties: Whether it is selected
     public boolean exIsChecked = false;
-    // 附加属性：是否排序选中
+    // Extra properties: Whether it is selected when sorting
     public boolean exIsSortChecked = false;
-    // 附加属性：Section首字母
+    // Extra properties: Section initials
     public String exLetter;
-    // 附加属性：内容全拼音
+    // Extra properties: Full pinyin
     public String exPinyin;
-    // 附加属性：是否是section第一条
+    // Extra properties: Is it the first section?
     public boolean exIsLetter;
 
     public MusicModel() {
