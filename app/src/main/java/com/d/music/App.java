@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.d.lib.common.component.cache.Cache;
 import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
@@ -29,17 +30,34 @@ import java.util.concurrent.Executors;
 public class App extends Application {
     public static final String TAG_EXIT = "tag_exit";
 
+    /**
+     * The context of the single, global Application object
+     */
+    private static Application INSTANCE;
+
+    /**
+     * Return the context of the single, global Application object of the
+     * current process.  This generally should only be used if you need a
+     * Context whose lifecycle is separate from the current context, that is
+     * tied to the lifetime of the process rather than the current component.
+     */
+    @NonNull
+    public static Context getContext() {
+        return INSTANCE;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        INSTANCE = this;
         // 初始化数据库
-        AppDBUtil.getIns(getApplicationContext());
+        AppDBUtil.getIns(getContext());
         // 防双击间隔设置
         ClickFast.setDelayTime(350);
         // 加载皮肤
-        SkinUtil.initSkin(getApplicationContext());
+        SkinUtil.initSkin(getContext());
         // 网络监听
-        NetCompat.init(getApplicationContext());
+        NetCompat.init(getContext());
         // Cache
         Cache.setThreadPool(new ThreadPool() {
             /**
