@@ -2,7 +2,6 @@ package com.d.music.online.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -199,19 +198,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
         dslDs.setState(DSLayout.GONE);
         xrvList.setVisibility(View.VISIBLE);
         commonLoader.addTop(info);
-
-        MVInfoModel model = (MVInfoModel) info;
-        String url = model.brs._$480;
-        if (TextUtils.isEmpty(url)) {
-            url = model.brs._$720;
-        }
-        if (TextUtils.isEmpty(url)) {
-            url = model.brs._$1080;
-        }
-        if (TextUtils.isEmpty(url)) {
-            url = model.brs._$240;
-        }
-        player.play(url);
+        player.play(MVInfoModel.getUrl((MVInfoModel) info));
     }
 
     @Override

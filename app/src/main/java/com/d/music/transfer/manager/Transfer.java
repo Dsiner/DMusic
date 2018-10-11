@@ -22,6 +22,7 @@ import com.d.music.utils.FileUtil;
  */
 public class Transfer {
     public final static String PREFIX_SONG = ".mp3";
+    public final static String PREFIX_MV = ".mp4";
     public final static String PREFIX_LRC = ".lrc";
     public final static String PREFIX_DOWNLOAD = ".download";
 
@@ -120,6 +121,68 @@ public class Transfer {
         final String url = model.url;
         final String name = model.songName + "." + model.filePostfix;
         final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
+        RxNet.download(url)
+                .connectTimeout(60 * 1000)
+                .readTimeout(60 * 1000)
+                .writeTimeout(60 * 1000)
+                .retryCount(3)
+                .retryDelayMillis(1000)
+                .tag(model.type + model.songId)
+                .request(path, cache, new DownloadCallback() {
+
+                    @Override
+                    public void onProgress(long currentLength, long totalLength) {
+                        ULog.d("dsiner_request--> onProgresss download: " + currentLength + " total: " + totalLength);
+                        if (model instanceof TransferModel) {
+                            TransferModel transferModel = (TransferModel) model;
+                            transferModel.state = TransferModel.STATE_PROGRESS;
+                            if (transferModel.downloadCallback != null) {
+                                transferModel.downloadCallback.onProgress(currentLength, totalLength);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ULog.d("dsiner_request--> onError: " + e.getMessage());
+                        ApiManager.get().remove(model.type + model.songId);
+                        FileUtil.deleteFile(path + cache);
+                        if (model instanceof TransferModel) {
+                            TransferModel transferModel = (TransferModel) model;
+                            transferModel.state = TransferModel.STATE_ERROR;
+                            if (transferModel.downloadCallback != null) {
+                                transferModel.downloadCallback.onError(e);
+                            }
+                        }
+                        if (callback != null) {
+                            callback.onError(model, e);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ULog.d("dsiner_request--> onComplete");
+                        ApiManager.get().remove(model.type + model.songId);
+                        FileUtil.renameFile(path + cache, path + name);
+                        if (model instanceof TransferModel) {
+                            TransferModel transferModel = (TransferModel) model;
+                            transferModel.state = TransferModel.STATE_DONE;
+                            if (transferModel.downloadCallback != null) {
+                                transferModel.downloadCallback.onComplete();
+                            }
+                        }
+                        if (callback != null) {
+                            callback.onSecond(model);
+                        }
+                    }
+                });
+    }
+
+    public static <T extends MusicModel> void downloadMV(final T model, final OnTransferCallback<T> callback) {
+        final String path = Constants.Path.mv;
+        final String url = model.url;
+        final String name = model.songName + PREFIX_MV;
+        final String cache = model.songName + PREFIX_MV + PREFIX_DOWNLOAD;
         RxNet.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)

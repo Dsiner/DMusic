@@ -92,6 +92,8 @@
     <string name="module_common_related_version">相关版本</string>
     <string name="module_common_comment">评论</string>
 
+    <string name="module_common_mv_traffic_prompt">MV下载可能会耗费大量的移动流量, 是否确定?</string>
+
     <!-- Module_Transfer -->
     <string name="module_common_transfer_downloading">正在下载</string>
     <string name="module_common_transfer_downloaded">已下载</string>

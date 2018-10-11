@@ -2,6 +2,7 @@ package com.d.music.transfer.manager.pipe;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
+import android.text.TextUtils;
 
 import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.greendao.bean.TransferModel;
@@ -47,14 +48,26 @@ public abstract class Pipe {
     @UiThread
     public void add(MusicModel item) {
         TransferModel model = new TransferModel();
+        model.type = item.type;
+        model.viewType = item instanceof TransferModel ? ((TransferModel) item).viewType
+                : TransferModel.VIEW_TYPE_SONG;
         model.songId = item.songId;
         model.url = item.url;
         model.songName = item.songName;
         model.artistId = item.artistId;
         model.artistName = item.artistName;
+        model.albumId = item.albumId;
+        model.albumUrl = item.albumUrl;
         model.fileFolder = item.fileFolder;
         model.fileFolder = item.filePostfix;
 
+        for (int i = 0; i < mList.size(); i++) {
+            TransferModel transfer = mList.get(i);
+            if (transfer.type.equals(model.type)
+                    && TextUtils.equals(transfer.songId, model.songId)) {
+                return;
+            }
+        }
         mDownloading.add(model);
         mList.add(model);
     }

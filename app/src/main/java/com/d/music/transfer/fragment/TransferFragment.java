@@ -89,6 +89,8 @@ public class TransferFragment extends AbsLazyFragment<TransferModel, TransferPre
                                 return R.layout.module_transfer_adapter_head_downloading;
                             case TransferModel.VIEW_TYPE_HEAD_DONE:
                                 return R.layout.module_transfer_adapter_head_downloaded;
+                            case TransferModel.VIEW_TYPE_MV:
+                                return R.layout.module_transfer_adapter_mv;
                             default:
                                 return R.layout.module_transfer_adapter_song;
                         }
@@ -106,7 +108,9 @@ public class TransferFragment extends AbsLazyFragment<TransferModel, TransferPre
         initHead();
         xrvList.setCanRefresh(false);
         xrvList.setCanLoadMore(false);
-        xrvList.addHeaderView(header);
+        if (type == TYPE_SONG) {
+            xrvList.addHeaderView(header);
+        }
         super.initList();
     }
 
@@ -135,7 +139,7 @@ public class TransferFragment extends AbsLazyFragment<TransferModel, TransferPre
 
     @Override
     public void setData(List<TransferModel> datas) {
-        header.setVisibility(datas.size() > 0 ? View.VISIBLE : View.GONE);
+        header.setVisibility(type == TYPE_SONG && datas.size() > 0 ? View.VISIBLE : View.GONE);
         super.setData(datas);
     }
 

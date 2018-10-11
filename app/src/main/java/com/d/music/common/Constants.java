@@ -21,6 +21,7 @@ public class Constants {
         public final static String glide_cache = "/image_cache";
         public final static String download = path + "download/";
         public final static String song = path + "song/";
+        public final static String mv = path + "mv/";
         public final static String lyric = path + "lyric/";
     }
 

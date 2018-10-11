@@ -1,5 +1,8 @@
 package com.d.music.online.model;
 
+import android.text.TextUtils;
+
+import com.d.music.component.greendao.bean.TransferModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -53,6 +56,33 @@ public class MVInfoModel extends MVDetailModel {
     public boolean isReward;
     public String commentThreadId;
     public List<ArtistsBean> artists;
+
+    public static TransferModel convertToTransfer(MVInfoModel model) {
+        TransferModel transferModel = new TransferModel();
+        transferModel.type = TransferModel.TYPE_TRANSFER_MV;
+        transferModel.viewType = TransferModel.VIEW_TYPE_MV;
+        transferModel.songId = "" + model.id;
+        transferModel.url = getUrl(model);
+        transferModel.songName = model.name;
+        transferModel.artistName = model.artistName;
+        transferModel.albumId = "" + model.coverId;
+        transferModel.albumUrl = model.cover;
+        return transferModel;
+    }
+
+    public static String getUrl(MVInfoModel model) {
+        String url = model.brs._$480;
+        if (TextUtils.isEmpty(url)) {
+            url = model.brs._$720;
+        }
+        if (TextUtils.isEmpty(url)) {
+            url = model.brs._$1080;
+        }
+        if (TextUtils.isEmpty(url)) {
+            url = model.brs._$240;
+        }
+        return !TextUtils.isEmpty(url) ? url : "";
+    }
 
     public MVInfoModel() {
         this.view_type = TYPE_INFO;

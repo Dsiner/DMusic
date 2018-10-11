@@ -92,6 +92,8 @@
     <string name="module_common_related_version">Related version</string>
     <string name="module_common_comment">Comment</string>
 
+    <string name="module_common_mv_traffic_prompt">MV downloads may consume a lot of mobile traffic, is it ok?</string>
+
     <!-- Module_Transfer -->
     <string name="module_common_transfer_downloading">Downloading</string>
     <string name="module_common_transfer_downloaded">Downloaded</string>

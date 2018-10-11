@@ -1,11 +1,14 @@
 package com.d.music.online.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.component.glide.GlideCircleTransform;
+import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
@@ -14,6 +17,7 @@ import com.d.music.online.model.MVCommentModel;
 import com.d.music.online.model.MVDetailModel;
 import com.d.music.online.model.MVInfoModel;
 import com.d.music.online.model.MVSimilarModel;
+import com.d.music.transfer.manager.TransferManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,6 +70,22 @@ public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
         holder.setText(R.id.tv_mv_info_sub_count, "" + item.subCount);
         holder.setText(R.id.tv_mv_info_comment_count, "" + item.commentCount);
         holder.setText(R.id.tv_mv_info_share_count, "" + item.shareCount);
+
+        holder.setViewOnClickListener(R.id.llyt_mv_info_sub_count, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialogFactory.createFactory(mContext)
+                        .getAlertDialog("", mContext.getResources().getString(R.string.module_common_mv_traffic_prompt),
+                                mContext.getResources().getString(R.string.lib_pub_ok),
+                                mContext.getResources().getString(R.string.lib_pub_cancel),
+                                new AlertDialogFactory.OnClickListener() {
+                                    @Override
+                                    public void onClick(AlertDialog dlg, View v) {
+                                        TransferManager.getIns().optMV().add(MVInfoModel.convertToTransfer(item));
+                                    }
+                                }, null);
+            }
+        });
     }
 
     private void convertSimilar(final int position, final CommonHolder holder, final MVSimilarModel item) {
