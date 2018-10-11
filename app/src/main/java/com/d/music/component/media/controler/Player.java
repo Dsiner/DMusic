@@ -31,15 +31,15 @@ public class Player {
     public final static int STATE_NEXT = 5;
     public final static int STATE_STOP = 6;
 
-    private Context mContext;
     /**
      * Map used to store Player' tags.
      */
     private SparseArray<Object> mKeyedTags;
+    private Context mContext;
     private List<Action> mActions = new ArrayList<>();
-    public MediaPlayerManager mMediaPlayerManager;
+    private MediaPlayerManager mMediaPlayerManager;
     private Presenter mPresenter;
-    public MediaPlayerManager.OnMediaPlayerListener mListener;
+    private MediaPlayerManager.OnMediaPlayerListener mListener;
 
     public Object getTag(int key) {
         if (mKeyedTags != null) return mKeyedTags.get(key);
@@ -146,14 +146,14 @@ public class Player {
     private void play(final MusicModel model, final boolean next) {
         mMediaPlayerManager.reset();
         if (model.type == MusicModel.TYPE_LOCAL) {
-            playImpl(model.url, next);
-        } else if (model.type == MusicModel.TYPE_BAIDU) {
-            mPresenter.getBaidu(model, next);
+            playLocal(model.url, next);
+        } else {
+            mPresenter.playLink(model, next);
         }
     }
 
     @UiThread
-    public void playImpl(final String url, final boolean next) {
+    public void playLocal(final String url, final boolean next) {
         mMediaPlayerManager.play(url, new MediaPlayerManager.OnMediaPlayerListener() {
             @Override
             public void onLoading(MediaPlayer mp, String url) {
@@ -243,10 +243,17 @@ public class Player {
             this.mViewRef = new WeakReference<>(player);
         }
 
-        private void getBaidu(@NonNull final MusicModel model, final boolean next) {
+        private void playLink(@NonNull final MusicModel model, final boolean next) {
+            if (model.type == MusicModel.TYPE_BAIDU) {
+                playLinkBaiduImp(model, next);
+            }
+        }
+
+        private void playLinkBaiduImp(@NonNull final MusicModel model, final boolean next) {
             if (getView() == null) {
                 return;
             }
+            SongCache.with(mContext).load(model).into(getView());
             LinkCache.with(mContext).load(model).listener(getView(), new CacheListener<String>() {
                 @Override
                 public void onLoading() {
@@ -255,12 +262,17 @@ public class Player {
 
                 @Override
                 public void onSuccess(String result) {
-                    model.url = result;
-                    getView().playImpl(model.url, next);
+                    if (getView() == null) {
+                        return;
+                    }
+                    getView().playLocal(result, next);
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    if (getView() == null) {
+                        return;
+                    }
                     if (getView().pop()) {
                         return;
                     }
@@ -270,7 +282,6 @@ public class Player {
                     Util.toast(mContext, mContext.getResources().getString(R.string.lib_pub_net_error));
                 }
             });
-            SongCache.with(mContext).load(model).into(getView());
         }
     }
 }

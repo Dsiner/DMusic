@@ -21,6 +21,9 @@ import com.d.music.utils.FileUtil;
  * Created by D on 2018/10/10.
  */
 public class Transfer {
+    public final static String PREFIX_SONG = ".mp3";
+    public final static String PREFIX_LRC = ".lrc";
+    public final static String PREFIX_DOWNLOAD = ".download";
 
     public static <T extends MusicModel> void getInfo(final T model, final SimpleCallback<T> callback) {
         Params params = new Params(API.SongInfo.rtpType);
@@ -116,7 +119,7 @@ public class Transfer {
     private static <T extends MusicModel> void downloadSong(final String path, final T model, final OnTransferCallback<T> callback) {
         final String url = model.url;
         final String name = model.songName + "." + model.filePostfix;
-        final String cache = model.songName + "." + model.filePostfix + ".download";
+        final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
         RxNet.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)
@@ -159,7 +162,7 @@ public class Transfer {
                     public void onComplete() {
                         ULog.d("dsiner_request--> onComplete");
                         ApiManager.get().remove(model.type + model.songId);
-                        FileUtil.deleteFile(path + name);
+                        FileUtil.renameFile(path + cache, path + name);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.state = TransferModel.STATE_DONE;
@@ -188,7 +191,7 @@ public class Transfer {
                 @Override
                 public void onSuccess(T response) {
                     // Download lrc
-                    downloadLrc(model, callback);
+                    downloadLrc(path, model, callback);
                 }
 
                 @Override
@@ -199,8 +202,8 @@ public class Transfer {
             return;
         }
         final String url = model.lrcUrl;
-        final String name = model.songName + ".lrc";
-        final String cache = model.songName + ".lrc" + ".download";
+        final String name = model.songName + PREFIX_LRC;
+        final String cache = model.songName + PREFIX_LRC + PREFIX_DOWNLOAD;
         RxNet.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.d.lib.common.component.cache.base.AbstractCacheManager;
 import com.d.lib.common.component.cache.listener.CacheListener;
+import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
 import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.media.HitTarget;
 import com.d.music.transfer.manager.Transfer;
@@ -40,6 +41,25 @@ public class SongCacheManager extends AbstractCacheManager<MusicModel, String> {
     @Override
     protected String getPreFix() {
         return "";
+    }
+
+    @Override
+    public void load(final Context context, final MusicModel key, final CacheListener<String> listener) {
+        if (isLoading(key, listener)) {
+            return;
+        }
+        if (isLru(key, listener)) {
+            return;
+        }
+        ThreadPool.getIns().executeDownload(new Runnable() {
+            @Override
+            public void run() {
+                if (isDisk(key, listener)) {
+                    return;
+                }
+                absLoad(context, key, listener);
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)

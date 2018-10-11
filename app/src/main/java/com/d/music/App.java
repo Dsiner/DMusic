@@ -19,6 +19,9 @@ import com.d.music.component.skin.SkinUtil;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Application
  * Created by D on 2017/4/28.
@@ -39,6 +42,13 @@ public class App extends Application {
         NetCompat.init(getApplicationContext());
         // Cache
         Cache.setThreadPool(new ThreadPool() {
+            /**
+             * Cache download queue limit
+             */
+            private final static int DOWNLOAD_LIMIT = 3;
+
+            private ExecutorService downloadThreadPool = Executors.newFixedThreadPool(DOWNLOAD_LIMIT);
+
             @Override
             public void executeMain(Runnable r) {
                 TaskScheduler.executeMain(r);
@@ -47,6 +57,11 @@ public class App extends Application {
             @Override
             public void executeTask(Runnable r) {
                 TaskScheduler.executeTask(r);
+            }
+
+            @Override
+            public void executeDownload(Runnable r) {
+                downloadThreadPool.execute(r);
             }
 
             @Override

@@ -79,7 +79,7 @@ public class Constants {
      * 静态堆内存
      */
     public static class Heap {
-        // 歌曲排序、管理用
+        // 歌曲排序, 管理用
         public static List<MusicModel> models = new ArrayList<>();
     }
 }

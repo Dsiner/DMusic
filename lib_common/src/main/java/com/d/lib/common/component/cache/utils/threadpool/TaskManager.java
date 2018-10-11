@@ -14,6 +14,7 @@ public class TaskManager {
     private Handler mainHandler;
     private ExecutorService cachedThreadPool;
     private ExecutorService singleThreadExecutor;
+    private ExecutorService downloadThreadPool;
 
     private static class Singleton {
         private final static TaskManager INSTANCE = new TaskManager();
@@ -23,6 +24,7 @@ public class TaskManager {
         mainHandler = new Handler(Looper.getMainLooper());
         cachedThreadPool = Executors.newCachedThreadPool();
         singleThreadExecutor = Executors.newSingleThreadExecutor();
+        downloadThreadPool = Executors.newFixedThreadPool(3);
     }
 
     static TaskManager getIns() {
@@ -78,6 +80,10 @@ public class TaskManager {
      */
     void executeSingle(Runnable command) {
         singleThreadExecutor.execute(command);
+    }
+
+    void executeDownload(Runnable command) {
+        downloadThreadPool.execute(command);
     }
 
     /**

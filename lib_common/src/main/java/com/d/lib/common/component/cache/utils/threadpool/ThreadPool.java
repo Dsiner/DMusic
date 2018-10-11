@@ -48,6 +48,11 @@ public abstract class ThreadPool {
             }
 
             @Override
+            public void executeDownload(Runnable r) {
+                TaskManager.getIns().executeDownload(r);
+            }
+
+            @Override
             public void executeNew(Runnable r) {
                 TaskManager.getIns().executeNew(r);
             }
@@ -63,6 +68,8 @@ public abstract class ThreadPool {
      * Execute async task in the cached thread pool
      */
     public abstract void executeTask(Runnable r);
+
+    public abstract void executeDownload(Runnable r);
 
     /**
      * Execute async task in a new thread
