@@ -49,7 +49,7 @@
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:scaleType="centerCrop"
-            android:src="@drawable/module_online_ic_mv_info_download" />
+            android:src="@drawable/module_setting_ic_menu_download" />
 
         <TextView
             android:layout_width="wrap_content"

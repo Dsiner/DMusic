@@ -13,7 +13,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center"
             android:background="@color/lib_pub_color_main"
-            android:src="@drawable/module_play_ic_play_all_e"
+            android:src="@drawable/module_play_ic_play_all_f"
             skin:enable="true" />
     </FrameLayout>
 
