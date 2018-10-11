@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.d.lib.common.component.cache.Cache;
-import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
 import com.d.lib.common.component.netstate.NetCompat;
 import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.utils.log.ULog;
+import com.d.lib.permissioncompat.support.PermissionSupport;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
@@ -50,16 +51,43 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
-        // 初始化数据库
+        // Debug switch
+        ULog.setDebug(true);
+        // Initialize the database
         AppDBUtil.getIns(getContext());
-        // 防双击间隔设置
+        // Anti-double-click interval setting
         ClickFast.setDelayTime(350);
-        // 加载皮肤
+        // Loading skin
         SkinUtil.initSkin(getContext());
-        // 网络监听
+        // Network monitoring
         NetCompat.init(getContext());
+        // Runtime permission
+        initPermission();
         // Cache
-        Cache.setThreadPool(new ThreadPool() {
+        initCache();
+    }
+
+    private void initPermission() {
+        PermissionSupport.setPool(new com.d.lib.permissioncompat.support.threadpool.ThreadPool() {
+            @Override
+            public void executeMain(Runnable r) {
+                TaskScheduler.executeMain(r);
+            }
+
+            @Override
+            public void executeTask(Runnable r) {
+                TaskScheduler.executeTask(r);
+            }
+
+            @Override
+            public void executeNew(Runnable r) {
+                TaskScheduler.executeNew(r);
+            }
+        });
+    }
+
+    private void initCache() {
+        Cache.setThreadPool(new com.d.lib.common.component.cache.utils.threadpool.ThreadPool() {
             /**
              * Cache download queue limit
              */
@@ -90,7 +118,7 @@ public class App extends Application {
     }
 
     /**
-     * 退出应用
+     * Exit the app
      */
     public static void exit(Context context) {
         if (context == null) {
@@ -99,11 +127,11 @@ public class App extends Application {
         Context appContext = context.getApplicationContext();
         MusicService.timing(appContext, false, 0);
         Preferences.getIns(appContext).putSleepType(0);
-        // 保存当前播放位置
+        // Save current playback position
         Preferences.getIns(appContext).putLastPlayPosition(MediaControler.getIns(appContext).getPosition());
-        // 停止音乐播放
+        // Stop music playback
         MediaControler.getIns(appContext).onDestroy();
-        // 停止服务
+        // Stop the service
         appContext.stopService(new Intent(appContext, MusicService.class));
 
         if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NORMAL) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin">
 
     <com.d.lib.common.view.loading.LoadingView
         android:id="@+id/ldv_loading"
@@ -13,5 +14,6 @@
         android:layout_marginTop="@dimen/lib_pub_dimen_margin"
         android:gravity="center"
         android:text="@string/lib_pub_loading"
-        android:textColor="@color/lib_pub_color_main" />
+        android:textColor="@color/lib_pub_color_main"
+        skin:enable="true" />
 </merge>

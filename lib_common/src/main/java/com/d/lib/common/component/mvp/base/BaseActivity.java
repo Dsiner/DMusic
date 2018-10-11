@@ -14,12 +14,13 @@ import com.d.lib.common.view.dialog.AlertDialogFactory;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.feng.skin.manager.base.BaseSkinActivity;
 
 /**
  * BaseActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseActivity<T extends MvpBasePresenter> extends Activity implements MvpView {
+public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinActivity implements MvpView {
     protected Context mContext;
     protected Activity mActivity;
     protected T mPresenter;

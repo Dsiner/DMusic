@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.d.lib.common.component.mvp.MvpView;
@@ -14,12 +13,13 @@ import com.d.lib.common.view.dialog.AlertDialogFactory;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
 
 /**
  * BaseFragmentActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseFragmentActivity extends FragmentActivity implements MvpView {
+public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity implements MvpView {
     protected Activity mActivity;
     protected Context mContext;
     protected DSLayout dslDs;
