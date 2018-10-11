@@ -118,5 +118,6 @@
     <string name="module_common_search_lrc">歌词搜索</string>
 
     <string name="module_common_add_to_song_list">添加到歌单</string>
+    <string name="module_common_playback_failed">播放失败, 请检查后重试!</string>
 
 </resources>

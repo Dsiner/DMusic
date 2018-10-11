@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 
+import com.d.lib.common.utils.Util;
 import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.music.R;
 import com.d.music.common.Constants;
 import com.d.music.common.preferences.Preferences;
 import com.d.music.component.events.MusicInfoEvent;
@@ -204,11 +206,7 @@ public class MediaControler implements IMediaControler {
 
             @Override
             public void onError(MediaPlayer mp, String url) {
-                if (next) {
-                    autoNext();
-                } else {
-                    prev();
-                }
+                Util.toast(mContext, mContext.getResources().getString(R.string.module_common_playback_failed));
             }
 
             @Override
