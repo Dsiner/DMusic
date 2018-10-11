@@ -218,7 +218,7 @@ public class SegementView extends View {
     /**
      * Switch current Tab
      *
-     * @param index destination index
+     * @param index Index
      */
     public void select(int index) {
         if (index < 0 || index > 1) {
@@ -231,7 +231,7 @@ public class SegementView extends View {
     public interface OnSelectedListener {
 
         /**
-         * @param index index
+         * @param index Index
          */
         void onSelected(int index);
     }

@@ -6,7 +6,6 @@
         android:layout_width="@dimen/lib_pub_dimen_title_height"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_alignParentLeft="true"
-        android:padding="2.5dp"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
@@ -27,7 +26,6 @@
         android:layout_width="@dimen/lib_pub_dimen_title_height"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_alignParentRight="true"
-        android:padding="2.5dp"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 

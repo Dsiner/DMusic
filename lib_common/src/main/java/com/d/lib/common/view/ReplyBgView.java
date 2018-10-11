@@ -3,12 +3,12 @@ package com.d.lib.common.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -56,7 +56,7 @@ public class ReplyBgView extends View {
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lib_pub_ReplyBgView);
         gravity = typedArray.getInteger(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_gravity, TOP);
-        colorBg = typedArray.getColor(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_color, Color.parseColor("#4D4F52"));
+        colorBg = typedArray.getColor(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_color, ContextCompat.getColor(context, R.color.lib_pub_color_main));
         rectRadius = typedArray.getDimension(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_radius, Util.dip2px(context, 3));
         offset = typedArray.getDimension(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_offset, Util.dip2px(context, 6.5f));
         trgHalfWidth = typedArray.getDimension(R.styleable.lib_pub_ReplyBgView_lib_pub_replybv_trgWidth, Util.dip2px(context, 6)) / 2;
@@ -64,7 +64,7 @@ public class ReplyBgView extends View {
         typedArray.recycle();
     }
 
-    private void init(Context context) {
+    private void init(@SuppressWarnings("unused") Context context) {
         pathTrg = new Path();
         rect = new Rect();
         rectF = new RectF();

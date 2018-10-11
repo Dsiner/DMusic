@@ -19,26 +19,27 @@ import java.lang.ref.WeakReference;
  * Created by Administrator on 2016/8/27.
  */
 public class LoadingView extends View {
+    public final static int TYPE_DAISY = 0;
+    public final static int TYPE_DOT = 1;
+
     private float width;
     private float height;
 
     private Context context;
-    private int type = 0;
     private Paint paint;
-    private int count = 12;
     private RectF tempRct;
+    private int type = TYPE_DAISY;
+    private long daration;
+    private int count = 12;
+    private int color;
     private int minAlpha;
-    private float rectHeight;
+    private float widthRate;
+    private float heightRate;
     private float rectWidth;
-    private float radias;
     private int j;
     private Handler handler;
     private Task runnable;
-    private long daration;
-    private float widthRate;
-    private float heightRate;
     private boolean isFirst;
-    private int color;
 
     private static class Task implements Runnable {
 
@@ -84,8 +85,8 @@ public class LoadingView extends View {
         this.color = ContextCompat.getColor(context, R.color.lib_pub_color_main);
         this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.paint.setColor(color);
-        this.minAlpha = 50;
         this.daration = 1000;
+        this.minAlpha = 50;
         this.widthRate = 1f / 3;
         this.heightRate = 1f / 2;
         this.handler = new Handler();
@@ -108,11 +109,11 @@ public class LoadingView extends View {
             alpha = (int) (((alpha) * (255f - minAlpha) / count + minAlpha));
             paint.setAlpha(alpha);
             switch (type) {
-                case 0:
+                case TYPE_DAISY:
                     /** Daisy rotation **/
                     canvas.drawRoundRect(tempRct, rectWidth / 2, rectWidth / 2, paint);
                     break;
-                case 1:
+                case TYPE_DOT:
                     /** Dot rotation **/
                     canvas.drawCircle((tempRct.left + tempRct.right) / 2, (tempRct.top + tempRct.bottom) / 2, rectWidth * 2 / 3, paint);
                     break;
@@ -133,11 +134,15 @@ public class LoadingView extends View {
     }
 
     private void refreshField() {
-        float h = width > height ? height : width;
-        rectHeight = h * heightRate / 2;
+        final float h = width > height ? height : width;
+        final float rectHeight = h * heightRate / 2;
+        final float radius = h * (1 - heightRate / 2) / 2;
         rectWidth = rectHeight * widthRate;
-        radias = h * (1 - heightRate / 2) / 2;
-        tempRct = new RectF(-rectWidth / 2, -(radias + rectHeight / 2), rectWidth / 2, -(radias - rectHeight / 2));
+        if (tempRct == null) {
+            tempRct = new RectF(-rectWidth / 2, -(radius + rectHeight / 2), rectWidth / 2, -(radius - rectHeight / 2));
+        } else {
+            tempRct.set(-rectWidth / 2, -(radius + rectHeight / 2), rectWidth / 2, -(radius - rectHeight / 2));
+        }
     }
 
     @Override
@@ -166,6 +171,11 @@ public class LoadingView extends View {
     protected void onDetachedFromWindow() {
         stop();
         super.onDetachedFromWindow();
+    }
+
+    public void setType(int type) {
+        this.type = type;
+        this.invalidate();
     }
 
     /**

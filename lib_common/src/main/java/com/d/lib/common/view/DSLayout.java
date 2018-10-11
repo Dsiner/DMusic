@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -21,21 +22,34 @@ import com.d.lib.common.R;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.loading.LoadingLayout;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Default State
  * Created by D on 2017/5/7.
  */
 public class DSLayout extends FrameLayout {
 
-    /*************** Default State type ***************/
+    /*************** Type ***************/
     public final static int STATE_LOADING = 0x10; // Default State: loading state
     public final static int STATE_EMPTY = 0x11; // Default State: no data
     public final static int STATE_NET_ERROR = 0x12; // Default State: network error
 
-    /*************** Default State centered type ***************/
+    /*************** Centered type ***************/
     private final static int CENT_TYPE_MAIN = 1;
     private final static int CENT_TYPE_LOCAL = 2;
     private final static float[] AJUST_HEIGHT = new float[]{0, 50, 70};
+
+    @IntDef({STATE_LOADING, STATE_EMPTY, STATE_NET_ERROR,
+            DSLayout.VISIBLE, DSLayout.INVISIBLE, DSLayout.GONE})
+    @Target({ElementType.PARAMETER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface State {
+
+    }
 
     private int layoutId;
     private int centerType; // Centered type
@@ -157,7 +171,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * Display Gif
+     * Display gif
      */
     public DSLayout gif(int resId) {
         Glide.with(getContext())
@@ -168,7 +182,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * Display Gif
+     * Display gif
      */
     public DSLayout gif(String url) {
         Glide.with(getContext())
@@ -187,7 +201,7 @@ public class DSLayout extends FrameLayout {
     }
 
     /**
-     * Set button text, display status
+     * Set button text, visibility state
      */
     public DSLayout button(CharSequence text, int visibility) {
         button.setText(text);
@@ -198,7 +212,7 @@ public class DSLayout extends FrameLayout {
     /**
      * Set state
      */
-    public DSLayout setState(int state) {
+    public DSLayout setState(@State int state) {
         switch (state) {
             case GONE:
             case VISIBLE:

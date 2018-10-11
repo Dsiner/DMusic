@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * Created by D on 2018/2/5.
  */
 public class NetBus {
-    private static NetBus instance;
+    private volatile static NetBus instance;
     private ArrayList<OnNetListener> onNetListeners = new ArrayList<>();
 
-    public static NetBus getInstance() {
+    public static NetBus getIns() {
         if (instance == null) {
             synchronized (NetBus.class) {
                 if (instance == null) {

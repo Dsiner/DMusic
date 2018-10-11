@@ -7,8 +7,9 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Build;
-import android.support.annotation.UiThread;
 import android.telephony.TelephonyManager;
+
+import com.d.lib.taskscheduler.TaskScheduler;
 
 public class NetCompat {
 
@@ -16,10 +17,14 @@ public class NetCompat {
      * Initialization
      */
     public static void init(Context context) {
-        resetStatus(context, false);
+        final Context appContext = context.getApplicationContext();
+        TaskScheduler.executeMain(new Runnable() {
+            @Override
+            public void run() {
+                resetImplementation(appContext, false);
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            final Context appContext = context.getApplicationContext();
-
             ConnectivityManager cm = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
             NetworkRequest request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -32,16 +37,16 @@ public class NetCompat {
 
                     @Override
                     public void onAvailable(Network network) {
-                        resetStatus(appContext);
+                        reset(appContext);
                     }
 
                     @Override
                     public void onLost(Network network) {
-                        resetStatus(appContext);
+                        reset(appContext);
                     }
 
                     public void onUnavailable() {
-                        resetStatus(appContext);
+                        reset(appContext);
                     }
                 });
             }
@@ -67,15 +72,22 @@ public class NetCompat {
     /**
      * Reset current network status - with broadcast
      */
-    @UiThread
-    static void resetStatus(Context context) {
-        resetStatus(context, true);
+    static void reset(Context context) {
+        final Context appContext = context.getApplicationContext();
+        TaskScheduler.executeMain(new Runnable() {
+            @Override
+            public void run() {
+                resetImplementation(appContext, true);
+            }
+        });
     }
 
     /**
      * Reset current network status
+     *
+     * @param broadcast with broadcast
      */
-    private static void resetStatus(Context context, boolean broadcast) {
+    private static void resetImplementation(Context context, boolean broadcast) {
         int networkType = getNetworkType(context);
         switch (networkType) {
             case NetState.UN_CONNECTED:
@@ -83,7 +95,7 @@ public class NetCompat {
                     NetState.NET_STATUS = NetState.UN_CONNECTED;
                     NetSubState.NET_SUB_STATUS = NetSubState.NETWORK_TYPE_UNKNOWN;
                     if (broadcast) {
-                        NetBus.getInstance().onNetChange(NetState.UN_CONNECTED);
+                        NetBus.getIns().onNetChange(NetState.UN_CONNECTED);
                     }
                 }
                 break;
@@ -91,7 +103,7 @@ public class NetCompat {
                 if (NetState.NET_STATUS != NetState.CONNECTED_MOBILE) {
                     NetState.NET_STATUS = NetState.CONNECTED_MOBILE;
                     if (broadcast) {
-                        NetBus.getInstance().onNetChange(NetState.CONNECTED_MOBILE);
+                        NetBus.getIns().onNetChange(NetState.CONNECTED_MOBILE);
                     }
                 }
                 break;
@@ -100,7 +112,7 @@ public class NetCompat {
                     NetState.NET_STATUS = NetState.CONNECTED_WIFI;
                     NetSubState.NET_SUB_STATUS = NetSubState.NETWORK_TYPE_UNKNOWN;
                     if (broadcast) {
-                        NetBus.getInstance().onNetChange(NetState.CONNECTED_WIFI);
+                        NetBus.getIns().onNetChange(NetState.CONNECTED_WIFI);
                     }
                 }
                 break;
@@ -109,7 +121,7 @@ public class NetCompat {
                     NetState.NET_STATUS = NetState.NO_AVAILABLE;
                     NetSubState.NET_SUB_STATUS = NetSubState.NETWORK_TYPE_UNKNOWN;
                     if (broadcast) {
-                        NetBus.getInstance().onNetChange(NetState.NO_AVAILABLE);
+                        NetBus.getIns().onNetChange(NetState.NO_AVAILABLE);
                     }
                 }
                 break;
@@ -119,7 +131,7 @@ public class NetCompat {
     /**
      * Get the current network type
      *
-     * @return type：0：NO_AVAILABLE、 1：UN_CONNECTED、 2：CONNECTED_MOBILE、 3：CONNECTED_WIFI
+     * @return type 0: NO_AVAILABLE, 1: UN_CONNECTED, 2: CONNECTED_MOBILE, 3: CONNECTED_WIFI
      */
     @Deprecated
     private static int getNetwork(Context context) {
@@ -143,7 +155,7 @@ public class NetCompat {
     /**
      * Get the current network type
      *
-     * @return type：0：NO_AVAILABLE、 1：UN_CONNECTED、 2：CONNECTED_MOBILE、 3：CONNECTED_WIFI
+     * @return type 0: NO_AVAILABLE, 1: UN_CONNECTED, 2: CONNECTED_MOBILE, 3: CONNECTED_WIFI
      */
     private static int getNetworkType(Context context) {
         ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

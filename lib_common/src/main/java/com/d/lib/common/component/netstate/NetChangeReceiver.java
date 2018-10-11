@@ -16,6 +16,6 @@ public class NetChangeReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return;
         }
-        NetCompat.resetStatus(context);
+        NetCompat.reset(context);
     }
 }
