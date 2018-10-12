@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.music.common.preferences.Preferences;
-import com.d.music.local.fragment.MainFragment;
-import com.d.music.component.events.MusicInfoEvent;
 import com.d.music.component.media.controler.MediaControler;
+import com.d.music.data.eventbus.MusicInfoEvent;
+import com.d.music.data.preferences.Preferences;
+import com.d.music.local.fragment.MainFragment;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;

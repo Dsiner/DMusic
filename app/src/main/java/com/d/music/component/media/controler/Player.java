@@ -12,7 +12,7 @@ import com.d.lib.common.utils.Util;
 import com.d.music.R;
 import com.d.music.component.cache.LinkCache;
 import com.d.music.component.cache.SongCache;
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

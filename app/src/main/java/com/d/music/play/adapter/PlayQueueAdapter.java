@@ -7,8 +7,8 @@ import com.d.lib.common.component.repeatclick.OnClickFastListener;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.media.controler.MediaControler;
+import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.util.List;
 

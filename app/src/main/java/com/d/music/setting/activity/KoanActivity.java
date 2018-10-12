@@ -8,7 +8,7 @@ import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.base.BaseActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.music.R;
-import com.d.music.common.preferences.Preferences;
+import com.d.music.data.preferences.Preferences;
 import com.d.music.utils.StatusBarCompat;
 
 import butterknife.BindView;

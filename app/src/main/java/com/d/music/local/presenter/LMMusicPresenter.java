@@ -6,12 +6,12 @@ import android.database.Cursor;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.DSLayout;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.local.model.AlbumModel;
 import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.util.AppDBUtil;
 import com.d.music.view.sort.SortUtil;
 
 import java.util.ArrayList;

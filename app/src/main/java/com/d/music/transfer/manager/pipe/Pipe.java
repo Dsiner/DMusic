@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.text.TextUtils;
 
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.event.TransferEvent;
 
 import java.util.ArrayList;

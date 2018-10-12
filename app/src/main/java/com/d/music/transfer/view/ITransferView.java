@@ -1,7 +1,7 @@
 package com.d.music.transfer.view;
 
 import com.d.lib.common.component.loader.IAbsView;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 
 /**
  * ITransferView

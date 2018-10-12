@@ -10,7 +10,7 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.itemtouchhelper.ItemTouchHelperViewHolder;
 import com.d.music.R;
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.util.Collections;
 import java.util.List;

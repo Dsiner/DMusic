@@ -10,7 +10,7 @@ import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.adapter.TransferAdapter;
 import com.d.music.transfer.manager.TransferManager;
 import com.d.music.transfer.manager.event.TransferEvent;

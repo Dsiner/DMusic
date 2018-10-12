@@ -10,7 +10,7 @@ import com.d.lib.common.component.cache.base.AbstractCache;
 import com.d.lib.common.component.cache.exception.CacheException;
 import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.music.component.cache.manager.LrcCacheManager;
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.view.lrc.LrcView;
 
 /**

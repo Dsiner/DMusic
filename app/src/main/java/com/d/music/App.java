@@ -12,12 +12,12 @@ import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.permissioncompat.support.PermissionSupport;
 import com.d.lib.taskscheduler.TaskScheduler;
-import com.d.music.common.Constants;
-import com.d.music.common.preferences.Preferences;
-import com.d.music.component.greendao.util.AppDBUtil;
 import com.d.music.component.media.controler.MediaControler;
 import com.d.music.component.service.MusicService;
 import com.d.music.component.skin.SkinUtil;
+import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.preferences.Preferences;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
 

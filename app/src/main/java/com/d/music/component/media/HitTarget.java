@@ -3,8 +3,8 @@ package com.d.music.component.media;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.d.music.common.Constants;
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
 import com.d.music.utils.FileUtil;
 

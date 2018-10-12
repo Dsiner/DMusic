@@ -16,9 +16,9 @@ import android.widget.Scroller;
 
 import com.d.lib.common.utils.Util;
 import com.d.music.R;
-import com.d.music.common.Constants;
 import com.d.music.component.media.controler.MediaControler;
 import com.d.music.component.media.controler.MediaPlayerManager;
+import com.d.music.data.Constants;
 import com.d.music.utils.FileUtil;
 import com.nineoldandroids.animation.ValueAnimator;
 

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.d.lib.common.component.glide.AbstractGlideModule;
-import com.d.music.common.Constants;
+import com.d.music.data.Constants;
 
 /**
  * Glide global configuration

@@ -29,7 +29,7 @@ public class Preferences extends AbstractPreference {
         opOnline = new OpOnline(settings, editor);
     }
 
-    public static Preferences getIns(Context context) {
+    static Preferences getIns(Context context) {
         if (instance == null) {
             synchronized (Preferences.class) {
                 if (instance == null) {

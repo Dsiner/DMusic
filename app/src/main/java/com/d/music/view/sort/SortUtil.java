@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.github.promeg.pinyinhelper.Pinyin;
 
 import java.util.Collections;

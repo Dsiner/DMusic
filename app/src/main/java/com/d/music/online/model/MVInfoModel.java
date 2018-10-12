@@ -2,7 +2,7 @@ package com.d.music.online.model;
 
 import android.text.TextUtils;
 
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

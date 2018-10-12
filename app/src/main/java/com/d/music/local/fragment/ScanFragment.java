@@ -14,11 +14,11 @@ import com.d.lib.permissioncompat.PermissionCompat;
 import com.d.lib.permissioncompat.PermissionSchedulers;
 import com.d.lib.permissioncompat.callback.PermissionCallback;
 import com.d.music.R;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.local.activity.ScanActivity;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
-import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.utils.FileUtil;
 
 import java.util.ArrayList;

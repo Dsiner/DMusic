@@ -3,9 +3,9 @@ package com.d.music.component.operation;
 import android.content.Context;
 
 import com.d.lib.common.utils.Util;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.db.AppDB;
 import com.d.music.component.media.SyncManager;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.db.AppDB;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.view.dialog.SongInfoDialog;
 import com.d.music.view.popup.AddToListPopup;

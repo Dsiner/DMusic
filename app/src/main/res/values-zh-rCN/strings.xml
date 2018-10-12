@@ -29,6 +29,8 @@
     <!-- Module_Setting -->
     <string name="module_common_version">版本号：v1.0.3</string>
     <string name="module_common_introduction">追求速度、简约和安全的\n本地音乐播放器</string>
+    <string name="module_common_signature_default">畅听</string>
+    <string name="module_common_stroke_default">畅音乐,享自由</string>
     <string name="module_common_koan">心印</string>
     <string name="module_common_signature">签名：</string>
     <string name="module_common_stroke">简笔：</string>

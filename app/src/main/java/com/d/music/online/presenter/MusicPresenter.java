@@ -9,7 +9,7 @@ import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.callback.AsyncCallback;
 import com.d.music.api.API;
-import com.d.music.component.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.model.BillSongsModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsModel;

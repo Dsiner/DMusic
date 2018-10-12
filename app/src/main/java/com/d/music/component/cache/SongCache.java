@@ -11,8 +11,8 @@ import com.d.lib.common.component.cache.exception.CacheException;
 import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.music.component.cache.manager.LrcCacheManager;
 import com.d.music.component.cache.manager.SongCacheManager;
-import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.media.controler.Player;
+import com.d.music.data.database.greendao.bean.MusicModel;
 
 /**
  * Cache - Get lrc

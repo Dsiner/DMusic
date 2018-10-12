@@ -9,7 +9,7 @@ import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.taskscheduler.callback.Observer;
 import com.d.lib.taskscheduler.callback.Task;
 import com.d.lib.taskscheduler.schedule.Schedulers;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
 import com.d.music.transfer.manager.TransferManager;
 import com.d.music.transfer.view.ITransferView;

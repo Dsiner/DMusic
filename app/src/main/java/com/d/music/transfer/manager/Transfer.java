@@ -10,9 +10,9 @@ import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.callback.DownloadCallback;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
-import com.d.music.common.Constants;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.online.model.SongInfoRespModel;
 import com.d.music.utils.FileUtil;
 

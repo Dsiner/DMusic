@@ -3,15 +3,15 @@ package com.d.music.local.presenter;
 import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.music.component.media.media.MusicFactory;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.eventbus.MusicModelEvent;
+import com.d.music.data.eventbus.RefreshEvent;
+import com.d.music.data.eventbus.SortTypeEvent;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.view.IScanView;
-import com.d.music.component.events.MusicModelEvent;
-import com.d.music.component.events.RefreshEvent;
-import com.d.music.component.events.SortTypeEvent;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.db.AppDB;
-import com.d.music.component.greendao.util.AppDBUtil;
-import com.d.music.component.media.media.MusicFactory;
 import com.d.music.utils.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;

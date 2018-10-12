@@ -11,7 +11,7 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
-import com.d.music.component.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
 import com.d.music.transfer.manager.Operater;
 import com.d.music.transfer.manager.TransferManager;

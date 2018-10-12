@@ -2,7 +2,7 @@ package com.d.music.component.skin;
 
 import android.content.Context;
 
-import com.d.music.common.preferences.Preferences;
+import com.d.music.data.preferences.Preferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +42,7 @@ public class SkinUtil {
     public static void initSkin(final Context context) {
         SkinManager.getInstance().init(context.getApplicationContext());
         final Preferences p = Preferences.getIns(context.getApplicationContext());
-        if (p.getSkinLoaded()) {
+        if (p.getIsSkinLoaded()) {
             SkinManager.getInstance().load();
             return;
         }
@@ -95,9 +95,9 @@ public class SkinUtil {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            p.putSkinLoaded(true);
+                            p.putIsSkinLoaded(true);
                         }
-                        load(context, p.getSkin());
+                        load(context, p.getSkinType());
                     }
 
                     @Override
@@ -138,7 +138,7 @@ public class SkinUtil {
 
                 @Override
                 public void onSuccess() {
-                    Preferences.getIns(context).putSkin(type);
+                    Preferences.getIns(context).putSkinType(type);
                     if (callback != null) {
                         callback.onSuccess();
                     }
@@ -153,7 +153,7 @@ public class SkinUtil {
             });
         } else {
             SkinManager.getInstance().restoreDefaultTheme();
-            Preferences.getIns(context).putSkin(type);
+            Preferences.getIns(context).putSkinType(type);
             if (callback != null) {
                 callback.onSuccess();
             }

@@ -12,8 +12,8 @@ import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.music.R;
-import com.d.music.common.preferences.Preferences;
 import com.d.music.component.skin.SkinUtil;
+import com.d.music.data.preferences.Preferences;
 import com.d.music.setting.adapter.SkinAdapter;
 import com.d.music.setting.model.RadioModel;
 import com.d.music.utils.StatusBarCompat;
@@ -90,7 +90,7 @@ public class SkinActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     @Override
     protected void init() {
         StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-        index = Preferences.getIns(getApplicationContext()).getSkin();
+        index = Preferences.getIns(getApplicationContext()).getSkinType();
         adapter = new SkinAdapter(this, getDatas(index), R.layout.module_setting_adapter_skin);
         adapter.setIndex(index);
         rvList.setLayoutManager(new GridLayoutManager(this, 3));

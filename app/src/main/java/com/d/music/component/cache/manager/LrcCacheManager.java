@@ -10,8 +10,8 @@ import android.util.Log;
 import com.d.lib.common.component.cache.base.AbstractCacheManager;
 import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.lib.rxnet.callback.SimpleCallback;
-import com.d.music.component.greendao.bean.MusicModel;
 import com.d.music.component.media.HitTarget;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
 import com.d.music.utils.FileUtil;
 

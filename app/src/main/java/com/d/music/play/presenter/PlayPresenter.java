@@ -3,9 +3,9 @@ package com.d.music.play.presenter;
 import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.db.AppDB;
-import com.d.music.component.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.play.view.IPlayView;
 
 import java.util.ArrayList;

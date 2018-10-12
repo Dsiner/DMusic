@@ -29,6 +29,8 @@
     <!-- Module_Setting -->
     <string name="module_common_version">Version：v1.0.3</string>
     <string name="module_common_introduction">Local music player that pursues speed, \n simplicity and security</string>
+    <string name="module_common_signature_default">Listen</string>
+    <string name="module_common_stroke_default">Enjoy music and enjoy freedom</string>
     <string name="module_common_koan">Koan</string>
     <string name="module_common_signature">Signature：</string>
     <string name="module_common_stroke">Stroke：</string>

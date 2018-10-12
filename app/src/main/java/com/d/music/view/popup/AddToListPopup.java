@@ -14,11 +14,11 @@ import com.d.lib.common.view.loading.LoadingLayout;
 import com.d.lib.common.view.popup.AbstractPopup;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
-import com.d.music.component.events.RefreshEvent;
-import com.d.music.component.greendao.bean.CustomListModel;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.db.AppDB;
-import com.d.music.component.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.bean.CustomListModel;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.eventbus.RefreshEvent;
 import com.d.music.play.adapter.AddToListAdapter;
 
 import org.greenrobot.eventbus.EventBus;

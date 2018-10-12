@@ -3,11 +3,11 @@ package com.d.music.local.fragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
+import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.eventbus.MusicModelEvent;
 import com.d.music.local.adapter.AlbumAdapter;
 import com.d.music.local.model.AlbumModel;
 import com.d.music.local.presenter.LMMusicPresenter;
-import com.d.music.component.events.MusicModelEvent;
-import com.d.music.component.greendao.db.AppDB;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

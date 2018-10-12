@@ -10,9 +10,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
-import com.d.music.common.Constants;
-import com.d.music.common.preferences.Preferences;
 import com.d.music.component.service.MusicService;
+import com.d.music.data.Constants;
+import com.d.music.data.preferences.Preferences;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.utils.StatusBarCompat;
 

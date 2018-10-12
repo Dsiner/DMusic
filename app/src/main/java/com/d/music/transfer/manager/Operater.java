@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.rxnet.base.ApiManager;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.bean.TransferModel;
 import com.d.music.component.media.HitTarget;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.pipe.Pipe;
 
 import java.util.List;

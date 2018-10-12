@@ -10,13 +10,13 @@ import android.support.annotation.Nullable;
 import com.d.lib.common.utils.Util;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.R;
-import com.d.music.common.Constants;
-import com.d.music.common.preferences.Preferences;
-import com.d.music.component.events.MusicInfoEvent;
-import com.d.music.component.events.ProgressEvent;
-import com.d.music.component.greendao.bean.MusicModel;
-import com.d.music.component.greendao.db.AppDB;
-import com.d.music.component.greendao.util.AppDBUtil;
+import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.eventbus.MusicInfoEvent;
+import com.d.music.data.eventbus.ProgressEvent;
+import com.d.music.data.preferences.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
 
