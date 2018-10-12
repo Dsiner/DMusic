@@ -3,12 +3,14 @@ package com.d.lib.common.utils.log;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.d.lib.common.data.Constants;
+
 /**
  * Log tool, you can print the log class name, method name, line number
  */
 public class ULog {
 
-    private static final String LOG_TAG = "ULog";
+    private static final String LOG_TAG = Constants.LOG_TAG;
 
     /**
      * Debug switch

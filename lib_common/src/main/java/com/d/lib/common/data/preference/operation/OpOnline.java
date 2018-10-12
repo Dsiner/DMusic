@@ -1,4 +1,4 @@
-package com.d.lib.common.component.preference.operation;
+package com.d.lib.common.data.preference.operation;
 
 import android.content.SharedPreferences;
 

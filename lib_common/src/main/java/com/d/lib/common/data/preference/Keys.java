@@ -1,4 +1,4 @@
-package com.d.lib.common.component.preference;
+package com.d.lib.common.data.preference;
 
 /**
  * Key Map

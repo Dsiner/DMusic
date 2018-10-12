@@ -1,10 +1,10 @@
-package com.d.lib.common.component.preference;
+package com.d.lib.common.data.preference;
 
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.d.lib.common.component.preference.operation.OpOnline;
-import com.d.lib.common.component.preference.operation.OpSetting;
+import com.d.lib.common.data.preference.operation.OpOnline;
+import com.d.lib.common.data.preference.operation.OpSetting;
 
 /**
  * Preferences
@@ -40,27 +40,6 @@ public class Preferences extends AbstractPreference {
         return instance;
     }
 
-    private void save() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD) {
-            editor.apply();
-        } else {
-            editor.commit();
-        }
-    }
-
-    public void clearUserData(String account) {
-        if (!TextUtils.equals(account, getAccount())) {
-            boolean isFirst = getIsFirst();
-            clearAllData();
-            putIsFirst(isFirst);
-        }
-    }
-
-    public void clearAllData() {
-        editor.clear();
-        save();
-    }
-
     /****************************** - Setting - ******************************/
     public OpSetting optSetting() {
         return opSetting;
@@ -72,7 +51,16 @@ public class Preferences extends AbstractPreference {
     }
 
 
-    /************************* 是/否 第一次使用 *************************/
+    /****************************** - Operation - ******************************/
+    public void clearUserData(String account) {
+        if (!TextUtils.equals(account, getAccount())) {
+            boolean isFirst = getIsFirst();
+            clearAllData();
+            putIsFirst(isFirst);
+        }
+    }
+
+    /************************* Yes / No Whether the app is used for the first time *************************/
     public void putIsFirst(boolean isFirst) {
         editor.putBoolean(Keys.KEY_IS_FIRST, isFirst);
         save();
@@ -82,7 +70,7 @@ public class Preferences extends AbstractPreference {
         return settings.getBoolean(Keys.KEY_IS_FIRST, true);
     }
 
-    /************************* 设置/获取 登录账号 *************************/
+    /************************* Set / Get Login Account *************************/
     public void putAccount(String account) {
         editor.putString(Keys.KEY_ACCOUNT, account);
         save();
