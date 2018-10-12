@@ -14,15 +14,19 @@ import android.widget.TextView;
 
 import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.view.BadgeView;
 import com.d.music.component.media.controler.MediaControler;
-import com.d.music.data.eventbus.MusicInfoEvent;
 import com.d.music.data.preferences.Preferences;
+import com.d.music.event.eventbus.MusicInfoEvent;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;
 import com.d.music.setting.activity.SleepActivity;
 import com.d.music.transfer.activity.TransferActivity;
+import com.d.music.transfer.manager.TransferDataObservable;
+import com.d.music.transfer.manager.TransferManager;
 import com.d.music.utils.StatusBarCompat;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -56,6 +60,10 @@ public class MainActivity extends BaseFragmentActivity {
     FrameLayout flytMenu;
     @BindView(R.id.dl_drawer)
     DrawerLayout dlDrawer;
+    @BindView(R.id.bv_badge)
+    BadgeView bvBadge;
+
+    private TransferDataObservable observable;
 
     @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_transfer, R.id.llyt_menu_sleep,
             R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
@@ -109,6 +117,11 @@ public class MainActivity extends BaseFragmentActivity {
         }
         StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         EventBus.getDefault().register(this);
+        initMenu();
+        initTransfer();
+    }
+
+    private void initMenu() {
         fManger = new FManger(dlDrawer, getSupportFragmentManager());
         fManger.replace(new MainFragment());
         dlDrawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
@@ -131,6 +144,18 @@ public class MainActivity extends BaseFragmentActivity {
                 ViewHelper.setScaleY(content, rightScale);
             }
         });
+    }
+
+    private void initTransfer() {
+        bvBadge.setVisibility(TransferManager.getIns().getCount() > 0 ? View.VISIBLE : View.GONE);
+        observable = new TransferDataObservable() {
+            @Override
+            public void notifyDataSetChanged(int count) {
+                ULog.d("dsiner --> TransferDataObservable: " + count);
+                bvBadge.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+            }
+        };
+        TransferManager.getIns().register(observable);
     }
 
     @Override
@@ -171,6 +196,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        TransferManager.getIns().unregister(observable);
         releaseResource();
         super.onDestroy();
     }

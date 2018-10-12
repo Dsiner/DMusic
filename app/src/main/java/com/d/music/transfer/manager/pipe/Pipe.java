@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
-import com.d.music.transfer.manager.event.TransferEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,21 @@ import java.util.List;
  * Created by D on 2018/10/10.
  */
 public abstract class Pipe {
-    public int mLimit = 3;
-    public List<List<TransferModel>> mArray = new ArrayList<>();
-    public List<TransferModel> mList = new ArrayList<>();
+    private final static int LIMIT_DEFAULT = 3;
+
+    private int mLimit = LIMIT_DEFAULT;
+    private List<List<TransferModel>> mArray = new ArrayList<>();
+    private List<TransferModel> mList = new ArrayList<>();
+
     public List<TransferModel> mDownloadingQueue = new ArrayList<>();
     public List<TransferModel> mDownloading = new ArrayList<>();
     public List<TransferModel> mDownloaded = new ArrayList<>();
-    public TransferEvent mEvent;
 
     public abstract void init();
+
+    public void setLimit(int limit) {
+        this.mLimit = limit;
+    }
 
     public void list(@NonNull List<TransferModel> datas) {
         datas.clear();
@@ -37,6 +42,9 @@ public abstract class Pipe {
         return mList;
     }
 
+    /**
+     * @return mArray, mArray[0]: mDownloading; mArray[1]: mDownloaded
+     */
     @NonNull
     public List<List<TransferModel>> lists() {
         mArray.clear();
@@ -104,28 +112,12 @@ public abstract class Pipe {
         mDownloaded.add(model);
     }
 
+    @SuppressWarnings("unused")
     @UiThread
     public void remove(TransferModel model) {
         if (!mDownloading.remove(model)) {
             mDownloaded.remove(model);
         }
         mList.remove(model);
-    }
-
-    @UiThread
-    public void notifyDataSetChanged() {
-        if (mEvent != null) {
-            mEvent.onEvent();
-        }
-    }
-
-    @UiThread
-    public void register(TransferEvent event) {
-        this.mEvent = event;
-    }
-
-    @UiThread
-    public void unregister(TransferEvent transferEvent) {
-        mEvent = null;
     }
 }

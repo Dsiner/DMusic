@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,17 +45,34 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-            android:scaleType="centerCrop"
-            android:src="@drawable/module_setting_ic_menu_download" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+                android:scaleType="centerCrop"
+                android:src="@drawable/module_setting_ic_menu_download" />
+
+            <com.d.lib.common.view.BadgeView
+                android:id="@+id/bv_badge"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textColor="@color/lib_pub_color_white"
+                app:lib_pub_badgev_color="@color/lib_pub_color_red" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:singleLine="true"
             android:text="@string/module_common_download"
             android:textColor="@color/lib_pub_color_white"

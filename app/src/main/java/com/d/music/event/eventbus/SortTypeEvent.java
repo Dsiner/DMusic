@@ -1,4 +1,4 @@
-package com.d.music.data.eventbus;
+package com.d.music.event.eventbus;
 
 /**
  * Created by D on 2017/6/16.

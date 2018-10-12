@@ -22,7 +22,7 @@ import java.util.List;
  * Created by D on 2018/8/25.
  */
 public class TransferPresenter extends MvpBasePresenter<ITransferView> {
-    List<TransferModel> mDatas = new ArrayList<>();
+    private List<TransferModel> mDatas = new ArrayList<>();
     private TransferModel mHead0, mHead1;
 
     public TransferPresenter(Context context) {
@@ -30,20 +30,22 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
     }
 
     public void load(final int type) {
-        TaskScheduler.create(new Task<List<TransferModel>>() {
+        TaskScheduler.create(new Task<List<List<TransferModel>>>() {
             @Override
-            public List<TransferModel> run() {
-                return getDatas(type);
+            public List<List<TransferModel>> run() {
+                return type == TransferFragment.TYPE_MV ?
+                        TransferManager.getIns().optMV().pipe().lists()
+                        : TransferManager.getIns().optSong().pipe().lists();
             }
         }).subscribeOn(Schedulers.mainThread())
                 .observeOn(Schedulers.mainThread())
-                .subscribe(new Observer<List<TransferModel>>() {
+                .subscribe(new Observer<List<List<TransferModel>>>() {
                     @Override
-                    public void onNext(@NonNull List<TransferModel> result) {
+                    public void onNext(@NonNull List<List<TransferModel>> result) {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(result);
+                        getView().notifyDataSetChanged(result);
                     }
 
                     @Override
@@ -58,10 +60,15 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
 
     @NonNull
     public List<TransferModel> getDatas(int type) {
-        mDatas.clear();
         List<List<TransferModel>> lists = type == TransferFragment.TYPE_MV ?
                 TransferManager.getIns().optMV().pipe().lists()
                 : TransferManager.getIns().optSong().pipe().lists();
+        return getDatas(lists);
+    }
+
+    @NonNull
+    public List<TransferModel> getDatas(@NonNull List<List<TransferModel>> lists) {
+        mDatas.clear();
         List<TransferModel> download = lists.get(0);
         List<TransferModel> downloaded = lists.get(1);
         if (download != null && download.size() > 0) {

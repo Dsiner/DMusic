@@ -14,9 +14,9 @@ import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.db.AppDB;
 import com.d.music.data.database.greendao.util.AppDBUtil;
-import com.d.music.data.eventbus.MusicInfoEvent;
-import com.d.music.data.eventbus.ProgressEvent;
 import com.d.music.data.preferences.Preferences;
+import com.d.music.event.eventbus.MusicInfoEvent;
+import com.d.music.event.eventbus.ProgressEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

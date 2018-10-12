@@ -17,7 +17,7 @@ import com.d.music.R;
 import com.d.music.data.database.greendao.bean.CustomListModel;
 import com.d.music.data.database.greendao.db.AppDB;
 import com.d.music.data.database.greendao.util.AppDBUtil;
-import com.d.music.data.eventbus.RefreshEvent;
+import com.d.music.event.eventbus.RefreshEvent;
 import com.d.music.local.fragment.SongFragment;
 import com.d.music.view.dialog.NewListDialog;
 
