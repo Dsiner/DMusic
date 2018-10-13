@@ -16,28 +16,28 @@ import okhttp3.Response;
  * Offline cache interception
  */
 public class OfflineCacheInterceptor implements Interceptor {
-    private Context context;
-    private String cacheControlValue;
+    private Context mContext;
+    private String mCacheControlValue;
 
     public OfflineCacheInterceptor(Context context) {
         this(context, 24 * 60 * 60);//默认最大离线缓存时间（秒）
     }
 
     public OfflineCacheInterceptor(Context context, int cacheControlValue) {
-        this.context = context;
-        this.cacheControlValue = String.format("max-stale=%d", cacheControlValue);
+        this.mContext = context;
+        this.mCacheControlValue = String.format("max-stale=%d", cacheControlValue);
     }
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
-        if (!Network.isConnected(context)) {
+        if (!Network.isConnected(mContext)) {
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
             Response response = chain.proceed(request);
             return response.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached, " + cacheControlValue)
+                    .header("Cache-Control", "public, only-if-cached, " + mCacheControlValue)
                     .removeHeader("Pragma")
                     .build();
         }

@@ -1,8 +1,15 @@
 package com.d.lib.rxnet.utils;
 
+import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
+
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 /**
  * Util
@@ -47,5 +54,15 @@ public class Util {
         } else if (file.exists()) {
             file.delete();
         }
+    }
+
+    @SuppressLint("CheckResult")
+    public static void executeMain(@NonNull Runnable r) {
+        Observable.just(r).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Runnable>() {
+            @Override
+            public void accept(Runnable runnable) throws Exception {
+                runnable.run();
+            }
+        });
     }
 }

@@ -6,26 +6,26 @@ import com.d.lib.rxnet.callback.SimpleCallback;
  * Observer with Sync Callback
  */
 public class ApiObserver<R> extends AbsObserver<R> {
-    private R data;
-    private SimpleCallback<R> callback;
+    private R mData;
+    private SimpleCallback<R> mCallback;
 
     public ApiObserver(SimpleCallback<R> callback) {
         if (callback == null) {
             throw new NullPointerException("This callback must not be null!");
         }
-        this.callback = callback;
+        this.mCallback = callback;
     }
 
     @Override
     public void onNext(R r) {
-        this.data = r;
-        callback.onSuccess(r);
+        this.mData = r;
+        mCallback.onSuccess(r);
     }
 
     @Override
     public void onError(Throwable e) {
         super.onError(e);
-        callback.onError(e);
+        mCallback.onError(e);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class ApiObserver<R> extends AbsObserver<R> {
     }
 
     public R getData() {
-        return data;
+        return mData;
     }
 }

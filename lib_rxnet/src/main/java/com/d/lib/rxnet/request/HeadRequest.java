@@ -17,17 +17,13 @@ import okhttp3.Interceptor;
  */
 public class HeadRequest extends HttpRequest<HeadRequest> {
 
-    public HeadRequest(String url) {
-        super(url);
-    }
-
     public HeadRequest(String url, Map<String, String> params) {
         super(url, params);
     }
 
     @Override
     protected void prepare() {
-        observable = getClient().create(RetrofitAPI.class).head(url, params);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).head(mUrl, mParams);
     }
 
     @Override
@@ -105,17 +101,13 @@ public class HeadRequest extends HttpRequest<HeadRequest> {
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
 
-        public Singleton(String url) {
-            super(url);
-        }
-
         public Singleton(String url, Map<String, String> params) {
             super(url, params);
         }
 
         @Override
         protected void prepare() {
-            observable = getClient().create(RetrofitAPI.class).head(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).head(mUrl, mParams);
         }
 
         @Override

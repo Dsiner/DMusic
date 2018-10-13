@@ -1,17 +1,18 @@
 package com.d.lib.rxnet.request;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.d.lib.rxnet.api.RetrofitAPI;
-import com.d.lib.rxnet.base.ApiManager;
+import com.d.lib.rxnet.base.HttpClient;
 import com.d.lib.rxnet.base.HttpConfig;
 import com.d.lib.rxnet.base.IRequest;
-import com.d.lib.rxnet.base.RetrofitClient;
+import com.d.lib.rxnet.base.RequestManager;
 import com.d.lib.rxnet.body.UploadProgressRequestBody;
-import com.d.lib.rxnet.callback.UploadCallback;
+import com.d.lib.rxnet.callback.ProgressCallback;
+import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.lib.rxnet.func.ApiRetryFunc;
 import com.d.lib.rxnet.interceptor.HeadersInterceptor;
-import com.d.lib.rxnet.interceptor.UploadProgressInterceptor;
 import com.d.lib.rxnet.mode.MediaTypes;
 import com.d.lib.rxnet.observer.UploadObserver;
 
@@ -34,50 +35,54 @@ import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-import retrofit2.Retrofit;
 
 /**
  * Created by D on 2017/10/24.
  */
 public class UploadRequest extends IRequest<UploadRequest> {
-    protected Map<String, String> params = new LinkedHashMap<>();
-    protected List<MultipartBody.Part> multipartBodyParts = new ArrayList<>();
+    protected List<MultipartBody.Part> mMultipartBodyParts = new ArrayList<>();
 
     public UploadRequest(String url) {
-        this.url = url;
-        this.config = HttpConfig.getNewDefault();
+        this(url, null);
+    }
+
+    public UploadRequest(String url, HttpConfig config) {
+        this.mUrl = url;
+        this.mParams = new LinkedHashMap<>();
+        this.mConfig = config != null ? config : HttpConfig.getDefault();
     }
 
     @Override
-    protected Retrofit getClient() {
-        return RetrofitClient.getRetrofit(config, false);
+    protected HttpClient getClient() {
+        return HttpClient.create(HttpClient.TYPE_UPLOAD, mConfig.log(false));
     }
 
-    protected void prepare(UploadCallback callback) {
-        if (params != null && params.size() > 0) {
-            Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
+    protected void prepare() {
+        if (mParams != null && mParams.size() > 0) {
+            Iterator<Map.Entry<String, String>> entryIterator = mParams.entrySet().iterator();
             Map.Entry<String, String> entry;
             while (entryIterator.hasNext()) {
                 entry = entryIterator.next();
                 if (entry != null) {
-                    multipartBodyParts.add(MultipartBody.Part.createFormData(entry.getKey(), entry.getValue()));
+                    mMultipartBodyParts.add(MultipartBody.Part.createFormData(entry.getKey(), entry.getValue()));
                 }
             }
         }
-        config.addNetworkInterceptors(new UploadProgressInterceptor(callback));
-        observable = getClient().create(RetrofitAPI.class).upload(url, multipartBodyParts);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).upload(mUrl, mMultipartBodyParts);
     }
 
-    public void request(final UploadCallback callback) {
-        if (callback == null) {
-            throw new NullPointerException("This callback must not be null!");
-        }
-        prepare(callback);
-        requestImpl(observable, config, tag, callback);
+    public void request() {
+        request(null);
+    }
+
+    public void request(@Nullable SimpleCallback<ResponseBody> callback) {
+        prepare();
+        requestImpl(mObservable, getClient().getHttpConfig(), mTag, callback);
     }
 
     @Override
@@ -135,13 +140,13 @@ public class UploadRequest extends IRequest<UploadRequest> {
         return super.retryDelayMillis(retryDelayMillis);
     }
 
-    private static void requestImpl(final Observable observable,
+    private static void requestImpl(final Observable<ResponseBody> observable,
                                     final HttpConfig config,
                                     final Object tag,
-                                    final UploadCallback callback) {
-        DisposableObserver disposableObserver = new UploadObserver(callback);
+                                    final SimpleCallback<ResponseBody> callback) {
+        DisposableObserver<ResponseBody> disposableObserver = new UploadObserver(callback);
         if (tag != null) {
-            ApiManager.get().add(tag, disposableObserver);
+            RequestManager.getIns().add(tag, disposableObserver);
         }
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -152,7 +157,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
 
     public UploadRequest addParam(String paramKey, String paramValue) {
         if (paramKey != null && paramValue != null) {
-            this.params.put(paramKey, paramValue);
+            this.mParams.put(paramKey, paramValue);
         }
         return this;
     }
@@ -161,7 +166,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
         return addFile(key, file, null);
     }
 
-    public UploadRequest addFile(String key, File file, UploadCallback callback) {
+    public UploadRequest addFile(String key, File file, ProgressCallback callback) {
         if (key == null || file == null) {
             return this;
         }
@@ -169,10 +174,10 @@ public class UploadRequest extends IRequest<UploadRequest> {
         if (callback != null) {
             UploadProgressRequestBody uploadProgressRequestBody = new UploadProgressRequestBody(requestBody, callback);
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, file.getName(), uploadProgressRequestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         } else {
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, file.getName(), requestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         }
         return this;
     }
@@ -181,7 +186,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
         return addImageFile(key, file, null);
     }
 
-    public UploadRequest addImageFile(String key, File file, UploadCallback callback) {
+    public UploadRequest addImageFile(String key, File file, ProgressCallback callback) {
         if (key == null || file == null) {
             return this;
         }
@@ -189,10 +194,10 @@ public class UploadRequest extends IRequest<UploadRequest> {
         if (callback != null) {
             UploadProgressRequestBody uploadProgressRequestBody = new UploadProgressRequestBody(requestBody, callback);
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, file.getName(), uploadProgressRequestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         } else {
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, file.getName(), requestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         }
         return this;
     }
@@ -201,7 +206,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
         return addBytes(key, bytes, name, null);
     }
 
-    public UploadRequest addBytes(String key, byte[] bytes, String name, UploadCallback callback) {
+    public UploadRequest addBytes(String key, byte[] bytes, String name, ProgressCallback callback) {
         if (key == null || bytes == null || name == null) {
             return this;
         }
@@ -209,10 +214,10 @@ public class UploadRequest extends IRequest<UploadRequest> {
         if (callback != null) {
             UploadProgressRequestBody uploadProgressRequestBody = new UploadProgressRequestBody(requestBody, callback);
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, name, uploadProgressRequestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         } else {
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, name, requestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         }
         return this;
     }
@@ -221,7 +226,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
         return addStream(key, inputStream, name, null);
     }
 
-    public UploadRequest addStream(String key, InputStream inputStream, String name, UploadCallback callback) {
+    public UploadRequest addStream(String key, InputStream inputStream, String name, ProgressCallback callback) {
         if (key == null || inputStream == null || name == null) {
             return this;
         }
@@ -229,10 +234,10 @@ public class UploadRequest extends IRequest<UploadRequest> {
         if (callback != null) {
             UploadProgressRequestBody uploadProgressRequestBody = new UploadProgressRequestBody(requestBody, callback);
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, name, uploadProgressRequestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         } else {
             MultipartBody.Part part = MultipartBody.Part.createFormData(key, name, requestBody);
-            this.multipartBodyParts.add(part);
+            this.mMultipartBodyParts.add(part);
         }
         return this;
     }
@@ -270,22 +275,21 @@ public class UploadRequest extends IRequest<UploadRequest> {
      * Singleton
      */
     public static class Singleton extends IRequest<Singleton> {
-        protected Map<String, String> params = new LinkedHashMap<>();
         protected List<MultipartBody.Part> multipartBodyParts = new ArrayList<>();
 
         public Singleton(String url) {
-            this.url = url;
-            this.config = HttpConfig.getNewDefault();
+            this.mUrl = url;
+            this.mParams = new LinkedHashMap<>();
         }
 
         @Override
-        protected Retrofit getClient() {
-            return RetrofitClient.getTransfer();
+        protected HttpClient getClient() {
+            return HttpClient.getDefault(HttpClient.TYPE_UPLOAD);
         }
 
-        protected void prepare(UploadCallback callback) {
-            if (params != null && params.size() > 0) {
-                Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
+        protected void prepare() {
+            if (mParams != null && mParams.size() > 0) {
+                Iterator<Map.Entry<String, String>> entryIterator = mParams.entrySet().iterator();
                 Map.Entry<String, String> entry;
                 while (entryIterator.hasNext()) {
                     entry = entryIterator.next();
@@ -294,21 +298,21 @@ public class UploadRequest extends IRequest<UploadRequest> {
                     }
                 }
             }
-            config.addNetworkInterceptors(new UploadProgressInterceptor(callback));
-            observable = getClient().create(RetrofitAPI.class).upload(url, multipartBodyParts);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).upload(mUrl, multipartBodyParts);
         }
 
-        public void request(final UploadCallback callback) {
-            if (callback == null) {
-                throw new NullPointerException("This callback must not be null!");
-            }
-            prepare(callback);
-            requestImpl(observable, config, tag, callback);
+        public void request() {
+            request(null);
+        }
+
+        public void request(@Nullable SimpleCallback<ResponseBody> callback) {
+            prepare();
+            requestImpl(mObservable, getClient().getHttpConfig(), mTag, callback);
         }
 
         public Singleton addParam(String paramKey, String paramValue) {
             if (paramKey != null && paramValue != null) {
-                this.params.put(paramKey, paramValue);
+                this.mParams.put(paramKey, paramValue);
             }
             return this;
         }
@@ -317,7 +321,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
             return addFile(key, file, null);
         }
 
-        public Singleton addFile(String key, File file, UploadCallback callback) {
+        public Singleton addFile(String key, File file, ProgressCallback callback) {
             if (key == null || file == null) {
                 return this;
             }
@@ -337,7 +341,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
             return addImageFile(key, file, null);
         }
 
-        public Singleton addImageFile(String key, File file, UploadCallback callback) {
+        public Singleton addImageFile(String key, File file, ProgressCallback callback) {
             if (key == null || file == null) {
                 return this;
             }
@@ -357,7 +361,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
             return addBytes(key, bytes, name, null);
         }
 
-        public Singleton addBytes(String key, byte[] bytes, String name, UploadCallback callback) {
+        public Singleton addBytes(String key, byte[] bytes, String name, ProgressCallback callback) {
             if (key == null || bytes == null || name == null) {
                 return this;
             }
@@ -377,7 +381,7 @@ public class UploadRequest extends IRequest<UploadRequest> {
             return addStream(key, inputStream, name, null);
         }
 
-        public Singleton addStream(String key, InputStream inputStream, String name, UploadCallback callback) {
+        public Singleton addStream(String key, InputStream inputStream, String name, ProgressCallback callback) {
             if (key == null || inputStream == null || name == null) {
                 return this;
             }

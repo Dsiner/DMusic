@@ -17,17 +17,13 @@ import okhttp3.Interceptor;
  */
 public class OptionRequest extends HttpRequest<OptionRequest> {
 
-    public OptionRequest(String url) {
-        super(url);
-    }
-
     public OptionRequest(String url, Map<String, String> params) {
         super(url, params);
     }
 
     @Override
     protected void prepare() {
-        observable = getClient().create(RetrofitAPI.class).options(url, params);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).options(mUrl, mParams);
     }
 
     @Override
@@ -105,17 +101,13 @@ public class OptionRequest extends HttpRequest<OptionRequest> {
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
 
-        public Singleton(String url) {
-            super(url);
-        }
-
         public Singleton(String url, Map<String, String> params) {
             super(url, params);
         }
 
         @Override
         protected void prepare() {
-            observable = getClient().create(RetrofitAPI.class).options(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).options(mUrl, mParams);
         }
 
         @Override

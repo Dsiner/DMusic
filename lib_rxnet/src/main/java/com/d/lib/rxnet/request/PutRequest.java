@@ -18,17 +18,13 @@ import okhttp3.Interceptor;
  */
 public class PutRequest extends HttpRequest<PutRequest> {
 
-    public PutRequest(String url) {
-        super(url);
-    }
-
     public PutRequest(String url, Map<String, String> params) {
         super(url, params);
     }
 
     @Override
     protected void prepare() {
-        observable = getClient().create(RetrofitAPI.class).put(url, params);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).put(mUrl, mParams);
     }
 
     @Override
@@ -106,17 +102,13 @@ public class PutRequest extends HttpRequest<PutRequest> {
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
 
-        public Singleton(String url) {
-            super(url);
-        }
-
         public Singleton(String url, Map<String, String> params) {
             super(url, params);
         }
 
         @Override
         protected void prepare() {
-            observable = getClient().create(RetrofitAPI.class).put(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).put(mUrl, mParams);
         }
 
         @Override

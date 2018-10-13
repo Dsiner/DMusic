@@ -3,74 +3,60 @@ package com.d.lib.rxnet.request;
 import android.text.TextUtils;
 
 import com.d.lib.rxnet.api.RetrofitAPI;
-import com.d.lib.rxnet.base.ApiManager;
+import com.d.lib.rxnet.base.HttpClient;
 import com.d.lib.rxnet.base.HttpConfig;
 import com.d.lib.rxnet.base.IRequest;
-import com.d.lib.rxnet.base.RetrofitClient;
-import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.base.RequestManager;
+import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.func.ApiRetryFunc;
 import com.d.lib.rxnet.interceptor.HeadersInterceptor;
 import com.d.lib.rxnet.observer.DownloadObserver;
+import com.d.lib.rxnet.utils.Util;
 
-import org.reactivestreams.Publisher;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
 
 /**
  * Created by D on 2017/10/24.
  */
 public class DownloadRequest extends IRequest<DownloadRequest> {
-    protected Map<String, String> params;
+    protected Map<String, String> mParams;
 
     public DownloadRequest(String url) {
-        this(null, url, null);
+        this(url, null);
     }
 
     public DownloadRequest(String url, Map<String, String> params) {
-        this(null, url, params);
+        this(url, params, null);
     }
 
-    public DownloadRequest(HttpConfig config, String url, Map<String, String> params) {
-        this.url = url;
-        this.params = params;
-        this.config = config != null ? config : HttpConfig.getNewDefault();
+    public DownloadRequest(String url, Map<String, String> params, HttpConfig config) {
+        this.mUrl = url;
+        this.mParams = params;
+        this.mConfig = config != null ? config : HttpConfig.getDefault();
     }
 
     @Override
-    protected Retrofit getClient() {
-        return RetrofitClient.getRetrofit(config, false);
+    protected HttpClient getClient() {
+        return HttpClient.create(HttpClient.TYPE_DOWNLOAD, mConfig.log(false));
     }
 
     private void prepare() {
-        if (params == null) {
-            observable = getClient().create(RetrofitAPI.class).download(url);
+        if (mParams == null || mParams.size() <= 0) {
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).download(mUrl);
         } else {
-            observable = getClient().create(RetrofitAPI.class).download(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).download(mUrl, mParams);
         }
     }
 
-    public void request(final String path, final String name, final DownloadCallback callback) {
+    public void request(final String path, final String name, final ProgressCallback callback) {
         if (TextUtils.isEmpty(path)) {
             throw new IllegalArgumentException("This path can not be empty!");
         }
@@ -81,84 +67,31 @@ public class DownloadRequest extends IRequest<DownloadRequest> {
             throw new NullPointerException("This callback must not be null!");
         }
         prepare();
-        requestImpl(observable, config, path, name, callback, tag);
+        requestImpl(mObservable, getClient().getHttpConfig(), mTag, path, name, callback);
     }
 
-
-    private static void requestImpl(final Observable observable,
+    private static void requestImpl(final Observable<ResponseBody> observable,
                                     final HttpConfig config,
+                                    final Object tag,
                                     final String path, final String name,
-                                    final DownloadCallback callback,
-                                    final Object tag) {
-        DisposableObserver disposableObserver = new DownloadObserver(callback);
+                                    final ProgressCallback callback) {
+        Util.executeMain(new Runnable() {
+            @Override
+            public void run() {
+                if (callback != null) {
+                    callback.onStart();
+                }
+            }
+        });
+        DisposableObserver<ResponseBody> disposableObserver = new DownloadObserver(path, name, callback);
         if (tag != null) {
-            ApiManager.get().add(tag, disposableObserver);
+            RequestManager.getIns().add(tag, disposableObserver);
         }
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
-                .toFlowable(BackpressureStrategy.LATEST)
-                .flatMap(new Function<ResponseBody, Publisher<?>>() {
-                    @Override
-                    public Publisher<?> apply(final ResponseBody responseBody) throws Exception {
-                        return Flowable.create(new FlowableOnSubscribe<DownloadModel>() {
-                            @Override
-                            public void subscribe(FlowableEmitter<DownloadModel> subscriber) throws Exception {
-                                File dir = new File(path);
-                                if (!dir.exists()) {
-                                    dir.mkdirs();
-                                }
-                                File file = new File(dir.getPath() + File.separator + name);
-                                saveFile(subscriber, file, responseBody);
-                            }
-                        }, BackpressureStrategy.LATEST);
-                    }
-                })
-                .sample(700, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .toObservable()
+                .observeOn(Schedulers.io())
                 .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis))
                 .subscribe(disposableObserver);
-    }
-
-    private static void saveFile(FlowableEmitter<? super DownloadModel> sub, File saveFile, ResponseBody resp) {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            try {
-                int readLen;
-                int downloadSize = 0;
-                byte[] buffer = new byte[8192];
-
-                DownloadModel downModel = new DownloadModel();
-                inputStream = resp.byteStream();
-                outputStream = new FileOutputStream(saveFile);
-
-                long contentLength = resp.contentLength();
-                downModel.totalSize = contentLength;
-                sub.onNext(downModel);
-
-                while ((readLen = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, readLen);
-                    downloadSize += readLen;
-                    downModel.downloadSize = downloadSize;
-                    sub.onNext(downModel);
-                }
-                outputStream.flush();
-                sub.onComplete();
-            } finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-                if (resp != null) {
-                    resp.close();
-                }
-            }
-        } catch (IOException e) {
-            sub.onError(e);
-        }
     }
 
     @Override
@@ -216,41 +149,34 @@ public class DownloadRequest extends IRequest<DownloadRequest> {
         return super.retryDelayMillis(retryDelayMillis);
     }
 
-    public static class DownloadModel {
-        public long downloadSize;
-        public long totalSize;
-    }
-
     /**
      * Singleton
      */
     public static class Singleton extends IRequest<Singleton> {
-        protected Map<String, String> params;
 
         public Singleton(String url) {
             this(url, null);
         }
 
         public Singleton(String url, Map<String, String> params) {
-            this.url = url;
-            this.params = params;
-            this.config = config != null ? config : HttpConfig.getNewDefault();
+            this.mUrl = url;
+            this.mParams = params;
         }
 
         @Override
-        protected Retrofit getClient() {
-            return RetrofitClient.getTransfer();
+        protected HttpClient getClient() {
+            return HttpClient.getDefault(HttpClient.TYPE_DOWNLOAD);
         }
 
         private void prepare() {
-            if (params == null) {
-                observable = getClient().create(RetrofitAPI.class).download(url);
+            if (mParams == null || mParams.size() <= 0) {
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).download(mUrl);
             } else {
-                observable = getClient().create(RetrofitAPI.class).download(url, params);
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).download(mUrl, mParams);
             }
         }
 
-        public void request(final String path, final String name, final DownloadCallback callback) {
+        public void request(final String path, final String name, final ProgressCallback callback) {
             if (TextUtils.isEmpty(path)) {
                 throw new IllegalArgumentException("This path can not be empty!");
             }
@@ -261,7 +187,7 @@ public class DownloadRequest extends IRequest<DownloadRequest> {
                 throw new NullPointerException("This callback must not be null!");
             }
             prepare();
-            requestImpl(observable, config, path, name, callback, tag);
+            requestImpl(mObservable, getClient().getHttpConfig(), mTag, path, name, callback);
         }
     }
 }

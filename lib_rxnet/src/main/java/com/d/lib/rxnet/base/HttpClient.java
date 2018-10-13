@@ -1,10 +1,16 @@
 package com.d.lib.rxnet.base;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.d.lib.rxnet.interceptor.HeadersInterceptor;
 import com.d.lib.rxnet.utils.ULog;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,42 +29,81 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * RetrofitClient
+ * HttpClient
  * Created by D on 2017/7/14.
  */
-public class RetrofitClient {
+public class HttpClient {
+    public final static int TYPE_NORMAL = 0;
+    public final static int TYPE_DOWNLOAD = 1;
+    public final static int TYPE_UPLOAD = 2;
+
+    @IntDef({TYPE_NORMAL, TYPE_DOWNLOAD, TYPE_UPLOAD})
+    @Target({ElementType.PARAMETER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface State {
+
+    }
+
+    private int mType;
+    private HttpConfig mHttpConfig;
+    private Retrofit mRetrofit;
+
+    public static HttpClient create(@State int type, @NonNull HttpConfig config) {
+        return new HttpClient(type, config);
+    }
+
+    private HttpClient(@State int type, @NonNull HttpConfig config) {
+        this.mType = type;
+        this.mHttpConfig = config;
+        this.mRetrofit = getRetrofit(config);
+    }
+
+    public int getType() {
+        return mType;
+    }
+
+    @NonNull
+    public HttpConfig getHttpConfig() {
+        return mHttpConfig;
+    }
+
+    @NonNull
+    public Retrofit getRetrofitClient() {
+        return mRetrofit;
+    }
 
     private static class Default {
-        private final static Retrofit INSTANCE = getRetrofit(HttpConfig.getDefault(), true);
+        private final static HttpClient INSTANCE = create(TYPE_NORMAL, HttpConfig.getDefault().log(true));
     }
 
     private static class Transfer {
-        private final static Retrofit INSTANCE = getRetrofit(HttpConfig.getDefault(), false);
+        private final static HttpClient DOWNLOAD = create(TYPE_DOWNLOAD, HttpConfig.getDefault().log(false));
+        private final static HttpClient UPLOAD = create(TYPE_UPLOAD, HttpConfig.getDefault().log(false));
     }
 
     /**
      * Singleton - Default configuration
      */
-    public static Retrofit getDefault() {
-        return Default.INSTANCE;
-    }
-
-    /**
-     * Singleton - Default Transfer configuration
-     */
-    public static Retrofit getTransfer() {
-        return Transfer.INSTANCE;
+    @NonNull
+    public static HttpClient getDefault(@State int type) {
+        if (type == TYPE_DOWNLOAD) {
+            return Transfer.DOWNLOAD;
+        } else if (type == TYPE_UPLOAD) {
+            return Transfer.UPLOAD;
+        } else {
+            return Default.INSTANCE;
+        }
     }
 
     /**
      * New instance - Custom configuration
      *
      * @param config Configuration
-     * @param log    Whether to add HttpLoggingInterceptor
      * @return Retrofit
      */
-    public static Retrofit getRetrofit(HttpConfig config, boolean log) {
-        Retrofit retrofit = new Retrofit.Builder()
+    @NonNull
+    public static Retrofit getRetrofit(@NonNull HttpConfig config) {
+        return new Retrofit.Builder()
                 // Set OKHttpClient, if not set, a default will be provided
                 .client(getOkHttpClient(config.headers,
                         config.onHeadInterceptor,
@@ -68,7 +113,7 @@ public class RetrofitClient {
                         config.sslSocketFactory,
                         config.interceptors,
                         config.networkInterceptors,
-                        log))
+                        config.log))
                 // Set base url
                 .baseUrl(!TextUtils.isEmpty(config.baseUrl) ? config.baseUrl : HttpConfig.getDefault().baseUrl)
                 // Set RxJava2CallAdapterFactory
@@ -76,7 +121,6 @@ public class RetrofitClient {
                 // Add converter
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return retrofit;
     }
 
     private static OkHttpClient getOkHttpClient(Map<String, String> headers,

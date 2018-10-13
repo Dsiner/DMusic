@@ -4,10 +4,12 @@ package com.d.lib.rxnet.callback;
  * UploadCallback
  * Created by D on 2017/10/24.
  */
-public interface UploadCallback {
+public interface ProgressCallback {
+    void onStart();
+
     void onProgress(long currentLength, long totalLength);
 
-    void onError(Throwable e);
+    void onSuccess();
 
-    void onComplete();
+    void onError(Throwable e);
 }

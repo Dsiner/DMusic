@@ -9,15 +9,15 @@ import io.reactivex.functions.Function;
  * Map with AsyncCallback
  */
 public class MapFunc<T, R> implements Function<T, R> {
-    private AsyncCallback<T, R> callback;
+    private AsyncCallback<T, R> mCallback;
 
     public MapFunc(AsyncCallback<T, R> callback) {
-        this.callback = callback;
+        this.mCallback = callback;
     }
 
     @Override
     public R apply(T responseBody) throws Exception {
         Util.printThread("RxNet_theard callback apply");
-        return callback.apply(responseBody);
+        return mCallback.apply(responseBody);
     }
 }

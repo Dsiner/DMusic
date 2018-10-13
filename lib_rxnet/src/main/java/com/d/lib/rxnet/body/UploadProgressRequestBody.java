@@ -3,9 +3,9 @@ package com.d.lib.rxnet.body;
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
-import com.d.lib.rxnet.callback.UploadCallback;
-import com.d.lib.rxnet.exception.ApiException;
+import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.utils.ULog;
+import com.d.lib.rxnet.utils.Util;
 
 import java.io.IOException;
 
@@ -24,27 +24,27 @@ import okio.Sink;
  * Upload progress request entity class
  */
 public class UploadProgressRequestBody extends RequestBody {
-    private RequestBody requestBody;
-    private UploadCallback callback;
-    private long lastTime;
+    // The two progress update intervals cannot be less than 1000ms
+    private static final int MIN_DELAY_TIME = 1000;
 
-    public UploadProgressRequestBody(RequestBody requestBody, UploadCallback callback) {
-        if (requestBody == null || callback == null) {
-            throw new NullPointerException("This requestBody and callback must not be null.");
-        }
-        this.requestBody = requestBody;
-        this.callback = callback;
+    private RequestBody mRequestBody;
+    private ProgressCallback mCallback;
+    private long mLastTime;
+
+    public UploadProgressRequestBody(@NonNull RequestBody requestBody, @NonNull ProgressCallback callback) {
+        this.mRequestBody = requestBody;
+        this.mCallback = callback;
     }
 
     @Override
     public MediaType contentType() {
-        return requestBody.contentType();
+        return mRequestBody.contentType();
     }
 
     @Override
     public long contentLength() {
         try {
-            return requestBody.contentLength();
+            return mRequestBody.contentLength();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,10 +53,33 @@ public class UploadProgressRequestBody extends RequestBody {
 
     @Override
     public void writeTo(@NonNull BufferedSink sink) throws IOException {
-        CountingSink countingSink = new CountingSink(sink);
-        BufferedSink bufferedSink = Okio.buffer(countingSink);
-        requestBody.writeTo(bufferedSink);
-        bufferedSink.flush();
+        Util.executeMain(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onStart();
+            }
+        });
+        BufferedSink bufferedSink;
+        try {
+            bufferedSink = Okio.buffer(new CountingSink(sink));
+            mRequestBody.writeTo(bufferedSink);
+            bufferedSink.flush();
+            Util.executeMain(new Runnable() {
+                @Override
+                public void run() {
+                    mCallback.onSuccess();
+                }
+            });
+        } catch (final Throwable e) {
+            e.printStackTrace();
+            Util.executeMain(new Runnable() {
+                @Override
+                public void run() {
+                    mCallback.onError(e);
+                }
+            });
+            throw e;
+        }
     }
 
     private final class CountingSink extends ForwardingSink {
@@ -80,18 +103,13 @@ public class UploadProgressRequestBody extends RequestBody {
                 totalLength = contentLength();
             }
             long currentTime = System.currentTimeMillis();
-            if (currentTime - lastTime >= 700 || lastTime == 0 || currentLength == totalLength) {
-                lastTime = currentTime;
+            if (currentTime - mLastTime >= MIN_DELAY_TIME || mLastTime == 0 || currentLength == totalLength) {
+                mLastTime = currentTime;
                 Observable.just(currentLength).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         ULog.d("Upload progress currentLength: " + currentLength + " totalLength: " + totalLength);
-                        callback.onProgress(currentLength, totalLength);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        callback.onError(new ApiException(-1, throwable));
+                        mCallback.onProgress(currentLength, totalLength);
                     }
                 });
             }

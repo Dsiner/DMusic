@@ -17,17 +17,13 @@ import okhttp3.Interceptor;
  */
 public class DeleteRequest extends HttpRequest<DeleteRequest> {
 
-    public DeleteRequest(String url) {
-        super(url);
-    }
-
     public DeleteRequest(String url, Map<String, String> params) {
         super(url, params);
     }
 
     @Override
     protected void prepare() {
-        observable = getClient().create(RetrofitAPI.class).delete(url, params);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).delete(mUrl, mParams);
     }
 
     @Override
@@ -105,17 +101,13 @@ public class DeleteRequest extends HttpRequest<DeleteRequest> {
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
 
-        public Singleton(String url) {
-            super(url);
-        }
-
         public Singleton(String url, Map<String, String> params) {
             super(url, params);
         }
 
         @Override
         protected void prepare() {
-            observable = getClient().create(RetrofitAPI.class).delete(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).delete(mUrl, mParams);
         }
 
         @Override

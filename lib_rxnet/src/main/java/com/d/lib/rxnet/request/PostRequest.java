@@ -24,10 +24,10 @@ import okhttp3.RequestBody;
  * Created by D on 2017/10/24.
  */
 public class PostRequest extends HttpRequest<PostRequest> {
-    private Map<String, Object> forms = new LinkedHashMap<>();
-    private RequestBody requestBody;
-    private MediaType mediaType;
-    private String content;
+    private Map<String, Object> mForms = new LinkedHashMap<>();
+    private RequestBody mRequestBody;
+    private MediaType mMediaType;
+    private String mContent;
 
     public PostRequest(String url) {
         super(url);
@@ -39,34 +39,34 @@ public class PostRequest extends HttpRequest<PostRequest> {
 
     @Override
     protected void prepare() {
-        if (forms != null && forms.size() > 0) {
-            if (params != null && params.size() > 0) {
-                Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
+        if (mForms != null && mForms.size() > 0) {
+            if (mParams != null && mParams.size() > 0) {
+                Iterator<Map.Entry<String, String>> entryIterator = mParams.entrySet().iterator();
                 Map.Entry<String, String> entry;
                 while (entryIterator.hasNext()) {
                     entry = entryIterator.next();
                     if (entry != null) {
-                        forms.put(entry.getKey(), entry.getValue());
+                        mForms.put(entry.getKey(), entry.getValue());
                     }
                 }
             }
-            observable = getClient().create(RetrofitAPI.class).postForm(url, forms);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postForm(mUrl, mForms);
             return;
         }
-        if (requestBody != null) {
-            observable = getClient().create(RetrofitAPI.class).postBody(url, requestBody);
+        if (mRequestBody != null) {
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postBody(mUrl, mRequestBody);
             return;
         }
-        if (content != null && mediaType != null) {
-            requestBody = RequestBody.create(mediaType, content);
-            observable = getClient().create(RetrofitAPI.class).postBody(url, requestBody);
+        if (mContent != null && mMediaType != null) {
+            mRequestBody = RequestBody.create(mMediaType, mContent);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postBody(mUrl, mRequestBody);
             return;
         }
-        if (params != null && params.size() > 0) {
-            observable = getClient().create(RetrofitAPI.class).post(url, params);
+        if (mParams != null && mParams.size() > 0) {
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).post(mUrl, mParams);
             return;
         }
-        observable = getClient().create(RetrofitAPI.class).post(url);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).post(mUrl);
     }
 
     @Override
@@ -86,43 +86,43 @@ public class PostRequest extends HttpRequest<PostRequest> {
 
     public PostRequest addForm(String formKey, Object formValue) {
         if (formKey != null && formValue != null) {
-            forms.put(formKey, formValue);
+            mForms.put(formKey, formValue);
         }
         return this;
     }
 
     public PostRequest setRequestBody(RequestBody requestBody) {
-        this.requestBody = requestBody;
+        this.mRequestBody = requestBody;
         return this;
     }
 
     public PostRequest setString(String string) {
-        this.content = string;
-        this.mediaType = MediaTypes.TEXT_PLAIN_TYPE;
+        this.mContent = string;
+        this.mMediaType = MediaTypes.TEXT_PLAIN_TYPE;
         return this;
     }
 
     public PostRequest setString(String string, MediaType mediaType) {
-        this.content = string;
-        this.mediaType = mediaType;
+        this.mContent = string;
+        this.mMediaType = mediaType;
         return this;
     }
 
     public PostRequest setJson(String json) {
-        this.content = json;
-        this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+        this.mContent = json;
+        this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
         return this;
     }
 
     public PostRequest setJson(JSONObject jsonObject) {
-        this.content = jsonObject.toString();
-        this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+        this.mContent = jsonObject.toString();
+        this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
         return this;
     }
 
     public PostRequest setJson(JSONArray jsonArray) {
-        this.content = jsonArray.toString();
-        this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+        this.mContent = jsonArray.toString();
+        this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
         return this;
     }
 
@@ -185,10 +185,10 @@ public class PostRequest extends HttpRequest<PostRequest> {
      * Singleton
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
-        private Map<String, Object> forms = new LinkedHashMap<>();
-        private RequestBody requestBody;
-        private MediaType mediaType;
-        private String content;
+        private Map<String, Object> mForms = new LinkedHashMap<>();
+        private RequestBody mRequestBody;
+        private MediaType mMediaType;
+        private String mContent;
 
         public Singleton(String url) {
             super(url);
@@ -200,34 +200,34 @@ public class PostRequest extends HttpRequest<PostRequest> {
 
         @Override
         protected void prepare() {
-            if (forms != null && forms.size() > 0) {
-                if (params != null && params.size() > 0) {
-                    Iterator<Map.Entry<String, String>> entryIterator = params.entrySet().iterator();
+            if (mForms != null && mForms.size() > 0) {
+                if (mParams != null && mParams.size() > 0) {
+                    Iterator<Map.Entry<String, String>> entryIterator = mParams.entrySet().iterator();
                     Map.Entry<String, String> entry;
                     while (entryIterator.hasNext()) {
                         entry = entryIterator.next();
                         if (entry != null) {
-                            forms.put(entry.getKey(), entry.getValue());
+                            mForms.put(entry.getKey(), entry.getValue());
                         }
                     }
                 }
-                observable = getClient().create(RetrofitAPI.class).postForm(url, forms);
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postForm(mUrl, mForms);
                 return;
             }
-            if (requestBody != null) {
-                observable = getClient().create(RetrofitAPI.class).postBody(url, requestBody);
+            if (mRequestBody != null) {
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postBody(mUrl, mRequestBody);
                 return;
             }
-            if (content != null && mediaType != null) {
-                requestBody = RequestBody.create(mediaType, content);
-                observable = getClient().create(RetrofitAPI.class).postBody(url, requestBody);
+            if (mContent != null && mMediaType != null) {
+                mRequestBody = RequestBody.create(mMediaType, mContent);
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).postBody(mUrl, mRequestBody);
                 return;
             }
-            if (params != null && params.size() > 0) {
-                observable = getClient().create(RetrofitAPI.class).post(url, params);
+            if (mParams != null && mParams.size() > 0) {
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).post(mUrl, mParams);
                 return;
             }
-            observable = getClient().create(RetrofitAPI.class).post(url);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).post(mUrl);
         }
 
         @Override
@@ -247,43 +247,43 @@ public class PostRequest extends HttpRequest<PostRequest> {
 
         public Singleton addForm(String formKey, Object formValue) {
             if (formKey != null && formValue != null) {
-                forms.put(formKey, formValue);
+                mForms.put(formKey, formValue);
             }
             return this;
         }
 
         public Singleton setRequestBody(RequestBody requestBody) {
-            this.requestBody = requestBody;
+            this.mRequestBody = requestBody;
             return this;
         }
 
         public Singleton setString(String string) {
-            this.content = string;
-            this.mediaType = MediaTypes.TEXT_PLAIN_TYPE;
+            this.mContent = string;
+            this.mMediaType = MediaTypes.TEXT_PLAIN_TYPE;
             return this;
         }
 
         public Singleton setString(String string, MediaType mediaType) {
-            this.content = string;
-            this.mediaType = mediaType;
+            this.mContent = string;
+            this.mMediaType = mediaType;
             return this;
         }
 
         public Singleton setJson(String json) {
-            this.content = json;
-            this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+            this.mContent = json;
+            this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
             return this;
         }
 
         public Singleton setJson(JSONObject jsonObject) {
-            this.content = jsonObject.toString();
-            this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+            this.mContent = jsonObject.toString();
+            this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
             return this;
         }
 
         public Singleton setJson(JSONArray jsonArray) {
-            this.content = jsonArray.toString();
-            this.mediaType = MediaTypes.APPLICATION_JSON_TYPE;
+            this.mContent = jsonArray.toString();
+            this.mMediaType = MediaTypes.APPLICATION_JSON_TYPE;
             return this;
         }
     }

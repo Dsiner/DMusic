@@ -14,14 +14,14 @@ import okhttp3.Response;
  * Online cache interception
  */
 public class OnlineCacheInterceptor implements Interceptor {
-    private String cacheControlValue;
+    private String mCacheControlValue;
 
     public OnlineCacheInterceptor() {
         this(60); // Default maximum online cache time (seconds)
     }
 
     public OnlineCacheInterceptor(int cacheControlValue) {
-        this.cacheControlValue = String.format("max-age=%d", cacheControlValue);
+        this.mCacheControlValue = String.format("max-age=%d", cacheControlValue);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class OnlineCacheInterceptor implements Interceptor {
                 .contains("must-revalidate") || cacheControl.contains("max-age") || cacheControl.contains("max-stale")) {
             ULog.d(originalResponse.headers().toString());
             return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, " + cacheControlValue)
+                    .header("Cache-Control", "public, " + mCacheControlValue)
                     .removeHeader("Pragma")
                     .build();
         } else {

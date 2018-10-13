@@ -1,9 +1,9 @@
 package com.d.lib.rxnet.request;
 
-import com.d.lib.rxnet.base.ApiManager;
+import com.d.lib.rxnet.base.HttpClient;
 import com.d.lib.rxnet.base.HttpConfig;
 import com.d.lib.rxnet.base.IRequest;
-import com.d.lib.rxnet.base.RetrofitClient;
+import com.d.lib.rxnet.base.RequestManager;
 import com.d.lib.rxnet.callback.AsyncCallback;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.lib.rxnet.func.ApiFunc;
@@ -23,13 +23,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
-import retrofit2.Retrofit;
 
 /**
  * Created by D on 2017/10/24.
  */
 public abstract class HttpRequest<HR extends HttpRequest> extends IRequest<HR> {
-    protected Map<String, String> params;
 
     private HttpRequest() {
     }
@@ -39,18 +37,18 @@ public abstract class HttpRequest<HR extends HttpRequest> extends IRequest<HR> {
     }
 
     public HttpRequest(String url, Map<String, String> params) {
-        this(null, url, params);
+        this(url, params, null);
     }
 
-    public HttpRequest(HttpConfig config, String url, Map<String, String> params) {
-        this.url = url;
-        this.params = params;
-        this.config = config != null ? config : HttpConfig.getNewDefault();
+    public HttpRequest(String url, Map<String, String> params, HttpConfig config) {
+        this.mUrl = url;
+        this.mParams = params;
+        this.mConfig = config != null ? config : HttpConfig.getDefault();
     }
 
     @Override
-    protected Retrofit getClient() {
-        return RetrofitClient.getRetrofit(config, true);
+    protected HttpClient getClient() {
+        return HttpClient.create(HttpClient.TYPE_NORMAL, mConfig.log(true));
     }
 
     /**
@@ -60,104 +58,104 @@ public abstract class HttpRequest<HR extends HttpRequest> extends IRequest<HR> {
 
     public <T> void request(SimpleCallback<T> callback) {
         prepare();
-        DisposableObserver disposableObserver = new ApiObserver(callback);
-        if (tag != null) {
-            ApiManager.get().add(tag, disposableObserver);
+        DisposableObserver<T> disposableObserver = new ApiObserver<T>(callback);
+        if (mTag != null) {
+            RequestManager.getIns().add(mTag, disposableObserver);
         }
-        observable.subscribeOn(Schedulers.io())
+        mObservable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new ApiFunc<T>(Util.getFirstCls(callback)))
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis))
+                .retryWhen(new ApiRetryFunc(mConfig.retryCount, mConfig.retryDelayMillis))
                 .subscribe(disposableObserver);
     }
 
     public <T, R> void request(AsyncCallback<T, R> callback) {
         prepare();
-        DisposableObserver disposableObserver = new AsyncApiObserver(callback);
-        if (tag != null) {
-            ApiManager.get().add(tag, disposableObserver);
+        DisposableObserver<R> disposableObserver = new AsyncApiObserver<T, R>(callback);
+        if (mTag != null) {
+            RequestManager.getIns().add(mTag, disposableObserver);
         }
-        observable.subscribeOn(Schedulers.io())
+        mObservable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new ApiFunc<T>(Util.getFirstCls(callback)))
                 .map(new MapFunc<T, R>(callback))
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis))
+                .retryWhen(new ApiRetryFunc(mConfig.retryCount, mConfig.retryDelayMillis))
                 .subscribe(disposableObserver);
     }
 
     public <T> Observable<T> observable(Class<T> clazz) {
         prepare();
-        return observable.subscribeOn(Schedulers.io())
+        return mObservable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new ApiFunc<T>(clazz))
-                .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis));
+                .retryWhen(new ApiRetryFunc(mConfig.retryCount, mConfig.retryDelayMillis));
     }
 
     @Override
     public HR baseUrl(String baseUrl) {
-        config.baseUrl(baseUrl);
+        mConfig.baseUrl(baseUrl);
         return (HR) this;
     }
 
     @Override
     public HR headers(Map<String, String> headers) {
-        config.headers(headers);
+        mConfig.headers(headers);
         return (HR) this;
     }
 
     @Override
     public HR headers(HeadersInterceptor.OnHeadInterceptor onHeadInterceptor) {
-        config.headers(onHeadInterceptor);
+        mConfig.headers(onHeadInterceptor);
         return (HR) this;
     }
 
     @Override
     public HR connectTimeout(long timeout) {
-        config.connectTimeout(timeout);
+        mConfig.connectTimeout(timeout);
         return (HR) this;
     }
 
     @Override
     public HR readTimeout(long timeout) {
-        config.readTimeout(timeout);
+        mConfig.readTimeout(timeout);
         return (HR) this;
     }
 
     @Override
     public HR writeTimeout(long timeout) {
-        config.writeTimeout(timeout);
+        mConfig.writeTimeout(timeout);
         return (HR) this;
     }
 
     @Override
     public HR sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-        config.sslSocketFactory(sslSocketFactory);
+        mConfig.sslSocketFactory(sslSocketFactory);
         return (HR) this;
     }
 
     @Override
     public HR addInterceptor(Interceptor interceptor) {
-        config.addInterceptor(interceptor);
+        mConfig.addInterceptor(interceptor);
         return (HR) this;
     }
 
     @Override
     public HR addNetworkInterceptors(Interceptor interceptor) {
-        config.addNetworkInterceptors(interceptor);
+        mConfig.addNetworkInterceptors(interceptor);
         return (HR) this;
     }
 
     @Override
     public HR retryCount(int retryCount) {
-        config.retryCount(retryCount);
+        mConfig.retryCount(retryCount);
         return (HR) this;
     }
 
     @Override
     public HR retryDelayMillis(long retryDelayMillis) {
-        config.retryDelayMillis(retryDelayMillis);
+        mConfig.retryDelayMillis(retryDelayMillis);
         return (HR) this;
     }
 
@@ -165,28 +163,27 @@ public abstract class HttpRequest<HR extends HttpRequest> extends IRequest<HR> {
      * Singleton
      */
     public static abstract class Singleton<HRF extends IRequest> extends IRequest<HRF> {
-        protected Map<String, String> params;
 
         private Singleton() {
         }
 
         public Singleton(String url) {
-            this(null, url, null);
+            this(url, null);
         }
 
         public Singleton(String url, Map<String, String> params) {
-            this(null, url, params);
+            this(url, params, null);
         }
 
-        public Singleton(HttpConfig config, String url, Map<String, String> params) {
-            this.url = url;
-            this.params = params;
-            this.config = config != null ? config : HttpConfig.getDefault();
+        public Singleton(String url, Map<String, String> params, HttpConfig config) {
+            this.mUrl = url;
+            this.mParams = params;
+            this.mConfig = config != null ? config : HttpConfig.getDefault();
         }
 
         @Override
-        protected Retrofit getClient() {
-            return RetrofitClient.getDefault();
+        protected HttpClient getClient() {
+            return HttpClient.getDefault(HttpClient.TYPE_NORMAL);
         }
 
         /**
@@ -196,39 +193,42 @@ public abstract class HttpRequest<HR extends HttpRequest> extends IRequest<HR> {
 
         public <T> void request(SimpleCallback<T> callback) {
             prepare();
-            DisposableObserver disposableObserver = new ApiObserver(callback);
-            if (tag != null) {
-                ApiManager.get().add(tag, disposableObserver);
+            DisposableObserver<T> disposableObserver = new ApiObserver<T>(callback);
+            if (mTag != null) {
+                RequestManager.getIns().add(mTag, disposableObserver);
             }
-            observable.subscribeOn(Schedulers.io())
+            mObservable.subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .map(new ApiFunc<T>(Util.getFirstCls(callback)))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis))
+                    .retryWhen(new ApiRetryFunc(getClient().getHttpConfig().retryCount,
+                            getClient().getHttpConfig().retryDelayMillis))
                     .subscribe(disposableObserver);
         }
 
         public <T, R> void request(AsyncCallback<T, R> callback) {
             prepare();
-            DisposableObserver disposableObserver = new AsyncApiObserver(callback);
-            if (tag != null) {
-                ApiManager.get().add(tag, disposableObserver);
+            DisposableObserver<R> disposableObserver = new AsyncApiObserver<T, R>(callback);
+            if (mTag != null) {
+                RequestManager.getIns().add(mTag, disposableObserver);
             }
-            observable.subscribeOn(Schedulers.io())
+            mObservable.subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .map(new ApiFunc<T>(Util.getFirstCls(callback)))
                     .map(new MapFunc<T, R>(callback))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis))
+                    .retryWhen(new ApiRetryFunc(getClient().getHttpConfig().retryCount,
+                            getClient().getHttpConfig().retryDelayMillis))
                     .subscribe(disposableObserver);
         }
 
         public <T> Observable<T> observable(Class<T> clazz) {
             prepare();
-            return observable.subscribeOn(Schedulers.io())
+            return mObservable.subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .map(new ApiFunc<T>(clazz))
-                    .retryWhen(new ApiRetryFunc(config.retryCount, config.retryDelayMillis));
+                    .retryWhen(new ApiRetryFunc(getClient().getHttpConfig().retryCount,
+                            getClient().getHttpConfig().retryDelayMillis));
         }
     }
 }

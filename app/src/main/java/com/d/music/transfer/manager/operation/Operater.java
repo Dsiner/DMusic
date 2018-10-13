@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
 import com.d.lib.common.event.bus.AbstractBus;
-import com.d.lib.rxnet.base.ApiManager;
+import com.d.lib.rxnet.base.RequestManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.TransferDataObservable;
@@ -52,7 +52,7 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     public void pause(TransferModel model) {
         mPipe.pop(model);
         model.state = TransferModel.STATE_PENDDING;
-        ApiManager.get().cancel(model.type + model.songId);
+        RequestManager.getIns().cancel(model.type + model.songId);
     }
 
     @UiThread

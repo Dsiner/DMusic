@@ -6,15 +6,15 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
-import com.d.music.transfer.manager.operation.Operater;
 import com.d.music.transfer.manager.TransferManager;
+import com.d.music.transfer.manager.operation.Operater;
 import com.d.music.view.CircleProgressBar;
 
 import java.util.List;
@@ -98,7 +98,12 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
             }
         });
         item.setDownloadCallback(item.state == TransferModel.STATE_DONE ? null
-                : new DownloadCallback() {
+                : new ProgressCallback() {
+            @Override
+            public void onStart() {
+
+            }
+
             @Override
             public void onProgress(long currentLength, long totalLength) {
                 circleBar.setState(CircleProgressBar.STATE_PROGRESS).progress(1f * currentLength / totalLength);
@@ -110,7 +115,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
             }
 
             @Override
-            public void onComplete() {
+            public void onSuccess() {
 
             }
         });

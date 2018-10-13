@@ -17,17 +17,13 @@ import okhttp3.Interceptor;
  */
 public class PatchRequest extends HttpRequest<PatchRequest> {
 
-    public PatchRequest(String url) {
-        super(url);
-    }
-
     public PatchRequest(String url, Map<String, String> params) {
         super(url, params);
     }
 
     @Override
     protected void prepare() {
-        observable = getClient().create(RetrofitAPI.class).patch(url, params);
+        mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).patch(mUrl, mParams);
     }
 
     @Override
@@ -105,17 +101,13 @@ public class PatchRequest extends HttpRequest<PatchRequest> {
      */
     public static class Singleton extends HttpRequest.Singleton<Singleton> {
 
-        public Singleton(String url) {
-            super(url);
-        }
-
         public Singleton(String url, Map<String, String> params) {
             super(url, params);
         }
 
         @Override
         protected void prepare() {
-            observable = getClient().create(RetrofitAPI.class).patch(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).patch(mUrl, mParams);
         }
 
         @Override

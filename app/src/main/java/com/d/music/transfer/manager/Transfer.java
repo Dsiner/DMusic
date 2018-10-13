@@ -5,9 +5,9 @@ import android.text.TextUtils;
 
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.ApiManager;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.base.RequestManager;
+import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.data.Constants;
@@ -34,7 +34,7 @@ public class Transfer {
                 .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
                     public void onSuccess(SongInfoRespModel response) {
-                        ApiManager.get().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(model.type + model.songId);
                         if (response.data == null || response.data.songList == null
                                 || response.data.songList.size() <= 0) {
                             onError(new Exception("Data is empty!"));
@@ -59,7 +59,7 @@ public class Transfer {
 
                     @Override
                     public void onError(Throwable e) {
-                        ApiManager.get().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(model.type + model.songId);
                         if (callback != null) {
                             callback.onError(e);
                         }
@@ -128,7 +128,12 @@ public class Transfer {
                 .retryCount(3)
                 .retryDelayMillis(1000)
                 .tag(model.type + model.songId)
-                .request(path, cache, new DownloadCallback() {
+                .request(path, cache, new ProgressCallback() {
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
@@ -143,9 +148,26 @@ public class Transfer {
                     }
 
                     @Override
+                    public void onSuccess() {
+                        ULog.d("dsiner_request--> onComplete");
+                        RequestManager.getIns().remove(model.type + model.songId);
+                        FileUtil.renameFile(path + cache, path + name);
+                        if (model instanceof TransferModel) {
+                            TransferModel transferModel = (TransferModel) model;
+                            transferModel.state = TransferModel.STATE_DONE;
+                            if (transferModel.downloadCallback != null) {
+                                transferModel.downloadCallback.onSuccess();
+                            }
+                        }
+                        if (callback != null) {
+                            callback.onSecond(model);
+                        }
+                    }
+
+                    @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        ApiManager.get().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(model.type + model.songId);
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
@@ -156,23 +178,6 @@ public class Transfer {
                         }
                         if (callback != null) {
                             callback.onError(model, e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        ULog.d("dsiner_request--> onComplete");
-                        ApiManager.get().remove(model.type + model.songId);
-                        FileUtil.renameFile(path + cache, path + name);
-                        if (model instanceof TransferModel) {
-                            TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_DONE;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onComplete();
-                            }
-                        }
-                        if (callback != null) {
-                            callback.onSecond(model);
                         }
                     }
                 });
@@ -190,7 +195,12 @@ public class Transfer {
                 .retryCount(3)
                 .retryDelayMillis(1000)
                 .tag(model.type + model.songId)
-                .request(path, cache, new DownloadCallback() {
+                .request(path, cache, new ProgressCallback() {
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
@@ -205,9 +215,26 @@ public class Transfer {
                     }
 
                     @Override
+                    public void onSuccess() {
+                        ULog.d("dsiner_request--> onComplete");
+                        RequestManager.getIns().remove(model.type + model.songId);
+                        FileUtil.renameFile(path + cache, path + name);
+                        if (model instanceof TransferModel) {
+                            TransferModel transferModel = (TransferModel) model;
+                            transferModel.state = TransferModel.STATE_DONE;
+                            if (transferModel.downloadCallback != null) {
+                                transferModel.downloadCallback.onSuccess();
+                            }
+                        }
+                        if (callback != null) {
+                            callback.onSecond(model);
+                        }
+                    }
+
+                    @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        ApiManager.get().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(model.type + model.songId);
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
@@ -218,23 +245,6 @@ public class Transfer {
                         }
                         if (callback != null) {
                             callback.onError(model, e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        ULog.d("dsiner_request--> onComplete");
-                        ApiManager.get().remove(model.type + model.songId);
-                        FileUtil.renameFile(path + cache, path + name);
-                        if (model instanceof TransferModel) {
-                            TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_DONE;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onComplete();
-                            }
-                        }
-                        if (callback != null) {
-                            callback.onSecond(model);
                         }
                     }
                 });
@@ -273,11 +283,25 @@ public class Transfer {
                 .writeTimeout(60 * 1000)
                 .retryCount(3)
                 .retryDelayMillis(1000)
-                .request(path, cache, new DownloadCallback() {
+                .request(path, cache, new ProgressCallback() {
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
                         ULog.d("dsiner_request--> onProgresss --> download: " + currentLength + " total: " + totalLength);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        ULog.d("dsiner_request--> onComplete");
+                        FileUtil.renameFile(path + cache, path + name);
+                        if (callback != null) {
+                            callback.onSuccess(model);
+                        }
                     }
 
                     @Override
@@ -286,15 +310,6 @@ public class Transfer {
                         FileUtil.deleteFile(path + cache);
                         if (callback != null) {
                             callback.onError(e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + cache, path + name);
-                        if (callback != null) {
-                            callback.onSuccess(model);
                         }
                     }
                 });

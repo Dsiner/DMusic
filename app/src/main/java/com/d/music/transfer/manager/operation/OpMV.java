@@ -24,7 +24,7 @@ public class OpMV extends Operater {
             ULog.d("dsiner downloadMV--> Second pass");
             item.state = TransferModel.STATE_DONE;
             if (item.downloadCallback != null) {
-                item.downloadCallback.onComplete();
+                item.downloadCallback.onSuccess();
             }
             next(item, TransferModel.STATE_DONE);
             return;

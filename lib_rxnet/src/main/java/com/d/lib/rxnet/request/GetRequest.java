@@ -27,10 +27,10 @@ public class GetRequest extends HttpRequest<GetRequest> {
 
     @Override
     protected void prepare() {
-        if (params == null) {
-            observable = getClient().create(RetrofitAPI.class).get(url);
+        if (mParams == null || mParams.size() <= 0) {
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).get(mUrl);
         } else {
-            observable = getClient().create(RetrofitAPI.class).get(url, params);
+            mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).get(mUrl, mParams);
         }
     }
 
@@ -119,10 +119,10 @@ public class GetRequest extends HttpRequest<GetRequest> {
 
         @Override
         protected void prepare() {
-            if (params == null) {
-                observable = getClient().create(RetrofitAPI.class).get(url);
+            if (mParams == null || mParams.size() <= 0) {
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).get(mUrl);
             } else {
-                observable = getClient().create(RetrofitAPI.class).get(url, params);
+                mObservable = getClient().getRetrofitClient().create(RetrofitAPI.class).get(mUrl, mParams);
             }
         }
 

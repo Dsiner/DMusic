@@ -15,10 +15,10 @@ import okhttp3.ResponseBody;
  * ResponseBody to T
  */
 public class ApiFunc<T> implements Function<ResponseBody, T> {
-    private Type type;
+    private Type mType;
 
     public ApiFunc(Type type) {
-        this.type = type;
+        this.mType = type;
     }
 
     @Override
@@ -29,10 +29,10 @@ public class ApiFunc<T> implements Function<ResponseBody, T> {
         try {
             json = responseBody.string();
             responseBody.close();
-            if (type.equals(String.class)) {
+            if (mType.equals(String.class)) {
                 return (T) json;
             } else {
-                return gson.fromJson(json, type);
+                return gson.fromJson(json, mType);
             }
         } catch (IOException e) {
             if (responseBody != null) {

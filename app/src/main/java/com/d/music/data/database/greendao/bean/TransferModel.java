@@ -1,6 +1,6 @@
 package com.d.music.data.database.greendao.bean;
 
-import com.d.lib.rxnet.callback.DownloadCallback;
+import com.d.lib.rxnet.callback.ProgressCallback;
 
 /**
  * TransferModel
@@ -20,11 +20,11 @@ public class TransferModel extends MusicModel {
     public final static int STATE_ERROR = 2;
     public final static int STATE_DONE = 3;
 
-    public DownloadCallback downloadCallback;
+    public ProgressCallback downloadCallback;
     public int viewType = VIEW_TYPE_SONG;
     public int state = STATE_PENDDING;
 
-    public void setDownloadCallback(DownloadCallback l) {
+    public void setDownloadCallback(ProgressCallback l) {
         downloadCallback = l;
     }
 }

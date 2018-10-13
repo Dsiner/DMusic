@@ -1,7 +1,7 @@
 package com.d.lib.rxnet;
 
+import com.d.lib.rxnet.base.HttpClient;
 import com.d.lib.rxnet.base.HttpConfig;
-import com.d.lib.rxnet.base.RetrofitClient;
 import com.d.lib.rxnet.request.DeleteRequest;
 import com.d.lib.rxnet.request.DownloadRequest;
 import com.d.lib.rxnet.request.GetRequest;
@@ -30,7 +30,7 @@ public class RxNet {
     }
 
     public static Retrofit getRetrofit() {
-        return RetrofitClient.getDefault();
+        return HttpClient.getDefault(HttpClient.TYPE_NORMAL).getRetrofitClient();
     }
 
     private RxNet() {

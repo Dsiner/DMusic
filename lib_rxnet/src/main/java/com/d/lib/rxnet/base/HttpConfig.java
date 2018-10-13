@@ -35,60 +35,69 @@ public class HttpConfig extends IConfig<HttpConfig> {
     public SSLSocketFactory sslSocketFactory;
     public ArrayList<Interceptor> interceptors = new ArrayList<>();
     public ArrayList<Interceptor> networkInterceptors = new ArrayList<>();
-
+    public boolean log = true;
 
     private static class Singleton {
-        private static HttpConfig DEFAULT_CONFIG = new HttpConfig()
-                .baseUrl(Config.BASE_URL)
-                .connectTimeout(Config.CONNECT_TIMEOUT)
-                .readTimeout(Config.READ_TIMEOUT)
-                .writeTimeout(Config.WRITE_TIMEOUT)
-                .retryCount(Config.RETRY_COUNT)
-                .retryDelayMillis(Config.RETRY_DELAY_MILLIS)
-                .sslSocketFactory(SSLUtil.getSslSocketFactory(null, null, null));
+        private static HttpConfig DEFAULT_CONFIG;
+
+        @NonNull
+        private synchronized static HttpConfig getDefault() {
+            if (DEFAULT_CONFIG == null) {
+                DEFAULT_CONFIG = new HttpConfig()
+                        .baseUrl(Config.BASE_URL)
+                        .connectTimeout(Config.CONNECT_TIMEOUT)
+                        .readTimeout(Config.READ_TIMEOUT)
+                        .writeTimeout(Config.WRITE_TIMEOUT)
+                        .retryCount(Config.RETRY_COUNT)
+                        .retryDelayMillis(Config.RETRY_DELAY_MILLIS)
+                        .sslSocketFactory(SSLUtil.getSslSocketFactory(null, null, null));
+            }
+            return DEFAULT_CONFIG;
+        }
+
+        private synchronized static void setDefault(@NonNull Builder builder) {
+            HttpConfig config = new HttpConfig();
+
+            config.baseUrl = !TextUtils.isEmpty(builder.baseUrl) ? builder.baseUrl : Config.BASE_URL;
+            config.headers = builder.headers;
+            config.onHeadInterceptor = builder.onHeadInterceptor;
+
+            config.connectTimeout = builder.connectTimeout != -1 ? builder.connectTimeout : Config.CONNECT_TIMEOUT;
+            config.readTimeout = builder.readTimeout != -1 ? builder.readTimeout : Config.READ_TIMEOUT;
+            config.writeTimeout = builder.writeTimeout != -1 ? builder.writeTimeout : Config.WRITE_TIMEOUT;
+
+            config.retryCount = builder.retryCount != -1 ? builder.retryCount : Config.RETRY_COUNT;
+            config.retryDelayMillis = builder.retryDelayMillis != -1 ? builder.retryDelayMillis : Config.RETRY_DELAY_MILLIS;
+
+            config.sslSocketFactory = builder.sslSocketFactory;
+            config.interceptors = builder.interceptors;
+            config.networkInterceptors = builder.networkInterceptors;
+
+            Singleton.DEFAULT_CONFIG = config;
+        }
     }
 
     /**
      * Get the default configuration
      */
-    public synchronized static HttpConfig getDefault() {
-        return Singleton.DEFAULT_CONFIG;
+    @NonNull
+    public static HttpConfig getDefault() {
+        HttpConfig defaultConfig = Singleton.getDefault();
+        return copy(defaultConfig);
     }
 
-    /**
-     * Get the default configuration - copy
-     */
-    public static HttpConfig getNewDefault() {
-        HttpConfig defaultConfig = getDefault();
+    @NonNull
+    public static HttpConfig copy(@NonNull HttpConfig config) {
         return new HttpConfig()
-                .baseUrl(defaultConfig.baseUrl)
-                .connectTimeout(defaultConfig.connectTimeout)
-                .readTimeout(defaultConfig.readTimeout)
-                .writeTimeout(defaultConfig.writeTimeout)
-                .retryCount(defaultConfig.retryCount)
-                .retryDelayMillis(defaultConfig.retryDelayMillis)
-                .sslSocketFactory(defaultConfig.sslSocketFactory);
-    }
-
-    private synchronized static void setDefault(@NonNull Builder builder) {
-        HttpConfig config = new HttpConfig();
-
-        config.baseUrl = !TextUtils.isEmpty(builder.baseUrl) ? builder.baseUrl : Config.BASE_URL;
-        config.headers = builder.headers;
-        config.onHeadInterceptor = builder.onHeadInterceptor;
-
-        config.connectTimeout = builder.connectTimeout != -1 ? builder.connectTimeout : Config.CONNECT_TIMEOUT;
-        config.readTimeout = builder.readTimeout != -1 ? builder.readTimeout : Config.READ_TIMEOUT;
-        config.writeTimeout = builder.writeTimeout != -1 ? builder.writeTimeout : Config.WRITE_TIMEOUT;
-
-        config.retryCount = builder.retryCount != -1 ? builder.retryCount : Config.RETRY_COUNT;
-        config.retryDelayMillis = builder.retryDelayMillis != -1 ? builder.retryDelayMillis : Config.RETRY_DELAY_MILLIS;
-
-        config.sslSocketFactory = builder.sslSocketFactory;
-        config.interceptors = builder.interceptors;
-        config.networkInterceptors = builder.networkInterceptors;
-
-        Singleton.DEFAULT_CONFIG = config;
+                .baseUrl(config.baseUrl)
+                .headers(config.headers)
+                .headers(config.onHeadInterceptor)
+                .connectTimeout(config.connectTimeout)
+                .readTimeout(config.readTimeout)
+                .writeTimeout(config.writeTimeout)
+                .retryCount(config.retryCount)
+                .retryDelayMillis(config.retryDelayMillis)
+                .sslSocketFactory(config.sslSocketFactory);
     }
 
     @Override
@@ -161,6 +170,14 @@ public class HttpConfig extends IConfig<HttpConfig> {
     @Override
     public HttpConfig retryDelayMillis(long retryDelayMillis) {
         this.retryDelayMillis = retryDelayMillis;
+        return this;
+    }
+
+    /**
+     * @param log Whether to add HttpLoggingInterceptor
+     */
+    public HttpConfig log(boolean log) {
+        this.log = log;
         return this;
     }
 
@@ -257,7 +274,7 @@ public class HttpConfig extends IConfig<HttpConfig> {
         }
 
         public void build() {
-            HttpConfig.setDefault(this);
+            Singleton.setDefault(this);
         }
     }
 }
