@@ -66,6 +66,12 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     }
 
     @UiThread
+    public void remove(TransferModel model) {
+        pause(model);
+        mPipe.remove(model);
+    }
+
+    @UiThread
     public void clear(int type) {
         if (type == 0) {
             pauseAll();

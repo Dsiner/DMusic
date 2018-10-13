@@ -54,13 +54,13 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         holder.setViewOnClickListener(R.id.tv_clear_task, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getOperater().clear(0);
             }
         });
         holder.setViewOnClickListener(R.id.tv_pause_all, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getOperater().pauseAll();
             }
         });
     }
@@ -69,7 +69,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         holder.setViewOnClickListener(R.id.tv_clear_task, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getOperater().clear(1);
             }
         });
     }
@@ -84,7 +84,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         circleBar.setOnClickListener(new CircleProgressBar.OnClickListener() {
             @Override
             public void onRestart() {
-                getOperater().start(item);
+                getOperater().remove(item);
             }
 
             @Override
