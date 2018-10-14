@@ -5,10 +5,15 @@ import android.support.annotation.UiThread;
 
 import com.d.lib.common.event.bus.AbstractBus;
 import com.d.lib.rxnet.base.RequestManager;
+import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.music.App;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
+import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.transfer.manager.TransferDataObservable;
+import com.d.music.transfer.manager.pipe.MVPipe;
 import com.d.music.transfer.manager.pipe.Pipe;
+import com.d.music.transfer.manager.pipe.SongPipe;
 
 import java.util.List;
 
@@ -17,7 +22,7 @@ import java.util.List;
  * Created by D on 2018/10/10.
  */
 public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable> {
-    private Pipe mPipe;
+    protected Pipe mPipe;
 
     Operater(@NonNull Pipe pipe) {
         this.mPipe = pipe;
@@ -34,10 +39,7 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     }
 
     @UiThread
-    public void add(MusicModel item) {
-        mPipe.add(item);
-        next();
-    }
+    public abstract void add(MusicModel item);
 
     @UiThread
     public void start(TransferModel model) {
@@ -50,9 +52,9 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
 
     @UiThread
     public void pause(TransferModel model) {
+        model.transferState = TransferModel.TRANSFER_STATE_PENDDING;
         mPipe.pop(model);
-        model.state = TransferModel.STATE_PENDDING;
-        RequestManager.getIns().cancel(model.type + model.songId);
+        RequestManager.getIns().cancel(model.transferId);
     }
 
     @UiThread
@@ -69,6 +71,7 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     public void remove(TransferModel model) {
         pause(model);
         mPipe.remove(model);
+        notifyDataSetChanged();
     }
 
     @UiThread
@@ -81,9 +84,10 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
             mPipe.mDownloaded.clear();
         }
         notifyDataSetChanged();
+        notifyItemAllMoved();
     }
 
-    private void next() {
+    protected void next() {
         notifyDataSetChanged();
         List<TransferModel> list = mPipe.peek();
         int size = list.size();
@@ -96,13 +100,13 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     }
 
     private void startImpl(final TransferModel item) {
-        item.state = TransferModel.STATE_PROGRESS;
+        item.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
         mPipe.push(item);
         downloadImp(item);
     }
 
     protected void next(TransferModel item, int state) {
-        if (state == TransferModel.STATE_DONE) {
+        if (state == TransferModel.TRANSFER_STATE_DONE) {
             mPipe.pop(item);
             mPipe.finish(item);
         }
@@ -117,6 +121,22 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
                 l.notifyDataSetChanged(mPipe.lists());
             }
         }
+    }
+
+    private void notifyItemAllMoved() {
+        TaskScheduler.executeSingle(new Runnable() {
+            @Override
+            public void run() {
+                if (mPipe == null) {
+                    return;
+                }
+                if (mPipe instanceof MVPipe) {
+                    AppDBUtil.getIns(App.getContext()).optTransfer().deleteAll(TransferModel.TRANSFER_TYPE_MV);
+                } else if (mPipe instanceof SongPipe) {
+                    AppDBUtil.getIns(App.getContext()).optTransfer().deleteAll(TransferModel.TRANSFER_TYPE_SONG);
+                }
+            }
+        });
     }
 
     protected abstract void downloadImp(final TransferModel item);

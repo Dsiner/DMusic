@@ -20,6 +20,7 @@ import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
+import com.d.music.transfer.manager.TransferManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +52,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
+        // Asynchronous initialization
+        initAsync();
         // Debug switch
         ULog.setDebug(true);
         // Initialize the database
@@ -65,6 +68,16 @@ public class App extends Application {
         initPermission();
         // Cache
         initCache();
+    }
+
+    private void initAsync() {
+        TaskScheduler.executeTask(new Runnable() {
+            @Override
+            public void run() {
+                //noinspection ResultOfMethodCallIgnored
+                TransferManager.getIns();
+            }
+        });
     }
 
     private void initPermission() {

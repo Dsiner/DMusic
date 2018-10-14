@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.text.TextUtils;
 
-import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public abstract class Pipe {
 
     private int mLimit = LIMIT_DEFAULT;
     private List<List<TransferModel>> mArray = new ArrayList<>();
-    private List<TransferModel> mList = new ArrayList<>();
+    protected List<TransferModel> mList = new ArrayList<>();
 
     public List<TransferModel> mDownloadingQueue = new ArrayList<>();
     public List<TransferModel> mDownloading = new ArrayList<>();
@@ -54,40 +53,29 @@ public abstract class Pipe {
     }
 
     @UiThread
-    public void add(MusicModel item) {
-        TransferModel model = new TransferModel();
-        model.type = item.type;
-        model.viewType = item instanceof TransferModel ? ((TransferModel) item).viewType
-                : TransferModel.VIEW_TYPE_SONG;
-        model.songId = item.songId;
-        model.url = item.url;
-        model.songName = item.songName;
-        model.artistId = item.artistId;
-        model.artistName = item.artistName;
-        model.albumId = item.albumId;
-        model.albumUrl = item.albumUrl;
-        model.fileFolder = item.fileFolder;
-        model.fileFolder = item.filePostfix;
-
+    public void add(TransferModel item) {
         for (int i = 0; i < mList.size(); i++) {
             TransferModel transfer = mList.get(i);
-            if (transfer.type.equals(model.type)
-                    && TextUtils.equals(transfer.songId, model.songId)) {
+            if (transfer.type.equals(item.type)
+                    && TextUtils.equals(transfer.songId, item.songId)) {
                 return;
             }
         }
-        mDownloading.add(model);
-        mList.add(model);
+        mDownloading.add(item);
+        mList.add(item);
+        notifyItemInserted(item);
     }
 
     @UiThread
     public void push(TransferModel item) {
         mDownloadingQueue.add(item);
+        notifyItemChanged(item);
     }
 
     @UiThread
     public void pop(TransferModel item) {
         mDownloadingQueue.remove(item);
+        notifyItemChanged(item);
     }
 
     @UiThread
@@ -99,7 +87,7 @@ public abstract class Pipe {
                 break;
             }
             TransferModel model = mDownloading.get(i);
-            if (model.state == TransferModel.STATE_PENDDING) {
+            if (model.transferState == TransferModel.TRANSFER_STATE_PENDDING) {
                 list.add(model);
             }
         }
@@ -110,6 +98,7 @@ public abstract class Pipe {
     public void finish(TransferModel model) {
         mDownloading.remove(model);
         mDownloaded.add(model);
+        notifyItemChanged(model);
     }
 
     @SuppressWarnings("unused")
@@ -119,5 +108,12 @@ public abstract class Pipe {
             mDownloaded.remove(model);
         }
         mList.remove(model);
+        notifyItemMoved(model);
     }
+
+    protected abstract void notifyItemChanged(TransferModel model);
+
+    protected abstract void notifyItemInserted(TransferModel model);
+
+    protected abstract void notifyItemMoved(TransferModel model);
 }

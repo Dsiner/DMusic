@@ -26,15 +26,15 @@ public class Transfer {
     public final static String PREFIX_LRC = ".lrc";
     public final static String PREFIX_DOWNLOAD = ".download";
 
-    public static <T extends MusicModel> void getInfo(final T model, final SimpleCallback<T> callback) {
+    public static <T extends MusicModel> void getInfo(@NonNull final T model, final SimpleCallback<T> callback) {
         Params params = new Params(API.SongInfo.rtpType);
         params.addParam(API.SongInfo.songIds, model.songId);
         RxNet.get(API.SongInfo.rtpType, params)
-                .tag(model.type + model.songId)
+                .tag(TransferModel.generateId(model))
                 .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
                     public void onSuccess(SongInfoRespModel response) {
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         if (response.data == null || response.data.songList == null
                                 || response.data.songList.size() <= 0) {
                             onError(new Exception("Data is empty!"));
@@ -59,7 +59,10 @@ public class Transfer {
 
                     @Override
                     public void onError(Throwable e) {
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        if (RequestManager.getIns().canceled(TransferModel.generateId(model))) {
+                            return;
+                        }
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         if (callback != null) {
                             callback.onError(e);
                         }
@@ -117,7 +120,8 @@ public class Transfer {
         downloadSong(Constants.Path.cache, model, callback);
     }
 
-    private static <T extends MusicModel> void downloadSong(final String path, final T model, final OnTransferCallback<T> callback) {
+    private static <T extends MusicModel> void downloadSong(@NonNull final String path, @NonNull final T model,
+                                                            final OnTransferCallback<T> callback) {
         final String url = model.url;
         final String name = model.songName + "." + model.filePostfix;
         final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
@@ -127,7 +131,7 @@ public class Transfer {
                 .writeTimeout(60 * 1000)
                 .retryCount(3)
                 .retryDelayMillis(1000)
-                .tag(model.type + model.songId)
+                .tag(TransferModel.generateId(model))
                 .request(path, cache, new ProgressCallback() {
 
                     @Override
@@ -140,9 +144,9 @@ public class Transfer {
                         ULog.d("dsiner_request--> onProgresss download: " + currentLength + " total: " + totalLength);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_PROGRESS;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onProgress(currentLength, totalLength);
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onProgress(currentLength, totalLength);
                             }
                         }
                     }
@@ -150,13 +154,13 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.renameFile(path + cache, path + name);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_DONE;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onSuccess();
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_DONE;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onSuccess();
                             }
                         }
                         if (callback != null) {
@@ -167,13 +171,16 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        if (RequestManager.getIns().canceled(TransferModel.generateId(model))) {
+                            return;
+                        }
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_ERROR;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onError(e);
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onError(e);
                             }
                         }
                         if (callback != null) {
@@ -183,7 +190,7 @@ public class Transfer {
                 });
     }
 
-    public static <T extends MusicModel> void downloadMV(final T model, final OnTransferCallback<T> callback) {
+    public static <T extends MusicModel> void downloadMV(@NonNull final T model, final OnTransferCallback<T> callback) {
         final String path = Constants.Path.mv;
         final String url = model.url;
         final String name = model.songName + PREFIX_MV;
@@ -194,7 +201,7 @@ public class Transfer {
                 .writeTimeout(60 * 1000)
                 .retryCount(3)
                 .retryDelayMillis(1000)
-                .tag(model.type + model.songId)
+                .tag(TransferModel.generateId(model))
                 .request(path, cache, new ProgressCallback() {
 
                     @Override
@@ -207,9 +214,9 @@ public class Transfer {
                         ULog.d("dsiner_request--> onProgresss download: " + currentLength + " total: " + totalLength);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_PROGRESS;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onProgress(currentLength, totalLength);
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onProgress(currentLength, totalLength);
                             }
                         }
                     }
@@ -217,13 +224,13 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.renameFile(path + cache, path + name);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_DONE;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onSuccess();
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_DONE;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onSuccess();
                             }
                         }
                         if (callback != null) {
@@ -234,13 +241,13 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        RequestManager.getIns().remove(model.type + model.songId);
+                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
-                            transferModel.state = TransferModel.STATE_ERROR;
-                            if (transferModel.downloadCallback != null) {
-                                transferModel.downloadCallback.onError(e);
+                            transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
+                            if (transferModel.progressCallback != null) {
+                                transferModel.progressCallback.onError(e);
                             }
                         }
                         if (callback != null) {

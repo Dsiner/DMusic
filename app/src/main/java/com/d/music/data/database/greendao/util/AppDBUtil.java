@@ -5,9 +5,10 @@ import android.content.Context;
 import com.d.music.data.database.greendao.db.AppDB;
 import com.d.music.data.database.greendao.operation.OpCustomList;
 import com.d.music.data.database.greendao.operation.OpMusic;
+import com.d.music.data.database.greendao.operation.OpTransfer;
 
 /**
- * MusicDBUtil
+ * AppDBUtil
  * Created by D on 2016/3/17.
  */
 public class AppDBUtil extends AppDB {
@@ -15,6 +16,7 @@ public class AppDBUtil extends AppDB {
 
     private OpMusic opMusic;
     private OpCustomList opCustomList;
+    private OpTransfer opTransfer;
 
     private AppDBUtil(Context context) {
         super(context);
@@ -38,6 +40,7 @@ public class AppDBUtil extends AppDB {
     private void initOps() {
         opMusic = new OpMusic(daos);
         opCustomList = new OpCustomList(daos);
+        opTransfer = new OpTransfer(daos);
     }
 
     /****************************** Music ******************************/
@@ -48,5 +51,10 @@ public class AppDBUtil extends AppDB {
     /****************************** CustomList ******************************/
     public OpCustomList optCustomList() {
         return opCustomList;
+    }
+
+    /****************************** Transfer ******************************/
+    public OpTransfer optTransfer() {
+        return opTransfer;
     }
 }

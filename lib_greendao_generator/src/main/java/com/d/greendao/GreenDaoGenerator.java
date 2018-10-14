@@ -27,6 +27,7 @@ public class GreenDaoGenerator {
         addCollectionMusic(schema);
         addCustomList(schema);
         addCustomMusics(schema);
+        addTransferModel(schema);
 
         // 最后我们将使用 DAOGenerator 类的 generateAll() 方法自动生成代码，此处你需要根据自己的情况更改输出目录。
         // 其实，输出目录的路径可以在 build.gradle 中设置，有兴趣的朋友可以自行搜索，这里就不再详解。
@@ -80,6 +81,40 @@ public class GreenDaoGenerator {
             Entity entity = schema.addEntity("CustomMusic" + i); // 表名
             addProperty(entity);
         }
+    }
+
+    /**
+     * TransferModel - 传输
+     */
+    private static void addTransferModel(Schema schema) {
+        Entity entity = schema.addEntity("TransferModel"); // 表名
+        entity.addStringProperty("transferId").primaryKey(); // 文件完整路径---主键
+        entity.addIntProperty("transferType");
+        entity.addIntProperty("transferState");
+        entity.addIntProperty("transferCurrentLength");
+        entity.addIntProperty("transferTotalLength");
+
+        entity.addStringProperty("url"); // 文件完整路径
+
+        entity.addIntProperty("type"); // 类型：本地、百度、网易、QQ等
+        entity.addIntProperty("seq"); // 自定义序号
+        entity.addStringProperty("songId"); // 歌曲ID
+        entity.addStringProperty("songName"); // 歌曲名
+        entity.addStringProperty("artistId"); // 艺术家ID
+        entity.addStringProperty("artistName"); // 歌手名
+        entity.addStringProperty("albumId"); // 专辑ID
+        entity.addStringProperty("albumName"); // 专辑
+        entity.addStringProperty("albumUrl"); // 专辑url
+        entity.addStringProperty("lrcName"); // 歌词名称
+        entity.addStringProperty("lrcUrl"); // 歌词路径
+
+        entity.addLongProperty("fileDuration"); // 歌曲时长
+        entity.addLongProperty("fileSize"); // 文件大小
+        entity.addStringProperty("filePostfix"); // 文件后缀类型
+        entity.addStringProperty("fileFolder"); // 父文件夹绝对路径
+
+        entity.addBooleanProperty("isCollected"); // 是否收藏
+        entity.addLongProperty("timeStamp"); // 时间戳，插入时间
     }
 
     /**

@@ -46,7 +46,6 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                             for (BillSongsModel model : song_list) {
                                 MusicModel music = new MusicModel();
                                 music.type = MusicModel.TYPE_BAIDU;
-                                music.url = model.song_id;
                                 music.songId = model.song_id;
                                 music.songName = model.title;
                                 music.artistId = model.artist_id;
@@ -98,7 +97,6 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                 }
                                 MusicModel music = new MusicModel();
                                 music.type = MusicModel.TYPE_BAIDU;
-                                music.url = model.songid;
                                 music.songId = model.songid;
                                 music.songName = model.title;
                                 music.artistId = model.artist_id;

@@ -259,24 +259,22 @@ public class CircleProgressBar extends FrameLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v == ivState) {
-            switch (mState) {
-                case STATE_PROGRESS:
-                    if (listener != null) {
-                        listener.onPause();
-                    }
-                    break;
-                case STATE_PENDDING:
-                    if (listener != null) {
-                        listener.onResume();
-                    }
-                    break;
-                case STATE_ERROR:
-                    if (listener != null) {
-                        listener.onRestart();
-                    }
-                    break;
-            }
+        switch (mState) {
+            case STATE_PROGRESS:
+                if (listener != null) {
+                    listener.onPause();
+                }
+                break;
+            case STATE_PENDDING:
+                if (listener != null) {
+                    listener.onResume();
+                }
+                break;
+            case STATE_ERROR:
+                if (listener != null) {
+                    listener.onRestart();
+                }
+                break;
         }
     }
 

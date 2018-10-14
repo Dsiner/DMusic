@@ -74,7 +74,7 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
         if (download != null && download.size() > 0) {
             if (mHead0 == null) {
                 mHead0 = new TransferModel();
-                mHead0.viewType = TransferModel.VIEW_TYPE_HEAD_NOT;
+                mHead0.transferType = TransferModel.TRANSFER_TYPE_HEAD_NOT;
             }
             mDatas.add(mHead0);
             mDatas.addAll(download);
@@ -82,7 +82,7 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
         if (downloaded != null && downloaded.size() > 0) {
             if (mHead1 == null) {
                 mHead1 = new TransferModel();
-                mHead1.viewType = TransferModel.VIEW_TYPE_HEAD_DONE;
+                mHead1.transferType = TransferModel.TRANSFER_TYPE_HEAD_DONE;
             }
             mDatas.add(mHead1);
             mDatas.addAll(downloaded);

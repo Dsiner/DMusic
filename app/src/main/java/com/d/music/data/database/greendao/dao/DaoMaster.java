@@ -45,6 +45,7 @@ public class DaoMaster extends AbstractDaoMaster {
         CustomMusic17Dao.createTable(db, ifNotExists);
         CustomMusic18Dao.createTable(db, ifNotExists);
         CustomMusic19Dao.createTable(db, ifNotExists);
+        TransferModelDao.createTable(db, ifNotExists);
     }
 
     /**
@@ -75,6 +76,7 @@ public class DaoMaster extends AbstractDaoMaster {
         CustomMusic17Dao.dropTable(db, ifExists);
         CustomMusic18Dao.dropTable(db, ifExists);
         CustomMusic19Dao.dropTable(db, ifExists);
+        TransferModelDao.dropTable(db, ifExists);
     }
 
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -132,6 +134,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(CustomMusic17Dao.class);
         registerDaoClass(CustomMusic18Dao.class);
         registerDaoClass(CustomMusic19Dao.class);
+        registerDaoClass(TransferModelDao.class);
     }
 
     public DaoSession newSession() {

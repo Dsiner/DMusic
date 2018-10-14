@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.d.music.data.database.greendao.bean.CustomListModel;
 import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.database.greendao.bean.TransferModel;
 
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig customMusic17DaoConfig;
     private final DaoConfig customMusic18DaoConfig;
     private final DaoConfig customMusic19DaoConfig;
+    private final DaoConfig transferModelDaoConfig;
 
     private final MusicModelDao musicModelDao;
     private final LocalAllMusicDao localAllMusicDao;
@@ -70,6 +72,7 @@ public class DaoSession extends AbstractDaoSession {
     private final CustomMusic17Dao customMusic17Dao;
     private final CustomMusic18Dao customMusic18Dao;
     private final CustomMusic19Dao customMusic19Dao;
+    private final TransferModelDao transferModelDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -147,6 +150,9 @@ public class DaoSession extends AbstractDaoSession {
         customMusic19DaoConfig = daoConfigMap.get(CustomMusic19Dao.class).clone();
         customMusic19DaoConfig.initIdentityScope(type);
 
+        transferModelDaoConfig = daoConfigMap.get(TransferModelDao.class).clone();
+        transferModelDaoConfig.initIdentityScope(type);
+
         musicModelDao = new MusicModelDao(musicModelDaoConfig, this);
         localAllMusicDao = new LocalAllMusicDao(localAllMusicDaoConfig, this);
         collectionMusicDao = new CollectionMusicDao(collectionMusicDaoConfig, this);
@@ -171,9 +177,11 @@ public class DaoSession extends AbstractDaoSession {
         customMusic17Dao = new CustomMusic17Dao(customMusic17DaoConfig, this);
         customMusic18Dao = new CustomMusic18Dao(customMusic18DaoConfig, this);
         customMusic19Dao = new CustomMusic19Dao(customMusic19DaoConfig, this);
+        transferModelDao = new TransferModelDao(transferModelDaoConfig, this);
 
         registerDao(MusicModel.class, musicModelDao);
         registerDao(CustomListModel.class, customListModelDao);
+        registerDao(TransferModel.class, transferModelDao);
     }
 
     public void clear() {
@@ -201,6 +209,7 @@ public class DaoSession extends AbstractDaoSession {
         customMusic17DaoConfig.getIdentityScope().clear();
         customMusic18DaoConfig.getIdentityScope().clear();
         customMusic19DaoConfig.getIdentityScope().clear();
+        transferModelDaoConfig.getIdentityScope().clear();
     }
 
     public MusicModelDao getMusicModelDao() {
@@ -297,6 +306,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public CustomMusic19Dao getCustomMusic19Dao() {
         return customMusic19Dao;
+    }
+
+    public TransferModelDao getTransferModelDao() {
+        return transferModelDao;
     }
 
 }

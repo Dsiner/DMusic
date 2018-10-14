@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.d.lib.common.utils.log.ULog;
 import com.d.music.component.media.HitTarget;
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.Transfer;
 import com.d.music.transfer.manager.pipe.Pipe;
@@ -19,14 +20,27 @@ public class OpMV extends Operater {
     }
 
     @Override
+    public void add(MusicModel item) {
+        if (item == null) {
+            return;
+        }
+        TransferModel model = new TransferModel(item);
+        model.transferId = TransferModel.generateId(TransferModel.TRANSFER_TYPE_MV,
+                item.type, item.songId);
+        model.transferType = TransferModel.TRANSFER_TYPE_MV;
+        mPipe.add(model);
+        next();
+    }
+
+    @Override
     protected void downloadImp(TransferModel item) {
         if (HitTarget.secondPassMV(item)) {
             ULog.d("dsiner downloadMV--> Second pass");
-            item.state = TransferModel.STATE_DONE;
-            if (item.downloadCallback != null) {
-                item.downloadCallback.onSuccess();
+            item.transferState = TransferModel.TRANSFER_STATE_DONE;
+            if (item.progressCallback != null) {
+                item.progressCallback.onSuccess();
             }
-            next(item, TransferModel.STATE_DONE);
+            next(item, TransferModel.TRANSFER_STATE_DONE);
             return;
         }
 
@@ -38,12 +52,12 @@ public class OpMV extends Operater {
 
             @Override
             public void onSecond(TransferModel model) {
-                next(model, TransferModel.STATE_DONE);
+                next(model, TransferModel.TRANSFER_STATE_DONE);
             }
 
             @Override
             public void onError(TransferModel model, Throwable e) {
-                next(model, TransferModel.STATE_ERROR);
+                next(model, TransferModel.TRANSFER_STATE_ERROR);
             }
         });
     }

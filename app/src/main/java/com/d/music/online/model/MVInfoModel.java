@@ -2,6 +2,7 @@ package com.d.music.online.model;
 
 import android.text.TextUtils;
 
+import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.google.gson.annotations.SerializedName;
 
@@ -59,10 +60,10 @@ public class MVInfoModel extends MVDetailModel {
 
     public static TransferModel convertToTransfer(MVInfoModel model) {
         TransferModel transferModel = new TransferModel();
-        transferModel.type = TransferModel.TYPE_TRANSFER_MV;
-        transferModel.viewType = TransferModel.VIEW_TYPE_MV;
-        transferModel.songId = "" + model.id;
+        transferModel.transferType = TransferModel.TRANSFER_TYPE_MV;
         transferModel.url = getUrl(model);
+        transferModel.type = MusicModel.TYPE_NETEASE;
+        transferModel.songId = "" + model.id;
         transferModel.songName = model.name;
         transferModel.artistName = model.artistName;
         transferModel.albumId = "" + model.coverId;

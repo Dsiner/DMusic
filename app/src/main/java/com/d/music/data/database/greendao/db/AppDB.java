@@ -13,7 +13,7 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
  * Created by D on 2016/3/17.
  */
 public abstract class AppDB extends AbstractDB<DaoMaster, DaoSession> {
-    public static final int TABLE_COUNT = 24; // 所有表数目：4+20
+    public static final int TABLE_COUNT = 25; // 所有表数目：5+20
     public static final int TABLE_INDEX_COUNT = 30;
 
     public static final int MUSIC = 1; // 歌曲
@@ -21,8 +21,9 @@ public abstract class AppDB extends AbstractDB<DaoMaster, DaoSession> {
     public static final int COLLECTION_MUSIC = 3; // 收藏歌曲
 
     public static final int CUSTOM_LIST = 4; // 自定义列表
+    public static final int TRANSFER = 5; // 传输列表
 
-    public static final int CUSTOM_MUSIC_INDEX = 10; // 自定义歌曲 +0...19--->20张表
+    public static final int CUSTOM_MUSIC_INDEX = 10; // 自定义歌曲 + 0...19 --> 20张表
     public static final int CUSTOM_MUSIC_COUNT = 20; // 自定义歌曲，表数目
 
     /**
@@ -64,6 +65,9 @@ public abstract class AppDB extends AbstractDB<DaoMaster, DaoSession> {
                         break;
                     case CUSTOM_LIST:
                         daos[i] = daoSession.getCustomListModelDao();
+                        break;
+                    case TRANSFER:
+                        daos[i] = daoSession.getTransferModelDao();
                         break;
                 }
             } else {

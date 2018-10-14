@@ -1,5 +1,7 @@
 package com.d.lib.rxnet.base;
 
+import android.support.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -41,13 +43,16 @@ public class RequestManager {
         mHashMap.clear();
     }
 
-    public synchronized void cancel(Object tag) {
-        cancelImp(tag);
-        mHashMap.remove(tag);
+    public synchronized boolean canceled(Object tag) {
+        return !mHashMap.containsKey(tag);
     }
 
-    private void cancelImp(Object tag) {
-        Disposable value = mHashMap.get(tag);
+    public synchronized void cancel(Object tag) {
+        Disposable value = mHashMap.remove(tag);
+        cancelImp(value);
+    }
+
+    private void cancelImp(@Nullable Disposable value) {
         if (value != null && !value.isDisposed()) {
             value.dispose();
         }
@@ -57,10 +62,11 @@ public class RequestManager {
         if (mHashMap.isEmpty()) {
             return;
         }
-        Set<Object> keys = mHashMap.keySet();
-        for (Object k : keys) {
-            cancelImp(k);
-        }
+        HashMap<Object, Disposable> temp = new HashMap<>(mHashMap);
         mHashMap.clear();
+        Set<Object> keys = temp.keySet();
+        for (Object k : keys) {
+            cancelImp(temp.get(k));
+        }
     }
 }

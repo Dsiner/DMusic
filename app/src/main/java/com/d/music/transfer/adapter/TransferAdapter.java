@@ -77,10 +77,10 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
     private void coverSong(final CommonHolder holder, final TransferModel item) {
         holder.setText(R.id.tv_title, item.songName);
         holder.setText(R.id.tv_singer, item.artistName);
-        holder.setViewVisibility(R.id.iv_more, item.state == TransferModel.STATE_DONE ? View.VISIBLE : View.GONE);
+        holder.setViewVisibility(R.id.iv_more, item.transferState == TransferModel.TRANSFER_STATE_DONE ? View.VISIBLE : View.GONE);
         final CircleProgressBar circleBar = holder.getView(R.id.cpbar_bar);
-        circleBar.setVisibility(item.state == TransferModel.STATE_DONE ? View.GONE : View.VISIBLE);
-        circleBar.setState(item.state);
+        circleBar.setVisibility(item.transferState == TransferModel.TRANSFER_STATE_DONE ? View.GONE : View.VISIBLE);
+        circleBar.setState(item.transferState);
         circleBar.setOnClickListener(new CircleProgressBar.OnClickListener() {
             @Override
             public void onRestart() {
@@ -90,14 +90,16 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
             @Override
             public void onResume() {
                 getOperater().start(item);
+                circleBar.setState(item.transferState);
             }
 
             @Override
             public void onPause() {
                 getOperater().pause(item);
+                circleBar.setState(item.transferState);
             }
         });
-        item.setDownloadCallback(item.state == TransferModel.STATE_DONE ? null
+        item.setProgressCallback(item.transferState == TransferModel.TRANSFER_STATE_DONE ? null
                 : new ProgressCallback() {
             @Override
             public void onStart() {

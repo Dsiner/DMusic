@@ -34,11 +34,11 @@ public class MVTransferFragment extends TransferFragment {
                     @Override
                     public int getLayoutId(int viewType) {
                         switch (viewType) {
-                            case TransferModel.VIEW_TYPE_HEAD_NOT:
+                            case TransferModel.TRANSFER_TYPE_HEAD_NOT:
                                 return R.layout.module_transfer_adapter_head_downloading;
-                            case TransferModel.VIEW_TYPE_HEAD_DONE:
+                            case TransferModel.TRANSFER_TYPE_HEAD_DONE:
                                 return R.layout.module_transfer_adapter_head_downloaded;
-                            case TransferModel.VIEW_TYPE_MV:
+                            case TransferModel.TRANSFER_TYPE_MV:
                             default:
                                 return R.layout.module_transfer_adapter_mv;
                         }
@@ -46,7 +46,7 @@ public class MVTransferFragment extends TransferFragment {
 
                     @Override
                     public int getItemViewType(int position, TransferModel model) {
-                        return model.viewType;
+                        return model.transferType;
                     }
                 });
     }
