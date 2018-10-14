@@ -94,7 +94,8 @@ public class SongTransferFragment extends TransferFragment {
         final int countDownloading = lists.get(0).size();
         final int countDownloaded = lists.get(1).size();
         ((TransferActivity) getActivity()).setTabNumber(type,
-                "" + countDownloading, countDownloading > 0 ? View.VISIBLE : View.GONE);
+                countDownloading > 0 ? "" + countDownloading : "",
+                countDownloading > 0 ? View.VISIBLE : View.GONE);
         header.setSongCount(countDownloaded);
         super.notifyDataSetChanged(lists);
     }

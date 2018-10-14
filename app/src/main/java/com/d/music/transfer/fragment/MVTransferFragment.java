@@ -55,7 +55,8 @@ public class MVTransferFragment extends TransferFragment {
     public void notifyDataSetChanged(List<List<TransferModel>> lists) {
         final int countDownloading = lists.get(0).size();
         ((TransferActivity) getActivity()).setTabNumber(type,
-                "" + countDownloading, countDownloading > 0 ? View.VISIBLE : View.GONE);
+                countDownloading > 0 ? "" + countDownloading : "",
+                countDownloading > 0 ? View.VISIBLE : View.GONE);
         super.notifyDataSetChanged(lists);
     }
 }

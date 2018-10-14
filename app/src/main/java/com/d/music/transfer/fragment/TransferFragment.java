@@ -66,7 +66,8 @@ public abstract class TransferFragment extends AbsLazyFragment<TransferModel, Tr
                 if (!isLazyLoaded || mPresenter == null) {
                     final int countDownloading = lists.get(0).size();
                     ((TransferActivity) getActivity()).setTabNumber(type,
-                            "" + countDownloading, countDownloading > 0 ? View.VISIBLE : View.GONE);
+                            countDownloading > 0 ? "" + countDownloading : "",
+                            countDownloading > 0 ? View.VISIBLE : View.GONE);
                     return;
                 }
                 TransferFragment.this.notifyDataSetChanged(lists);

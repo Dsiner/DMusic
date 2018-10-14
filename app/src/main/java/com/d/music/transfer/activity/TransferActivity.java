@@ -47,9 +47,11 @@ public class TransferActivity extends AbsFragmentActivity {
         final int countSongDownloading = TransferManager.getIns().optSong().pipe().lists().get(0).size();
         final int countMVDownloading = TransferManager.getIns().optMV().pipe().lists().get(0).size();
         setTabNumber(TransferFragment.TYPE_SONG,
-                "" + countSongDownloading, countSongDownloading > 0 ? View.VISIBLE : View.GONE);
+                countSongDownloading > 0 ? "" + countSongDownloading : "",
+                countSongDownloading > 0 ? View.VISIBLE : View.GONE);
         setTabNumber(TransferFragment.TYPE_MV,
-                "" + countMVDownloading, countMVDownloading > 0 ? View.VISIBLE : View.GONE);
+                countMVDownloading > 0 ? "" + countMVDownloading : "",
+                countMVDownloading > 0 ? View.VISIBLE : View.GONE);
     }
 
     public void setTabNumber(int position, String text, int visibility) {
