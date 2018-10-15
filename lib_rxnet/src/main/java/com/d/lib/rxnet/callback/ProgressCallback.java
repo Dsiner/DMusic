@@ -12,4 +12,6 @@ public interface ProgressCallback {
     void onSuccess();
 
     void onError(Throwable e);
+
+    void onCancel();
 }

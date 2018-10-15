@@ -59,9 +59,6 @@ public class Transfer {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (RequestManager.getIns().canceled(TransferModel.generateId(model))) {
-                            return;
-                        }
                         RequestManager.getIns().remove(TransferModel.generateId(model));
                         if (callback != null) {
                             callback.onError(e);
@@ -171,9 +168,6 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        if (RequestManager.getIns().canceled(TransferModel.generateId(model))) {
-                            return;
-                        }
                         RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
@@ -186,6 +180,11 @@ public class Transfer {
                         if (callback != null) {
                             callback.onError(model, e);
                         }
+                    }
+
+                    @Override
+                    public void onCancel() {
+
                     }
                 });
     }
@@ -254,6 +253,11 @@ public class Transfer {
                             callback.onError(model, e);
                         }
                     }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
                 });
     }
 
@@ -318,6 +322,11 @@ public class Transfer {
                         if (callback != null) {
                             callback.onError(e);
                         }
+                    }
+
+                    @Override
+                    public void onCancel() {
+
                     }
                 });
     }

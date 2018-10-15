@@ -117,6 +117,11 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
             }
 
             @Override
+            public void onCancel() {
+
+            }
+
+            @Override
             public void onSuccess() {
 
             }
@@ -127,7 +132,6 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         coverSong(holder, item);
         Glide.with(mContext).load(item.url)
                 .apply(new RequestOptions().dontAnimate())
-                .thumbnail(0.3f)
                 .into((ImageView) holder.getView(R.id.iv_cover));
     }
 

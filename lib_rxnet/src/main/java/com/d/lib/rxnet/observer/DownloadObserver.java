@@ -42,6 +42,13 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
         return new File(dir.getPath() + File.separator + mName);
     }
 
+    public void cancel() {
+        if (mCallback != null) {
+            mCallback.onCancel();
+        }
+        dispose();
+    }
+
     @Override
     public void onNext(ResponseBody responseBody) {
         saveFile(responseBody, createFile());
@@ -88,7 +95,7 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
             }
             onSuccessImp();
         } catch (IOException e) {
-            onError(e);
+            e.printStackTrace();
         } finally {
             okhttp3.internal.Util.closeQuietly(inputStream);
             okhttp3.internal.Util.closeQuietly(outputStream);

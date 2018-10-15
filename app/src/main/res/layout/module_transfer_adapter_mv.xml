@@ -5,12 +5,23 @@
     android:background="@color/lib_pub_color_bg_sub">
 
     <ImageView
-        android:id="@+id/iv_cover"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="2dp"
+        android:layout_width="98dp"
+        android:layout_height="64dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
-        android:layout_marginTop="2dp" />
+        android:background="#B2B2B2"
+        android:paddingLeft="38dp"
+        android:paddingTop="18dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/module_common_ic_local_decorate" />
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="98dp"
+        android:layout_height="64dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"

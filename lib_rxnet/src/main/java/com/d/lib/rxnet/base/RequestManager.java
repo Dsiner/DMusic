@@ -2,6 +2,8 @@ package com.d.lib.rxnet.base;
 
 import android.support.annotation.Nullable;
 
+import com.d.lib.rxnet.observer.DownloadObserver;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -44,7 +46,9 @@ public class RequestManager {
     }
 
     public synchronized boolean canceled(Object tag) {
-        return !mHashMap.containsKey(tag);
+        boolean canceled = mHashMap.containsKey(tag);
+        cancel(tag);
+        return canceled;
     }
 
     public synchronized void cancel(Object tag) {
@@ -54,7 +58,11 @@ public class RequestManager {
 
     private void cancelImp(@Nullable Disposable value) {
         if (value != null && !value.isDisposed()) {
-            value.dispose();
+            if (value instanceof DownloadObserver) {
+                ((DownloadObserver) value).cancel();
+            } else {
+                value.dispose();
+            }
         }
     }
 
