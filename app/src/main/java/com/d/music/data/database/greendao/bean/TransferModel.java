@@ -7,6 +7,9 @@ import android.text.TextUtils;
 
 import com.d.lib.rxnet.callback.ProgressCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Entity mapped to table "TRANSFER_MODEL".
  */
@@ -49,6 +52,26 @@ public class TransferModel extends MusicModel {
 
     public static String generateId(int type, int channel, String id) {
         return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
+    }
+
+    public static List<MusicModel> convertTo(@NonNull List<TransferModel> datas) {
+        List<MusicModel> list = new ArrayList<>();
+        for (TransferModel model : datas) {
+            if (model == null) {
+                continue;
+            }
+            list.add(convertTo(model));
+        }
+        return list;
+    }
+
+    public static MusicModel convertTo(@NonNull TransferModel model) {
+        return new MusicModel(model.id, model.type, model.seq, model.songId, model.songName, model.songUrl,
+                model.artistId, model.artistName,
+                model.albumId, model.albumName, model.albumUrl,
+                model.lrcName, model.lrcUrl,
+                model.fileDuration, model.fileSize, model.filePostfix, model.fileFolder,
+                model.isCollected, model.timeStamp);
     }
 
     public TransferModel() {

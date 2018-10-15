@@ -71,7 +71,12 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
 
     @Override
     protected boolean isLru(MusicModel key, CacheListener<String> listener) {
-        final String valueLru = mLruCacheLinks.get(key.songId);
+        final String path = HitTarget.hitSong(key);
+        if (!TextUtils.isEmpty(path) && FileUtil.isFileExist(path)) {
+            success(key, path, listener);
+            return true;
+        }
+        final String valueLru = mLruCacheLinks.get(key.id);
         if (valueLru != null) {
             success(key, valueLru, listener);
             return true;
@@ -81,15 +86,11 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
 
     @Override
     protected void putLru(MusicModel key, String value) {
-        mLruCacheLinks.put(key.songId, value);
+        mLruCacheLinks.put(key.id, value);
     }
 
     @Override
     protected String getDisk(MusicModel key) {
-        final String path = HitTarget.hitSong(key);
-        if (!TextUtils.isEmpty(path) && FileUtil.isFileExist(path)) {
-            return path;
-        }
         return null;
     }
 

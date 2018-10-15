@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.base.RequestManager;
 import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.api.API;
@@ -30,11 +29,9 @@ public class Transfer {
         Params params = new Params(API.SongInfo.rtpType);
         params.addParam(API.SongInfo.songIds, model.songId);
         RxNet.get(API.SongInfo.rtpType, params)
-                .tag(TransferModel.generateId(model))
                 .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
                     public void onSuccess(SongInfoRespModel response) {
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         if (response.data == null || response.data.songList == null
                                 || response.data.songList.size() <= 0) {
                             onError(new Exception("Data is empty!"));
@@ -59,7 +56,6 @@ public class Transfer {
 
                     @Override
                     public void onError(Throwable e) {
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         if (callback != null) {
                             callback.onError(e);
                         }
@@ -151,7 +147,6 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.renameFile(path + cache, path + name);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
@@ -168,7 +163,6 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
@@ -223,7 +217,6 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.renameFile(path + cache, path + name);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
@@ -240,7 +233,6 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        RequestManager.getIns().remove(TransferModel.generateId(model));
                         FileUtil.deleteFile(path + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;

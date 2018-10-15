@@ -79,11 +79,11 @@ public class LinkLruCache<K, V> {
     }
 
     public V get(K key) {
-        if (!isValidate(key)) {
-            return null;
-        }
-
         synchronized (lock) {
+            if (!isValidate(key)) {
+                dequeue();
+                return null;
+            }
             Item<K, V> contain = containsKey(key);
             return contain != null ? contain.value : null;
         }

@@ -3,6 +3,7 @@ package com.d.lib.rxnet.observer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.d.lib.rxnet.base.RequestManager;
 import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.utils.Util;
 
@@ -23,12 +24,15 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
 
     private final String mPath;
     private final String mName;
+    private final Object mTag;
     private final DownloadModel mDownModel = new DownloadModel();
     private final ProgressCallback mCallback;
 
-    public DownloadObserver(final String path, final String name, @Nullable ProgressCallback callback) {
+    public DownloadObserver(final String path, final String name, @Nullable final Object tag,
+                            @Nullable ProgressCallback callback) {
         this.mPath = path;
         this.mName = name;
+        this.mTag = tag;
         this.mCallback = callback;
     }
 
@@ -43,10 +47,10 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
     }
 
     public void cancel() {
+        dispose();
         if (mCallback != null) {
             mCallback.onCancel();
         }
-        dispose();
     }
 
     @Override
@@ -96,6 +100,7 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
             onSuccessImp();
         } catch (IOException e) {
             e.printStackTrace();
+            RequestManager.getIns().remove(mTag);
         } finally {
             okhttp3.internal.Util.closeQuietly(inputStream);
             okhttp3.internal.Util.closeQuietly(outputStream);
@@ -116,6 +121,7 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
     }
 
     private void onErrorImp(final Throwable e) {
+        RequestManager.getIns().remove(mTag);
         if (mCallback == null) {
             return;
         }
@@ -128,6 +134,7 @@ public class DownloadObserver extends AbsObserver<ResponseBody> {
     }
 
     private void onSuccessImp() {
+        RequestManager.getIns().remove(mTag);
         if (mCallback == null) {
             return;
         }

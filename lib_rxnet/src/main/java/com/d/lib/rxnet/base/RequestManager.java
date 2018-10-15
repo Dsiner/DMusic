@@ -28,11 +28,14 @@ public class RequestManager {
     }
 
     public synchronized void add(Object tag, Disposable disposable) {
+        if (tag == null || disposable == null) {
+            return;
+        }
         mHashMap.put(tag, disposable);
     }
 
     public synchronized void remove(Object tag) {
-        if (mHashMap.isEmpty()) {
+        if (mHashMap.isEmpty() || tag == null) {
             return;
         }
         mHashMap.remove(tag);
@@ -46,12 +49,18 @@ public class RequestManager {
     }
 
     public synchronized boolean canceled(Object tag) {
+        if (tag == null) {
+            return false;
+        }
         boolean canceled = mHashMap.containsKey(tag);
         cancel(tag);
         return canceled;
     }
 
     public synchronized void cancel(Object tag) {
+        if (tag == null) {
+            return;
+        }
         Disposable value = mHashMap.remove(tag);
         cancelImp(value);
     }

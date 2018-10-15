@@ -83,7 +83,7 @@ public class DownloadRequest extends IRequest<DownloadRequest> {
                 }
             }
         });
-        DisposableObserver<ResponseBody> disposableObserver = new DownloadObserver(path, name, callback);
+        DisposableObserver<ResponseBody> disposableObserver = new DownloadObserver(path, name, tag, callback);
         if (tag != null) {
             RequestManager.getIns().add(tag, disposableObserver);
         }

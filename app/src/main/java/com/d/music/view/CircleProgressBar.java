@@ -278,7 +278,7 @@ public class CircleProgressBar extends FrameLayout implements View.OnClickListen
         }
     }
 
-    public Request setState(@State int state) {
+    public Request setState(int state) {
         if (state < STATE_PROGRESS || state > STATE_ERROR) {
             return mRequest;
         }

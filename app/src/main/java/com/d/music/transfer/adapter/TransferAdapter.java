@@ -1,22 +1,28 @@
 package com.d.music.transfer.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
+import com.d.music.component.media.controler.MediaControler;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
 import com.d.music.transfer.manager.TransferManager;
 import com.d.music.transfer.manager.operation.Operater;
 import com.d.music.view.CircleProgressBar;
+import com.d.music.view.dialog.OperationDialog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,13 +45,13 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
                 coverHeadDownloading(holder, item);
                 break;
             case R.layout.module_transfer_adapter_head_downloaded:
-                coverHeadDownloaded(holder, item);
+                coverHeadDownloaded(position, holder, item);
                 break;
             case R.layout.module_transfer_adapter_song:
-                coverSong(holder, item);
+                coverSong(position, holder, item);
                 break;
             case R.layout.module_transfer_adapter_mv:
-                coverMV(holder, item);
+                coverMV(position, holder, item);
                 break;
         }
     }
@@ -65,7 +71,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         });
     }
 
-    private void coverHeadDownloaded(final CommonHolder holder, final TransferModel item) {
+    private void coverHeadDownloaded(final int position, final CommonHolder holder, final TransferModel item) {
         holder.setViewOnClickListener(R.id.tv_clear_task, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +80,55 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
         });
     }
 
-    private void coverSong(final CommonHolder holder, final TransferModel item) {
+    private void coverSong(final int position, final CommonHolder holder, final TransferModel item) {
+        coverMedia(position, holder, item);
+        holder.setViewOnClickListener(R.id.iv_more, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
+                        Arrays.asList(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_ADDLIST, false),
+                                new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, false)),
+                        new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
+                            @Override
+                            public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
+                                if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
+                                    com.d.music.component.operation.Operater.addToList(mContext,
+                                            -1, TransferModel.convertTo(item));
+                                } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
+                                    com.d.music.component.operation.Operater.showInfo(mContext,
+                                            TransferModel.convertTo(item));
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(Dialog dlg) {
+
+                            }
+                        });
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<List<TransferModel>> lists = getOperater().pipe().lists();
+                List<TransferModel> list = new ArrayList<>();
+                list.addAll(lists.get(0));
+                list.addAll(lists.get(1));
+                int div = lists.get(0).size() > 0 ? 1 : 0;
+                div += item.transferState == TransferModel.TRANSFER_STATE_DONE ? 1 : 0;
+                MediaControler.getIns(mContext).init(TransferModel.convertTo(list), position - div, true);
+            }
+        });
+    }
+
+    private void coverMV(final int position, final CommonHolder holder, final TransferModel item) {
+        coverMedia(position, holder, item);
+        Glide.with(mContext).load(item.songUrl)
+                .apply(new RequestOptions().dontAnimate())
+                .into((ImageView) holder.getView(R.id.iv_cover));
+    }
+
+    private void coverMedia(final int position, final CommonHolder holder, final TransferModel item) {
         holder.setText(R.id.tv_title, item.songName);
         holder.setText(R.id.tv_singer, item.artistName);
         holder.setViewVisibility(R.id.iv_more, item.transferState == TransferModel.TRANSFER_STATE_DONE ? View.VISIBLE : View.GONE);
@@ -126,13 +180,6 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
 
             }
         });
-    }
-
-    private void coverMV(final CommonHolder holder, final TransferModel item) {
-        coverSong(holder, item);
-        Glide.with(mContext).load(item.songUrl)
-                .apply(new RequestOptions().dontAnimate())
-                .into((ImageView) holder.getView(R.id.iv_cover));
     }
 
     private Operater getOperater() {

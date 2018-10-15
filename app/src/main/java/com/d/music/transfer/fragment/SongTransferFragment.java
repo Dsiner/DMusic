@@ -7,6 +7,7 @@ import android.view.View;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
+import com.d.music.component.media.controler.MediaControler;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.activity.TransferActivity;
 import com.d.music.transfer.adapter.TransferAdapter;
@@ -73,7 +74,9 @@ public class SongTransferFragment extends TransferFragment {
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
             @Override
             public void onPlayAll() {
-
+                MediaControler.getIns(mContext).
+                        init(TransferModel.convertTo(TransferManager.getIns().optSong().pipe().list()),
+                                0, true);
             }
 
             @Override
@@ -93,10 +96,11 @@ public class SongTransferFragment extends TransferFragment {
     public void notifyDataSetChanged(List<List<TransferModel>> lists) {
         final int countDownloading = lists.get(0).size();
         final int countDownloaded = lists.get(1).size();
+        final int count = countDownloading + countDownloaded;
         ((TransferActivity) getActivity()).setTabNumber(type,
                 countDownloading > 0 ? "" + countDownloading : "",
                 countDownloading > 0 ? View.VISIBLE : View.GONE);
-        header.setSongCount(countDownloaded);
+        header.setSongCount(count);
         super.notifyDataSetChanged(lists);
     }
 }
