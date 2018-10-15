@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.d.lib.common.component.cache.base.AbstractCacheManager;
-import com.d.lib.common.component.cache.base.LruCache;
+import com.d.lib.common.component.cache.base.LinkLruCache;
 import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.component.media.HitTarget;
@@ -22,7 +22,7 @@ import com.d.music.utils.FileUtil;
 public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
     private volatile static LinkCacheManager mInstance;
 
-    private LruCache<String, String> mLruCacheLinks;
+    private LinkLruCache<String, String> mLruCacheLinks;
 
     public static LinkCacheManager getIns(Context context) {
         if (mInstance == null) {
@@ -38,8 +38,9 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
     private LinkCacheManager(Context context) {
         super(context);
         mLruCache.setCount(0);
-        mLruCacheLinks = new LruCache<>();
-        mLruCacheLinks.setCount(80);
+        mLruCacheLinks = new LinkLruCache<>();
+        mLruCacheLinks.setCount(60);
+        mLruCacheLinks.setValidate(2 * 60 * 60 * 1000);
     }
 
     @NonNull
