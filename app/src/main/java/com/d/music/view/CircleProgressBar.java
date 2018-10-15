@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.d.lib.common.utils.Util;
+import com.d.lib.common.view.roundedimageview.RoundedImageView;
 import com.d.music.R;
 
 import java.lang.annotation.ElementType;
@@ -68,8 +69,7 @@ public class CircleProgressBar extends FrameLayout implements View.OnClickListen
     private int mState = STATE_PROGRESS;
     private boolean isFirst = true;
     private Request mRequest;
-    // FIXME: 2018/10/9
-    private /*RoundedImageView*/ ImageView ivThumb, ivAlpha, ivState;
+    private RoundedImageView ivThumb, ivAlpha, ivState;
     private OnClickListener listener;
 
     @IntDef({STATE_PROGRESS, STATE_PENDDING, STATE_ERROR})
@@ -106,20 +106,20 @@ public class CircleProgressBar extends FrameLayout implements View.OnClickListen
         this.setWillNotDraw(false);
         strokeWidth = Util.dip2px(context, 3.5f);
         LayoutParams lp;
-        ivThumb = new ImageView(context);
+        ivThumb = new RoundedImageView(context);
         ivThumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
         lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.CENTER;
         addView(ivThumb, lp);
 
-        ivAlpha = new ImageView(context);
+        ivAlpha = new RoundedImageView(context);
         ivAlpha.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ivAlpha.setImageResource(R.color.lib_pub_color_trans);
         lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.CENTER;
         addView(ivAlpha, lp);
 
-        ivState = new ImageView(context);
+        ivState = new RoundedImageView(context);
         ivState.setScaleType(ImageView.ScaleType.CENTER_CROP);
         lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.CENTER;
@@ -224,7 +224,7 @@ public class CircleProgressBar extends FrameLayout implements View.OnClickListen
 
     private void draw(@NonNull Canvas canvas, @ColorInt int color, @NonNull Point... points) {
         gPaint.setColor(color);
-        gPath.rLineTo(0, 0);
+        gPath.reset();
         boolean first = true;
         for (Point p : points) {
             if (first) {

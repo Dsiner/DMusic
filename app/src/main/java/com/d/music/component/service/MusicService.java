@@ -300,12 +300,12 @@ public class MusicService extends Service {
                             mControl.prev();
                             break;
                         case Constants.PlayFlag.PLAY_FLAG_EXIT:
-                            App.exit(getApplicationContext()); // 退出应用
+                            App.exit(); // 退出应用
                             break;
                     }
                     break;
                 case Constants.PlayFlag.PLAYER_CONTROL_TIMING:
-                    App.exit(getApplicationContext()); // 退出应用
+                    App.exit(); // 退出应用
                     break;
                 case Constants.PlayFlag.PLAYER_RELOAD:
                     updateNotification(Constants.PlayStatus.PLAY_STATUS_PLAYING); // 正在播放

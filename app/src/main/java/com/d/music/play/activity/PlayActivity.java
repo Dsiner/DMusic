@@ -335,7 +335,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter> implements IPlayVi
                         } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
                             startActivity(new Intent(mContext, ModeActivity.class));
                         } else if (bean.type == OperationDialog.Bean.TYPE_EXIT) {
-                            App.exit(mContext);
+                            App.exit();
                         }
                     }
 

@@ -91,7 +91,7 @@ public class MainActivity extends BaseFragmentActivity {
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                App.exit(getApplicationContext());
+                App.exit();
                 break;
         }
     }
