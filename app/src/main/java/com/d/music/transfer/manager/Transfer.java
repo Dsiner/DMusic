@@ -41,14 +41,14 @@ public class Transfer {
                             return;
                         }
                         SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
-                        model.url = song.songLink;
-                        model.lrcUrl = song.lrcLink;
                         model.songName = song.songName;
+                        model.songUrl = song.songLink;
                         model.artistId = song.artistId;
                         model.artistName = song.artistName;
                         model.albumId = "" + song.albumId;
                         model.albumName = song.albumName;
                         model.albumUrl = song.songPicSmall;
+                        model.lrcUrl = song.lrcLink;
                         model.fileFolder = Constants.Path.song;
                         model.filePostfix = song.format;
 
@@ -119,7 +119,7 @@ public class Transfer {
 
     private static <T extends MusicModel> void downloadSong(@NonNull final String path, @NonNull final T model,
                                                             final OnTransferCallback<T> callback) {
-        final String url = model.url;
+        final String url = model.songUrl;
         final String name = model.songName + "." + model.filePostfix;
         final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
         RxNet.download(url)
@@ -191,7 +191,7 @@ public class Transfer {
 
     public static <T extends MusicModel> void downloadMV(@NonNull final T model, final OnTransferCallback<T> callback) {
         final String path = Constants.Path.mv;
-        final String url = model.url;
+        final String url = model.songUrl;
         final String name = model.songName + PREFIX_MV;
         final String cache = model.songName + PREFIX_MV + PREFIX_DOWNLOAD;
         RxNet.download(url)

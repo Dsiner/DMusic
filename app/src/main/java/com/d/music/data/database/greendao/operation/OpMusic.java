@@ -80,10 +80,10 @@ public class OpMusic extends AbstractOp {
     /**
      * 更新记录
      */
-    public void updateColleted(final String url, final boolean collected) {
+    public void updateColleted(final String id, final boolean collected) {
         final ContentValues value = new ContentValues();
         final String key = MusicModelDao.Properties.IsCollected.columnName;
-        final String where = MusicModelDao.Properties.Url.columnName + " = ?";
+        final String where = MusicModelDao.Properties.Id.columnName + " = ?";
         value.put(key, collected);
         daos[MUSIC].getSession().runInTx(new Runnable() {
             @Override
@@ -91,18 +91,18 @@ public class OpMusic extends AbstractOp {
                 for (int type = 0; type < TABLE_INDEX_COUNT; type++) {
                     switch (type) {
                         case MUSIC:
-                            daos[MUSIC].getDatabase().update(daos[MUSIC].getTablename(), value, where, new String[]{url});
+                            daos[MUSIC].getDatabase().update(daos[MUSIC].getTablename(), value, where, new String[]{id});
                             break;
                         case LOCAL_ALL_MUSIC:
-                            daos[LOCAL_ALL_MUSIC].getDatabase().update(daos[LOCAL_ALL_MUSIC].getTablename(), value, where, new String[]{url});
+                            daos[LOCAL_ALL_MUSIC].getDatabase().update(daos[LOCAL_ALL_MUSIC].getTablename(), value, where, new String[]{id});
                             break;
                         case COLLECTION_MUSIC:
-                            daos[COLLECTION_MUSIC].getDatabase().update(daos[COLLECTION_MUSIC].getTablename(), value, where, new String[]{url});
+                            daos[COLLECTION_MUSIC].getDatabase().update(daos[COLLECTION_MUSIC].getTablename(), value, where, new String[]{id});
                             break;
                         default:
                             if (type >= CUSTOM_MUSIC_INDEX) {
                                 // 自定义歌曲
-                                daos[type].getDatabase().update(daos[type].getTablename(), value, where, new String[]{url});
+                                daos[type].getDatabase().update(daos[type].getTablename(), value, where, new String[]{id});
                             }
                             break;
                     }
@@ -116,7 +116,7 @@ public class OpMusic extends AbstractOp {
      */
     public void updateColleted(MusicModel model) {
         final boolean isColleted = model.getIsCollected();
-        List<MusicModel> list = daos[MUSIC].queryBuilder().where(MusicModelDao.Properties.Url.eq(model.getUrl())).list();
+        List<MusicModel> list = daos[MUSIC].queryBuilder().where(MusicModelDao.Properties.Id.eq(model.getId())).list();
         if (list != null && list.size() > 0) {
             for (MusicModel musicModel : list) {
                 musicModel.setIsCollected(isColleted);
@@ -128,10 +128,10 @@ public class OpMusic extends AbstractOp {
     /**
      * 查询一条记录--如果给出参数msgId不唯一，将返回符合条件集合的第一条
      */
-    public MusicModel queryMusicByUrl(int type, String url) {
+    public MusicModel queryMusicByUrl(int type, String id) {
         switch (type) {
             case MUSIC:
-                List<MusicModel> lists = daos[MUSIC].queryBuilder().where(MusicModelDao.Properties.Url.eq(url)).list();
+                List<MusicModel> lists = daos[MUSIC].queryBuilder().where(MusicModelDao.Properties.Id.eq(id)).list();
                 if (lists != null && lists.size() > 0) {
                     return lists.get(0);
                 }
@@ -211,7 +211,7 @@ public class OpMusic extends AbstractOp {
                 break;
             default:
                 if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
-                    // 自定义歌曲：index 0-19 一一对应
+                    // 自定义歌曲: index 0 - 19 一一对应
                     daos[type].deleteInTx(o);
                 }
                 break;
@@ -237,7 +237,7 @@ public class OpMusic extends AbstractOp {
                 break;
             default:
                 if (type >= CUSTOM_MUSIC_INDEX && type < CUSTOM_MUSIC_INDEX + CUSTOM_MUSIC_COUNT) {
-                    // 自定义歌曲：index 0-19 一一对应
+                    // 自定义歌曲: index 0 - 19 一一对应
                     deleteAll(daos[type]);
                 }
                 break;

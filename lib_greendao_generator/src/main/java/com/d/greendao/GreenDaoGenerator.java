@@ -94,12 +94,13 @@ public class GreenDaoGenerator {
         entity.addIntProperty("transferCurrentLength");
         entity.addIntProperty("transferTotalLength");
 
-        entity.addStringProperty("url"); // 文件完整路径
+        entity.addStringProperty("id"); // 文件完整路径
 
         entity.addIntProperty("type"); // 类型：本地、百度、网易、QQ等
         entity.addIntProperty("seq"); // 自定义序号
         entity.addStringProperty("songId"); // 歌曲ID
         entity.addStringProperty("songName"); // 歌曲名
+        entity.addStringProperty("songUrl"); // 歌曲url
         entity.addStringProperty("artistId"); // 艺术家ID
         entity.addStringProperty("artistName"); // 歌手名
         entity.addStringProperty("albumId"); // 专辑ID
@@ -121,12 +122,13 @@ public class GreenDaoGenerator {
      * 添加公共字段
      */
     private static void addProperty(Entity entity) {
-        entity.addStringProperty("url").primaryKey(); // 文件完整路径---主键
+        entity.addStringProperty("id").primaryKey(); // 文件完整路径---主键
 
         entity.addIntProperty("type"); // 类型：本地、百度、网易、QQ等
         entity.addIntProperty("seq"); // 自定义序号
         entity.addStringProperty("songId"); // 歌曲ID
         entity.addStringProperty("songName"); // 歌曲名
+        entity.addStringProperty("songUrl"); // 歌曲url
         entity.addStringProperty("artistId"); // 艺术家ID
         entity.addStringProperty("artistName"); // 歌手名
         entity.addStringProperty("albumId"); // 专辑ID

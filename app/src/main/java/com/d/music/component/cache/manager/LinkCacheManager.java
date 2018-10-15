@@ -55,7 +55,7 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
         Transfer.getInfo(key, new SimpleCallback<MusicModel>() {
             @Override
             public void onSuccess(MusicModel response) {
-                final String path = response.url;
+                final String path = response.songUrl;
                 putDisk(key, path);
                 success(key, path, listener);
             }

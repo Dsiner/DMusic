@@ -60,11 +60,14 @@ public class MVInfoModel extends MVDetailModel {
 
     public static TransferModel convertToTransfer(MVInfoModel model) {
         TransferModel transferModel = new TransferModel();
+        transferModel.transferId = transferModel.id
+                = TransferModel.generateId(MusicModel.TYPE_NETEASE,
+                MusicModel.Channel.CHANNEL_TYPE_NONE, "" + model.id);
         transferModel.transferType = TransferModel.TRANSFER_TYPE_MV;
-        transferModel.url = getUrl(model);
         transferModel.type = MusicModel.TYPE_NETEASE;
         transferModel.songId = "" + model.id;
         transferModel.songName = model.name;
+        transferModel.songUrl = getUrl(model);
         transferModel.artistName = model.artistName;
         transferModel.albumId = "" + model.coverId;
         transferModel.albumUrl = model.cover;

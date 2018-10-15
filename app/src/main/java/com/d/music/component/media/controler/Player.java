@@ -146,7 +146,7 @@ public class Player {
     private void play(final MusicModel model, final boolean next) {
         mMediaPlayerManager.reset();
         if (model.type == MusicModel.TYPE_LOCAL) {
-            playLocal(model.url, next);
+            playLocal(model.songUrl, next);
         } else {
             mPresenter.playLink(model, next);
         }

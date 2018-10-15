@@ -130,7 +130,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
 
     private void coverMV(final CommonHolder holder, final TransferModel item) {
         coverSong(holder, item);
-        Glide.with(mContext).load(item.url)
+        Glide.with(mContext).load(item.songUrl)
                 .apply(new RequestOptions().dontAnimate())
                 .into((ImageView) holder.getView(R.id.iv_cover));
     }

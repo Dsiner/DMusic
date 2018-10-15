@@ -56,7 +56,7 @@ public class SongInfoDialog extends AbstractDialog implements View.OnClickListen
         tvDuration.setText(String.format("%02d:%02d", minute, second));// 格式待转
         tvFilePostfix.setText(model.getFilePostfix());
         tvSize.setText(Util.formatSize(model.getFileSize()));// 格式待转
-        tvUrl.setText(model.getUrl());
+        tvUrl.setText(model.getSongUrl());
     }
 
     @Override

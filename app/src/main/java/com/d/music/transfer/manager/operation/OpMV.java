@@ -25,8 +25,9 @@ public class OpMV extends Operater {
             return;
         }
         TransferModel model = new TransferModel(item);
-        model.transferId = TransferModel.generateId(TransferModel.TRANSFER_TYPE_MV,
-                item.type, item.songId);
+        model.transferId = model.id
+                = TransferModel.generateId(item.type,
+                MusicModel.Channel.CHANNEL_TYPE_MV, item.songId);
         model.transferType = TransferModel.TRANSFER_TYPE_MV;
         mPipe.add(model);
         next();

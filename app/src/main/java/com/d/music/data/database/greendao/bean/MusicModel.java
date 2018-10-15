@@ -10,15 +10,24 @@ import com.d.lib.common.component.mvp.model.BaseModel;
  * Entity mapped to table "MUSIC_MODEL".
  */
 public class MusicModel extends BaseModel {
-    public final static int TYPE_LOCAL = 0;
-    public final static int TYPE_BAIDU = 1;
-    public final static int TYPE_NETEASE = 2;
+    public final static int TYPE_LOCAL = 10;
+    public final static int TYPE_BAIDU = 11;
+    public final static int TYPE_NETEASE = 12;
 
-    public String url = "";
+    public static class Channel {
+        public final static int CHANNEL_TYPE_NONE = 100;
+        public final static int CHANNEL_TYPE_BILL = 101;
+        public final static int CHANNEL_TYPE_RADIO = 102;
+        public final static int CHANNEL_TYPE_MV = 103;
+    }
+
+    // Transfer type + Type + Id
+    public String id = "";
     public Integer type = TYPE_LOCAL;
     public Integer seq = 0;
     public String songId;
     public String songName;
+    public String songUrl;
     public String artistId;
     public String artistName;
     public String albumId;
@@ -47,23 +56,24 @@ public class MusicModel extends BaseModel {
     // Extra properties: Is it the first section?
     public boolean exIsLetter;
 
-    public static String generateId(int transferType, int type, String id) {
-        return "" + transferType + type + (!TextUtils.isEmpty(id) ? id : "");
+    public static String generateId(int type, int channel, String id) {
+        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
     }
 
     public MusicModel() {
     }
 
-    public MusicModel(String url) {
-        this.url = url;
+    public MusicModel(String id) {
+        this.id = id;
     }
 
-    public MusicModel(String url, Integer type, Integer seq, String songId, String songName, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
-        this.url = url;
+    public MusicModel(String id, Integer type, Integer seq, String songId, String songName, String songUrl, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
+        this.id = id;
         this.type = type;
         this.seq = seq;
         this.songId = songId;
         this.songName = songName;
+        this.songUrl = songUrl;
         this.artistId = artistId;
         this.artistName = artistName;
         this.albumId = albumId;
@@ -79,12 +89,12 @@ public class MusicModel extends BaseModel {
         this.timeStamp = timeStamp;
     }
 
-    public String getUrl() {
-        return url;
+    public String getId() {
+        return id;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getType() {
@@ -117,6 +127,14 @@ public class MusicModel extends BaseModel {
 
     public void setSongName(String songName) {
         this.songName = songName;
+    }
+
+    public String getSongUrl() {
+        return songUrl;
+    }
+
+    public void setSongUrl(String songUrl) {
+        this.songUrl = songUrl;
     }
 
     public String getArtistId() {

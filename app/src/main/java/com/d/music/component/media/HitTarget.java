@@ -44,7 +44,7 @@ public class HitTarget {
                 : Transfer.PREFIX_SONG;
         String tempPath = "";
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
-            tempPath = model.url;
+            tempPath = model.songUrl;
         }
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
             tempPath = model.fileFolder + File.separator + model.songName + filePostfix;

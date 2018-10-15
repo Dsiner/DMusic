@@ -29,24 +29,25 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
         public final static Property TransferState = new Property(2, Integer.class, "transferState", false, "TRANSFER_STATE");
         public final static Property TransferCurrentLength = new Property(3, Integer.class, "transferCurrentLength", false, "TRANSFER_CURRENT_LENGTH");
         public final static Property TransferTotalLength = new Property(4, Integer.class, "transferTotalLength", false, "TRANSFER_TOTAL_LENGTH");
-        public final static Property Url = new Property(5, String.class, "url", false, "URL");
+        public final static Property Id = new Property(5, String.class, "id", false, "ID");
         public final static Property Type = new Property(6, Integer.class, "type", false, "TYPE");
         public final static Property Seq = new Property(7, Integer.class, "seq", false, "SEQ");
         public final static Property SongId = new Property(8, String.class, "songId", false, "SONG_ID");
         public final static Property SongName = new Property(9, String.class, "songName", false, "SONG_NAME");
-        public final static Property ArtistId = new Property(10, String.class, "artistId", false, "ARTIST_ID");
-        public final static Property ArtistName = new Property(11, String.class, "artistName", false, "ARTIST_NAME");
-        public final static Property AlbumId = new Property(12, String.class, "albumId", false, "ALBUM_ID");
-        public final static Property AlbumName = new Property(13, String.class, "albumName", false, "ALBUM_NAME");
-        public final static Property AlbumUrl = new Property(14, String.class, "albumUrl", false, "ALBUM_URL");
-        public final static Property LrcName = new Property(15, String.class, "lrcName", false, "LRC_NAME");
-        public final static Property LrcUrl = new Property(16, String.class, "lrcUrl", false, "LRC_URL");
-        public final static Property FileDuration = new Property(17, Long.class, "fileDuration", false, "FILE_DURATION");
-        public final static Property FileSize = new Property(18, Long.class, "fileSize", false, "FILE_SIZE");
-        public final static Property FilePostfix = new Property(19, String.class, "filePostfix", false, "FILE_POSTFIX");
-        public final static Property FileFolder = new Property(20, String.class, "fileFolder", false, "FILE_FOLDER");
-        public final static Property IsCollected = new Property(21, Boolean.class, "isCollected", false, "IS_COLLECTED");
-        public final static Property TimeStamp = new Property(22, Long.class, "timeStamp", false, "TIME_STAMP");
+        public final static Property SongUrl = new Property(10, String.class, "songUrl", false, "SONG_URL");
+        public final static Property ArtistId = new Property(11, String.class, "artistId", false, "ARTIST_ID");
+        public final static Property ArtistName = new Property(12, String.class, "artistName", false, "ARTIST_NAME");
+        public final static Property AlbumId = new Property(13, String.class, "albumId", false, "ALBUM_ID");
+        public final static Property AlbumName = new Property(14, String.class, "albumName", false, "ALBUM_NAME");
+        public final static Property AlbumUrl = new Property(15, String.class, "albumUrl", false, "ALBUM_URL");
+        public final static Property LrcName = new Property(16, String.class, "lrcName", false, "LRC_NAME");
+        public final static Property LrcUrl = new Property(17, String.class, "lrcUrl", false, "LRC_URL");
+        public final static Property FileDuration = new Property(18, Long.class, "fileDuration", false, "FILE_DURATION");
+        public final static Property FileSize = new Property(19, Long.class, "fileSize", false, "FILE_SIZE");
+        public final static Property FilePostfix = new Property(20, String.class, "filePostfix", false, "FILE_POSTFIX");
+        public final static Property FileFolder = new Property(21, String.class, "fileFolder", false, "FILE_FOLDER");
+        public final static Property IsCollected = new Property(22, Boolean.class, "isCollected", false, "IS_COLLECTED");
+        public final static Property TimeStamp = new Property(23, Long.class, "timeStamp", false, "TIME_STAMP");
     }
 
     ;
@@ -71,24 +72,25 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
                 "\"TRANSFER_STATE\" INTEGER," + // 2: transferState
                 "\"TRANSFER_CURRENT_LENGTH\" INTEGER," + // 3: transferCurrentLength
                 "\"TRANSFER_TOTAL_LENGTH\" INTEGER," + // 4: transferTotalLength
-                "\"URL\" TEXT," + // 5: url
+                "\"ID\" TEXT," + // 5: id
                 "\"TYPE\" INTEGER," + // 6: type
                 "\"SEQ\" INTEGER," + // 7: seq
                 "\"SONG_ID\" TEXT," + // 8: songId
                 "\"SONG_NAME\" TEXT," + // 9: songName
-                "\"ARTIST_ID\" TEXT," + // 10: artistId
-                "\"ARTIST_NAME\" TEXT," + // 11: artistName
-                "\"ALBUM_ID\" TEXT," + // 12: albumId
-                "\"ALBUM_NAME\" TEXT," + // 13: albumName
-                "\"ALBUM_URL\" TEXT," + // 14: albumUrl
-                "\"LRC_NAME\" TEXT," + // 15: lrcName
-                "\"LRC_URL\" TEXT," + // 16: lrcUrl
-                "\"FILE_DURATION\" INTEGER," + // 17: fileDuration
-                "\"FILE_SIZE\" INTEGER," + // 18: fileSize
-                "\"FILE_POSTFIX\" TEXT," + // 19: filePostfix
-                "\"FILE_FOLDER\" TEXT," + // 20: fileFolder
-                "\"IS_COLLECTED\" INTEGER," + // 21: isCollected
-                "\"TIME_STAMP\" INTEGER);"); // 22: timeStamp
+                "\"SONG_URL\" TEXT," + // 10: songUrl
+                "\"ARTIST_ID\" TEXT," + // 11: artistId
+                "\"ARTIST_NAME\" TEXT," + // 12: artistName
+                "\"ALBUM_ID\" TEXT," + // 13: albumId
+                "\"ALBUM_NAME\" TEXT," + // 14: albumName
+                "\"ALBUM_URL\" TEXT," + // 15: albumUrl
+                "\"LRC_NAME\" TEXT," + // 16: lrcName
+                "\"LRC_URL\" TEXT," + // 17: lrcUrl
+                "\"FILE_DURATION\" INTEGER," + // 18: fileDuration
+                "\"FILE_SIZE\" INTEGER," + // 19: fileSize
+                "\"FILE_POSTFIX\" TEXT," + // 20: filePostfix
+                "\"FILE_FOLDER\" TEXT," + // 21: fileFolder
+                "\"IS_COLLECTED\" INTEGER," + // 22: isCollected
+                "\"TIME_STAMP\" INTEGER);"); // 23: timeStamp
     }
 
     /**
@@ -131,9 +133,9 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
             stmt.bindLong(5, transferTotalLength);
         }
 
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(6, url);
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(6, id);
         }
 
         Integer type = entity.getType();
@@ -156,69 +158,74 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
             stmt.bindString(10, songName);
         }
 
+        String songUrl = entity.getSongUrl();
+        if (songUrl != null) {
+            stmt.bindString(11, songUrl);
+        }
+
         String artistId = entity.getArtistId();
         if (artistId != null) {
-            stmt.bindString(11, artistId);
+            stmt.bindString(12, artistId);
         }
 
         String artistName = entity.getArtistName();
         if (artistName != null) {
-            stmt.bindString(12, artistName);
+            stmt.bindString(13, artistName);
         }
 
         String albumId = entity.getAlbumId();
         if (albumId != null) {
-            stmt.bindString(13, albumId);
+            stmt.bindString(14, albumId);
         }
 
         String albumName = entity.getAlbumName();
         if (albumName != null) {
-            stmt.bindString(14, albumName);
+            stmt.bindString(15, albumName);
         }
 
         String albumUrl = entity.getAlbumUrl();
         if (albumUrl != null) {
-            stmt.bindString(15, albumUrl);
+            stmt.bindString(16, albumUrl);
         }
 
         String lrcName = entity.getLrcName();
         if (lrcName != null) {
-            stmt.bindString(16, lrcName);
+            stmt.bindString(17, lrcName);
         }
 
         String lrcUrl = entity.getLrcUrl();
         if (lrcUrl != null) {
-            stmt.bindString(17, lrcUrl);
+            stmt.bindString(18, lrcUrl);
         }
 
         Long fileDuration = entity.getFileDuration();
         if (fileDuration != null) {
-            stmt.bindLong(18, fileDuration);
+            stmt.bindLong(19, fileDuration);
         }
 
         Long fileSize = entity.getFileSize();
         if (fileSize != null) {
-            stmt.bindLong(19, fileSize);
+            stmt.bindLong(20, fileSize);
         }
 
         String filePostfix = entity.getFilePostfix();
         if (filePostfix != null) {
-            stmt.bindString(20, filePostfix);
+            stmt.bindString(21, filePostfix);
         }
 
         String fileFolder = entity.getFileFolder();
         if (fileFolder != null) {
-            stmt.bindString(21, fileFolder);
+            stmt.bindString(22, fileFolder);
         }
 
         Boolean isCollected = entity.getIsCollected();
         if (isCollected != null) {
-            stmt.bindLong(22, isCollected ? 1L : 0L);
+            stmt.bindLong(23, isCollected ? 1L : 0L);
         }
 
         Long timeStamp = entity.getTimeStamp();
         if (timeStamp != null) {
-            stmt.bindLong(23, timeStamp);
+            stmt.bindLong(24, timeStamp);
         }
     }
 
@@ -241,24 +248,25 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
                 cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // transferState
                 cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // transferCurrentLength
                 cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // transferTotalLength
-                cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // url
+                cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // id
                 cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // type
                 cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // seq
                 cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // songId
                 cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // songName
-                cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // artistId
-                cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // artistName
-                cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // albumId
-                cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // albumName
-                cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // albumUrl
-                cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // lrcName
-                cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // lrcUrl
-                cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17), // fileDuration
-                cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // fileSize
-                cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // filePostfix
-                cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // fileFolder
-                cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0, // isCollected
-                cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22) // timeStamp
+                cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // songUrl
+                cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // artistId
+                cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // artistName
+                cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // albumId
+                cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // albumName
+                cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // albumUrl
+                cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // lrcName
+                cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // lrcUrl
+                cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // fileDuration
+                cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19), // fileSize
+                cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // filePostfix
+                cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // fileFolder
+                cursor.isNull(offset + 22) ? null : cursor.getShort(offset + 22) != 0, // isCollected
+                cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23) // timeStamp
         );
         return entity;
     }
@@ -273,24 +281,25 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
         entity.setTransferState(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setTransferCurrentLength(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setTransferTotalLength(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setUrl(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setType(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setSeq(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setSongId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setSongName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setArtistId(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setArtistName(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setAlbumId(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setAlbumName(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setAlbumUrl(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setLrcName(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setLrcUrl(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setFileDuration(cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17));
-        entity.setFileSize(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
-        entity.setFilePostfix(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setFileFolder(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setIsCollected(cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0);
-        entity.setTimeStamp(cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22));
+        entity.setSongUrl(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setArtistId(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setArtistName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setAlbumId(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setAlbumName(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setAlbumUrl(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setLrcName(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setLrcUrl(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setFileDuration(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
+        entity.setFileSize(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
+        entity.setFilePostfix(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setFileFolder(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setIsCollected(cursor.isNull(offset + 22) ? null : cursor.getShort(offset + 22) != 0);
+        entity.setTimeStamp(cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23));
     }
 
     /**

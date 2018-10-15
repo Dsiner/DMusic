@@ -10,7 +10,6 @@ import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.callback.AsyncCallback;
 import com.d.music.api.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.online.model.BillSongsModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsModel;
@@ -46,8 +45,9 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                             List<BillSongsModel> song_list = billSongsRespModel.song_list;
                             for (BillSongsModel model : song_list) {
                                 MusicModel music = new MusicModel();
-                                music.url = MusicModel.generateId(TransferModel.TRANSFER_STATE_DONE,
-                                        MusicModel.TYPE_BAIDU, (TextUtils.isEmpty(channel) ? channel : "") + model.song_id);
+                                music.id = MusicModel.generateId(MusicModel.TYPE_BAIDU,
+                                        MusicModel.Channel.CHANNEL_TYPE_NONE,
+                                        (TextUtils.isEmpty(channel) ? channel : "") + model.song_id);
                                 music.type = MusicModel.TYPE_BAIDU;
                                 music.songId = model.song_id;
                                 music.songName = model.title;
@@ -99,8 +99,9 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                     continue;
                                 }
                                 MusicModel music = new MusicModel();
-                                music.url = MusicModel.generateId(TransferModel.TRANSFER_STATE_DONE,
-                                        MusicModel.TYPE_BAIDU, (TextUtils.isEmpty(channel) ? channel : "") + model.songid);
+                                music.id = MusicModel.generateId(MusicModel.TYPE_BAIDU,
+                                        MusicModel.Channel.CHANNEL_TYPE_NONE,
+                                        (TextUtils.isEmpty(channel) ? channel : "") + model.songid);
                                 music.type = MusicModel.TYPE_BAIDU;
                                 music.songId = model.songid;
                                 music.songName = model.title;

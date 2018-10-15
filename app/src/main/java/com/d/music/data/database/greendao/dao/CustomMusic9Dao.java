@@ -19,11 +19,12 @@ public class CustomMusic9Dao extends AbstractMusicDao {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Url = CommonProperties.Url;
+        public final static Property Id = CommonProperties.Id;
         public final static Property Type = CommonProperties.Type;
         public final static Property Seq = CommonProperties.Seq;
         public final static Property SongId = CommonProperties.SongId;
         public final static Property SongName = CommonProperties.SongName;
+        public final static Property SongUrl = CommonProperties.SongUrl;
         public final static Property ArtistId = CommonProperties.ArtistId;
         public final static Property ArtistName = CommonProperties.ArtistName;
         public final static Property AlbumId = CommonProperties.AlbumId;
@@ -54,32 +55,33 @@ public class CustomMusic9Dao extends AbstractMusicDao {
      */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
-        db.execSQL("CREATE TABLE " + constraint + "\"CUSTOM_MUSIC9\" (" + //
-                "\"URL\" TEXT PRIMARY KEY NOT NULL ," + // 0: url
+        db.execSQL("CREATE TABLE " + constraint + "\"" + TABLENAME + "\" (" + //
+                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"TYPE\" INTEGER," + // 1: type
                 "\"SEQ\" INTEGER," + // 2: seq
                 "\"SONG_ID\" TEXT," + // 3: songId
                 "\"SONG_NAME\" TEXT," + // 4: songName
-                "\"ARTIST_ID\" TEXT," + // 5: artistId
-                "\"ARTIST_NAME\" TEXT," + // 6: artistName
-                "\"ALBUM_ID\" TEXT," + // 7: albumId
-                "\"ALBUM_NAME\" TEXT," + // 8: albumName
-                "\"ALBUM_URL\" TEXT," + // 9: albumUrl
-                "\"LRC_NAME\" TEXT," + // 10: lrcName
-                "\"LRC_URL\" TEXT," + // 11: lrcUrl
-                "\"FILE_DURATION\" INTEGER," + // 12: fileDuration
-                "\"FILE_SIZE\" INTEGER," + // 13: fileSize
-                "\"FILE_POSTFIX\" TEXT," + // 14: filePostfix
-                "\"FILE_FOLDER\" TEXT," + // 15: fileFolder
-                "\"IS_COLLECTED\" INTEGER," + // 16: isCollected
-                "\"TIME_STAMP\" INTEGER);"); // 17: timeStamp
+                "\"SONG_URL\" TEXT," + // 5: songUrl
+                "\"ARTIST_ID\" TEXT," + // 6: artistId
+                "\"ARTIST_NAME\" TEXT," + // 7: artistName
+                "\"ALBUM_ID\" TEXT," + // 8: albumId
+                "\"ALBUM_NAME\" TEXT," + // 9: albumName
+                "\"ALBUM_URL\" TEXT," + // 10: albumUrl
+                "\"LRC_NAME\" TEXT," + // 11: lrcName
+                "\"LRC_URL\" TEXT," + // 12: lrcUrl
+                "\"FILE_DURATION\" INTEGER," + // 13: fileDuration
+                "\"FILE_SIZE\" INTEGER," + // 14: fileSize
+                "\"FILE_POSTFIX\" TEXT," + // 15: filePostfix
+                "\"FILE_FOLDER\" TEXT," + // 16: fileFolder
+                "\"IS_COLLECTED\" INTEGER," + // 17: isCollected
+                "\"TIME_STAMP\" INTEGER);"); // 18: timeStamp
     }
 
     /**
      * Drops the underlying database table.
      */
     public static void dropTable(SQLiteDatabase db, boolean ifExists) {
-        String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"CUSTOM_MUSIC9\"";
+        String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"" + TABLENAME + "\"";
         db.execSQL(sql);
     }
 }

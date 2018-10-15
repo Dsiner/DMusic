@@ -44,11 +44,11 @@ public class TransferModel extends MusicModel {
         if (model instanceof TransferModel) {
             return ((TransferModel) model).transferId;
         }
-        return "" + TRANSFER_TYPE_NONE + model.type + (!TextUtils.isEmpty(model.songId) ? model.songId : "");
+        return generateId(model.type, Channel.CHANNEL_TYPE_NONE, model.songId);
     }
 
-    public static String generateId(int transferType, int type, String id) {
-        return "" + transferType + type + (!TextUtils.isEmpty(id) ? id : "");
+    public static String generateId(int type, int channel, String id) {
+        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
     }
 
     public TransferModel() {
@@ -60,7 +60,7 @@ public class TransferModel extends MusicModel {
 
     public TransferModel(MusicModel model) {
         this("", TRANSFER_TYPE_NONE, TRANSFER_STATE_PENDDING, 0, 0,
-                model.url, model.type, model.seq, model.songId, model.songName,
+                model.id, model.type, model.seq, model.songId, model.songName, model.songUrl,
                 model.artistId, model.artistName,
                 model.albumId, model.albumName, model.albumUrl,
                 model.lrcName, model.lrcUrl,
@@ -68,18 +68,18 @@ public class TransferModel extends MusicModel {
                 model.isCollected, model.timeStamp);
     }
 
-    public TransferModel(String transferId, Integer transferType, Integer transferState, Integer transferCurrentLength, Integer transferTotalLength, String url, Integer type, Integer seq, String songId, String songName, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
+    public TransferModel(String transferId, Integer transferType, Integer transferState, Integer transferCurrentLength, Integer transferTotalLength, String id, Integer type, Integer seq, String songId, String songName, String songUrl, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
         this.transferId = transferId;
         this.transferType = transferType;
         this.transferState = transferState;
         this.transferCurrentLength = transferCurrentLength;
         this.transferTotalLength = transferTotalLength;
-
-        this.url = url;
+        this.id = id;
         this.type = type;
         this.seq = seq;
         this.songId = songId;
         this.songName = songName;
+        this.songUrl = songUrl;
         this.artistId = artistId;
         this.artistName = artistName;
         this.albumId = albumId;

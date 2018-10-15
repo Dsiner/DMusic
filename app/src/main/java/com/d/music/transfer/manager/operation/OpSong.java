@@ -25,8 +25,9 @@ public class OpSong extends Operater {
             return;
         }
         TransferModel model = new TransferModel(item);
-        model.transferId = TransferModel.generateId(TransferModel.TRANSFER_TYPE_SONG,
-                item.type, item.songId);
+        model.transferId = model.id
+                = TransferModel.generateId(item.type,
+                MusicModel.Channel.CHANNEL_TYPE_NONE, item.songId);
         model.transferType = TransferModel.TRANSFER_TYPE_SONG;
         mPipe.add(model);
         next();

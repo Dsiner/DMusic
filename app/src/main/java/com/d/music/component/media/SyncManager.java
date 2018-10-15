@@ -34,7 +34,7 @@ public class SyncManager {
                     if (item == null) {
                         continue;
                     }
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.url, false);
+                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, false);
                 }
                 EventBus.getDefault().post(new RefreshEvent(AppDB.COLLECTION_MUSIC, RefreshEvent.SYNC_COLLECTIONG));
             }
@@ -50,10 +50,10 @@ public class SyncManager {
             public void run() {
                 if (item.isCollected) {
                     AppDBUtil.getIns(context).optMusic().insertOrReplace(AppDB.COLLECTION_MUSIC, item);
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.url, true);
+                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, true);
                 } else {
                     AppDBUtil.getIns(context).optMusic().delete(AppDB.COLLECTION_MUSIC, item);
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.url, false);
+                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, false);
                 }
                 EventBus.getDefault().post(new RefreshEvent(type, RefreshEvent.SYNC_COLLECTIONG));
             }
@@ -77,7 +77,7 @@ public class SyncManager {
         int size = list.size();
         for (int i = 0; i < size; i++) {
             MusicModel model = list.get(i);
-            MusicModel collect = collections.get(model.url);
+            MusicModel collect = collections.get(model.id);
             if (collect != null) {
                 model.isCollected = collect.isCollected;
             }
@@ -95,7 +95,7 @@ public class SyncManager {
         HashMap<String, MusicModel> collections = new HashMap<>(count);
         for (int i = 0; i < count; i++) {
             MusicModel model = datas.get(i);
-            collections.put(model.url, model);
+            collections.put(model.id, model);
         }
         return collections;
     }

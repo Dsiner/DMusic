@@ -69,16 +69,18 @@ public class MusicFactory {
                     // 文件格式过滤，MediaPlayer对其他格式支持不好（例如.wma）
                     if (Media.endsWith(displayName)) {
                         MusicModel model = new MusicModel();
+                        model.id = MusicModel.generateId(MusicModel.TYPE_LOCAL,
+                                MusicModel.Channel.CHANNEL_TYPE_NONE, info.url);
                         model.songName = displayName.substring(0, displayName.lastIndexOf("."));
+                        model.songUrl = info.url;
                         model.artistName = info.artist;
                         model.albumName = info.album;
                         model.fileDuration = info.duration;
                         model.fileSize = info.size;
                         model.filePostfix = displayName.substring(displayName.lastIndexOf("."));
-                        model.url = info.url;
                         model.fileFolder = info.url.substring(0, info.url.lastIndexOf("/"));
                         model.timeStamp = System.currentTimeMillis();
-                        MusicModel collect = collections.get(model.url);
+                        MusicModel collect = collections.get(model.id);
                         if (collect != null) {
                             model.isCollected = collect.isCollected;
                         }
@@ -150,10 +152,12 @@ public class MusicFactory {
 
                         if (Media.endsWith(displayName) && Media.matchPath(paths, url)) {
                             MusicModel model = new MusicModel();
+                            model.id = MusicModel.generateId(MusicModel.TYPE_LOCAL,
+                                    MusicModel.Channel.CHANNEL_TYPE_NONE, url);
                             model.type = MusicModel.TYPE_LOCAL;
-                            model.url = url;
                             model.songId = "" + id;
                             model.songName = displayName.substring(0, displayName.lastIndexOf("."));
+                            model.songUrl = url;
                             model.artistId = "" + artistId;
                             model.artistName = artist;
                             model.albumId = "" + albumId;
@@ -163,7 +167,7 @@ public class MusicFactory {
                             model.filePostfix = displayName.substring(displayName.lastIndexOf("."));
                             model.fileFolder = url.substring(0, url.lastIndexOf("/"));
                             model.timeStamp = System.currentTimeMillis();
-                            MusicModel collect = collections.get(model.url);
+                            MusicModel collect = collections.get(model.id);
                             if (collect != null) {
                                 model.isCollected = collect.isCollected;
                             }
