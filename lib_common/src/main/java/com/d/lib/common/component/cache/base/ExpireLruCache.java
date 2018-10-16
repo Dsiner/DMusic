@@ -33,14 +33,13 @@ public class ExpireLruCache<K, V> {
     }
 
     public ExpireLruCache(int count) {
-        last = head = new Node<>(null);
-        maxCount = count;
+        this(count, KEEP_ALIVE_TIME);
     }
 
-    public ExpireLruCache(int count, long time) {
-        last = head = new Node<>(null);
-        maxCount = count;
-        keepAliveMs = time;
+    public ExpireLruCache(int count, long keepAliveMs) {
+        this.last = this.head = new Node<>(null);
+        this.maxCount = count;
+        this.keepAliveMs = keepAliveMs;
     }
 
     public void setMaxCount(int count) {
@@ -66,6 +65,7 @@ public class ExpireLruCache<K, V> {
         }
         if (count > 0 && count >= maxCount) {
             dequeue();
+            count--;
         }
         enqueue(node);
         count++;
@@ -93,6 +93,7 @@ public class ExpireLruCache<K, V> {
         }
         if (count > 0) {
             dequeue();
+            count--;
         }
         return null;
     }
@@ -133,6 +134,7 @@ public class ExpireLruCache<K, V> {
         if (last == p) {
             last = trail;
         }
+        count--;
     }
 
     public void clear() {
