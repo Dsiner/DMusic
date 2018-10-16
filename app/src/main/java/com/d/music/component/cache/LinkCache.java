@@ -38,7 +38,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         if (isFinishing() || view == null) {
             return;
         }
-        if (TextUtils.isEmpty(mKey.songId)) {
+        if (mKey == null || TextUtils.isEmpty(mKey.songId)) {
             // Just error
             // TODO: @dsiner 2018/10/10
             return;
@@ -100,7 +100,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         if (isFinishing() || view == null) {
             return;
         }
-        if (TextUtils.isEmpty(mKey.songId)) {
+        if (mKey == null || TextUtils.isEmpty(mKey.songId)) {
             // Just error
             if (l != null) {
                 l.onError(new CacheException("Url must not be empty!"));

@@ -6,13 +6,9 @@ import android.support.annotation.NonNull;
  * LinkLruCache
  * Created by D on 2018/10/15.
  */
-public class LinkLruCache<K, V> {
-    private final static long VALIDATE_TIME = 2 * 60 * 60 * 1000;
+public class ExpireLruCache<K, V> {
+    private final static long KEEP_ALIVE_TIME = 2 * 60 * 60 * 1000;
 
-    /**
-     * Current number of elements
-     */
-    private int count = 0;
     /**
      * Head of linked list.
      * Invariant: head.item == null
@@ -25,21 +21,35 @@ public class LinkLruCache<K, V> {
      */
     private transient Node<Item<K, V>> last;
 
+    /**
+     * Current number of elements
+     */
+    private int count = 0;
     private int maxCount = 12;
-    private long validateTime = VALIDATE_TIME;
-    private final Object lock = new Object();
+    private long keepAliveMs = KEEP_ALIVE_TIME;
 
-    public LinkLruCache() {
+    public ExpireLruCache() {
         last = head = new Node<>(null);
     }
 
-    public void setCount(int count) {
-        this.maxCount = count;
+    public ExpireLruCache(int count) {
+        last = head = new Node<>(null);
+        maxCount = count;
+    }
+
+    public ExpireLruCache(int count, long time) {
+        last = head = new Node<>(null);
+        maxCount = count;
+        keepAliveMs = time;
+    }
+
+    public void setMaxCount(int count) {
+        maxCount = count;
     }
 
     public void setValidate(long time) {
-        this.validateTime = time;
-        this.clear();
+        keepAliveMs = time;
+        clear();
     }
 
     public void put(K key, V value) {
@@ -49,18 +59,16 @@ public class LinkLruCache<K, V> {
 
         Item<K, V> e = new Item<>(key, value, System.currentTimeMillis());
         Node<Item<K, V>> node = new Node<>(e);
-        synchronized (lock) {
-            Item<K, V> contain = containsKey(e.key);
-            if (contain != null) {
-                contain.value = e.value;
-                return;
-            }
-            if (count > 0 && count >= maxCount) {
-                dequeue();
-            }
-            enqueue(node);
-            count++;
+        Item<K, V> contain = containsKey(e.key);
+        if (contain != null) {
+            contain.value = e.value;
+            return;
         }
+        if (count > 0 && count >= maxCount) {
+            dequeue();
+        }
+        enqueue(node);
+        count++;
     }
 
     private void enqueue(Node<Item<K, V>> node) {
@@ -79,21 +87,19 @@ public class LinkLruCache<K, V> {
     }
 
     public V get(K key) {
-        synchronized (lock) {
-            if (!isValidate(key)) {
-                dequeue();
-                return null;
-            }
-            Item<K, V> contain = containsKey(key);
-            return contain != null ? contain.value : null;
+        Item<K, V> contain = containsKey(key);
+        if (contain != null && System.currentTimeMillis() - contain.time <= keepAliveMs) {
+            return contain.value;
         }
+        if (count > 0) {
+            dequeue();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
     public boolean contains(K key) {
-        synchronized (lock) {
-            return containsKey(key) != null;
-        }
+        return containsKey(key) != null;
     }
 
     private Item<K, V> containsKey(K key) {
@@ -105,24 +111,17 @@ public class LinkLruCache<K, V> {
         return null;
     }
 
-    private boolean isValidate(K key) {
-        Item<K, V> contain = containsKey(key);
-        return contain == null || System.currentTimeMillis() - contain.time <= validateTime;
-    }
-
     public boolean remove(K key) {
         if (key == null) {
             return false;
         }
 
-        synchronized (lock) {
-            for (Node<Item<K, V>> trail = head, p = trail.next;
-                 p != null;
-                 trail = p, p = p.next) {
-                if (p.item != null && key.equals(p.item.key)) {
-                    unlink(p, trail);
-                    return true;
-                }
+        for (Node<Item<K, V>> trail = head, p = trail.next;
+             p != null;
+             trail = p, p = p.next) {
+            if (p.item != null && key.equals(p.item.key)) {
+                unlink(p, trail);
+                return true;
             }
         }
         return false;
@@ -137,20 +136,16 @@ public class LinkLruCache<K, V> {
     }
 
     public void clear() {
-        synchronized (lock) {
-            for (Node<Item<K, V>> p, h = head; (p = h.next) != null; h = p) {
-                h.next = h;
-                p.item = null;
-            }
-            head = last;
-            count = 0;
+        for (Node<Item<K, V>> p, h = head; (p = h.next) != null; h = p) {
+            h.next = h;
+            p.item = null;
         }
+        head = last;
+        count = 0;
     }
 
     public int size() {
-        synchronized (lock) {
-            return count;
-        }
+        return count;
     }
 
     @SuppressWarnings("unused")

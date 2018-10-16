@@ -26,8 +26,38 @@ public class Transfer {
     public final static String PREFIX_DOWNLOAD = ".download";
 
     public static <T extends MusicModel> void getInfo(@NonNull final T model, final SimpleCallback<T> callback) {
+        getInfo(model.songId, new SimpleCallback<MusicModel>() {
+            @Override
+            public void onSuccess(@NonNull MusicModel response) {
+                model.songName = response.songName;
+                model.songUrl = response.songUrl;
+                model.artistId = response.artistId;
+                model.artistName = response.artistName;
+                model.albumId = "" + response.albumId;
+                model.albumName = response.albumName;
+                model.albumUrl = response.albumUrl;
+                model.lrcUrl = response.lrcUrl;
+                model.fileFolder = response.fileFolder;
+                model.filePostfix = response.filePostfix;
+
+                if (callback != null) {
+                    callback.onSuccess(model);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (callback != null) {
+                    callback.onError(e);
+                }
+            }
+        });
+    }
+
+    @SuppressWarnings("unused")
+    public static void getInfo(@NonNull final String songId, final SimpleCallback<MusicModel> callback) {
         Params params = new Params(API.SongInfo.rtpType);
-        params.addParam(API.SongInfo.songIds, model.songId);
+        params.addParam(API.SongInfo.songIds, songId);
         RxNet.get(API.SongInfo.rtpType, params)
                 .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
@@ -38,6 +68,7 @@ public class Transfer {
                             return;
                         }
                         SongInfoRespModel.DataBean.SongListBean song = response.data.songList.get(0);
+                        MusicModel model = new MusicModel();
                         model.songName = song.songName;
                         model.songUrl = song.songLink;
                         model.artistId = song.artistId;

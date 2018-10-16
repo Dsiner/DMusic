@@ -1,28 +1,31 @@
 package com.d.music.component.cache.manager;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.d.lib.common.component.cache.base.AbstractCacheManager;
-import com.d.lib.common.component.cache.base.LinkLruCache;
+import com.d.lib.common.component.cache.base.CacheManager;
+import com.d.lib.common.component.cache.base.ExpireLruCache;
 import com.d.lib.common.component.cache.listener.CacheListener;
+import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
 import com.d.lib.rxnet.callback.SimpleCallback;
 import com.d.music.component.media.HitTarget;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
 import com.d.music.utils.FileUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by D on 2017/10/18.
  */
-public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
+public class LinkCacheManager extends CacheManager {
     private volatile static LinkCacheManager mInstance;
 
-    private LinkLruCache<String, String> mLruCacheLinks;
+    private ExpireLruCache<String, String> mLruCache;
+    private HashMap<String, ArrayList<CacheListener<String>>> mHashMap;
 
     public static LinkCacheManager getIns(Context context) {
         if (mInstance == null) {
@@ -37,21 +40,93 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
 
     private LinkCacheManager(Context context) {
         super(context);
-        mLruCache.setCount(0);
-        mLruCacheLinks = new LinkLruCache<>();
-        mLruCacheLinks.setCount(60);
-        mLruCacheLinks.setValidate(2 * 60 * 60 * 1000);
+        mLruCache = new ExpireLruCache<>(60, 2 * 60 * 60 * 1000);
+        mHashMap = new HashMap<>();
+    }
+
+    public void load(final Context context, final MusicModel key, final CacheListener<String> listener) {
+        if (isLoading(key, listener)) {
+            return;
+        }
+        if (isLru(key, listener)) {
+            return;
+        }
+        ThreadPool.getIns().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                if (isDisk(key, listener)) {
+                    return;
+                }
+                absLoad(context, key, listener);
+            }
+        });
+    }
+
+    private void success(final MusicModel key, final String value, final CacheListener<String> l) {
+        ThreadPool.getIns().executeMain(new Runnable() {
+            @Override
+            public void run() {
+                successImplementation(key, value);
+            }
+        });
+    }
+
+    private void successImplementation(final MusicModel key, final String value) {
+        // Save to cache
+        putLru(key, value);
+        ArrayList<CacheListener<String>> listeners = mHashMap.get(key.id);
+        if (listeners != null) {
+            for (int i = 0; i < listeners.size(); i++) {
+                CacheListener<String> listener = listeners.get(i);
+                listener.onSuccess(value);
+            }
+            mHashMap.remove(key.id);
+        }
+    }
+
+    private void error(final MusicModel key, final Throwable e, final CacheListener<String> l) {
+        ThreadPool.getIns().executeMain(new Runnable() {
+            @Override
+            public void run() {
+                errorImplementation(key, e);
+            }
+        });
+    }
+
+    private void errorImplementation(final MusicModel key, final Throwable e) {
+        ArrayList<CacheListener<String>> listeners = mHashMap.get(key.id);
+        if (listeners != null) {
+            for (int i = 0; i < listeners.size(); i++) {
+                listeners.get(i).onError(e);
+            }
+            mHashMap.remove(key.id);
+        }
+    }
+
+    private boolean isLoading(final MusicModel key, final CacheListener<String> l) {
+        if (mHashMap.containsKey(key.id)) {
+            if (l != null) {
+                ArrayList<CacheListener<String>> listeners = mHashMap.get(key.id);
+                listeners.add(l);
+                l.onLoading();
+            }
+            return true;
+        }
+        if (l != null) {
+            l.onLoading();
+            ArrayList<CacheListener<String>> listeners = new ArrayList<>();
+            listeners.add(l);
+            mHashMap.put(key.id, listeners);
+        }
+        return false;
     }
 
     @NonNull
-    @Override
-    protected String getPreFix() {
+    private String getPreFix() {
         return "";
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
-    @Override
-    protected void absLoad(Context context, final MusicModel key, final CacheListener<String> listener) {
+    private void absLoad(Context context, final MusicModel key, final CacheListener<String> listener) {
         Transfer.getInfo(key, new SimpleCallback<MusicModel>() {
             @Override
             public void onSuccess(MusicModel response) {
@@ -69,14 +144,13 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
         });
     }
 
-    @Override
-    protected boolean isLru(MusicModel key, CacheListener<String> listener) {
+    private boolean isLru(MusicModel key, CacheListener<String> listener) {
         final String path = HitTarget.hitSong(key);
         if (!TextUtils.isEmpty(path) && FileUtil.isFileExist(path)) {
             success(key, path, listener);
             return true;
         }
-        final String valueLru = mLruCacheLinks.get(key.id);
+        final String valueLru = mLruCache.get(key.id);
         if (valueLru != null) {
             success(key, valueLru, listener);
             return true;
@@ -84,24 +158,28 @@ public class LinkCacheManager extends AbstractCacheManager<MusicModel, String> {
         return false;
     }
 
-    @Override
-    protected void putLru(MusicModel key, String value) {
-        mLruCacheLinks.put(key.id, value);
+    private void putLru(MusicModel key, String value) {
+        mLruCache.put(key.id, value);
     }
 
-    @Override
-    protected String getDisk(MusicModel key) {
+    private boolean isDisk(final MusicModel key, final CacheListener<String> listener) {
+        final String valueDisk = getDisk(key);
+        if (valueDisk != null) {
+            success(key, valueDisk, listener);
+            return true;
+        }
+        return false;
+    }
+
+    public void release() {
+        mLruCache.clear();
+    }
+
+    private String getDisk(MusicModel key) {
         return null;
     }
 
-    @Override
-    protected void putDisk(MusicModel key, String value) {
+    private void putDisk(MusicModel key, String value) {
 
-    }
-
-    @Override
-    public void release() {
-        super.release();
-        mLruCacheLinks.clear();
     }
 }
