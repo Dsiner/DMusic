@@ -28,14 +28,14 @@ public class TransferModel extends MusicModel {
     public String transferId = "";
     public Integer transferType = TRANSFER_TYPE_NONE;
     public Integer transferState = TRANSFER_STATE_PENDDING;
-    public Integer transferCurrentLength = 0;
-    public Integer transferTotalLength = 0;
+    public Long transferCurrentLength = 0L;
+    public Long transferTotalLength = 0L;
 
     /**
      * Extra: Not in the database
      */
     // Extra properties: Transmission speed
-    public long transferSpeed;
+    public float transferSpeed;
     // Extra properties: Transmission ProgressCallback
     public ProgressCallback progressCallback;
 
@@ -82,7 +82,7 @@ public class TransferModel extends MusicModel {
     }
 
     public TransferModel(MusicModel model) {
-        this("", TRANSFER_TYPE_NONE, TRANSFER_STATE_PENDDING, 0, 0,
+        this("", TRANSFER_TYPE_NONE, TRANSFER_STATE_PENDDING, 0L, 0L,
                 model.id, model.type, model.seq, model.songId, model.songName, model.songUrl,
                 model.artistId, model.artistName,
                 model.albumId, model.albumName, model.albumUrl,
@@ -91,7 +91,7 @@ public class TransferModel extends MusicModel {
                 model.isCollected, model.timeStamp);
     }
 
-    public TransferModel(String transferId, Integer transferType, Integer transferState, Integer transferCurrentLength, Integer transferTotalLength, String id, Integer type, Integer seq, String songId, String songName, String songUrl, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
+    public TransferModel(String transferId, Integer transferType, Integer transferState, Long transferCurrentLength, Long transferTotalLength, String id, Integer type, Integer seq, String songId, String songName, String songUrl, String artistId, String artistName, String albumId, String albumName, String albumUrl, String lrcName, String lrcUrl, Long fileDuration, Long fileSize, String filePostfix, String fileFolder, Boolean isCollected, Long timeStamp) {
         this.transferId = transferId;
         this.transferType = transferType;
         this.transferState = transferState;
@@ -142,19 +142,19 @@ public class TransferModel extends MusicModel {
         this.transferState = transferState;
     }
 
-    public Integer getTransferCurrentLength() {
+    public Long getTransferCurrentLength() {
         return transferCurrentLength;
     }
 
-    public void setTransferCurrentLength(Integer transferCurrentLength) {
+    public void setTransferCurrentLength(Long transferCurrentLength) {
         this.transferCurrentLength = transferCurrentLength;
     }
 
-    public Integer getTransferTotalLength() {
+    public Long getTransferTotalLength() {
         return transferTotalLength;
     }
 
-    public void setTransferTotalLength(Integer transferTotalLength) {
+    public void setTransferTotalLength(Long transferTotalLength) {
         this.transferTotalLength = transferTotalLength;
     }
 }

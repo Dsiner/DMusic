@@ -91,8 +91,8 @@ public class GreenDaoGenerator {
         entity.addStringProperty("transferId").primaryKey(); // 文件完整路径---主键
         entity.addIntProperty("transferType");
         entity.addIntProperty("transferState");
-        entity.addIntProperty("transferCurrentLength");
-        entity.addIntProperty("transferTotalLength");
+        entity.addLongProperty("transferCurrentLength");
+        entity.addLongProperty("transferTotalLength");
 
         entity.addStringProperty("id"); // 文件完整路径
 

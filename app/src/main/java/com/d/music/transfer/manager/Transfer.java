@@ -158,6 +158,8 @@ public class Transfer {
                 .tag(TransferModel.generateId(model))
                 .request(path, cache, new ProgressCallback() {
 
+                    Speed speed = new Speed();
+
                     @Override
                     public void onStart() {
 
@@ -169,6 +171,9 @@ public class Transfer {
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
+                            transferModel.transferCurrentLength = currentLength;
+                            transferModel.transferTotalLength = totalLength;
+                            transferModel.transferSpeed = speed.calculateSpeed(currentLength);
                             if (transferModel.progressCallback != null) {
                                 transferModel.progressCallback.onProgress(currentLength, totalLength);
                             }
@@ -227,6 +232,7 @@ public class Transfer {
                 .retryDelayMillis(1000)
                 .tag(TransferModel.generateId(model))
                 .request(path, cache, new ProgressCallback() {
+                    Speed speed = new Speed();
 
                     @Override
                     public void onStart() {
@@ -239,6 +245,9 @@ public class Transfer {
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
+                            transferModel.transferCurrentLength = currentLength;
+                            transferModel.transferTotalLength = totalLength;
+                            transferModel.transferSpeed = speed.calculateSpeed(currentLength);
                             if (transferModel.progressCallback != null) {
                                 transferModel.progressCallback.onProgress(currentLength, totalLength);
                             }
@@ -360,5 +369,63 @@ public class Transfer {
         void onSecond(T model);
 
         void onError(T model, Throwable e);
+    }
+
+    public static class Speed {
+
+        /**
+         * K单位转换大小, 如 1K=1024 Byte
+         */
+        private static final int KB = 1024;
+
+        /**
+         * M单位转换大小, 如 1M = 1024*1024 Byte
+         */
+        private static final int MB = KB * KB;
+
+        /**
+         * G单位转换大小, 如 1G = 1024*1024*1024 Byte
+         */
+        private static final long GB = MB * KB;
+
+        private static final int MIN_DELAY_TIME = 1000; // 两次进度更新间隔不能少于1000ms
+
+        private float speed;
+        private long currentLength;
+        private long lastLength;
+        private long lastTime;
+
+        public float calculateSpeed(long current) {
+            currentLength = current;
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastTime >= MIN_DELAY_TIME || lastTime == 0) {
+                if (lastTime != 0 && currentTime - lastTime > 0 && currentLength - lastLength >= 0) {
+                    speed = 1f * (currentLength - lastLength) / ((currentTime - lastTime) / 1000);
+                } else {
+                    speed = 0;
+                }
+                lastLength = currentLength;
+                lastTime = currentTime;
+            }
+            return speed;
+        }
+
+        public static String formatSpeed(float speed) {
+            if (speed <= 0) {
+                return "0KB/S";
+            } else if (speed < KB) {
+                return String.format("%.0f B/S", speed);
+            } else if (speed < MB) {
+                return String.format("%.2f KB/S", speed / KB);
+            } else if (speed < GB) {
+                return String.format("%.2f MB/S", speed / MB);
+            } else {
+                return String.format("%.2f GB/S", speed / GB);
+            }
+        }
+
+        public static String formatInfo(float currentLength, float totalLength) {
+            return String.format("%.2fM/%.2fM", currentLength / MB, totalLength / MB);
+        }
     }
 }

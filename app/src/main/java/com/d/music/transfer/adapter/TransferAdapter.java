@@ -16,6 +16,7 @@ import com.d.music.R;
 import com.d.music.component.media.controler.MediaControler;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
+import com.d.music.transfer.manager.Transfer;
 import com.d.music.transfer.manager.TransferManager;
 import com.d.music.transfer.manager.operation.Operater;
 import com.d.music.view.CircleProgressBar;
@@ -129,11 +130,19 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
     }
 
     private void coverMedia(final int position, final CommonHolder holder, final TransferModel item) {
+        holder.setViewVisibility(R.id.tv_singer, item.transferState == TransferModel.TRANSFER_STATE_PROGRESS ?
+                View.INVISIBLE : View.VISIBLE);
+        holder.setViewVisibility(R.id.flyt_transfer_info, item.transferState == TransferModel.TRANSFER_STATE_PROGRESS ?
+                View.VISIBLE : View.INVISIBLE);
+        holder.setViewVisibility(R.id.iv_more, item.transferState == TransferModel.TRANSFER_STATE_DONE ?
+                View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_title, item.songName);
         holder.setText(R.id.tv_singer, item.artistName);
-        holder.setViewVisibility(R.id.iv_more, item.transferState == TransferModel.TRANSFER_STATE_DONE ? View.VISIBLE : View.GONE);
+        holder.setText(R.id.tv_speed, Transfer.Speed.formatSpeed(item.transferSpeed));
+        holder.setText(R.id.tv_progress, Transfer.Speed.formatInfo(item.transferCurrentLength, item.transferTotalLength));
         final CircleProgressBar circleBar = holder.getView(R.id.cpbar_bar);
-        circleBar.setVisibility(item.transferState == TransferModel.TRANSFER_STATE_DONE ? View.GONE : View.VISIBLE);
+        circleBar.setVisibility(item.transferState == TransferModel.TRANSFER_STATE_DONE ?
+                View.GONE : View.VISIBLE);
         circleBar.setState(item.transferState);
         circleBar.setOnClickListener(new CircleProgressBar.OnClickListener() {
             @Override
@@ -162,6 +171,8 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
 
             @Override
             public void onProgress(long currentLength, long totalLength) {
+                holder.setText(R.id.tv_speed, Transfer.Speed.formatSpeed(item.transferSpeed));
+                holder.setText(R.id.tv_progress, Transfer.Speed.formatInfo(item.transferCurrentLength, item.transferTotalLength));
                 circleBar.setState(CircleProgressBar.STATE_PROGRESS).progress(1f * currentLength / totalLength);
             }
 

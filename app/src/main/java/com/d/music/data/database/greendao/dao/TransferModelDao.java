@@ -27,8 +27,8 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
         public final static Property TransferId = new Property(0, String.class, "transferId", true, "TRANSFER_ID");
         public final static Property TransferType = new Property(1, Integer.class, "transferType", false, "TRANSFER_TYPE");
         public final static Property TransferState = new Property(2, Integer.class, "transferState", false, "TRANSFER_STATE");
-        public final static Property TransferCurrentLength = new Property(3, Integer.class, "transferCurrentLength", false, "TRANSFER_CURRENT_LENGTH");
-        public final static Property TransferTotalLength = new Property(4, Integer.class, "transferTotalLength", false, "TRANSFER_TOTAL_LENGTH");
+        public final static Property TransferCurrentLength = new Property(3, Long.class, "transferCurrentLength", false, "TRANSFER_CURRENT_LENGTH");
+        public final static Property TransferTotalLength = new Property(4, Long.class, "transferTotalLength", false, "TRANSFER_TOTAL_LENGTH");
         public final static Property Id = new Property(5, String.class, "id", false, "ID");
         public final static Property Type = new Property(6, Integer.class, "type", false, "TYPE");
         public final static Property Seq = new Property(7, Integer.class, "seq", false, "SEQ");
@@ -123,12 +123,12 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
             stmt.bindLong(3, transferState);
         }
 
-        Integer transferCurrentLength = entity.getTransferCurrentLength();
+        Long transferCurrentLength = entity.getTransferCurrentLength();
         if (transferCurrentLength != null) {
             stmt.bindLong(4, transferCurrentLength);
         }
 
-        Integer transferTotalLength = entity.getTransferTotalLength();
+        Long transferTotalLength = entity.getTransferTotalLength();
         if (transferTotalLength != null) {
             stmt.bindLong(5, transferTotalLength);
         }
@@ -246,8 +246,8 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
                 cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // transferId
                 cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // transferType
                 cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // transferState
-                cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // transferCurrentLength
-                cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // transferTotalLength
+                cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // transferCurrentLength
+                cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // transferTotalLength
                 cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // id
                 cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // type
                 cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // seq
@@ -279,8 +279,8 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
         entity.setTransferId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setTransferType(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setTransferState(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setTransferCurrentLength(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setTransferTotalLength(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setTransferCurrentLength(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setTransferTotalLength(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
         entity.setId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setType(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setSeq(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));

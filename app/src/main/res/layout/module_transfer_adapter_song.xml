@@ -22,16 +22,52 @@
             android:textColor="@color/lib_pub_color_text_main"
             android:textSize="@dimen/lib_pub_dimen_text_small" />
 
-        <TextView
-            android:id="@+id/tv_singer"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="Singer"
-            android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="10dp" />
+            android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top">
+
+            <TextView
+                android:id="@+id/tv_singer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Singer"
+                android:textColor="@color/lib_pub_color_text_sub"
+                android:textSize="10dp"
+                android:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/flyt_transfer_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/tv_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="100K/S"
+                    android:textColor="@color/lib_pub_color_text_sub"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="1.2M/3.6M"
+                    android:textColor="@color/lib_pub_color_text_sub"
+                    android:textSize="10dp" />
+            </FrameLayout>
+        </FrameLayout>
+
     </LinearLayout>
 
     <ImageView
