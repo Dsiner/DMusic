@@ -2,63 +2,29 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
-[![Readme](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-brightgreen.svg)](https://github.com/Dsiner/DMusic/blob/master/README-zh.md)
 
 ![Logo](https://github.com/Dsiner/DMusic/blob/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-> A music player based on `Component + MVP Base + MVP Customization + greenDAO + RxJava2 + OkHttp3 + Retrofit`
+> 基于 `Component + MVP Base + MVP Customization + greenDAO + OkHttp3 + Retrofit + RxJava2` 的在线音乐播放器
+
+## Features
+- [x] 支持本地、网络音乐在线播放
+- [x] 支持在线音乐榜单、电台、MV
+- [x] 支持音乐在线播放、下载
+- [x] 支持MV播放、下载
+- [x] 支持本地及在线歌词
+- [x] 支持歌词、音乐缓存
+- [x] 支持自建歌单、歌曲管理、收藏、排序、分类
+- [x] 支持换肤、睡眠定时、模式切换、更多设置等
 
 ## Design
-<img src="https://github.com/Dsiner/DMusic/blob/master/screenshot/design.png" width="500" height="187"/>
+<img src="https://github.com/Dsiner/Resouce/blob/master/app/DMusic/dmusic-design.png" width="500" height="187"/>
 
 ## Screenshot
-![Artboard](https://github.com/Dsiner/DMusic/blob/master/screenshot/screenshot0.png)
-
-## Todo
-- [x] Support online music list.
-- [x] Support online MV play.
-- [x] Support online music download.
-- [x] Support online music play.
-- [ ] Support online search, cache, etc.
-
-## Dependencies
-- [Common](https://github.com/Dsiner/Common)
-- [greenDAO](https://github.com/greenrobot/greenDAO)
-- [RxJava2](https://github.com/ReactiveX/RxJava)
-- [PercentLayout]()
-- [ConstraintLayout]()
-- [ButterKnife](https://github.com/JakeWharton/butterknife)
-- [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
-- [Android-Skin-Loader](https://github.com/fengjundev/Android-Skin-Loader)
-- [EventBus](https://github.com/greenrobot/EventBus)
-- [TinyPinyin](https://github.com/promeG/TinyPinyin)
-- [PermissionCompat](https://github.com/Dsiner/PermissionCompat)
-- [xrv](https://github.com/Dsiner/xRecyclerViewF)
-- [SlideLayout](https://github.com/Dsiner/SlideLayout)
-- [UIUtil](https://github.com/Dsiner/UIUtil)
+![Artboard](https://github.com/Dsiner/Resouce/blob/master/app/DMusic/dmusic.png)
 
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution
-
-## About DMusic v1.0.3
-
-##### ----The pursuit of speed, simplicity and security of the local music player----
-
-* √Easy sliding menu, song drag management, and more humanization
-* √Colorful skin, fresh you
-* √The music mode is turned on by you
-
-##### ----Opening a Free Tour----
-* Local music: songs, singers, albums, folder management, alphabetical order, direct access
-* Self-built song list: move with your heart
-* Support lyrics: lyrics files must be in the same folder as song files
-* Sleep timing: manage your sleep
-* Skin: 19 sets of skin to choose from, switch with mood
-* Display mode switch: Song operation sub-menu can select drop-down or pop-up mode, whether to display new song list icon? Whether managing more freedom is up to you
-* Automatic play at startup: optional
-* Heartprint: The label that defines the personality is displayed on the homepage (default "Chang Music, Enjoy Freedom")
-* Degree of freedom operation: homepage song list, there are top, delete the two operations, sliding display; self-built song list support name, time and custom sorting, sorting page support drag and drop sort, slide to delete, multiple selection Join Songs, Bulk Delete, and Undo Actions
-* Mode selection: 3 modes to choose from, normal mode, minimal mode, notification bar mode
 
 ## Licence
 
