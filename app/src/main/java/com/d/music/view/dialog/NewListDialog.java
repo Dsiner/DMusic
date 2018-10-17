@@ -52,53 +52,6 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
         etName.addTextChangedListener(this);
     }
 
-    /**
-     * 插入新的歌曲列表--返回：是否成功
-     */
-    private boolean insertNewList(String name) {
-        if (TextUtils.isEmpty(name)) {
-            Util.toast(context.getApplicationContext(), "请输入歌单名！");
-            return false;
-        }
-        name = name.trim();
-        CustomListModel exist = AppDBUtil.getIns(context).optCustomList().queryByName(name);
-        if (exist != null) {
-            Util.toast(context.getApplicationContext(), "该歌单已存在！");
-            return false;
-        }
-
-        List<CustomListModel> list = AppDBUtil.getIns(context).optCustomList().queryAllByPointerAsc();
-        int count = list != null ? list.size() : 0;
-        if (count < 20) {
-            final int seq = AppDBUtil.getIns(context).optCustomList().queryMaxSeq();
-            final int pointer = list != null ? getPointer(list) : AppDB.CUSTOM_MUSIC_INDEX;
-            CustomListModel customListModel = new CustomListModel();
-            customListModel.setName(name);
-            customListModel.setCount((long) 0);
-            customListModel.setSeq(seq + 1);
-            customListModel.setPointer(pointer);
-            customListModel.setSortType(AppDB.ORDER_TYPE_TIME);
-            AppDBUtil.getIns(context).optCustomList().insertOrReplace(customListModel);
-        } else {
-            Util.toast(context.getApplicationContext(), "歌单已满！");
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 插入新的歌曲列表--查找未用Table
-     */
-    private int getPointer(List<CustomListModel> list) {
-        int a = AppDB.CUSTOM_MUSIC_INDEX;
-        for (CustomListModel custom : list) {
-            if (custom.getPointer() != a) {
-                return a;
-            }
-            a++;
-        }
-        return a;
-    }
 
     @Override
     public void onClick(View v) {
@@ -110,7 +63,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
                 dismiss();
                 break;
             case R.id.btn_ok:
-                if (insertNewList(etName.getText().toString())) {
+                if (insertNewList(context, etName.getText().toString(), true)) {
                     EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                     dismiss();
                 }
@@ -143,5 +96,61 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
                 btnOk.setAlpha(0.5f);
             }
         }
+    }
+
+    /**
+     * 插入新的歌曲列表
+     *
+     * @return 是否成功
+     */
+    public static boolean insertNewList(Context context, String name, boolean isTip) {
+        if (TextUtils.isEmpty(name)) {
+            if (isTip) {
+                Util.toast(context.getApplicationContext(), "请输入歌单名！");
+            }
+            return false;
+        }
+        name = name.trim();
+        CustomListModel exist = AppDBUtil.getIns(context).optCustomList().queryByName(name);
+        if (exist != null) {
+            if (isTip) {
+                Util.toast(context.getApplicationContext(), "该歌单已存在！");
+            }
+            return false;
+        }
+
+        List<CustomListModel> list = AppDBUtil.getIns(context).optCustomList().queryAllByPointerAsc();
+        int count = list != null ? list.size() : 0;
+        if (count < 20) {
+            final int seq = AppDBUtil.getIns(context).optCustomList().queryMaxSeq();
+            final int pointer = list != null ? getPointer(list) : AppDB.CUSTOM_MUSIC_INDEX;
+            CustomListModel customListModel = new CustomListModel();
+            customListModel.setName(name);
+            customListModel.setCount((long) 0);
+            customListModel.setSeq(seq + 1);
+            customListModel.setPointer(pointer);
+            customListModel.setSortType(AppDB.ORDER_TYPE_TIME);
+            AppDBUtil.getIns(context).optCustomList().insertOrReplace(customListModel);
+        } else {
+            if (isTip) {
+                Util.toast(context.getApplicationContext(), "歌单已满！");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 插入新的歌曲列表 - 查找未用Table
+     */
+    private static int getPointer(List<CustomListModel> list) {
+        int a = AppDB.CUSTOM_MUSIC_INDEX;
+        for (CustomListModel custom : list) {
+            if (custom.getPointer() != a) {
+                return a;
+            }
+            a++;
+        }
+        return a;
     }
 }

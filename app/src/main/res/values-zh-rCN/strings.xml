@@ -9,6 +9,7 @@
     <string name="module_common_music_hall">音乐馆</string>
     <string name="module_common_transfer">传输列表</string>
     <string name="module_common_custom_list">自建歌单</string>
+    <string name="module_common_default_list">默认列表</string>
     <string name="module_common_select_all">全选</string>
     <string name="module_common_inverse_selection">反选</string>
     <string name="module_common_please_select">请先选择</string>
@@ -94,7 +95,7 @@
     <string name="module_common_related_version">相关版本</string>
     <string name="module_common_comment">评论</string>
 
-    <string name="module_common_mv_traffic_prompt">MV下载可能会耗费大量的移动流量, 是否确定?</string>
+    <string name="module_common_traffic_prompt">下载可能会耗费大量的移动流量, 是否确定?</string>
 
     <!-- Module_Transfer -->
     <string name="module_common_transfer_downloading">正在下载</string>

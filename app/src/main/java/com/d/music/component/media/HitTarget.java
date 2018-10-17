@@ -17,7 +17,7 @@ import java.io.File;
 public class HitTarget {
 
     @NonNull
-    public static String hitLrc(MusicModel model) {
+    public static String hitLrc(@NonNull MusicModel model) {
         final String filePostfix = Transfer.PREFIX_LRC;
         String tempPath = "";
         if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
@@ -39,7 +39,7 @@ public class HitTarget {
     }
 
     @NonNull
-    public static String hitSong(MusicModel model) {
+    public static String hitSong(@NonNull MusicModel model) {
         final String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix
                 : Transfer.PREFIX_SONG;
         String tempPath = "";
@@ -61,7 +61,7 @@ public class HitTarget {
         return tempPath;
     }
 
-    public static boolean secondPassSong(MusicModel model) {
+    public static boolean secondPassSong(@NonNull MusicModel model) {
         final String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix
                 : Transfer.PREFIX_SONG;
         final String oldPath = Constants.Path.cache + model.songName + filePostfix;
@@ -77,7 +77,10 @@ public class HitTarget {
         return false;
     }
 
-    public static boolean secondPassMV(MusicModel model) {
+    public static boolean secondPassMV(@NonNull MusicModel model) {
+        if (TextUtils.isEmpty(model.songName)) {
+            return false;
+        }
         final String filePostfix = Transfer.PREFIX_MV;
         final String destPath = Constants.Path.mv + model.songName + filePostfix;
         return !TextUtils.isEmpty(destPath) && FileUtil.isFileExist(destPath);

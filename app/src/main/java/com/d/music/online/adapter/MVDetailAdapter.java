@@ -76,7 +76,7 @@ public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
             public void onClick(View v) {
                 AlertDialogFactory.createFactory(mContext)
                         .getAlertDialog(mContext.getResources().getString(R.string.module_common_tips),
-                                mContext.getResources().getString(R.string.module_common_mv_traffic_prompt),
+                                mContext.getResources().getString(R.string.module_common_traffic_prompt),
                                 mContext.getResources().getString(R.string.lib_pub_ok),
                                 mContext.getResources().getString(R.string.lib_pub_cancel),
                                 new AlertDialogFactory.OnClickListener() {

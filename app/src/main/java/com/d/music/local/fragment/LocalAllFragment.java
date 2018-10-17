@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.OnClick;
 
 /**
- * 首页-本地歌曲
+ * 首页 - 本地歌曲
  * Created by D on 2017/4/29.
  */
 public class LocalAllFragment extends AbstractLocalAllFragment {

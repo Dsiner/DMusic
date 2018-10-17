@@ -1,5 +1,6 @@
 package com.d.music.online.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.TitleLayout;
+import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.component.media.controler.MediaControler;
@@ -123,7 +125,18 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
         ViewHelper.setOnClick(header, R.id.flyt_header_song_download, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TransferManager.getIns().optSong().add(commonLoader.getDatas());
+                final List<MusicModel> datas = commonLoader.getDatas();
+                AlertDialogFactory.createFactory(mContext)
+                        .getAlertDialog(mContext.getResources().getString(R.string.module_common_tips),
+                                mContext.getResources().getString(R.string.module_common_traffic_prompt),
+                                mContext.getResources().getString(R.string.lib_pub_ok),
+                                mContext.getResources().getString(R.string.lib_pub_cancel),
+                                new AlertDialogFactory.OnClickListener() {
+                                    @Override
+                                    public void onClick(AlertDialog dlg, View v) {
+                                        TransferManager.getIns().optSong().add(datas);
+                                    }
+                                }, null);
             }
         });
     }

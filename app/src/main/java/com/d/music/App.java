@@ -23,6 +23,7 @@ import com.d.music.data.preferences.Preferences;
 import com.d.music.play.activity.PlayActivity;
 import com.d.music.setting.activity.ModeActivity;
 import com.d.music.transfer.manager.TransferManager;
+import com.d.music.view.dialog.NewListDialog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,6 +79,11 @@ public class App extends Application {
             public void run() {
                 //noinspection ResultOfMethodCallIgnored
                 TransferManager.getIns();
+
+                if (Preferences.getIns(getContext()).getIsFirst()) {
+                    NewListDialog.insertNewList(getContext(),
+                            getContext().getResources().getString(R.string.module_common_default_list), false);
+                }
             }
         });
     }

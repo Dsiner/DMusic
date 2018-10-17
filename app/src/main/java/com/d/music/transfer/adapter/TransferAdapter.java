@@ -13,7 +13,9 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
+import com.d.music.component.media.HitTarget;
 import com.d.music.component.media.controler.MediaControler;
+import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.fragment.TransferFragment;
 import com.d.music.transfer.manager.Transfer;
@@ -88,6 +90,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
             public void onClick(View v) {
                 OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
                         Arrays.asList(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_ADDLIST, false),
+                                new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_DELETE, false),
                                 new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, false)),
                         new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
                             @Override
@@ -95,6 +98,8 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
                                 if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
                                     com.d.music.component.operation.Operater.addToList(mContext,
                                             -1, TransferModel.convertTo(item));
+                                } else if (bean.type == OperationDialog.Bean.TYPE_DELETE) {
+                                    getOperater().remove(item);
                                 } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
                                     com.d.music.component.operation.Operater.showInfo(mContext,
                                             TransferModel.convertTo(item));
@@ -124,9 +129,35 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
 
     private void coverMV(final int position, final CommonHolder holder, final TransferModel item) {
         coverMedia(position, holder, item);
-        Glide.with(mContext).load(item.songUrl)
+        final String mvUrl = HitTarget.secondPassMV(item) ?
+                Constants.Path.mv + item.songName + Transfer.PREFIX_MV : item.songUrl;
+        Glide.with(mContext).load(mvUrl)
                 .apply(new RequestOptions().dontAnimate())
                 .into((ImageView) holder.getView(R.id.iv_cover));
+        holder.setViewOnClickListener(R.id.iv_more, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
+                        Arrays.asList(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_DELETE, false),
+                                new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, false)),
+                        new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
+                            @Override
+                            public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
+                                if (bean.type == OperationDialog.Bean.TYPE_DELETE) {
+                                    getOperater().remove(item);
+                                } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
+                                    com.d.music.component.operation.Operater.showInfo(mContext,
+                                            TransferModel.convertTo(item));
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(Dialog dlg) {
+
+                            }
+                        });
+            }
+        });
     }
 
     private void coverMedia(final int position, final CommonHolder holder, final TransferModel item) {

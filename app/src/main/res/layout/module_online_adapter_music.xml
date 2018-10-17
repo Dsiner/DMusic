@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="46dp"
+    android:layout_height="@dimen/lib_pub_dimen_item_height"
     android:background="@color/lib_pub_color_bg_sub">
 
     <TextView
@@ -11,9 +11,8 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:text="1"
-        android:textColor="@color/lib_pub_color_text_sub"
-        android:textSize="14dp"
-        android:textStyle="bold" />
+        android:textColor="@color/lib_pub_color_text_main"
+        android:textSize="16dp" />
 
     <ImageView
         android:id="@+id/iv_more"
@@ -51,7 +50,7 @@
             android:singleLine="true"
             android:text="Singer"
             android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="10dp" />
+            android:textSize="@dimen/lib_pub_dimen_text_mini" />
     </LinearLayout>
 
     <View

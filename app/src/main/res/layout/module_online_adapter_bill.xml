@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="@dimen/lib_pub_dimen_text_mini" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_music_1"
@@ -36,7 +36,7 @@
             android:layout_marginTop="3dp"
             android:lines="1"
             android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="@dimen/lib_pub_dimen_text_mini" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_music_2"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:lines="1"
-            android:textSize="@dimen/lib_pub_dimen_text_mini" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <View

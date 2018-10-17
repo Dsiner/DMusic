@@ -33,7 +33,7 @@ public class BillAdapter extends CommonAdapter<BillModel> {
         if (item.content != null && item.content.size() > 0) {
             for (int i = 0; i < item.content.size() && i < 3; i++) {
                 holder.setViewVisibility(musics[i], View.VISIBLE);
-                holder.setText(musics[i], (i + 1) + "." + item.content.get(i).title + " - " + item.content.get(i).author);
+                holder.setText(musics[i], (i + 1) + ". " + item.content.get(i).title + " - " + item.content.get(i).author);
             }
         }
         Glide.with(mContext)

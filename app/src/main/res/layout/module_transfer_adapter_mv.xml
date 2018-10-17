@@ -55,7 +55,7 @@
                 android:singleLine="true"
                 android:text="Singer"
                 android:textColor="@color/lib_pub_color_text_sub"
-                android:textSize="10dp"
+                android:textSize="@dimen/lib_pub_dimen_text_mini"
                 android:visibility="visible" />
 
             <FrameLayout
@@ -71,9 +71,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="100K/S"
+                    android:text="0K/S"
                     android:textColor="@color/lib_pub_color_text_sub"
-                    android:textSize="10dp" />
+                    android:textSize="@dimen/lib_pub_dimen_text_mini" />
 
                 <TextView
                     android:id="@+id/tv_progress"
@@ -82,9 +82,9 @@
                     android:layout_gravity="right"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="1.2M/3.6M"
+                    android:text="0M/0M"
                     android:textColor="@color/lib_pub_color_text_sub"
-                    android:textSize="10dp" />
+                    android:textSize="@dimen/lib_pub_dimen_text_mini" />
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>
