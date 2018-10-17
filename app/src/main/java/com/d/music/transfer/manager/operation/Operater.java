@@ -55,6 +55,9 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
 
     @UiThread
     public void pause(TransferModel model) {
+        if (model == null) {
+            return;
+        }
         model.transferState = TransferModel.TRANSFER_STATE_PENDDING;
         mPipe.pop(model);
         RequestManager.getIns().cancel(model.transferId);
@@ -63,8 +66,7 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     @UiThread
     public void pauseAll() {
         List<TransferModel> list = mPipe.mDownloadingQueue;
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = list.size() - 1; i >= 0; i = list.size() - 1) {
             pause(list.get(i));
         }
         notifyDataSetChanged();
