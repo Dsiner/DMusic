@@ -79,7 +79,7 @@ public class SongCacheManager extends AbstractCacheManager<MusicModel, String> {
                     return;
                 }
 
-                Transfer.downloadCache(item.key, false, new Transfer.OnTransferCallback<MusicModel>() {
+                Transfer.downloadSongCache(item.key, new Transfer.OnTransferCallback<MusicModel>() {
                     @Override
                     public void onFirst(MusicModel model) {
 

@@ -3,11 +3,17 @@ package com.d.music.transfer.manager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.d.lib.common.component.cache.base.ExpireLruCache;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.rxnet.RxNet;
 import com.d.lib.rxnet.base.Params;
 import com.d.lib.rxnet.callback.ProgressCallback;
 import com.d.lib.rxnet.callback.SimpleCallback;
+import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.lib.taskscheduler.callback.Function;
+import com.d.lib.taskscheduler.callback.Observer;
+import com.d.lib.taskscheduler.callback.Task;
+import com.d.lib.taskscheduler.schedule.Schedulers;
 import com.d.music.api.API;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
@@ -29,6 +35,7 @@ public class Transfer {
         getInfo(model.songId, new SimpleCallback<MusicModel>() {
             @Override
             public void onSuccess(@NonNull MusicModel response) {
+                Cache.get().put(model.id, new Cache.Bean(response.songUrl, response.lrcUrl));
                 model.songName = response.songName;
                 model.songUrl = response.songUrl;
                 model.artistId = response.artistId;
@@ -54,8 +61,7 @@ public class Transfer {
         });
     }
 
-    @SuppressWarnings("unused")
-    public static void getInfo(@NonNull final String songId, final SimpleCallback<MusicModel> callback) {
+    private static void getInfo(@NonNull final String songId, final SimpleCallback<MusicModel> callback) {
         Params params = new Params(API.SongInfo.rtpType);
         params.addParam(API.SongInfo.songIds, songId);
         RxNet.get(API.SongInfo.rtpType, params)
@@ -94,58 +100,163 @@ public class Transfer {
                 });
     }
 
+    @SuppressWarnings("unused")
     public static <T extends MusicModel> void download(final T model, final boolean withLrc,
                                                        final OnTransferCallback<T> callback) {
-        download(false, model, withLrc, callback);
+        downloadFirstImp(false, model, withLrc, callback);
     }
 
+    @SuppressWarnings("unused")
     public static <T extends MusicModel> void downloadCache(final T model, final boolean withLrc,
                                                             final OnTransferCallback<T> callback) {
-        download(true, model, withLrc, callback);
+        downloadFirstImp(true, model, withLrc, callback);
     }
 
-    private static <T extends MusicModel> void download(final boolean isCache, final T model, final boolean withLrc,
-                                                        final OnTransferCallback<T> callback) {
-        getInfo(model, new SimpleCallback<T>() {
+    private static <T extends MusicModel> void downloadFirstImp(final boolean isCache, final T model, final boolean withLrc,
+                                                                final OnTransferCallback<T> callback) {
+        TaskScheduler.create(new Task<Boolean>() {
             @Override
-            public void onSuccess(T response) {
-                if (callback != null) {
-                    callback.onFirst(response);
+            public Boolean run() {
+                final Cache.Bean cache = Cache.get().get(model.id);
+                if (cache != null && !TextUtils.isEmpty(cache.songUrl) && !TextUtils.isEmpty(cache.lrcUrl)) {
+                    model.songUrl = cache.songUrl;
+                    model.lrcUrl = cache.lrcUrl;
+                    return true;
                 }
-                // Download song
-                if (isCache) {
-                    downloadSongCache(model, callback);
-                } else {
-                    downloadSong(model, callback);
-                }
-
-                if (withLrc) {
-                    // Download lrc
-                    if (isCache) {
-                        downloadLrcCache(model, null);
-                    } else {
-                        downloadLrc(model, null);
+                return false;
+            }
+        }).subscribeOn(Schedulers.mainThread())
+                .observeOn(Schedulers.mainThread())
+                .map(new Function<Boolean, Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            if (callback != null) {
+                                callback.onFirst(model);
+                            }
+                            downloadSecondImp(isCache, model, withLrc, callback);
+                        }
+                        return aBoolean;
                     }
-                }
-            }
+                })
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onNext(@NonNull Boolean result) {
+                        if (result) {
+                            return;
+                        }
+                        getInfo(model, new SimpleCallback<T>() {
+                            @Override
+                            public void onSuccess(T response) {
+                                if (callback != null) {
+                                    callback.onFirst(response);
+                                }
+                                downloadSecondImp(isCache, model, withLrc, callback);
+                            }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                callback.onError(model, e);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    private static <T extends MusicModel> void downloadSecondImp(boolean isCache, T model, boolean withLrc,
+                                                                 OnTransferCallback<T> callback) {
+        // Download song
+        if (isCache) {
+            downloadSongSecondImp(Constants.Path.cache, model, callback);
+        } else {
+            downloadSongSecondImp(Constants.Path.song, model, callback);
+        }
+
+        if (withLrc) {
+            // Download lrc
+            if (isCache) {
+                downloadLrcSecondImp(Constants.Path.cache, model, null);
+            } else {
+                downloadLrcSecondImp(Constants.Path.lyric, model, null);
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static <T extends MusicModel> void downloadSong(final T model, final OnTransferCallback<T> callback) {
+        downloadSongFirstImp(Constants.Path.song, model, callback);
+    }
+
+    @SuppressWarnings("unused")
+    public static <T extends MusicModel> void downloadSongCache(final T model, final OnTransferCallback<T> callback) {
+        downloadSongFirstImp(Constants.Path.cache, model, callback);
+    }
+
+    private static <T extends MusicModel> void downloadSongFirstImp(final String path, @NonNull final T model,
+                                                                    final OnTransferCallback<T> callback) {
+        TaskScheduler.create(new Task<Boolean>() {
             @Override
-            public void onError(Throwable e) {
-                callback.onError(model, e);
+            public Boolean run() {
+                final Cache.Bean cache = Cache.get().get(model.id);
+                if (cache != null && !TextUtils.isEmpty(cache.songUrl)) {
+                    model.songUrl = cache.songUrl;
+                    return true;
+                }
+                return false;
             }
-        });
+        }).subscribeOn(Schedulers.mainThread())
+                .observeOn(Schedulers.mainThread())
+                .map(new Function<Boolean, Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            if (callback != null) {
+                                callback.onFirst(model);
+                            }
+                            downloadSongSecondImp(path, model, callback);
+                        }
+                        return aBoolean;
+                    }
+                })
+                .observeOn(Schedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onNext(@NonNull Boolean result) {
+                        if (result) {
+                            return;
+                        }
+                        getInfo(model, new SimpleCallback<T>() {
+                            @Override
+                            public void onSuccess(T response) {
+                                // Download song
+                                downloadSongSecondImp(path, model, callback);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                if (callback != null) {
+                                    callback.onError(model, e);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (callback != null) {
+                            callback.onError(model, e);
+                        }
+                    }
+                });
     }
 
-    private static <T extends MusicModel> void downloadSong(final T model, final OnTransferCallback<T> callback) {
-        downloadSong(Constants.Path.song, model, callback);
-    }
-
-    private static <T extends MusicModel> void downloadSongCache(final T model, final OnTransferCallback<T> callback) {
-        downloadSong(Constants.Path.cache, model, callback);
-    }
-
-    private static <T extends MusicModel> void downloadSong(@NonNull final String path, @NonNull final T model,
-                                                            final OnTransferCallback<T> callback) {
+    private static <T extends MusicModel> void downloadSongSecondImp(@NonNull final String path, @NonNull final T model,
+                                                                     final OnTransferCallback<T> callback) {
         final String url = model.songUrl;
         final String name = model.songName + "." + model.filePostfix;
         final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
@@ -293,28 +404,78 @@ public class Transfer {
                 });
     }
 
-    private static <T extends MusicModel> void downloadLrc(@NonNull final T model, final SimpleCallback<T> callback) {
-        downloadLrc(Constants.Path.lyric, model, callback);
+    @SuppressWarnings("unused")
+    public static <T extends MusicModel> void downloadLrc(@NonNull final T model,
+                                                          final SimpleCallback<T> callback) {
+        downloadLrcFirstImp(Constants.Path.lyric, model, callback);
     }
 
-    public static <T extends MusicModel> void downloadLrcCache(@NonNull final T model, final SimpleCallback<T> callback) {
-        downloadLrc(Constants.Path.cache, model, callback);
+    @SuppressWarnings("unused")
+    public static <T extends MusicModel> void downloadLrcCache(@NonNull final T model,
+                                                               final SimpleCallback<T> callback) {
+        downloadLrcFirstImp(Constants.Path.cache, model, callback);
     }
 
-    private static <T extends MusicModel> void downloadLrc(final String path, @NonNull final T model, final SimpleCallback<T> callback) {
+    private static <T extends MusicModel> void downloadLrcFirstImp(final String path, @NonNull final T model,
+                                                                   final SimpleCallback<T> callback) {
+        TaskScheduler.create(new Task<Boolean>() {
+            @Override
+            public Boolean run() {
+                final Cache.Bean cache = Cache.get().get(model.id);
+                if (cache != null && !TextUtils.isEmpty(cache.lrcUrl)) {
+                    model.lrcUrl = cache.lrcUrl;
+                    return true;
+                }
+                return false;
+            }
+        }).subscribeOn(Schedulers.mainThread())
+                .observeOn(Schedulers.mainThread())
+                .map(new Function<Boolean, Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            downloadLrcSecondImp(path, model, callback);
+                        }
+                        return aBoolean;
+                    }
+                })
+                .observeOn(Schedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onNext(@NonNull Boolean result) {
+                        if (result) {
+                            return;
+                        }
+                        getInfo(model, new SimpleCallback<T>() {
+                            @Override
+                            public void onSuccess(T response) {
+                                // Download lrc
+                                downloadLrcSecondImp(path, model, callback);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                if (callback != null) {
+                                    callback.onError(e);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (callback != null) {
+                            callback.onError(e);
+                        }
+                    }
+                });
+    }
+
+    private static <T extends MusicModel> void downloadLrcSecondImp(final String path, @NonNull final T model, final SimpleCallback<T> callback) {
         if (TextUtils.isEmpty(model.lrcUrl)) {
-            getInfo(model, new SimpleCallback<T>() {
-                @Override
-                public void onSuccess(T response) {
-                    // Download lrc
-                    downloadLrc(path, model, callback);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-            });
+            if (callback != null) {
+                callback.onError(new Exception("Lrc link is Empty!"));
+            }
             return;
         }
         final String url = model.lrcUrl;
@@ -369,6 +530,44 @@ public class Transfer {
         void onSecond(T model);
 
         void onError(T model, Throwable e);
+    }
+
+    public static class Cache {
+        private ExpireLruCache<String, Bean> mLruCache;
+
+        private static class Singleton {
+            private final static Cache INSTANCE = new Cache();
+        }
+
+        static Cache get() {
+            return Singleton.INSTANCE;
+        }
+
+        private Cache() {
+            mLruCache = new ExpireLruCache<>(30, 2 * 60 * 60 * 1000);
+        }
+
+        public void put(String key, Bean bean) {
+            mLruCache.put(key, bean);
+        }
+
+        public Bean get(String key) {
+            return mLruCache.get(key);
+        }
+
+        public void release() {
+            mLruCache.clear();
+        }
+
+        public static class Bean {
+            String songUrl;
+            String lrcUrl;
+
+            Bean(String songUrl, String lrcUrl) {
+                this.songUrl = songUrl;
+                this.lrcUrl = lrcUrl;
+            }
+        }
     }
 
     public static class Speed {
