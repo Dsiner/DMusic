@@ -148,7 +148,7 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
         final MusicModel key;
         final CacheListener<String> listener;
 
-        public Bean(MusicModel key, CacheListener<String> listener) {
+        Bean(MusicModel key, CacheListener<String> listener) {
             this.key = key;
             this.listener = listener;
         }
