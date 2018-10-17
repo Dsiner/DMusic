@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.component.loader.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.TitleLayout;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
@@ -22,6 +23,7 @@ import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsRespModel;
 import com.d.music.online.presenter.MusicPresenter;
 import com.d.music.online.view.IMusicView;
+import com.d.music.transfer.manager.TransferManager;
 import com.d.music.view.SongHeaderView;
 
 import java.util.ArrayList;
@@ -104,6 +106,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     private void initHead() {
         header = new SongHeaderView(mContext);
         header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
+        header.setVisibility(R.id.flyt_header_song_download, View.VISIBLE);
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
@@ -115,6 +118,12 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
             @Override
             public void onHandle() {
 
+            }
+        });
+        ViewHelper.setOnClick(header, R.id.flyt_header_song_download, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransferManager.getIns().optSong().add(commonLoader.getDatas());
             }
         });
     }

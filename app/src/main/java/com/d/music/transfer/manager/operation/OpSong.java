@@ -9,6 +9,8 @@ import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.Transfer;
 import com.d.music.transfer.manager.pipe.Pipe;
 
+import java.util.List;
+
 /**
  * OpSong
  * Created by D on 2018/10/12.
@@ -17,6 +19,16 @@ public class OpSong extends Operater {
 
     public OpSong(@NonNull Pipe pipe) {
         super(pipe);
+    }
+
+    @Override
+    public void add(List<MusicModel> list) {
+        if (list == null || list.size() <= 0) {
+            return;
+        }
+        for (MusicModel model : list) {
+            add(model);
+        }
     }
 
     @Override

@@ -39,6 +39,9 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
     }
 
     @UiThread
+    public abstract void add(List<MusicModel> list);
+
+    @UiThread
     public abstract void add(MusicModel item);
 
     @UiThread

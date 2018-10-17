@@ -41,6 +41,21 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/flyt_header_song_download"
+        android:layout_width="@dimen/lib_pub_dimen_item_height"
+        android:layout_height="@dimen/lib_pub_dimen_item_height"
+        android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_gravity="center"
+            android:src="@drawable/module_online_ic_mv_info_download"
+            skin:enable="true" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/flyt_header_song_handler"
         android:layout_width="@dimen/lib_pub_dimen_item_height"
         android:layout_height="@dimen/lib_pub_dimen_item_height"
