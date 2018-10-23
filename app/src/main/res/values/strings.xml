@@ -125,4 +125,8 @@
     <string name="module_common_add_to_song_list">Add to song list</string>
     <string name="module_common_playback_failed">Playback failed, please check and try again!</string>
 
+    <string name="module_common_search_tips">Search for music, mv, singers...</string>
+    <string name="module_common_search_hot">Popular searches</string>
+    <string name="module_common_search_history">Search history</string>
+
 </resources>

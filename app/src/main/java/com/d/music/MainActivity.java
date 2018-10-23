@@ -21,6 +21,7 @@ import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicInfoEvent;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.play.activity.PlayActivity;
+import com.d.music.play.activity.SearchActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;
 import com.d.music.setting.activity.SleepActivity;
@@ -91,7 +92,8 @@ public class MainActivity extends BaseFragmentActivity {
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-                App.exit();
+//                App.exit();
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
         }
     }

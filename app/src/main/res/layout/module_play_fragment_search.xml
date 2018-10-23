@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lib_pub_color_bg_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_main"
+        android:orientation="horizontal">
+
+        <com.d.lib.common.view.ClearEditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/module_common_corner_search"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:hint="@string/module_common_search_tips"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
+            android:paddingRight="@dimen/lib_pub_dimen_margin"
+            android:singleLine="true"
+            android:textColor="@color/lib_pub_color_text_sub"
+            android:textColorHint="@color/lib_pub_color_text_hint"
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:minWidth="64dp"
+            android:paddingLeft="@dimen/lib_pub_dimen_margin"
+            android:paddingRight="@dimen/lib_pub_dimen_margin"
+            android:text="@string/lib_pub_cancel"
+            android:textColor="@color/lib_pub_color_white"
+            android:textSize="@dimen/lib_pub_dimen_text_main" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_line" />
+
+    <com.d.lib.common.view.DSLayout
+        android:id="@+id/dsl_ds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/lib_pub_dimen_title_height" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
+        android:background="@color/lib_pub_color_bg_sub"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/lib_pub_dimen_margin"
+            android:text="@string/module_common_search_hot"
+            android:textColor="@color/lib_pub_color_text_sub"
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+        <com.d.music.view.flowlayout.FlowLayout
+            android:id="@+id/fl_flow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lib_pub_color_bg_sub"
+            app:flow_dividerHeight="6dp"
+            app:flow_dividerWidth="6dp"
+            app:flow_paddingLeft="@dimen/lib_pub_dimen_margin"
+            app:flow_paddingRight="@dimen/lib_pub_dimen_margin" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/lib_pub_dimen_margin"
+            android:text="@string/module_common_search_history"
+            android:textColor="@color/lib_pub_color_text_sub"
+            android:textSize="@dimen/lib_pub_dimen_text_small" />
+
+        <com.d.lib.xrv.XRecyclerView
+            android:id="@+id/xrv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</FrameLayout>
