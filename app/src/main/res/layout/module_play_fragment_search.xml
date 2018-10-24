@@ -12,6 +12,7 @@
         android:orientation="horizontal">
 
         <com.d.lib.common.view.ClearEditText
+            android:id="@+id/cet_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"

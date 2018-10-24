@@ -1,10 +1,13 @@
 package com.d.music.play.fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
 import com.d.lib.common.component.loader.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.view.ClearEditText;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
@@ -24,11 +27,12 @@ import butterknife.BindView;
  * Created by D on 2018/8/13.
  **/
 public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
-    @BindView(R.id.fl_flow)
-    FlowLayout flFlow;
+    @BindView(R.id.cet_edit)
+    ClearEditText cetEdit;
     @BindView(R.id.tv_search)
     TextView tvSearch;
-
+    @BindView(R.id.fl_flow)
+    FlowLayout flFlow;
     private FlowTagAdapter flowTagAdapter;
 
     @Override
@@ -49,6 +53,23 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
     @Override
     protected void init() {
         super.init();
+        cetEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvSearch.setText(s.toString().length() > 0 ? getResources().getString(R.string.module_common_search)
+                        : getResources().getString(R.string.lib_pub_cancel));
+            }
+        });
         flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<String>(), R.layout.module_play_adapter_search_tag);
         flFlow.setAdapter(flowTagAdapter);
         flowTagAdapter.setDatas(Arrays.asList("臧鸿 飞见面吧电台", "高圆圆", "SOLO", "月亮惹的祸", "杨超越",
