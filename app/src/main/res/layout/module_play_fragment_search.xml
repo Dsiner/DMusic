@@ -39,7 +39,7 @@
             android:paddingRight="@dimen/lib_pub_dimen_margin"
             android:text="@string/lib_pub_cancel"
             android:textColor="@color/lib_pub_color_white"
-            android:textSize="@dimen/lib_pub_dimen_text_main" />
+            android:textSize="@dimen/lib_pub_dimen_text_sub" />
     </LinearLayout>
 
     <View

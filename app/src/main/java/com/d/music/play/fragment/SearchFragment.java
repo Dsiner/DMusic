@@ -15,6 +15,7 @@ import com.d.music.view.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -48,7 +49,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
     @Override
     protected void init() {
         super.init();
-        flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<String>(), R.layout.module_play_adapter_tag);
+        flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<String>(), R.layout.module_play_adapter_search_tag);
         flFlow.setAdapter(flowTagAdapter);
         flowTagAdapter.setDatas(Arrays.asList("臧鸿 飞见面吧电台", "高圆圆", "SOLO", "月亮惹的祸", "杨超越",
                 "灾", "never be alone"));
@@ -64,13 +65,30 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
     }
 
     @Override
+    protected void initList() {
+        xrvList.setCanRefresh(false);
+        xrvList.setCanLoadMore(false);
+        super.initList();
+    }
+
+    @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        return new SearchAdapter(mContext, new ArrayList<MusicModel>(), R.layout.module_online_adapter_bill);
+        return new SearchAdapter(mContext, new ArrayList<MusicModel>(), R.layout.module_play_adapter_search_history);
     }
 
     @Override
     protected void onLoad(int page) {
+        commonLoader.setData(getTsData());
+    }
 
+    private List<MusicModel> getTsData() {
+        List<MusicModel> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            MusicModel model = new MusicModel();
+            model.songName = "" + i;
+            list.add(model);
+        }
+        return list;
     }
 
     public boolean onBackPressed() {

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class SearchAdapter extends CommonAdapter<MusicModel> {
 
     @Override
     public void convert(int position, final CommonHolder holder, final MusicModel item) {
-
+        holder.setText(R.id.tv_tag, item.songName);
     }
 }
