@@ -42,6 +42,7 @@ public interface API {
         String METHOD_MUSIC_INFO = "baidu.ting.song.getInfos";
         String METHOD_ARTIST_INFO = "baidu.ting.artist.getInfo";
         String METHOD_SEARCH_MUSIC = "baidu.ting.search.common";
+        String METHOD_SEARCH_MERGE = "baidu.ting.search.merge";
     }
 
     /**
@@ -135,5 +136,23 @@ public interface API {
     interface SongInfo {
         String rtpType = "http://music.baidu.com/data/music/links";
         String songIds = "songIds";
+    }
+
+    /**
+     * GET/网易 - 热门搜索
+     */
+    interface HotSearch {
+        String rtpType = BASE_URL_NETEASE + "search/hot";
+    }
+
+    /**
+     * GET/百度 - 搜索
+     */
+    interface Search {
+        String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting?";
+        String method = "method"; // baidu.ting.search.merge
+        String query = "query"; // 1
+        String page_no = "page_no"; // 0
+        String page_size = "page_size"; // 10
     }
 }

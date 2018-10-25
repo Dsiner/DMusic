@@ -11,13 +11,14 @@ import com.d.lib.common.view.ClearEditText;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.online.model.SearchHotRespModel;
 import com.d.music.play.adapter.FlowTagAdapter;
 import com.d.music.play.adapter.SearchAdapter;
 import com.d.music.play.presenter.SearchPresenter;
+import com.d.music.play.view.ISearchView;
 import com.d.music.view.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,13 +27,14 @@ import butterknife.BindView;
  * SearchFragment
  * Created by D on 2018/8/13.
  **/
-public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
+public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> implements ISearchView {
     @BindView(R.id.cet_edit)
     ClearEditText cetEdit;
     @BindView(R.id.tv_search)
     TextView tvSearch;
     @BindView(R.id.fl_flow)
     FlowLayout flFlow;
+
     private FlowTagAdapter flowTagAdapter;
 
     @Override
@@ -66,21 +68,19 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvSearch.setText(s.toString().length() > 0 ? getResources().getString(R.string.module_common_search)
+                tvSearch.setText(s.toString().length() > 0
+                        ? getResources().getString(R.string.module_common_search)
                         : getResources().getString(R.string.lib_pub_cancel));
             }
         });
-        flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<String>(), R.layout.module_play_adapter_search_tag);
+        flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<SearchHotRespModel.HotsBean>(),
+                R.layout.module_play_adapter_search_tag);
         flFlow.setAdapter(flowTagAdapter);
-        flowTagAdapter.setDatas(Arrays.asList("臧鸿 飞见面吧电台", "高圆圆", "SOLO", "月亮惹的祸", "杨超越",
-                "灾", "never be alone"));
         flowTagAdapter.notifyDataSetChanged();
         tvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flowTagAdapter.setDatas(Arrays.asList("Apple", "Orange", "Circle", "Big", "Apple",
-                        "Apple", "Apple", "Apple", "Apple", "Apple", "Apple", "Apple", "Apple", "Apple", "Apple"));
-                flowTagAdapter.notifyDataSetChanged();
+                mPresenter.search(cetEdit.getText().toString(), 0, 10);
             }
         });
     }
@@ -94,12 +94,13 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
-        return new SearchAdapter(mContext, new ArrayList<MusicModel>(), R.layout.module_play_adapter_search_history);
+        return new SearchAdapter(mContext, new ArrayList<MusicModel>(),
+                R.layout.module_play_adapter_search_history);
     }
 
     @Override
     protected void onLoad(int page) {
-        commonLoader.setData(getTsData());
+        mPresenter.getSearchHot();
     }
 
     private List<MusicModel> getTsData() {
@@ -114,5 +115,16 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> {
 
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void getSearchHotSuccess(List<SearchHotRespModel.HotsBean> datas) {
+        flowTagAdapter.setDatas(datas);
+        flowTagAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getSearchHotError() {
+
     }
 }
