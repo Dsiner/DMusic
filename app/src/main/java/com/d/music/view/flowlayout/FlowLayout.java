@@ -106,10 +106,11 @@ public class FlowLayout extends ViewGroup {
 
         if (count <= 0 || measureMatchParentChildren) {
             // Not support mode
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
             return;
         }
 
+        mWidth = MeasureSpec.getSize(widthMeasureSpec);
         int left = (int) mPaddingLeft;
         int top = (int) mPaddingTop;
         int maxHeightRow = 0;
@@ -153,8 +154,7 @@ public class FlowLayout extends ViewGroup {
         }
         final int totalHeight = (int) (top + maxHeightRow + mPaddingBottom);
 
-        mWidth = MeasureSpec.getSize(widthMeasureSpec);
-        mHeight = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST ? totalHeight
+        mHeight = MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY ? totalHeight
                 : MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(mWidth, mHeight);
     }

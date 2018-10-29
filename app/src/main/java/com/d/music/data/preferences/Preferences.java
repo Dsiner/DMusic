@@ -33,6 +33,8 @@ public class Preferences extends AbstractPreference {
         String KEY_SKIN_TYPE = "key_skin_type";
         String KEY_SLEEP_TYPE = "key_sleep_type";
         String KEY_SLEEP_TIMING = "key_sleep_timing";
+
+        String KEY_SEARCH_HOT = "key_search_hot";
     }
 
     private Preferences(Context context) {
@@ -218,5 +220,15 @@ public class Preferences extends AbstractPreference {
 
     public long getSleepTiming() {
         return settings.getLong(Keys.KEY_SLEEP_TIMING, 0);
+    }
+
+    /************************* 设置/获取 热门搜索 *************************/
+    public void putSearchHot(String content) {
+        editor.putString(Keys.KEY_SEARCH_HOT, content);
+        save();
+    }
+
+    public String getSearchHot() {
+        return settings.getString(Keys.KEY_SEARCH_HOT, "");
     }
 }

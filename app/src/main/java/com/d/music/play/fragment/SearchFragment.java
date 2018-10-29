@@ -1,22 +1,27 @@
 package com.d.music.play.fragment;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
 import com.d.lib.common.component.loader.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.utils.Util;
+import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.ClearEditText;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.data.preferences.Preferences;
 import com.d.music.online.model.SearchHotRespModel;
 import com.d.music.play.adapter.FlowTagAdapter;
 import com.d.music.play.adapter.SearchAdapter;
 import com.d.music.play.presenter.SearchPresenter;
 import com.d.music.play.view.ISearchView;
 import com.d.music.view.flowlayout.FlowLayout;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,20 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     private FlowTagAdapter flowTagAdapter;
 
     @Override
+    public void onClick(View v) {
+        int resId = v.getId();
+        if (resId == R.id.tv_search) {
+            if (getResources().getString(R.string.module_common_search)
+                    .equals(tvSearch.getText().toString())) {
+                mPresenter.search(cetEdit.getText().toString(), 0, 10);
+            } else if (getResources().getString(R.string.lib_pub_cancel)
+                    .equals(tvSearch.getText().toString())) {
+                getActivity().finish();
+            }
+        }
+    }
+
+    @Override
     public SearchPresenter getPresenter() {
         return new SearchPresenter(getActivity().getApplicationContext());
     }
@@ -50,6 +69,12 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     @Override
     protected int getLayoutRes() {
         return R.layout.module_play_fragment_search;
+    }
+
+    @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        ViewHelper.setOnClick(rootView, this, R.id.tv_search);
     }
 
     @Override
@@ -76,13 +101,17 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<SearchHotRespModel.HotsBean>(),
                 R.layout.module_play_adapter_search_tag);
         flFlow.setAdapter(flowTagAdapter);
-        flowTagAdapter.notifyDataSetChanged();
-        tvSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.search(cetEdit.getText().toString(), 0, 10);
+
+        String json = Preferences.getIns(mContext).getSearchHot();
+        if (!TextUtils.isEmpty(json)) {
+            List<SearchHotRespModel.HotsBean> datas = Util.getGsonIns().fromJson(json,
+                    new TypeToken<List<SearchHotRespModel.HotsBean>>() {
+                    }.getType());
+            if (datas != null && datas.size() > 0) {
+                flowTagAdapter.setDatas(datas);
+                flowTagAdapter.notifyDataSetChanged();
             }
-        });
+        }
     }
 
     @Override
@@ -119,6 +148,10 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     @Override
     public void getSearchHotSuccess(List<SearchHotRespModel.HotsBean> datas) {
+        if (datas.size() > 0) {
+            String json = Util.getGsonIns().toJson(datas);
+            Preferences.getIns(mContext).putSearchHot(json);
+        }
         flowTagAdapter.setDatas(datas);
         flowTagAdapter.notifyDataSetChanged();
     }
