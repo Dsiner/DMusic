@@ -49,13 +49,8 @@
         android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
         android:background="@color/lib_pub_color_line" />
 
-    <com.d.lib.common.view.DSLayout
-        android:id="@+id/dsl_ds"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/lib_pub_dimen_title_height" />
-
     <LinearLayout
+        android:id="@+id/llyt_float_search_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
@@ -93,8 +88,26 @@
             android:textSize="@dimen/lib_pub_dimen_text_small" />
 
         <com.d.lib.xrv.XRecyclerView
-            android:id="@+id/xrv_list"
+            android:id="@+id/xrv_list_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flyt_float_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
+        android:visibility="gone">
+
+        <com.d.lib.common.view.DSLayout
+            android:id="@+id/dsl_ds"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.d.lib.xrv.XRecyclerView
+            android:id="@+id/xrv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </FrameLayout>

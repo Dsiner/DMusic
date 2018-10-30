@@ -1,5 +1,6 @@
 package com.d.music.play.fragment;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,6 +12,8 @@ import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.ClearEditText;
+import com.d.lib.common.view.DSLayout;
+import com.d.lib.xrv.XRecyclerView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
@@ -18,6 +21,7 @@ import com.d.music.data.preferences.Preferences;
 import com.d.music.online.model.SearchHotRespModel;
 import com.d.music.play.adapter.FlowTagAdapter;
 import com.d.music.play.adapter.SearchAdapter;
+import com.d.music.play.adapter.SearchHistoryAdapter;
 import com.d.music.play.presenter.SearchPresenter;
 import com.d.music.play.view.ISearchView;
 import com.d.music.view.flowlayout.FlowLayout;
@@ -39,8 +43,15 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     TextView tvSearch;
     @BindView(R.id.fl_flow)
     FlowLayout flFlow;
+    @BindView(R.id.llyt_float_search_history)
+    View llytFloatSearchHistory;
+    @BindView(R.id.flyt_float_search)
+    View flytFloatSearch;
+    @BindView(R.id.xrv_list_history)
+    XRecyclerView xrvListHistory;
 
     private FlowTagAdapter flowTagAdapter;
+    private String tag;
 
     @Override
     public void onClick(View v) {
@@ -48,10 +59,16 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         if (resId == R.id.tv_search) {
             if (getResources().getString(R.string.module_common_search)
                     .equals(tvSearch.getText().toString())) {
-                mPresenter.search(cetEdit.getText().toString(), 0, 10);
+                swithMode(true);
+                setData(new ArrayList<MusicModel>());
+                getData();
             } else if (getResources().getString(R.string.lib_pub_cancel)
                     .equals(tvSearch.getText().toString())) {
-                getActivity().finish();
+                if (isSearching()) {
+                    swithMode(false);
+                } else {
+                    getActivity().finish();
+                }
             }
         }
     }
@@ -100,6 +117,17 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         });
         flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<SearchHotRespModel.HotsBean>(),
                 R.layout.module_play_adapter_search_tag);
+        flowTagAdapter.setOnClickListener(new FlowTagAdapter.OnClickListener() {
+            @Override
+            public void onClick(View v, String tag) {
+                cetEdit.setText(tag);
+                cetEdit.setSelection(cetEdit.getText().toString().length());
+                tvSearch.setText(getResources().getString(R.string.lib_pub_cancel));
+                swithMode(true);
+                setData(new ArrayList<MusicModel>());
+                getData();
+            }
+        });
         flFlow.setAdapter(flowTagAdapter);
 
         String json = Preferences.getIns(mContext).getSearchHot();
@@ -117,19 +145,48 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     @Override
     protected void initList() {
         xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        xrvList.setCanLoadMore(true);
         super.initList();
+        xrvListHistory.setCanRefresh(false);
+        xrvListHistory.setCanLoadMore(false);
+        xrvListHistory.setAdapter(new SearchHistoryAdapter(mContext, new ArrayList<MusicModel>(),
+                R.layout.module_play_adapter_search_history));
     }
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
         return new SearchAdapter(mContext, new ArrayList<MusicModel>(),
-                R.layout.module_play_adapter_search_history);
+                R.layout.module_play_adapter_search);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPresenter.getSearchHot();
+    }
+
+    private boolean isSearching() {
+        return flytFloatSearch.getVisibility() == View.VISIBLE;
+    }
+
+    private void swithMode(boolean searching) {
+        if (!searching) {
+            cetEdit.setText("");
+        }
+        tag = searching ? cetEdit.getText().toString() : "";
+        llytFloatSearchHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
+        flytFloatSearch.setVisibility(searching ? View.VISIBLE : View.GONE);
     }
 
     @Override
     protected void onLoad(int page) {
-        mPresenter.getSearchHot();
+        if (TextUtils.isEmpty(tag)) {
+            setState(DSLayout.STATE_EMPTY);
+            return;
+        }
+        int start = page - 1;
+        int count = 15;
+        mPresenter.search(tag, start, count);
     }
 
     private List<MusicModel> getTsData() {

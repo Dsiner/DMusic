@@ -104,6 +104,7 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
                             return;
                         }
                         ULog.d("search --> onError " + e.toString());
+                        getView().loadError();
                     }
                 });
     }
