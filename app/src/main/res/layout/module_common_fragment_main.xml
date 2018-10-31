@@ -13,6 +13,7 @@
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:background="@color/lib_pub_color_main"
         app:lib_pub_tl_middleRes="@layout/module_common_layout_title_main"
+        app:lib_pub_tl_rightDrawable="@drawable/module_common_ic_title_search"
         skin:enable="true" />
 
     <LinearLayout
@@ -33,8 +34,8 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/module_common_ic_local_decorate" />
 
@@ -140,8 +141,8 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/module_common_ic_online_decorate" />
 

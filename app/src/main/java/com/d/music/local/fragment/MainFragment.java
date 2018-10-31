@@ -33,6 +33,7 @@ import com.d.music.local.adapter.CustomListAdapter;
 import com.d.music.local.presenter.MainPresenter;
 import com.d.music.local.view.IMainView;
 import com.d.music.online.activity.OnlineActivity;
+import com.d.music.play.activity.SearchActivity;
 import com.d.music.utils.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,12 +78,15 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     // 为了同步设置，需要重新刷新
     private boolean isShowAdd;
 
-    @OnClick({R.id.rlyt_local, R.id.rlyt_collection, R.id.rlyt_online})
+    @OnClick({R.id.iv_title_right, R.id.rlyt_local, R.id.rlyt_collection, R.id.rlyt_online})
     public void onClickListener(View v) {
         if (ClickFast.isFastDoubleClick()) {
             return;
         }
         switch (v.getId()) {
+            case R.id.iv_title_right:
+                startActivity(new Intent(mActivity, SearchActivity.class));
+                break;
             case R.id.rlyt_local:
                 // 本地音乐
                 MainActivity.getManger().replace(new LocalAllFragment());
@@ -93,7 +97,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 break;
             case R.id.rlyt_online:
                 // 音乐馆
-                getActivity().startActivity(new Intent(getActivity(), OnlineActivity.class));
+                getActivity().startActivity(new Intent(mActivity, OnlineActivity.class));
                 break;
         }
     }

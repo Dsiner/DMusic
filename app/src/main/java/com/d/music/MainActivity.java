@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -21,7 +21,6 @@ import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicInfoEvent;
 import com.d.music.local.fragment.MainFragment;
 import com.d.music.play.activity.PlayActivity;
-import com.d.music.play.activity.SearchActivity;
 import com.d.music.setting.activity.SettingActivity;
 import com.d.music.setting.activity.SkinActivity;
 import com.d.music.setting.activity.SleepActivity;
@@ -77,7 +76,7 @@ public class MainActivity extends BaseFragmentActivity {
                 PlayActivity.openActivity(MainActivity.this);
                 break;
             case R.id.flyt_menu:
-                dlDrawer.openDrawer(Gravity.END);
+                dlDrawer.openDrawer(GravityCompat.END);
                 break;
             case R.id.llyt_menu_transfer:
                 startActivity(new Intent(MainActivity.this, TransferActivity.class));
@@ -92,8 +91,7 @@ public class MainActivity extends BaseFragmentActivity {
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.llyt_menu_exit:
-//                App.exit();
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                App.exit();
                 break;
         }
     }
