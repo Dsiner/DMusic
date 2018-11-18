@@ -2,6 +2,7 @@ package com.d.music.online.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +32,12 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         holder.setText(R.id.tv_singer, "" + item.name);
         holder.setText(R.id.tv_score, mContext.getResources().getString(R.string.module_common_heat)
                 + item.score);
+        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         Glide.with(mContext)
                 .load(item.img1v1Url)
                 .apply(new RequestOptions().dontAnimate())
