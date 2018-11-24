@@ -19,12 +19,11 @@ import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.online.model.SearchHotRespModel;
-import com.d.music.play.adapter.FlowTagAdapter;
 import com.d.music.play.adapter.SearchAdapter;
 import com.d.music.play.adapter.SearchHistoryAdapter;
 import com.d.music.play.presenter.SearchPresenter;
 import com.d.music.play.view.ISearchView;
-import com.d.music.view.flowlayout.FlowLayout;
+import com.d.music.view.SearchHeaderView;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -41,16 +40,15 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     ClearEditText cetEdit;
     @BindView(R.id.tv_search)
     TextView tvSearch;
-    @BindView(R.id.fl_flow)
-    FlowLayout flFlow;
     @BindView(R.id.llyt_float_search_history)
-    View llytFloatSearchHistory;
+    View layoutHistory;
     @BindView(R.id.flyt_float_search)
-    View flytFloatSearch;
+    View layoutSearch;
     @BindView(R.id.xrv_list_history)
-    XRecyclerView xrvListHistory;
+    XRecyclerView xrvHistory;
 
-    private FlowTagAdapter flowTagAdapter;
+    private SearchHeaderView headerView;
+    private SearchHistoryAdapter historyAdapter;
     private String tag;
 
     @Override
@@ -89,9 +87,23 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     }
 
     @Override
+    protected CommonAdapter<MusicModel> getAdapter() {
+        return new SearchAdapter(mContext, new ArrayList<MusicModel>(),
+                R.layout.module_play_adapter_search);
+    }
+
+    @Override
     protected void bindView(View rootView) {
         super.bindView(rootView);
+        headerView = new SearchHeaderView(mContext);
         ViewHelper.setOnClick(rootView, this, R.id.tv_search);
+    }
+
+    @Override
+    protected void initList() {
+        xrvList.setCanRefresh(false);
+        xrvList.setCanLoadMore(true);
+        super.initList();
     }
 
     @Override
@@ -115,9 +127,19 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
                         : getResources().getString(R.string.lib_pub_cancel));
             }
         });
-        flowTagAdapter = new FlowTagAdapter(mContext, new ArrayList<SearchHotRespModel.HotsBean>(),
-                R.layout.module_play_adapter_search_tag);
-        flowTagAdapter.setOnClickListener(new FlowTagAdapter.OnClickListener() {
+
+        initHistory();
+    }
+
+    private void initHistory() {
+        xrvHistory.setCanRefresh(false);
+        xrvHistory.setCanLoadMore(false);
+        historyAdapter = new SearchHistoryAdapter(mContext, new ArrayList<MusicModel>(),
+                R.layout.module_play_adapter_search_history);
+        xrvHistory.addHeaderView(headerView);
+        xrvHistory.setAdapter(historyAdapter);
+
+        headerView.setOnHeaderListener(new SearchHeaderView.OnHeaderListener() {
             @Override
             public void onClick(View v, String tag) {
                 cetEdit.setText(tag);
@@ -127,8 +149,13 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
                 setData(new ArrayList<MusicModel>());
                 getData();
             }
+
+            @Override
+            public void onSweepHistory() {
+                historyAdapter.setDatas(new ArrayList<MusicModel>());
+                historyAdapter.notifyDataSetChanged();
+            }
         });
-        flFlow.setAdapter(flowTagAdapter);
 
         String json = Preferences.getIns(mContext).getSearchHot();
         if (!TextUtils.isEmpty(json)) {
@@ -136,27 +163,9 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
                     new TypeToken<List<SearchHotRespModel.HotsBean>>() {
                     }.getType());
             if (datas != null && datas.size() > 0) {
-                flowTagAdapter.setDatas(datas);
-                flowTagAdapter.notifyDataSetChanged();
+                headerView.setDatas(datas);
             }
         }
-    }
-
-    @Override
-    protected void initList() {
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(true);
-        super.initList();
-        xrvListHistory.setCanRefresh(false);
-        xrvListHistory.setCanLoadMore(false);
-        xrvListHistory.setAdapter(new SearchHistoryAdapter(mContext, new ArrayList<MusicModel>(),
-                R.layout.module_play_adapter_search_history));
-    }
-
-    @Override
-    protected CommonAdapter<MusicModel> getAdapter() {
-        return new SearchAdapter(mContext, new ArrayList<MusicModel>(),
-                R.layout.module_play_adapter_search);
     }
 
     @Override
@@ -166,7 +175,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     }
 
     private boolean isSearching() {
-        return flytFloatSearch.getVisibility() == View.VISIBLE;
+        return layoutSearch.getVisibility() == View.VISIBLE;
     }
 
     private void swithMode(boolean searching) {
@@ -174,8 +183,8 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
             cetEdit.setText("");
         }
         tag = searching ? cetEdit.getText().toString() : "";
-        llytFloatSearchHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
-        flytFloatSearch.setVisibility(searching ? View.VISIBLE : View.GONE);
+        layoutHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
+        layoutSearch.setVisibility(searching ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -189,32 +198,21 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         mPresenter.search(tag, start, count);
     }
 
-    private List<MusicModel> getTsData() {
-        List<MusicModel> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            MusicModel model = new MusicModel();
-            model.songName = "" + i;
-            list.add(model);
-        }
-        return list;
-    }
-
-    public boolean onBackPressed() {
-        return false;
-    }
-
     @Override
     public void getSearchHotSuccess(List<SearchHotRespModel.HotsBean> datas) {
         if (datas.size() > 0) {
             String json = Util.getGsonIns().toJson(datas);
             Preferences.getIns(mContext).putSearchHot(json);
         }
-        flowTagAdapter.setDatas(datas);
-        flowTagAdapter.notifyDataSetChanged();
+        headerView.setDatas(datas);
     }
 
     @Override
     public void getSearchHotError() {
 
+    }
+
+    public boolean onBackPressed() {
+        return false;
     }
 }
