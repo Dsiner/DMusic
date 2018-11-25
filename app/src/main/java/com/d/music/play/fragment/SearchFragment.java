@@ -11,6 +11,7 @@ import com.d.lib.common.component.loader.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.ViewHelper;
+import com.d.lib.common.utils.keyboard.KeyboardHelper;
 import com.d.lib.common.view.ClearEditText;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
@@ -49,6 +50,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     private SearchHeaderView headerView;
     private SearchHistoryAdapter historyAdapter;
+    private List<String> history = new ArrayList<>();
     private String tag;
 
     @Override
@@ -57,9 +59,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         if (resId == R.id.tv_search) {
             if (getResources().getString(R.string.module_common_search)
                     .equals(tvSearch.getText().toString())) {
-                swithMode(true);
-                setData(new ArrayList<MusicModel>());
-                getData();
+                search(cetEdit.getText().toString());
             } else if (getResources().getString(R.string.lib_pub_cancel)
                     .equals(tvSearch.getText().toString())) {
                 if (isSearching()) {
@@ -69,6 +69,19 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
                 }
             }
         }
+    }
+
+    private void search(String tag) {
+        if (!TextUtils.isEmpty(tag)) {
+            cetEdit.setText(tag);
+            cetEdit.setSelection(cetEdit.getText().toString().length());
+            tvSearch.setText(getResources().getString(R.string.lib_pub_cancel));
+        }
+
+        swithMode(true);
+        setData(new ArrayList<MusicModel>());
+        getData();
+        KeyboardHelper.hideKeyboard(cetEdit);
     }
 
     @Override
@@ -95,7 +108,6 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     @Override
     protected void bindView(View rootView) {
         super.bindView(rootView);
-        headerView = new SearchHeaderView(mContext);
         ViewHelper.setOnClick(rootView, this, R.id.tv_search);
     }
 
@@ -134,25 +146,22 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     private void initHistory() {
         xrvHistory.setCanRefresh(false);
         xrvHistory.setCanLoadMore(false);
-        historyAdapter = new SearchHistoryAdapter(mContext, new ArrayList<MusicModel>(),
+        headerView = new SearchHeaderView(mContext);
+        historyAdapter = new SearchHistoryAdapter(mContext, new ArrayList<String>(),
                 R.layout.module_play_adapter_search_history);
+        xrvHistory.showAsList();
         xrvHistory.addHeaderView(headerView);
         xrvHistory.setAdapter(historyAdapter);
-
         headerView.setOnHeaderListener(new SearchHeaderView.OnHeaderListener() {
             @Override
             public void onClick(View v, String tag) {
-                cetEdit.setText(tag);
-                cetEdit.setSelection(cetEdit.getText().toString().length());
-                tvSearch.setText(getResources().getString(R.string.lib_pub_cancel));
-                swithMode(true);
-                setData(new ArrayList<MusicModel>());
-                getData();
+                search(tag);
             }
 
             @Override
             public void onSweepHistory() {
-                historyAdapter.setDatas(new ArrayList<MusicModel>());
+                history.clear();
+                historyAdapter.setDatas(history);
                 historyAdapter.notifyDataSetChanged();
             }
         });
@@ -166,6 +175,20 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
                 headerView.setDatas(datas);
             }
         }
+
+        historyAdapter.setOnClickListener(new SearchHistoryAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position, String item) {
+                search(item);
+            }
+
+            @Override
+            public void onDelete(int position, String item) {
+                history.remove(item);
+                historyAdapter.setDatas(history);
+                historyAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -181,8 +204,14 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     private void swithMode(boolean searching) {
         if (!searching) {
             cetEdit.setText("");
+            tag = "";
+        } else {
+            tag = cetEdit.getText().toString();
+            history.remove(tag);
+            history.add(0, tag);
+            historyAdapter.setDatas(history);
+            historyAdapter.notifyDataSetChanged();
         }
-        tag = searching ? cetEdit.getText().toString() : "";
         layoutHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
         layoutSearch.setVisibility(searching ? View.VISIBLE : View.GONE);
     }

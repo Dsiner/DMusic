@@ -1,37 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/lib_pub_dimen_title_height"
-    android:background="@color/lib_pub_color_bg_sub"
-    android:orientation="vertical">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="@dimen/lib_pub_dimen_margin"
-            android:text="@string/module_common_search_hot"
-            android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="@dimen/lib_pub_dimen_text_small" />
-
-        <TextView
-            android:id="@+id/tv_sweep_popular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="center_vertical"
-            android:padding="@dimen/lib_pub_dimen_margin"
-            android:text="@string/module_common_sweep"
-            android:textColor="@color/lib_pub_color_text_sub"
-            android:textSize="@dimen/lib_pub_dimen_text_small" />
-    </FrameLayout>
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/lib_pub_dimen_margin"
+        android:text="@string/module_common_search_hot"
+        android:textColor="@color/lib_pub_color_text_sub"
+        android:textSize="@dimen/lib_pub_dimen_text_small" />
 
     <com.d.music.view.flowlayout.FlowLayout
         android:id="@+id/fl_flow"
@@ -68,4 +47,4 @@
             android:textColor="@color/lib_pub_color_text_sub"
             android:textSize="@dimen/lib_pub_dimen_text_small" />
     </FrameLayout>
-</LinearLayout>
+</merge>

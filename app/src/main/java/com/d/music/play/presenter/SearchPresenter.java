@@ -77,13 +77,19 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
                         for (int i = 0; i < size; i++) {
                             SearchRespModel.SongListBean bean = resp.song_list.get(i);
                             MusicModel model = new MusicModel();
-                            model.type = bean.resource_type;
-                            model.songName = bean.title;
+                            model.type = MusicModel.TYPE_BAIDU;
                             model.songId = bean.song_id;
+                            model.songName = bean.title != null ?
+                                    bean.title.replaceAll("<em>", "").replaceAll("</em>", "")
+                                    : "";
                             model.artistId = bean.artist_id;
-                            model.artistName = bean.author;
+                            model.artistName = bean.author != null ?
+                                    bean.author.replaceAll("<em>", "").replaceAll("</em>", "")
+                                    : "";
                             model.albumId = bean.album_id;
-                            model.albumName = bean.album_title;
+                            model.albumName = bean.album_title != null ?
+                                    bean.album_title.replaceAll("<em>", "").replaceAll("</em>", "")
+                                    : "";
                             datas.add(model);
                         }
                         return datas;

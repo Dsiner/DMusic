@@ -160,6 +160,16 @@ public class MediaControler implements IMediaControler {
         mPosition = (mPosition >= 0 && mPosition < mDatas.size()) ? mPosition : 0;
     }
 
+    public void cut(MusicModel item) {
+        if (item == null) {
+            return;
+        }
+        List<MusicModel> list = new ArrayList<>();
+        list.add(item);
+        list.addAll(mDatas);
+        init(list, 0, true);
+    }
+
     @android.support.annotation.NonNull
     @Override
     public List<MusicModel> list() {

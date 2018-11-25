@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.d.lib.common.component.repeatclick.ClickFast;
@@ -43,7 +44,8 @@ public class SearchHeaderView extends LinearLayout implements View.OnClickListen
     }
 
     private void init(Context context) {
-        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
         View root = LayoutInflater.from(context).inflate(R.layout.module_play_layout_search, this);
         FlowLayout flFlow = (FlowLayout) root.findViewById(R.id.fl_flow);

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class SongHeaderView extends LinearLayout implements View.OnClickListener
     }
 
     private void init(Context context) {
-        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Util.dip2px(context, 50)));
+        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Util.dip2px(context, 50)));
         setOrientation(HORIZONTAL);
         View root = LayoutInflater.from(context).inflate(R.layout.module_local_layout_song, this);
         flytPlayAll = (FrameLayout) root.findViewById(R.id.flyt_header_song_play_all);
