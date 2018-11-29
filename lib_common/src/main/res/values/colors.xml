@@ -16,6 +16,7 @@
 
     <color name="lib_pub_color_main">#0C6EC6</color>
     <color name="lib_pub_color_main_press">#5073DA</color>
+	<color name="lib_pub_color_main_disable">#7BCBBF</color>
     <color name="lib_pub_color_main_90">#E60C6EC6</color>
     <color name="lib_pub_color_main_50">#800C6EC6</color>
     <color name="lib_pub_color_main_30">#660C6EC6</color>

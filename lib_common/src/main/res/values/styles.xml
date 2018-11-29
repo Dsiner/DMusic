@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/lib_pub_color_main</item>
     </style>
 
-    <!--public dialog-->
+    <!-- Public dialog -->
     <style name="lib_pub_dialog_style" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
