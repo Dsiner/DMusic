@@ -38,7 +38,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     api files('libs/android-skin-loader-lib.jar')
-    api project(':lib_rxnet')
+    api project(':lib_aster')
     api project(':lib_xrv')
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.glide_integration

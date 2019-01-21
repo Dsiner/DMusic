@@ -5,9 +5,9 @@ import android.content.Context;
 import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.loader.IAbsView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.SimpleCallback;
+import com.d.lib.aster.Aster;
+import com.d.lib.aster.base.Params;
+import com.d.lib.aster.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.MVModel;
 import com.d.music.online.model.MVRespModel;
@@ -28,7 +28,7 @@ public class MVPresenter extends MvpBasePresenter<IAbsView<MVModel>> {
         Params params = new Params(API.MVTop.rtpType);
         params.addParam(API.MVTop.offset, "" + offset);
         params.addParam(API.MVTop.limit, "" + limit);
-        RxNet.get(API.MVTop.rtpType, params)
+        Aster.get(API.MVTop.rtpType, params)
                 .request(new SimpleCallback<MVRespModel>() {
                     @Override
                     public void onSuccess(MVRespModel response) {

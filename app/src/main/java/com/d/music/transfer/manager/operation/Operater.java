@@ -3,8 +3,8 @@ package com.d.music.transfer.manager.operation;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
+import com.d.lib.aster.integration.retrofit.RequestManager;
 import com.d.lib.common.event.bus.AbstractBus;
-import com.d.lib.rxnet.base.RequestManager;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.App;
 import com.d.music.data.database.greendao.bean.MusicModel;

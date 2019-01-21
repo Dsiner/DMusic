@@ -5,7 +5,7 @@ package com.d.music.data.database.greendao.bean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.d.lib.rxnet.callback.ProgressCallback;
+import com.d.lib.aster.callback.ProgressCallback;
 
 import java.util.ArrayList;
 import java.util.List;

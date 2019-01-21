@@ -3,11 +3,11 @@ package com.d.music.play.presenter;
 import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.AsyncCallback;
-import com.d.lib.rxnet.callback.SimpleCallback;
-import com.d.lib.rxnet.utils.ULog;
+import com.d.lib.aster.Aster;
+import com.d.lib.aster.base.Params;
+import com.d.lib.aster.callback.AsyncCallback;
+import com.d.lib.aster.callback.SimpleCallback;
+import com.d.lib.aster.utils.ULog;
 import com.d.music.api.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.model.SearchHotRespModel;
@@ -31,7 +31,7 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
      * Get hot search
      */
     public void getSearchHot() {
-        RxNet.getDefault().get(API.HotSearch.rtpType)
+        Aster.getDefault().get(API.HotSearch.rtpType)
                 .request(new SimpleCallback<SearchHotRespModel>() {
                     @Override
                     public void onSuccess(SearchHotRespModel response) {
@@ -65,7 +65,7 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
         params.addParam(API.Search.query, key);
         params.addParam(API.Search.page_no, "" + pageNo);
         params.addParam(API.Search.page_size, "" + pageSize);
-        RxNet.getDefault().get(API.Search.rtpType, params)
+        Aster.getDefault().get(API.Search.rtpType, params)
                 .request(new AsyncCallback<SearchRespModel, List<MusicModel>>() {
                     @Override
                     public List<MusicModel> apply(SearchRespModel resp) throws Exception {

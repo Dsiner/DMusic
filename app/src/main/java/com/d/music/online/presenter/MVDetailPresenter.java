@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.SimpleCallback;
+import com.d.lib.aster.Aster;
+import com.d.lib.aster.base.Params;
+import com.d.lib.aster.callback.SimpleCallback;
 import com.d.music.api.API;
 import com.d.music.online.model.MVCommentRespModel;
 import com.d.music.online.model.MVDetailModel;
@@ -30,7 +30,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
     public void getMvDetailInfo(final long id) {
         Params params = new Params(API.MvDetailInfo.rtpType);
         params.addParam(API.MvDetailInfo.mvid, "" + id);
-        RxNet.get(API.MvDetailInfo.rtpType, params)
+        Aster.get(API.MvDetailInfo.rtpType, params)
                 .request(new SimpleCallback<MVInfoRespModel>() {
                     @Override
                     public void onSuccess(MVInfoRespModel response) {
@@ -50,7 +50,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
     public void getSimilarMV(final long id) {
         Params params = new Params(API.SimilarMV.rtpType);
         params.addParam(API.SimilarMV.mvid, "" + id);
-        RxNet.get(API.SimilarMV.rtpType, params)
+        Aster.get(API.SimilarMV.rtpType, params)
                 .request(new SimpleCallback<MVSimilarRespModel>() {
                     @Override
                     public void onSuccess(MVSimilarRespModel response) {
@@ -77,7 +77,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
         int limit = CommonLoader.PAGE_COUNT;
         Params params = new Params(API.MVComment.rtpType);
         params.addParam(API.MVComment.id, "" + id);
-        RxNet.get(API.MVComment.rtpType, params)
+        Aster.get(API.MVComment.rtpType, params)
                 .request(new SimpleCallback<MVCommentRespModel>() {
                     @Override
                     public void onSuccess(MVCommentRespModel response) {

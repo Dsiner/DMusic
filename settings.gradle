@@ -1,5 +1,12 @@
-include ':app',
-        ':lib_common', ':lib_rxnet', ':lib_xrv',
-        ':lib_greendao_generator',
-        ':lib_commenplayer'
+include ':app'
+include ':lib_aster'
+include ':lib_aster_integration'
+include ':lib_aster_integration:base'
+include ':lib_aster_integration:okhttp3'
+include ':lib_aster_integration:retrofit'
+include ':lib_xrv'
+include ':lib_common'
+include ':lib_commenplayer'
+include ':lib_greendao_generator'
+
 

@@ -5,9 +5,9 @@ import android.text.TextUtils;
 
 import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.AsyncCallback;
+import com.d.lib.aster.Aster;
+import com.d.lib.aster.base.Params;
+import com.d.lib.aster.callback.AsyncCallback;
 import com.d.music.api.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.model.BillSongsModel;
@@ -35,7 +35,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         params.addParam(API.BaiduBillSongs.type, channel);
         params.addParam(API.BaiduBillSongs.offset, "" + (CommonLoader.PAGE_COUNT * (page - 1)));
         params.addParam(API.BaiduBillSongs.size, "" + CommonLoader.PAGE_COUNT);
-        RxNet.get(API.BaiduBillSongs.rtpType, params)
+        Aster.get(API.BaiduBillSongs.rtpType, params)
                 .request(new AsyncCallback<BillSongsRespModel, BillSongsRespModel>() {
 
                     @Override
@@ -86,7 +86,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         params.addParam(API.RadioChannelSongs.pn, "" + 0);
         params.addParam(API.RadioChannelSongs.rn, "" + 10);
         params.addParam(API.RadioChannelSongs.channelname, channel);
-        RxNet.get(API.RadioChannelSongs.rtpType, params)
+        Aster.get(API.RadioChannelSongs.rtpType, params)
                 .request(new AsyncCallback<RadioSongsRespModel, RadioSongsRespModel>() {
 
                     @Override

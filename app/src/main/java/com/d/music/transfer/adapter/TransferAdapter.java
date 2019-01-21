@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.view.dialog.AbsSheetDialog;
-import com.d.lib.rxnet.callback.ProgressCallback;
+import com.d.lib.aster.callback.ProgressCallback;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;

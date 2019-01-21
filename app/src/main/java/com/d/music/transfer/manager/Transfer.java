@@ -5,10 +5,10 @@ import android.text.TextUtils;
 
 import com.d.lib.common.component.cache.base.ExpireLruCache;
 import com.d.lib.common.utils.log.ULog;
-import com.d.lib.rxnet.RxNet;
-import com.d.lib.rxnet.base.Params;
-import com.d.lib.rxnet.callback.ProgressCallback;
-import com.d.lib.rxnet.callback.SimpleCallback;
+import com.d.lib.aster.Aster;
+import com.d.lib.aster.base.Params;
+import com.d.lib.aster.callback.ProgressCallback;
+import com.d.lib.aster.callback.SimpleCallback;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.taskscheduler.callback.Function;
 import com.d.lib.taskscheduler.callback.Observer;
@@ -64,7 +64,7 @@ public class Transfer {
     private static void getInfo(@NonNull final String songId, final SimpleCallback<MusicModel> callback) {
         Params params = new Params(API.SongInfo.rtpType);
         params.addParam(API.SongInfo.songIds, songId);
-        RxNet.get(API.SongInfo.rtpType, params)
+        Aster.get(API.SongInfo.rtpType, params)
                 .request(new SimpleCallback<SongInfoRespModel>() {
                     @Override
                     public void onSuccess(SongInfoRespModel response) {
@@ -260,7 +260,7 @@ public class Transfer {
         final String url = model.songUrl;
         final String name = model.songName + "." + model.filePostfix;
         final String cache = model.songName + "." + model.filePostfix + PREFIX_DOWNLOAD;
-        RxNet.download(url)
+        Aster.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)
@@ -335,7 +335,7 @@ public class Transfer {
         final String url = model.songUrl;
         final String name = model.songName + PREFIX_MV;
         final String cache = model.songName + PREFIX_MV + PREFIX_DOWNLOAD;
-        RxNet.download(url)
+        Aster.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)
@@ -481,7 +481,7 @@ public class Transfer {
         final String url = model.lrcUrl;
         final String name = model.songName + PREFIX_LRC;
         final String cache = model.songName + PREFIX_LRC + PREFIX_DOWNLOAD;
-        RxNet.download(url)
+        Aster.download(url)
                 .connectTimeout(60 * 1000)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)
