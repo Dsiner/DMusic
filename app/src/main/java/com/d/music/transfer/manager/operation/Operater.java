@@ -3,7 +3,7 @@ package com.d.music.transfer.manager.operation;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
-import com.d.lib.aster.integration.retrofit.RequestManager;
+import com.d.lib.aster.Aster;
 import com.d.lib.common.event.bus.AbstractBus;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.App;
@@ -60,7 +60,7 @@ public abstract class Operater extends AbstractBus<Pipe, TransferDataObservable>
         }
         model.transferState = TransferModel.TRANSFER_STATE_PENDDING;
         mPipe.pop(model);
-        RequestManager.getIns().cancel(model.transferId);
+        Aster.getManager().cancel(model.transferId);
     }
 
     @UiThread
