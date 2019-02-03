@@ -1,13 +1,13 @@
 ext {
-    compileSdkVersion = 25
-    minSdkVersion = 9
-    targetSdkVersion = 25
+    compileSdkVersion = 27
+    minSdkVersion = 14
+    targetSdkVersion = 27
     versionCode = 4
     versionName = "1.0.3"
 
     // Library Version
     multidexVersion = "1.0.1"
-    supportVersion = '25.3.1'
+    supportVersion = '27.1.0'
 
     dependencies = [
             android_skin_loader       : files('libs/android-skin-loader-lib.jar'),
@@ -19,7 +19,7 @@ ext {
             support_appcompat_v7      : "com.android.support:appcompat-v7:${supportVersion}",
             support_cardview_v7       : "com.android.support:cardview-v7:${supportVersion}",
             support_recyclerview_v7   : "com.android.support:recyclerview-v7:${supportVersion}",
-            support_constraint_layout : "com.android.support.constraint:constraint-layout:1.1.2",
+            support_constraint_layout : "com.android.support.constraint:constraint-layout:1.1.3",
             gson                      : "com.google.code.gson:gson:2.7",
 
             nineoldandroids           : "com.nineoldandroids:library:2.4.0",
