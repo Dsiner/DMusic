@@ -45,7 +45,12 @@ ext {
 
             permissioncompat          : "com.dsiner.lib:permissioncompat:1.0.1",
             taskscheduler             : "com.dsiner.lib:taskscheduler:1.0.1",
-            slidelayout               : "com.dsiner.lib:slidelayout:1.0.2"
+            slidelayout               : "com.dsiner.lib:slidelayout:1.0.2",
+
+            aster                     : 'com.dsiner.lib:aster:1.0.2',
+            aster_adapter_http        : 'com.dsiner.lib:aster-adapter-http:1.0.2',
+            aster_adapter_okhttp3     : 'com.dsiner.lib:aster-adapter-okhttp3:1.0.3',
+            aster_adapter_retrofit    : 'com.dsiner.lib:aster-adapter-retrofit:1.0.2'
     ]
 
     classpaths = [
