@@ -34,16 +34,16 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="Music"
-                android:textSize="@dimen/lib_pub_dimen_text_small" />
+                android:textColor="@color/lib_pub_color_text_main"
+                android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
             <TextView
                 android:id="@+id/tv_music_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
-                android:text="0"
-                android:textSize="@dimen/lib_pub_dimen_text_mini"
-                android:visibility="gone" />
+                android:textColor="@color/lib_pub_color_text_hint"
+                android:textSize="@dimen/lib_pub_dimen_text_mini" />
         </LinearLayout>
 
         <FrameLayout

@@ -11,7 +11,7 @@ public class FileModel {
     public String name; // 文件名
     public String postfix; // 文件后缀类型
     public int type; // 文件类型
-    public int musicCount; // 路径下目标过滤文件数
+    public int count; // 路径下目标过滤文件数
     public String absolutePath; // 文件绝对路径
     public boolean isEmptyDir; // 是否为空目录
     public boolean isChecked; // 是否选中

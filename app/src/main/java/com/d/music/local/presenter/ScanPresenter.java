@@ -16,7 +16,8 @@ import com.d.music.utils.FileUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -42,9 +43,12 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<FileModel>> e) throws Exception {
                 List<FileModel> list = FileUtil.getFiles(path, false);
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
+                Collections.sort(list, new Comparator<FileModel>() {
+                    @Override
+                    public int compare(FileModel o1, FileModel o2) {
+                        return o1.name.compareTo(o2.name);
+                    }
+                });
                 e.onNext(list);
             }
         }).subscribeOn(Schedulers.io())

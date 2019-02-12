@@ -1,6 +1,7 @@
 package com.d.music.utils;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.d.music.component.media.media.MusicFactory;
@@ -38,10 +39,11 @@ public class FileUtil {
     /**
      * 获取文件夹列表
      *
-     * @param path:      path
-     * @param withCount: 是否同步获取该路径下歌曲数
+     * @param path      path
+     * @param withCount 是否同步获取该路径下歌曲数
      * @return 文件夹列表
      */
+    @NonNull
     public static List<FileModel> getFiles(String path, boolean withCount) {
         List<FileModel> models = new ArrayList<>();
         File file = new File(path);
@@ -52,7 +54,7 @@ public class FileUtil {
         File[] files = file.listFiles();
         if (files != null) {
             for (File f : files) {
-                if (f.isDirectory()) {
+                if (f.isDirectory() && !f.isHidden()) {
                     FileModel model = new FileModel();
                     String p = f.getAbsolutePath();
                     model.absolutePath = p;
@@ -60,10 +62,10 @@ public class FileUtil {
                     model.type = FileModel.TYPE_DIR;
 
                     File[] fs = f.listFiles();
-                    model.isEmptyDir = fs != null && fs.length != 0;
+                    model.isEmptyDir = fs == null || fs.length <= 0;
 
                     if (withCount) {
-                        model.musicCount = getMusicCount(p);
+                        model.count = getMusicCount(p);
                     }
                     models.add(model);
                 }

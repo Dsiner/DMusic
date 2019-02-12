@@ -1,6 +1,7 @@
 package com.d.music.local.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.d.lib.common.component.repeatclick.OnClickFastListener;
@@ -8,7 +9,6 @@ import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.local.model.FileModel;
-import com.d.music.utils.FileUtil;
 
 import java.util.List;
 
@@ -26,17 +26,20 @@ public class DirAdapter extends CommonAdapter<FileModel> {
     @Override
     public void convert(int position, final CommonHolder holder, final FileModel item) {
         holder.setText(R.id.tv_dir, item.name);
+        holder.setTextColor(R.id.tv_dir, ContextCompat.getColor(mContext,
+                item.isEmptyDir ? R.color.lib_pub_color_text_disable
+                        : R.color.lib_pub_color_text_main));
         holder.setText(R.id.tv_music_count, String.format(mContext.getResources().getString(R.string.module_common_song_unit_format),
-                item.musicCount));
+                item.count));
+        holder.setViewVisibility(R.id.tv_music_count, View.GONE);
         holder.setChecked(R.id.cb_check, item.isChecked);
+        holder.setViewVisibility(R.id.flyt_selected, item.isEmptyDir ? View.INVISIBLE : View.VISIBLE);
         holder.setViewOnClickListener(R.id.ll_dir_sub, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
                 String p = item.absolutePath;
-                if (!FileUtil.isEndPath(p)) {
-                    if (listener != null) {
-                        listener.onPath(p);
-                    }
+                if (listener != null) {
+                    listener.onPath(p);
                 }
             }
         });
