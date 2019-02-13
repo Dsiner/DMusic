@@ -18,9 +18,9 @@ public interface API {
         String rtp = "rtp";
         String time = "time";
         String sign = "sign";
-        String app_name = "app_name";
+        String appName = "app_name";
         String platform = "platform";
-        String app_version = "app_version";
+        String appVersion = "app_version";
         String uid = "uid";
         String imei = "imei";
         String rom = "rom";
@@ -149,7 +149,7 @@ public interface API {
      * GET/百度 - 搜索
      */
     interface Search {
-        String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting?";
+        String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting";
         String method = "method"; // baidu.ting.search.merge
         String query = "query"; // 1
         String page_no = "page_no"; // 0

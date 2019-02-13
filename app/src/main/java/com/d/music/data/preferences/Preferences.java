@@ -35,6 +35,7 @@ public class Preferences extends AbstractPreference {
         String KEY_SLEEP_TIMING = "key_sleep_timing";
 
         String KEY_SEARCH_HOT = "key_search_hot";
+        String KEY_SEARCH_HISTORY = "key_search_history";
     }
 
     private Preferences(Context context) {
@@ -230,5 +231,15 @@ public class Preferences extends AbstractPreference {
 
     public String getSearchHot() {
         return settings.getString(Keys.KEY_SEARCH_HOT, "");
+    }
+
+    /************************* 设置/获取 搜索历史 *************************/
+    public void putSearchHistory(String content) {
+        editor.putString(Keys.KEY_SEARCH_HISTORY, content);
+        save();
+    }
+
+    public String getSearchHistory() {
+        return settings.getString(Keys.KEY_SEARCH_HISTORY, "");
     }
 }

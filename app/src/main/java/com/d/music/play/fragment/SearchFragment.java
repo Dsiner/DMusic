@@ -63,7 +63,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
             } else if (getResources().getString(R.string.lib_pub_cancel)
                     .equals(tvSearch.getText().toString())) {
                 if (isSearching()) {
-                    swithMode(false);
+                    switchMode(false);
                 } else {
                     getActivity().finish();
                 }
@@ -78,7 +78,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
             tvSearch.setText(getResources().getString(R.string.lib_pub_cancel));
         }
 
-        swithMode(true);
+        switchMode(true);
         setData(new ArrayList<MusicModel>());
         getData();
         KeyboardHelper.hideKeyboard(cetEdit);
@@ -201,7 +201,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         return layoutSearch.getVisibility() == View.VISIBLE;
     }
 
-    private void swithMode(boolean searching) {
+    private void switchMode(boolean searching) {
         if (!searching) {
             cetEdit.setText("");
             tag = "";
