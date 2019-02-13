@@ -69,7 +69,7 @@ public interface API {
      * GET/Baidu-排行榜-歌单详情
      */
     interface BaiduBillSongs {
-        String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting?";
+        String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting";
         String method = "method"; // baidu.ting.billboard.billList
         String type = "type"; // 1
         String offset = "offset"; // 0
