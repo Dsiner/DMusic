@@ -1,5 +1,4 @@
 include ':app'
-include ':lib_xrv'
 include ':lib_common'
 include ':lib_commenplayer'
 include ':lib_greendao_generator'

@@ -38,7 +38,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     api files('libs/android-skin-loader-lib.jar')
-    api project(':lib_xrv')
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.glide_integration
 
@@ -59,6 +58,8 @@ dependencies {
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.glide_integration
     annotationProcessor rootProject.ext.dependencies.glide_compiler
+    // Pull down refresh, load more
+    api rootProject.ext.dependencies.xrv
     // Runtime permissions
     api rootProject.ext.dependencies.permissioncompat
     // Thread pool management

@@ -7,7 +7,7 @@ ext {
 
     // Library Version
     multidexVersion = "1.0.1"
-    supportVersion = '27.1.0'
+    supportVersion = '27.1.1'
 
     dependencies = [
             android_skin_loader       : files('libs/android-skin-loader-lib.jar'),
@@ -46,6 +46,7 @@ ext {
             permissioncompat          : "com.dsiner.lib:permissioncompat:1.0.1",
             taskscheduler             : "com.dsiner.lib:taskscheduler:1.0.1",
             slidelayout               : "com.dsiner.lib:slidelayout:1.0.2",
+            xrv                       : "com.dsiner.lib:xrv:1.1.2",
 
             aster                     : 'com.dsiner.lib:aster:2.0.0',
             aster_adapter_http        : 'com.dsiner.lib:aster-adapter-http:2.0.0',
