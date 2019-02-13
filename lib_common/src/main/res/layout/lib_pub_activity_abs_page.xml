@@ -9,6 +9,7 @@
     <com.d.lib.common.view.TitleLayout
         android:id="@+id/tl_title"
         style="@style/lib_pub_title_style"
+        android:background="@color/lib_pub_color_main"
         app:lib_pub_tl_middleText="title"
         skin:enable="true" />
 
