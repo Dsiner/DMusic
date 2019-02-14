@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.music.R;
+import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.model.SingerModel;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
     }
 
     @Override
-    public void convert(int position, CommonHolder holder, SingerModel item) {
+    public void convert(int position, CommonHolder holder, final SingerModel item) {
         holder.setText(R.id.tv_seq, "" + (position + 1));
         holder.setTextColor(R.id.tv_seq, position < 3 ? ContextCompat.getColor(mContext, R.color.lib_pub_color_red)
                 : ContextCompat.getColor(mContext, R.color.lib_pub_color_text_sub));
@@ -35,7 +36,8 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DetailActivity.openActivity(mContext, DetailActivity.TYPE_ARTIST,
+                        item.ting_uid, item.name, item.avatar_big);
             }
         });
         Glide.with(mContext)

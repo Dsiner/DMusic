@@ -143,7 +143,9 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     protected void onLoad(int page) {
-        if (type == DetailActivity.TYPE_BILL) {
+        if (type == DetailActivity.TYPE_ARTIST) {
+            mPresenter.getArtistSongs(channel, page);
+        } else if (type == DetailActivity.TYPE_BILL) {
             mPresenter.getBillSongs(channel, page);
         } else if (type == DetailActivity.TYPE_RADIO) {
             mPresenter.getRadioSongs(channel, page);
@@ -178,6 +180,9 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     public void setData(List<MusicModel> datas) {
+        if (type == DetailActivity.TYPE_ARTIST) {
+            setCover(cover);
+        }
         super.setData(datas);
         notifyDataCountChanged(commonLoader.getDatas().size());
     }

@@ -23,7 +23,7 @@ public class SingerPresenter extends MvpBasePresenter<IAbsView<SingerModel>> {
 
     public void getSinger() {
         Params params = new Params(API.Baidu.HotArtists.rtpType);
-        params.addParam(API.Baidu.HotArtists.method, API.Baidu.METHOD_72HOTARTIST);
+        params.addParam(API.Baidu.HotArtists.method, API.Baidu.METHOD_72_HOT_ARTIST);
         params.addParam(API.Baidu.HotArtists.from, API.Baidu.FROM_QIANQIAN);
         params.addParam(API.Baidu.HotArtists.version, "2.1.0");
         params.addParam(API.Baidu.HotArtists.format, "json");

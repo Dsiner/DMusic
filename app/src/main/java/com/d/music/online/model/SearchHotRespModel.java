@@ -21,6 +21,7 @@ public class SearchHotRespModel extends BaseRespModel {
     }
 
     public static class HotsBean {
+
         /**
          * first : 张楚新歌
          * second : 1
@@ -31,5 +32,9 @@ public class SearchHotRespModel extends BaseRespModel {
         public String second;
         public String third;
         public int iconType;
+
+        public HotsBean(String first) {
+            this.first = first;
+        }
     }
 }

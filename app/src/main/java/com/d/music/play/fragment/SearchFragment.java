@@ -1,6 +1,8 @@
 package com.d.music.play.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -50,7 +52,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     private SearchHeaderView headerView;
     private SearchHistoryAdapter historyAdapter;
-    private List<String> history = new ArrayList<>();
+    private HistoryQueue historyQueue;
     private String tag;
 
     @Override
@@ -121,6 +123,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     @Override
     protected void init() {
         super.init();
+        historyQueue = new HistoryQueue(mContext);
         cetEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -160,8 +163,8 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
             @Override
             public void onSweepHistory() {
-                history.clear();
-                historyAdapter.setDatas(history);
+                historyQueue.clear();
+                historyAdapter.setDatas(historyQueue.list());
                 historyAdapter.notifyDataSetChanged();
             }
         });
@@ -179,16 +182,19 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         historyAdapter.setOnClickListener(new SearchHistoryAdapter.OnClickListener() {
             @Override
             public void onClick(int position, String item) {
+                historyQueue.put(item);
                 search(item);
             }
 
             @Override
             public void onDelete(int position, String item) {
-                history.remove(item);
-                historyAdapter.setDatas(history);
+                historyQueue.delete(item);
+                historyAdapter.setDatas(historyQueue.list());
                 historyAdapter.notifyDataSetChanged();
             }
         });
+        historyAdapter.setDatas(historyQueue.list());
+        historyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -207,9 +213,8 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
             tag = "";
         } else {
             tag = cetEdit.getText().toString();
-            history.remove(tag);
-            history.add(0, tag);
-            historyAdapter.setDatas(history);
+            historyQueue.put(tag);
+            historyAdapter.setDatas(historyQueue.list());
             historyAdapter.notifyDataSetChanged();
         }
         layoutHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
@@ -243,5 +248,60 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        historyQueue.save();
+        super.onDestroyView();
+    }
+
+    static class HistoryQueue {
+        private Context context;
+        private List<String> history = new ArrayList<>();
+
+        HistoryQueue(Context context) {
+            this.context = context;
+            init();
+        }
+
+        private void init() {
+            history = new ArrayList<>();
+            String json = Preferences.getIns(context).getSearchHistory();
+            if (!TextUtils.isEmpty(json)) {
+                List<String> datas = Util.getGsonIns().fromJson(json,
+                        new TypeToken<List<String>>() {
+                        }.getType());
+                if (datas != null && datas.size() > 0) {
+                    history.addAll(datas);
+                }
+            }
+        }
+
+        void delete(String item) {
+            history.remove(item);
+        }
+
+        void put(String item) {
+            if (history.size() > 50) {
+                history.remove(history.size() - 1);
+            }
+            history.remove(item);
+            history.add(0, item);
+        }
+
+        @NonNull
+        List<String> list() {
+            return history;
+        }
+
+        void clear() {
+            history.clear();
+        }
+
+        void save() {
+            String json = Util.getGsonIns().toJson(history);
+            Preferences.getIns(context).putSearchHistory(json);
+        }
     }
 }

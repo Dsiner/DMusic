@@ -1,6 +1,7 @@
 package com.d.music.play.presenter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
@@ -51,7 +52,21 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().getSearchHotError();
+                        List<SearchHotRespModel.HotsBean> hots = getHotsBeans();
+                        getView().getSearchHotSuccess(hots);
+                    }
+
+                    @NonNull
+                    private List<SearchHotRespModel.HotsBean> getHotsBeans() {
+                        List<SearchHotRespModel.HotsBean> hots = new ArrayList<>();
+                        hots.add(new SearchHotRespModel.HotsBean("沙漠骆驼"));
+                        hots.add(new SearchHotRespModel.HotsBean("三妻四妾"));
+                        hots.add(new SearchHotRespModel.HotsBean("女人花"));
+                        hots.add(new SearchHotRespModel.HotsBean("一曲相思"));
+                        hots.add(new SearchHotRespModel.HotsBean("感谢你来过"));
+                        hots.add(new SearchHotRespModel.HotsBean("张楚"));
+                        hots.add(new SearchHotRespModel.HotsBean("口是心非"));
+                        return hots;
                     }
                 });
     }

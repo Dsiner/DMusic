@@ -22,8 +22,9 @@ public class DetailActivity extends BaseFragmentActivity {
     public final static String ARG_TITLE = "title";
     public final static String ARG_COVER = "cover";
 
-    public final static int TYPE_BILL = 0;
-    public final static int TYPE_RADIO = 1;
+    public final static int TYPE_ARTIST = 0;
+    public final static int TYPE_BILL = 1;
+    public final static int TYPE_RADIO = 2;
 
     public static void openActivity(Context context, int type, String... args) {
         Intent intent = new Intent(context, DetailActivity.class);

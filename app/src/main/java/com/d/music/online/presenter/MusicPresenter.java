@@ -10,6 +10,7 @@ import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.api.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
+import com.d.music.online.model.ArtistSongsRespModel;
 import com.d.music.online.model.BillSongsModel;
 import com.d.music.online.model.BillSongsRespModel;
 import com.d.music.online.model.RadioSongsModel;
@@ -29,6 +30,61 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
         super(context);
     }
 
+    public void getArtistSongs(final String tinguid, final int page) {
+        Params params = new Params(API.Baidu.ArtistSongs.rtpType);
+        params.addParam(API.Baidu.ArtistSongs.method, API.Baidu.METHOD_ARTIST_SONGS);
+        params.addParam(API.Baidu.ArtistSongs.from, API.Baidu.FROM_QIANQIAN);
+        params.addParam(API.Baidu.ArtistSongs.version, API.Baidu.VERSION);
+        params.addParam(API.Baidu.ArtistSongs.format, API.Baidu.FORMAT_JSON);
+        params.addParam(API.Baidu.ArtistSongs.order, "" + 2);
+        params.addParam(API.Baidu.ArtistSongs.tinguid, tinguid);
+        params.addParam(API.Baidu.ArtistSongs.offset, "" + (CommonLoader.PAGE_COUNT * (page - 1)));
+        params.addParam(API.Baidu.ArtistSongs.limits, "" + CommonLoader.PAGE_COUNT);
+        Aster.get(params.rtp, params)
+                .request(new AsyncCallback<ArtistSongsRespModel, List<MusicModel>>() {
+
+                    @Override
+                    public List<MusicModel> apply(ArtistSongsRespModel resp) throws Exception {
+                        List<MusicModel> datas = new ArrayList<>();
+                        if (resp.songlist != null) {
+                            List<ArtistSongsRespModel.SonglistBean> song_list = resp.songlist;
+                            for (ArtistSongsRespModel.SonglistBean model : song_list) {
+                                MusicModel music = new MusicModel();
+                                music.id = MusicModel.generateId(MusicModel.TYPE_BAIDU,
+                                        MusicModel.Channel.CHANNEL_TYPE_NONE,
+                                        (TextUtils.isEmpty(tinguid) ? tinguid : "") + model.song_id);
+                                music.type = MusicModel.TYPE_BAIDU;
+                                music.songId = model.song_id;
+                                music.songName = model.title;
+                                music.artistId = model.artist_id;
+                                music.artistName = model.author;
+                                music.albumId = model.album_id;
+                                music.albumName = model.album_title;
+                                music.albumUrl = model.pic_small;
+                                datas.add(music);
+                            }
+                        }
+                        return datas;
+                    }
+
+                    @Override
+                    public void onSuccess(List<MusicModel> response) {
+                        if (getView() == null) {
+                            return;
+                        }
+                        getView().setData(response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (getView() == null) {
+                            return;
+                        }
+                        getView().loadError();
+                    }
+                });
+    }
+
     public void getBillSongs(final String channel, final int page) {
         Params params = new Params(API.BaiduBillSongs.rtpType);
         params.addParam(API.BaiduBillSongs.method, API.Baidu.METHOD_GET_BILL_LIST);
@@ -39,10 +95,10 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                 .request(new AsyncCallback<BillSongsRespModel, BillSongsRespModel>() {
 
                     @Override
-                    public BillSongsRespModel apply(BillSongsRespModel billSongsRespModel) throws Exception {
-                        billSongsRespModel.datas = new ArrayList<>();
-                        if (billSongsRespModel.song_list != null) {
-                            List<BillSongsModel> song_list = billSongsRespModel.song_list;
+                    public BillSongsRespModel apply(BillSongsRespModel resp) throws Exception {
+                        resp.datas = new ArrayList<>();
+                        if (resp.song_list != null) {
+                            List<BillSongsModel> song_list = resp.song_list;
                             for (BillSongsModel model : song_list) {
                                 MusicModel music = new MusicModel();
                                 music.id = MusicModel.generateId(MusicModel.TYPE_BAIDU,
@@ -56,10 +112,10 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                 music.albumId = model.album_id;
                                 music.albumName = model.album_title;
                                 music.albumUrl = model.pic_small;
-                                billSongsRespModel.datas.add(music);
+                                resp.datas.add(music);
                             }
                         }
-                        return billSongsRespModel;
+                        return resp;
                     }
 
                     @Override
@@ -90,10 +146,10 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                 .request(new AsyncCallback<RadioSongsRespModel, RadioSongsRespModel>() {
 
                     @Override
-                    public RadioSongsRespModel apply(RadioSongsRespModel radioSongsRespModel) throws Exception {
-                        radioSongsRespModel.datas = new ArrayList<>();
-                        if (radioSongsRespModel.result.songlist != null) {
-                            List<RadioSongsModel> songlist = radioSongsRespModel.result.songlist;
+                    public RadioSongsRespModel apply(RadioSongsRespModel resp) throws Exception {
+                        resp.datas = new ArrayList<>();
+                        if (resp.result.songlist != null) {
+                            List<RadioSongsModel> songlist = resp.result.songlist;
                             for (RadioSongsModel model : songlist) {
                                 if (model == null || TextUtils.isEmpty(model.songid)) {
                                     continue;
@@ -108,10 +164,10 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                                 music.artistId = model.artist_id;
                                 music.artistName = model.artist;
                                 music.albumUrl = model.thumb;
-                                radioSongsRespModel.datas.add(music);
+                                resp.datas.add(music);
                             }
                         }
-                        return radioSongsRespModel;
+                        return resp;
                     }
 
                     @Override
