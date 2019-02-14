@@ -9,39 +9,31 @@ import com.d.lib.common.component.mvp.model.BaseModel;
 public class SingerModel extends BaseModel {
 
     /**
-     * name : 陈粒
-     * id : 1007170
-     * picId : 6641050233030995
-     * img1v1Id : 6628955605123612
-     * briefDesc :
-     * picUrl : http://p3.music.126.net/3WhzK6ozFXUsNutDU566ZA==/6641050233030995.jpg
-     * img1v1Url : http://p3.music.126.net/Q92YwJrk2f2tsK-7B0VIhQ==/6628955605123612.jpg
-     * albumSize : 16
-     * alias : []
-     * trans :
-     * musicSize : 86
-     * lastRank : 0
-     * score : 818744
-     * topicPerson : 5193
-     * picId_str : 109951162845812387
-     * img1v1Id_str : 109951162845816035
-     * transNames : ["江海迦"]
+     * ting_uid : 83561
+     * name : 林志炫
+     * firstchar : L
+     * gender : 0
+     * area : 1
+     * country : 台湾
+     * avatar_big : http://qukufile2.qianqian.com/data2/pic/0ad614ef4502adacacfd72cefb9020de/583429202/583429202.jpg@s_0,w_240
+     * avatar_middle : http://qukufile2.qianqian.com/data2/pic/0ad614ef4502adacacfd72cefb9020de/583429202/583429202.jpg@s_0,w_120
+     * avatar_small : http://qukufile2.qianqian.com/data2/pic/0ad614ef4502adacacfd72cefb9020de/583429202/583429202.jpg@s_0,w_48
+     * avatar_mini : http://qukufile2.qianqian.com/data2/pic/0ad614ef4502adacacfd72cefb9020de/583429202/583429202.jpg@s_0,w_20
+     * albums_total : 15
+     * songs_total : 252
+     * artist_id : 313
      */
+    public String ting_uid;
     public String name;
-    public int id;
-    public long picId;
-    public long img1v1Id;
-    public String briefDesc;
-    public String picUrl;
-    public String img1v1Url;
-    public int albumSize;
-    public String trans;
-    public int musicSize;
-    public int lastRank;
-    public int score;
-    public int topicPerson;
-    public String picId_str;
-    public String img1v1Id_str;
-    public String[] alias;
-    public String[] transNames;
+    public String firstchar;
+    public String gender;
+    public String area;
+    public String country;
+    public String avatar_big;
+    public String avatar_middle;
+    public String avatar_small;
+    public String avatar_mini;
+    public String albums_total;
+    public String songs_total;
+    public String artist_id;
 }

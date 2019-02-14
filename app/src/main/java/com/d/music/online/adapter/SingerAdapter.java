@@ -31,7 +31,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
                 : ContextCompat.getColor(mContext, R.color.lib_pub_color_text_sub));
         holder.setText(R.id.tv_singer, "" + item.name);
         holder.setText(R.id.tv_score, mContext.getResources().getString(R.string.module_common_heat)
-                + item.score);
+                + "?");
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +39,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
             }
         });
         Glide.with(mContext)
-                .load(item.img1v1Url)
+                .load(item.avatar_middle)
                 .apply(new RequestOptions().dontAnimate())
                 .into((ImageView) holder.getView(R.id.iv_cover));
     }

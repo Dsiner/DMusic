@@ -35,6 +35,7 @@ public interface API {
      */
     interface Baidu {
         String BASE_URL_BAIDU = "http://musicapi.qianqian.com/";
+
         String METHOD_CATEGORY = "baidu.ting.billboard.billCategory";
         String METHOD_GET_CATEGORY_LIST = "baidu.ting.radio.getCategoryList";
         String METHOD_GET_BILL_LIST = "baidu.ting.billboard.billList";
@@ -43,6 +44,23 @@ public interface API {
         String METHOD_ARTIST_INFO = "baidu.ting.artist.getInfo";
         String METHOD_SEARCH_MUSIC = "baidu.ting.search.common";
         String METHOD_SEARCH_MERGE = "baidu.ting.search.merge";
+        String METHOD_72HOTARTIST = "baidu.ting.artist.get72HotArtist";
+
+        String FROM_QIANQIAN = "qianqian";
+
+        /**
+         * GET/Baidu-热门歌手
+         */
+        interface HotArtists {
+            String rtpType = Baidu.BASE_URL_BAIDU + "v1/restserver/ting";
+            String method = "method"; // baidu.ting.artist.get72HotArtist
+            String from = "from"; // qianqian
+            String version = "version"; // 2.1.0
+            String format = "format"; // json
+            String order = "order"; // 1
+            String offset = "offset"; // 0
+            String limit = "limit"; // 50
+        }
     }
 
     /**

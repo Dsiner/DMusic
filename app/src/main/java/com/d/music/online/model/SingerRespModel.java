@@ -11,21 +11,13 @@ import java.util.List;
 public class SingerRespModel extends BaseRespModel {
 
     /**
-     * list : list
-     * code : 200
+     * artist :
+     * nums : null
+     * noFirstChar :
+     * havemore : 1
      */
-    public ListBean list;
-    public int code;
-
-    public static class ListBean {
-
-        /**
-         * artists : artists
-         * updateTime : 1533890745678
-         * type : 1
-         */
-        public long updateTime;
-        public int type;
-        public List<SingerModel> artists;
-    }
+    public String nums;
+    public String noFirstChar;
+    public int havemore;
+    public List<SingerModel> artist;
 }
