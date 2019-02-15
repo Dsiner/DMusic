@@ -11,7 +11,7 @@ android {
         versionName rootProject.ext.versionName
         vectorDrawables.useSupportLibrary = true
         ndk {
-            // 选择要添加的对应cpu类型的.so库
+            // Select the .so library of the corresponding cpu type to be added
             abiFilters "armeabi", "armeabi-v7a", "x86"
         }
 
@@ -42,11 +42,11 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // 混淆
+            // Proguard
             minifyEnabled true
-            // ZipAlign优化
+            // ZipAlign optimization
             zipAlignEnabled true
-            // 移除无用的resource文件
+            // Remove useless resource files
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
