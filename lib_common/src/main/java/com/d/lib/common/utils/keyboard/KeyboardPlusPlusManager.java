@@ -21,7 +21,7 @@ import com.d.lib.common.utils.Util;
  * Created by D on 2017/8/16.
  */
 public class KeyboardPlusPlusManager extends AbsKeyboardManager {
-    private KeyboardPopup popup;
+    private KeyboardPopup mPopup;
 
     public KeyboardPlusPlusManager(Activity activity, EditText commonInput) {
         super(commonInput);
@@ -29,14 +29,14 @@ public class KeyboardPlusPlusManager extends AbsKeyboardManager {
     }
 
     private void init(Activity activity) {
-        popup = new KeyboardPopup(activity);
-        popup.show();
+        mPopup = new KeyboardPopup(activity);
+        mPopup.show();
     }
 
     @Override
     public void setOnKeyboardEventListener(KeyboardHelper.OnKeyboardEventListener l) {
         super.setOnKeyboardEventListener(l);
-        popup.setOnKeyboardEventListener(l);
+        mPopup.setOnKeyboardEventListener(l);
     }
 
     @Deprecated

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.loader.v4.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.xrv.adapter.CommonAdapter;
@@ -148,9 +148,9 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
             header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         }
         header.setOnHeaderListener(this);
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
-        xrvList.addHeaderView(header);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
+        mXrvList.addHeaderView(header);
         super.initList();
     }
 
@@ -162,7 +162,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
     @Override
     public void setData(List<MusicModel> datas) {
         super.setData(datas);
-        notifyDataCountChanged(commonLoader.getDatas().size());
+        notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
     @Override
@@ -174,9 +174,9 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
         }
         if (isSubPull != p.getIsSubPull()) {
             isSubPull = !isSubPull;
-            ((SongAdapter) adapter).setSubPull(isSubPull);
+            ((SongAdapter) mAdapter).setSubPull(isSubPull);
             if (!isSubPull) {
-                mPresenter.subPullUp(adapter.getDatas());
+                mPresenter.subPullUp(mAdapter.getDatas());
             }
         }
     }
@@ -239,7 +239,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     public void onPlayAll() {
-        List<MusicModel> datas = adapter.getDatas();
+        List<MusicModel> datas = mAdapter.getDatas();
         if (datas != null && datas.size() > 0) {
             MediaControler.getIns(mContext).init(datas, 0, true);
         }
@@ -247,7 +247,7 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     public void onHandle() {
-        List<MusicModel> datas = adapter.getDatas();
+        List<MusicModel> datas = mAdapter.getDatas();
         if (datas == null || datas.size() <= 0) {
             return;
         }

@@ -63,7 +63,7 @@ public class NewListDialog extends AbstractDialog implements View.OnClickListene
                 dismiss();
                 break;
             case R.id.btn_ok:
-                if (insertNewList(context, etName.getText().toString(), true)) {
+                if (insertNewList(mContext, etName.getText().toString(), true)) {
                     EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                     dismiss();
                 }

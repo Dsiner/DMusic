@@ -22,7 +22,6 @@ public class ClearEditText extends EditText implements View.OnTouchListener, Vie
 
     private Drawable mClearTextIcon;
     private Drawable mSearchTextIcon;
-    private TextWatcher mWatcher;
     private OnFocusChangeListener mOnFocusChangeListener;
     private OnTouchListener mOnTouchListener;
 
@@ -52,17 +51,12 @@ public class ClearEditText extends EditText implements View.OnTouchListener, Vie
         setSearchIconVisible(true);
         super.setOnTouchListener(this);
         super.setOnFocusChangeListener(this);
-        super.addTextChangedListener(this);
+        addTextChangedListener(this);
     }
 
     @Override
     public void setOnFocusChangeListener(OnFocusChangeListener l) {
         mOnFocusChangeListener = l;
-    }
-
-    @Override
-    public void addTextChangedListener(TextWatcher watcher) {
-        mWatcher = watcher;
     }
 
     @Override
@@ -74,7 +68,7 @@ public class ClearEditText extends EditText implements View.OnTouchListener, Vie
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
             setClearIconVisible(getText().length() > 0);
-            setSearchIconVisible(true);
+            setSearchIconVisible(false);
         } else {
             setSearchIconVisible(true);
             setClearIconVisible(false);
@@ -102,23 +96,16 @@ public class ClearEditText extends EditText implements View.OnTouchListener, Vie
         if (isFocused()) {
             setClearIconVisible(text.length() > 0);
         }
-        if (mWatcher != null) {
-            mWatcher.onTextChanged(text, start, lengthBefore, lengthAfter);
-        }
     }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        if (mWatcher != null) {
-            mWatcher.beforeTextChanged(s, start, count, after);
-        }
+
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (mWatcher != null) {
-            mWatcher.afterTextChanged(s);
-        }
+
     }
 
     private void setSearchIconVisible(final boolean visible) {

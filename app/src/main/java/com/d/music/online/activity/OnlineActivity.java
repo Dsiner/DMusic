@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.d.lib.common.component.loader.AbsFragmentActivity;
+import com.d.lib.common.component.loader.v4.AbsFragmentActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.TitleLayout;
 import com.d.music.R;

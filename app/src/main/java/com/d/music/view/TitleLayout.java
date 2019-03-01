@@ -32,13 +32,13 @@ public class TitleLayout extends com.d.lib.common.view.TitleLayout implements Vi
     @Override
     protected void init(Context context) {
         super.init(context);
-        ImageView ivRight = (ImageView) rootView.findViewById(R.id.iv_title_right);
+        ImageView ivRight = (ImageView) mRootView.findViewById(R.id.iv_title_right);
         ivRight.setOnClickListener(this);
     }
 
     public void showMenu() {
         if (menu == null) {
-            menu = new MenuDialog(context, menuRes);
+            menu = new MenuDialog(mContext, mMenuRes);
             menu.setOnMenuListener(onMenuListener);
         }
         menu.show();

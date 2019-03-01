@@ -73,11 +73,11 @@ public abstract class AbstractProgressBus<T, Callback extends ProgressCallback<T
 
     @UiThread
     @Override
-    public void onCancle() {
+    public void onCancel() {
         for (int i = 0; i < mCallbacks.size(); i++) {
             Callback l = mCallbacks.get(i);
             if (l != null) {
-                l.onCancle();
+                l.onCancel();
             }
         }
     }

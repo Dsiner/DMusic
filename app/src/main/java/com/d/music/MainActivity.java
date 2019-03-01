@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
+import com.d.lib.common.component.mvp.app.v4.BaseFragmentActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.BadgeView;

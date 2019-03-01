@@ -39,8 +39,8 @@ public class LMAlbumFragment extends AbstractLMFragment<AlbumModel> {
     @Override
     protected void initList() {
         super.initList();
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
     }
 
     @Override
@@ -50,14 +50,14 @@ public class LMAlbumFragment extends AbstractLMFragment<AlbumModel> {
 
     @Override
     public void setAlbum(List<AlbumModel> models) {
-        commonLoader.setData(models);
+        mCommonLoader.setData(models);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
+                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
             return;
         }
         mPresenter.getAlbum();

@@ -10,7 +10,7 @@ import com.d.lib.commenplayer.listener.IPlayerListener;
 import com.d.lib.commenplayer.listener.IRenderView;
 import com.d.lib.commenplayer.listener.OnNetListener;
 import com.d.lib.commenplayer.ui.ControlLayout;
-import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.loader.v4.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.netstate.NetCompat;
 import com.d.lib.common.component.netstate.NetState;
@@ -178,14 +178,14 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @Override
     protected void initList() {
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
         super.initList();
     }
 
     @Override
     protected void onLoad(int page) {
-        dslDs.setState(DSLayout.GONE);
+        mDslDs.setState(DSLayout.GONE);
         if (page == 1) {
             mPresenter.getMvDetailInfo(id);
             mPresenter.getSimilarMV(id);
@@ -195,9 +195,9 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @Override
     public void setInfo(MVDetailModel info) {
-        dslDs.setState(DSLayout.GONE);
-        xrvList.setVisibility(View.VISIBLE);
-        commonLoader.addTop(info);
+        mDslDs.setState(DSLayout.GONE);
+        mXrvList.setVisibility(View.VISIBLE);
+        mCommonLoader.addTop(info);
         player.play(MVInfoModel.getUrl((MVInfoModel) info));
     }
 
@@ -206,21 +206,21 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
         if (similar.size() <= 0) {
             return;
         }
-        dslDs.setState(DSLayout.GONE);
-        xrvList.setVisibility(View.VISIBLE);
-        List<MVDetailModel> datas = commonLoader.getDatas();
+        mDslDs.setState(DSLayout.GONE);
+        mXrvList.setVisibility(View.VISIBLE);
+        List<MVDetailModel> datas = mCommonLoader.getDatas();
         if (datas.size() > 0 && datas.get(0) != null && datas.get(0) instanceof MVInfoModel) {
-            commonLoader.addData(1, similar);
+            mCommonLoader.addData(1, similar);
         } else {
-            commonLoader.addData(0, similar);
+            mCommonLoader.addData(0, similar);
         }
     }
 
     @Override
     public void setData(List<MVDetailModel> datas) {
-        dslDs.setState(DSLayout.GONE);
-        xrvList.setVisibility(View.VISIBLE);
-        commonLoader.addData(datas);
+        mDslDs.setState(DSLayout.GONE);
+        mXrvList.setVisibility(View.VISIBLE);
+        mCommonLoader.addData(datas);
     }
 
     @Override

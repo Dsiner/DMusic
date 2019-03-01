@@ -41,18 +41,18 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     protected void init() {
-        p = Preferences.getIns(context.getApplicationContext());
-        LinearLayout llytQueue = (LinearLayout) rootView.findViewById(R.id.llyt_queue);
-        FrameLayout flytPlayMode = (FrameLayout) rootView.findViewById(R.id.flyt_play_mode);
-        ivPlayMode = (ImageView) rootView.findViewById(R.id.iv_play_mode);
-        tvPlayMode = (TextView) rootView.findViewById(R.id.tv_play_mode);
-        tvCount = (TextView) rootView.findViewById(R.id.tv_count);
-        TextView ivDeleteAll = (TextView) rootView.findViewById(R.id.tv_delete_all);
-        TextView ivQuit = (TextView) rootView.findViewById(R.id.tv_quit);
-        lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
+        p = Preferences.getIns(mContext.getApplicationContext());
+        LinearLayout llytQueue = (LinearLayout) mRootView.findViewById(R.id.llyt_queue);
+        FrameLayout flytPlayMode = (FrameLayout) mRootView.findViewById(R.id.flyt_play_mode);
+        ivPlayMode = (ImageView) mRootView.findViewById(R.id.iv_play_mode);
+        tvPlayMode = (TextView) mRootView.findViewById(R.id.tv_play_mode);
+        tvCount = (TextView) mRootView.findViewById(R.id.tv_count);
+        TextView ivDeleteAll = (TextView) mRootView.findViewById(R.id.tv_delete_all);
+        TextView ivQuit = (TextView) mRootView.findViewById(R.id.tv_quit);
+        lrvList = (LRecyclerView) mRootView.findViewById(R.id.lrv_list);
 
-        models = MediaControler.getIns(context).list();
-        adapter = new PlayQueueAdapter(context, models, R.layout.module_play_adapter_play_queue, this);
+        models = MediaControler.getIns(mContext).list();
+        adapter = new PlayQueueAdapter(mContext, models, R.layout.module_play_adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
         int playMode = p.getPlayMode();
@@ -60,7 +60,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         ivPlayMode.setBackgroundResource(Constants.PlayMode.PLAY_MODE_DRAWABLE[playMode]);
         tvPlayMode.setText(Constants.PlayMode.PLAY_MODE[playMode]);
 
-        rootView.setOnClickListener(this);
+        mRootView.setOnClickListener(this);
         llytQueue.setOnClickListener(this);
         flytPlayMode.setOnClickListener(this);
         ivDeleteAll.setOnClickListener(this);
@@ -114,7 +114,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
                 if (models == null || models.size() <= 0) {
                     return;
                 }
-                MediaControler controler = MediaControler.getIns(context);
+                MediaControler controler = MediaControler.getIns(mContext);
                 controler.deleteAll();
                 models = controler.list();
                 adapter.setDatas(models);
@@ -126,8 +126,8 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void show() {
-        if (!isShowing() && context != null && !((Activity) context).isFinishing()) {
-            showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        if (!isShowing() && mContext != null && !((Activity) mContext).isFinishing()) {
+            showAtLocation(mRootView, Gravity.BOTTOM, 0, 0);
         }
     }
 

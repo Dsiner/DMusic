@@ -10,15 +10,15 @@ public class ClickFast {
      * Prevent quick clicks and default waiting time is 900ms.
      */
     private static long DELAY_TIME = 900;
-    private static long lastClickTime;
+    private static long LAST_CLICK_TIME;
 
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
-        long timeD = time - lastClickTime;
+        long timeD = time - LAST_CLICK_TIME;
         if (0 < timeD && timeD < DELAY_TIME) {
             return true;
         }
-        lastClickTime = time;
+        LAST_CLICK_TIME = time;
         return false;
     }
 

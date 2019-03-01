@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
+import com.d.lib.common.component.mvp.app.v4.BaseFragmentActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.common.view.TitleLayout;

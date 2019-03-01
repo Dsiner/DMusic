@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.component.loader.AbsLazyFragment;
+import com.d.lib.common.component.loader.v4.AbsLazyFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.activity.TransferActivity;
@@ -63,7 +63,7 @@ public abstract class TransferFragment extends AbsLazyFragment<TransferModel, Tr
         observable = new TransferDataObservable() {
             @Override
             public void notifyDataSetChanged(List<List<TransferModel>> lists) {
-                if (!isLazyLoaded || mPresenter == null) {
+                if (!mIsLazyLoaded || mPresenter == null) {
                     final int countDownloading = lists.get(0).size();
                     ((TransferActivity) getActivity()).setTabNumber(type,
                             countDownloading > 0 ? "" + countDownloading : "",
@@ -78,14 +78,14 @@ public abstract class TransferFragment extends AbsLazyFragment<TransferModel, Tr
 
     @Override
     public void notifyDataSetChanged(List<List<TransferModel>> lists) {
-        commonLoader.page = 1;
+        mCommonLoader.page = 1;
         setData(mPresenter.getDatas(lists));
     }
 
     @Override
     protected void initList() {
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
         super.initList();
     }
 

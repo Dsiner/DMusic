@@ -56,19 +56,19 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     protected void init() {
-        RelativeLayout rlytList = (RelativeLayout) rootView.findViewById(R.id.rlyt_add_to_list);
+        RelativeLayout rlytList = (RelativeLayout) mRootView.findViewById(R.id.rlyt_add_to_list);
         ViewGroup.LayoutParams lp = rlytList.getLayoutParams();
-        lp.height = (int) (Util.getScreenSize((Activity) context)[1] * 0.382f);
+        lp.height = (int) (Util.getScreenSize((Activity) mContext)[1] * 0.382f);
         rlytList.setLayoutParams(lp);
 
-        ldlLoading = (LoadingLayout) rootView.findViewById(R.id.ldl_loading);
-        LRecyclerView lrvList = (LRecyclerView) rootView.findViewById(R.id.lrv_list);
-        adapter = new AddToListAdapter(context, new ArrayList<CustomListModel>(), R.layout.module_play_adapter_add_to_list);
+        ldlLoading = (LoadingLayout) mRootView.findViewById(R.id.ldl_loading);
+        LRecyclerView lrvList = (LRecyclerView) mRootView.findViewById(R.id.lrv_list);
+        adapter = new AddToListAdapter(mContext, new ArrayList<CustomListModel>(), R.layout.module_play_adapter_add_to_list);
         lrvList.setAdapter(adapter);
 
-        rootView.findViewById(R.id.tv_ok).setOnClickListener(this);
-        rootView.findViewById(R.id.quit).setOnClickListener(this);
-        rootView.findViewById(R.id.v_blank).setOnClickListener(this);
+        mRootView.findViewById(R.id.tv_ok).setOnClickListener(this);
+        mRootView.findViewById(R.id.quit).setOnClickListener(this);
+        mRootView.findViewById(R.id.v_blank).setOnClickListener(this);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void show() {
-        if (!isShowing() && context != null && !((Activity) context).isFinishing()) {
-            showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        if (!isShowing() && mContext != null && !((Activity) mContext).isFinishing()) {
+            showAtLocation(mRootView, Gravity.BOTTOM, 0, 0);
         }
     }
 
@@ -111,7 +111,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
         Observable.create(new ObservableOnSubscribe<List<CustomListModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<CustomListModel>> e) throws Exception {
-                List<CustomListModel> list = AppDBUtil.getIns(context).optCustomList().queryAllNot(notType);
+                List<CustomListModel> list = AppDBUtil.getIns(mContext).optCustomList().queryAllNot(notType);
                 if (list == null) {
                     list = new ArrayList<>();
                 }
@@ -128,7 +128,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
                     @Override
                     public void onNext(List<CustomListModel> list) {
-                        if (context == null || ((Activity) context).isFinishing() || adapter == null) {
+                        if (mContext == null || ((Activity) mContext).isFinishing() || adapter == null) {
                             return;
                         }
                         closeLoading();
@@ -161,12 +161,12 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                             continue;
                         }
                         isEmpty = false;
-                        AppDBUtil.getIns(context).optMusic().insertOrReplaceInTx(b.pointer, models);
+                        AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(b.pointer, models);
 
                         // 更新首页自定义列表歌曲数
                         final int index = b.pointer - AppDB.CUSTOM_MUSIC_INDEX;
                         if (index >= 0 && index < AppDB.CUSTOM_MUSIC_COUNT) {
-                            Cursor cursor = AppDBUtil.getIns(context).optMusic().queryBySQL("SELECT COUNT(*) FROM CUSTOM_MUSIC" + index);
+                            Cursor cursor = AppDBUtil.getIns(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM CUSTOM_MUSIC" + index);
                             Integer count = 0;
                             if (cursor != null && cursor.moveToFirst()) {
                                 int indexCount = cursor.getColumnIndex("COUNT(*)");
@@ -177,7 +177,7 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
                             if (cursor != null) {
                                 cursor.close();
                             }
-                            AppDBUtil.getIns(context).optCustomList().updateCount(b.pointer, count);
+                            AppDBUtil.getIns(mContext).optCustomList().updateCount(b.pointer, count);
                         }
                     }
                 }
@@ -194,14 +194,14 @@ public class AddToListPopup extends AbstractPopup implements View.OnClickListene
 
                     @Override
                     public void onNext(Boolean isEmpty) {
-                        if (context == null || ((Activity) context).isFinishing()) {
+                        if (mContext == null || ((Activity) mContext).isFinishing()) {
                             return;
                         }
                         closeLoading();
                         if (isEmpty) {
-                            Util.toast(context, context.getResources().getString(R.string.module_common_please_select));
+                            Util.toast(mContext, mContext.getResources().getString(R.string.module_common_please_select));
                         } else {
-                            Util.toast(context, context.getResources().getString(R.string.module_common_add_success));
+                            Util.toast(mContext, mContext.getResources().getString(R.string.module_common_add_success));
                             // 更新首页自定义列表
                             EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));
                             dismiss();

@@ -9,38 +9,38 @@ import java.util.ArrayList;
  * Created by D on 2018/2/5.
  */
 public class NetBus {
-    private volatile static NetBus instance;
-    private ArrayList<OnNetListener> onNetListeners = new ArrayList<>();
+    private volatile static NetBus INSTANCE;
+    private ArrayList<OnNetListener> mOnNetListeners = new ArrayList<>();
 
     public static NetBus getIns() {
-        if (instance == null) {
+        if (INSTANCE == null) {
             synchronized (NetBus.class) {
-                if (instance == null) {
-                    instance = new NetBus();
+                if (INSTANCE == null) {
+                    INSTANCE = new NetBus();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 
     @UiThread
     public void addListener(OnNetListener l) {
         if (l != null) {
-            onNetListeners.add(l);
+            mOnNetListeners.add(l);
         }
     }
 
     @UiThread
     public void removeListener(OnNetListener l) {
         if (l != null) {
-            onNetListeners.remove(l);
+            mOnNetListeners.remove(l);
         }
     }
 
     void onNetChange(int state) {
         synchronized (NetBus.class) {
-            for (int i = 0; i < onNetListeners.size(); i++) {
-                OnNetListener listener = onNetListeners.get(i);
+            for (int i = 0; i < mOnNetListeners.size(); i++) {
+                OnNetListener listener = mOnNetListeners.get(i);
                 if (listener != null) {
                     listener.onNetChange(state);
                 }

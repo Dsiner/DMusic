@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.mvp.base.BaseFragment;
+import com.d.lib.common.component.mvp.app.v4.BaseFragment;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.permissioncompat.Permission;

@@ -13,33 +13,33 @@ import com.d.lib.common.data.Constants;
 public abstract class AbstractPreference {
     private final static String PREFIX = Constants.PREFIX;
 
-    protected SharedPreferences settings;
-    protected SharedPreferences.Editor editor;
+    protected SharedPreferences mSettings;
+    protected SharedPreferences.Editor mEditor;
 
     @SuppressLint("CommitPrefEdits")
     protected AbstractPreference(Context context) {
-        settings = context.getApplicationContext().getSharedPreferences(PREFIX + getClass().getSimpleName(), 0);
-        editor = settings.edit();
+        mSettings = context.getApplicationContext().getSharedPreferences(PREFIX + getClass().getSimpleName(), 0);
+        mEditor = mSettings.edit();
     }
 
     protected void save() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD) {
-            editor.apply();
+            mEditor.apply();
         } else {
-            editor.commit();
+            mEditor.commit();
         }
     }
 
     protected void clearAllData() {
-        editor.clear();
+        mEditor.clear();
         save();
     }
 
     public void registerOnSharePreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        settings.registerOnSharedPreferenceChangeListener(listener);
+        mSettings.registerOnSharedPreferenceChangeListener(listener);
     }
 
     public void unregisterOnSharePreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        settings.unregisterOnSharedPreferenceChangeListener(listener);
+        mSettings.unregisterOnSharedPreferenceChangeListener(listener);
     }
 }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.d.lib.common.component.mvp.base.BaseFragment;
+import com.d.lib.common.component.mvp.app.v4.BaseFragment;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.permissioncompat.Permission;

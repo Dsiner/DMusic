@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.loader.v4.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.ViewHelper;
@@ -97,11 +97,11 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     @Override
     protected void initList() {
         initHead();
-        xrvList.setCanRefresh(false);
+        mXrvList.setCanRefresh(false);
         if (type == DetailActivity.TYPE_RADIO) {
-            xrvList.setCanLoadMore(false);
+            mXrvList.setCanLoadMore(false);
         }
-        xrvList.addHeaderView(header);
+        mXrvList.addHeaderView(header);
         super.initList();
     }
 
@@ -114,7 +114,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
             @Override
             public void onPlayAll() {
-                MediaControler.getIns(mContext).init(commonLoader.getDatas(), 0, true);
+                MediaControler.getIns(mContext).init(mCommonLoader.getDatas(), 0, true);
             }
 
             @Override
@@ -125,7 +125,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
         ViewHelper.setOnClick(header, R.id.flyt_header_song_download, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final List<MusicModel> datas = commonLoader.getDatas();
+                final List<MusicModel> datas = mCommonLoader.getDatas();
                 AlertDialogFactory.createFactory(mContext)
                         .getAlertDialog(mContext.getResources().getString(R.string.module_common_tips),
                                 mContext.getResources().getString(R.string.module_common_traffic_prompt),
@@ -184,7 +184,7 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
             setCover(cover);
         }
         super.setData(datas);
-        notifyDataCountChanged(commonLoader.getDatas().size());
+        notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
     private void setCover(String url) {

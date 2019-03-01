@@ -19,22 +19,22 @@ public class KeyboardPlusManager extends AbsKeyboardManager {
         KeyboardHelper.setOnKeyboardEventListener(activity, new KeyboardHelper.OnKeyboardEventListener() {
             @Override
             public void onScroll(Rect rect) {
-                if (listener != null) {
-                    listener.onScroll(rect);
+                if (mListener != null) {
+                    mListener.onScroll(rect);
                 }
             }
 
             @Override
             public void onPop() {
-                if (listener != null) {
-                    listener.onPop();
+                if (mListener != null) {
+                    mListener.onPop();
                 }
             }
 
             @Override
             public void onClose() {
-                if (listener != null) {
-                    listener.onClose();
+                if (mListener != null) {
+                    mListener.onClose();
                 }
             }
         });

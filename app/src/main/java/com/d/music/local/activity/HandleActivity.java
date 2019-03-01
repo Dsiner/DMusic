@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.mvp.app.BaseActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.TitleLayout;

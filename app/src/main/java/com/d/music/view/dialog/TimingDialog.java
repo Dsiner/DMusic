@@ -76,7 +76,7 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
 
     private int verify(String time) {
         if (TextUtils.isEmpty(time)) {
-            Util.toast(context, "请输入睡眠时间");
+            Util.toast(mContext, "请输入睡眠时间");
             return -1;
         }
         return Integer.valueOf(time);
@@ -99,9 +99,9 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
                 if (minute <= 0) {
                     App.exit();
                 } else {
-                    MusicService.startService(context.getApplicationContext());
-                    MusicService.timing(context.getApplicationContext(), false, 0);
-                    MusicService.timing(context.getApplicationContext(), true, minute * 60 * 1000);
+                    MusicService.startService(mContext.getApplicationContext());
+                    MusicService.timing(mContext.getApplicationContext(), false, 0);
+                    MusicService.timing(mContext.getApplicationContext(), true, minute * 60 * 1000);
                     dismiss();
                     if (listener != null) {
                         listener.onSubmit(minute);

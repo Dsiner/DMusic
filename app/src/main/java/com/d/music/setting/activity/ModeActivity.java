@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.mvp.base.BaseActivity;
+import com.d.lib.common.component.mvp.app.BaseActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 import com.d.lib.xrv.LRecyclerView;

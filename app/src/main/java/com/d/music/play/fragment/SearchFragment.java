@@ -9,7 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.component.loader.AbsFragment;
+import com.d.lib.common.component.loader.v4.AbsFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.ViewHelper;
@@ -115,8 +115,8 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     @Override
     protected void initList() {
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(true);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(true);
         super.initList();
     }
 

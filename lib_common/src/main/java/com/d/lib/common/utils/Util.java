@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -319,6 +320,34 @@ public class Util {
             float gb = size / (1024 * 1024 * 1024f);
             return format.format(gb) + "GB";
         }
+    }
+
+    /**
+     * 调整TextView字体大小，自适应宽度
+     *
+     * @param textView TextView
+     * @param text     文本
+     * @param maxWidth 最大宽度限制
+     * @param dpMin    最小dp限制
+     * @param dpMax    最大dp限制，默认dp
+     */
+    public static void autoSize(TextView textView, String text, float maxWidth, float dpMin, float dpMax) {
+        Paint paint = textView.getPaint();
+        float minSize = Util.dip2px(textView.getContext(), dpMin);
+        float textSize = Util.dip2px(textView.getContext(), dpMax);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        // Get the effective width of the current TextView
+        int availableWidth = Util.dip2px(textView.getContext(), maxWidth);
+        float textWidth = paint.measureText(text);
+        while (textWidth > availableWidth) {
+            if (textSize < minSize) {
+                break;
+            }
+            textSize = textSize - 1;
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize); // The unit passed in here is px
+            textWidth = paint.measureText(text) + 2;
+        }
+        textView.setText(text);
     }
 
     /**

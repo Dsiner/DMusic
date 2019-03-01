@@ -1,4 +1,4 @@
-package com.d.lib.common.component.mvp.base;
+package com.d.lib.common.component.mvp.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,24 +7,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Window;
 
+import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.common.view.dialog.AlertDialogFactory;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
+import cn.feng.skin.manager.base.BaseSkinActivity;
 
 /**
- * BaseFragmentActivity
+ * BaseActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity implements MvpView {
-    protected Activity mActivity;
+public abstract class BaseActivity<T extends MvpBasePresenter>
+        extends BaseSkinActivity implements MvpView {
+
     protected Context mContext;
-    protected DSLayout dslDs;
-    private AlertDialog loadingDlg;
-    private Unbinder unbinder;
+    protected Activity mActivity;
+    protected T mPresenter;
+    protected DSLayout mDslDs;
+    private AlertDialog mLoadingDlg;
+    private Unbinder mUnbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,25 +38,33 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutRes());
         if (getDSLayoutRes() != 0) {
-            dslDs = (DSLayout) findViewById(getDSLayoutRes());
+            mDslDs = (DSLayout) findViewById(getDSLayoutRes());
         }
         bindView();
-        unbinder = ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
+        mPresenter = getPresenter();
+        if (mPresenter != null) {
+            mPresenter.attachView(getMvpView());
+        }
         init();
     }
 
     @Override
     protected void onDestroy() {
-        if (unbinder != null) {
-            unbinder.unbind();
+        if (mPresenter != null) {
+            mPresenter.detachView(false);
+        }
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+            mUnbinder = null;
         }
         super.onDestroy();
     }
 
     @Override
     public void setState(int state) {
-        if (dslDs != null) {
-            dslDs.setState(state);
+        if (mDslDs != null) {
+            mDslDs.setState(state);
         }
     }
 
@@ -60,11 +72,11 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
      * Show loading dialog
      */
     public void showLoading() {
-        if (loadingDlg == null) {
-            loadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
+        if (mLoadingDlg == null) {
+            mLoadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
         }
-        if (!loadingDlg.isShowing()) {
-            loadingDlg.show();
+        if (!mLoadingDlg.isShowing()) {
+            mLoadingDlg.show();
         }
     }
 
@@ -72,8 +84,8 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
      * Dismiss loading dialog
      */
     public void closeLoading() {
-        if (loadingDlg != null && loadingDlg.isShowing()) {
-            loadingDlg.dismiss();
+        if (mLoadingDlg != null && mLoadingDlg.isShowing()) {
+            mLoadingDlg.dismiss();
         }
     }
 
@@ -92,6 +104,10 @@ public abstract class BaseFragmentActivity extends BaseSkinFragmentActivity impl
     protected int getDSLayoutRes() {
         return 0;
     }
+
+    public abstract T getPresenter();
+
+    protected abstract MvpView getMvpView();
 
     protected void bindView() {
     }

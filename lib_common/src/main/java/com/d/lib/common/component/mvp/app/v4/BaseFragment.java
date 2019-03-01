@@ -1,4 +1,4 @@
-package com.d.lib.common.component.mvp.base;
+package com.d.lib.common.component.mvp.app.v4;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,14 +22,16 @@ import butterknife.Unbinder;
  * BaseFragment
  * Created by D on 2017/4/27.
  */
-public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment implements MvpView {
+public abstract class BaseFragment<T extends MvpBasePresenter>
+        extends Fragment implements MvpView {
+
     protected Context mContext;
     protected Activity mActivity;
     protected T mPresenter;
-    protected View rootView;
-    protected DSLayout dslDs;
-    private AlertDialog loadingDlg;
-    private Unbinder unbinder;
+    protected View mRootView;
+    protected DSLayout mDslDs;
+    private AlertDialog mLoadingDlg;
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,27 +44,27 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (rootView == null) {
+        if (mRootView == null) {
             int layoutRes = getLayoutRes();
             mPresenter = getPresenter();
-            rootView = getActivity().getLayoutInflater().inflate(layoutRes, null);
+            mRootView = getActivity().getLayoutInflater().inflate(layoutRes, null);
             if (getDSLayoutRes() != 0) {
-                dslDs = (DSLayout) rootView.findViewById(getDSLayoutRes());
+                mDslDs = (DSLayout) mRootView.findViewById(getDSLayoutRes());
             }
-            bindView(rootView);
-            unbinder = ButterKnife.bind(this, rootView);
+            bindView(mRootView);
+            mUnbinder = ButterKnife.bind(this, mRootView);
             init();
         } else {
-            if (rootView.getParent() != null) {
-                ((ViewGroup) rootView.getParent()).removeView(rootView);
+            if (mRootView.getParent() != null) {
+                ((ViewGroup) mRootView.getParent()).removeView(mRootView);
             }
             if (getDSLayoutRes() != 0) {
-                dslDs = (DSLayout) rootView.findViewById(getDSLayoutRes());
+                mDslDs = (DSLayout) mRootView.findViewById(getDSLayoutRes());
             }
-            bindView(rootView);
-            unbinder = ButterKnife.bind(this, rootView);
+            bindView(mRootView);
+            mUnbinder = ButterKnife.bind(this, mRootView);
         }
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -78,8 +80,9 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
         if (mPresenter != null) {
             mPresenter.detachView(false);
         }
-        if (unbinder != null) {
-            unbinder.unbind();
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+            mUnbinder = null;
         }
         super.onDestroyView();
     }
@@ -91,8 +94,8 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
 
     @Override
     public void setState(int state) {
-        if (dslDs != null) {
-            dslDs.setState(state);
+        if (mDslDs != null) {
+            mDslDs.setState(state);
         }
     }
 
@@ -100,11 +103,11 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
      * Show loading dialog
      */
     public void showLoading() {
-        if (loadingDlg == null) {
-            loadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
+        if (mLoadingDlg == null) {
+            mLoadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
         }
-        if (!loadingDlg.isShowing()) {
-            loadingDlg.show();
+        if (!mLoadingDlg.isShowing()) {
+            mLoadingDlg.show();
         }
     }
 
@@ -112,8 +115,8 @@ public abstract class BaseFragment<T extends MvpBasePresenter> extends Fragment 
      * Dismiss loading dialog
      */
     public void closeLoading() {
-        if (loadingDlg != null && loadingDlg.isShowing()) {
-            loadingDlg.dismiss();
+        if (mLoadingDlg != null && mLoadingDlg.isShowing()) {
+            mLoadingDlg.dismiss();
         }
     }
 

@@ -256,7 +256,7 @@ public class MusicService extends Service {
     /**
      * 取消通知栏
      */
-    public void cancleNotification() {
+    public void cancelNotification() {
         // Can not work beacauseof "startForeground"!
         mManager.cancel(mNotification_ID);
     }
@@ -319,7 +319,7 @@ public class MusicService extends Service {
             case Constants.PlayStatus.PLAY_STATUS_STOP:
                 updateNotification(null, mControl.getSongName(), mControl.getArtistName(), status);
                 // 取消通知栏
-                cancleNotification();
+                cancelNotification();
                 break;
             case Constants.PlayStatus.PLAY_STATUS_PLAYING:
             case Constants.PlayStatus.PLAY_STATUS_PAUSE:

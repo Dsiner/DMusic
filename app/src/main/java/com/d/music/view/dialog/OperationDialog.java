@@ -37,9 +37,9 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
     private OperationDialog(Context context, int type, String title, List<OperationDialog.Bean> datas) {
         super(context);
         this.type = type;
-        this.title = title;
-        this.datas = datas;
-        initView(rootView);
+        this.mTitle = title;
+        this.mDatas = datas;
+        initView(mRootView);
     }
 
     @Override
@@ -49,18 +49,18 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        return new OperationDialog.SheetAdapter(context, datas, R.layout.module_play_adapter_operation);
+        return new OperationDialog.SheetAdapter(mContext, mDatas, R.layout.module_play_adapter_operation);
     }
 
     @Override
     protected void initView(View rootView) {
         initRecyclerList(rootView, R.id.rv_list, LinearLayoutManager.HORIZONTAL);
 
-        TextView tvCancle = (TextView) rootView.findViewById(R.id.tv_cancle);
+        TextView tvCancel = (TextView) rootView.findViewById(R.id.tv_cancel);
         TextView tvTitle = (TextView) rootView.findViewById(R.id.tv_title);
-        if (!TextUtils.isEmpty(title)) {
+        if (!TextUtils.isEmpty(mTitle)) {
             tvTitle.setVisibility(View.VISIBLE);
-            tvTitle.setText(title);
+            tvTitle.setText(mTitle);
         } else {
             tvTitle.setVisibility(View.GONE);
         }
@@ -68,12 +68,12 @@ public class OperationDialog extends AbsSheetDialog<OperationDialog.Bean> {
         // Change Skin
         rootView.setBackgroundResource(type == TYPE_NIGHT ?
                 R.color.color_popup_more_bg : R.color.color_popup_more_bg_light);
-        tvCancle.setTextColor(type == TYPE_NIGHT ? ContextCompat.getColor(context, R.color.color_popup_more)
-                : ContextCompat.getColor(context, R.color.color_popup_more_light));
+        tvCancel.setTextColor(type == TYPE_NIGHT ? ContextCompat.getColor(mContext, R.color.color_popup_more)
+                : ContextCompat.getColor(mContext, R.color.color_popup_more_light));
         rootView.findViewById(R.id.v_bottom_line).setBackgroundResource(type == TYPE_NIGHT ?
                 R.color.color_popup_more_line : R.color.color_popup_more_line_light);
 
-        tvCancle.setOnClickListener(new View.OnClickListener() {
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClick(-1, null);

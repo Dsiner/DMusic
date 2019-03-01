@@ -10,18 +10,19 @@ import java.util.List;
 public class CommonLoader<T> {
     public final static int PAGE_COUNT = 10;
 
-    private XRecyclerView mList;
+    public int page = 1;
+
+    private XRecyclerView mXrvList;
     private CommonAdapter<T> mAdapter;
     private List<T> mDatas;
     private int mPageCount = PAGE_COUNT;
     private OnLoaderListener mListener;
-    public int page = 1;
 
     public CommonLoader(XRecyclerView list, CommonAdapter<T> adapter) {
         this.mDatas = new ArrayList<T>();
-        this.mList = list;
+        this.mXrvList = list;
         this.mAdapter = adapter;
-        this.mList.setLoadingListener(new IRecyclerView.LoadingListener() {
+        this.mXrvList.setLoadingListener(new IRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 page = 1;
@@ -51,12 +52,12 @@ public class CommonLoader<T> {
         int sizeLoad = data.size();
         initList(data);
         if (page == 1) {
-            mList.refreshComplete();
+            mXrvList.refreshComplete();
         } else {
-            mList.loadMoreComplete();
+            mXrvList.loadMoreComplete();
         }
         if (sizeLoad < mPageCount) {
-            mList.setNoMore(true);
+            mXrvList.setNoMore(true);
         }
         if (mListener == null) {
             return;
@@ -73,7 +74,7 @@ public class CommonLoader<T> {
             mDatas.add(0, data);
             mAdapter.setDatas(mDatas);
             mAdapter.notifyDataSetChanged();
-            mList.scrollToPosition(0);
+            mXrvList.scrollToPosition(0);
         }
     }
 
@@ -82,7 +83,7 @@ public class CommonLoader<T> {
             mDatas.addAll(0, datas);
             mAdapter.setDatas(mDatas);
             mAdapter.notifyDataSetChanged();
-            mList.scrollToPosition(0);
+            mXrvList.scrollToPosition(0);
         }
     }
 
@@ -120,10 +121,10 @@ public class CommonLoader<T> {
 
     public void loadError() {
         if (page == 1) {
-            mList.refreshComplete();
+            mXrvList.refreshComplete();
         } else {
             page--;
-            mList.loadMoreError();
+            mXrvList.loadMoreError();
         }
         if (mListener != null) {
             mListener.loadError(mDatas.size() <= 0);

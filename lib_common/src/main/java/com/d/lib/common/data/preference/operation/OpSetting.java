@@ -16,11 +16,11 @@ public class OpSetting extends AbstractOp {
 
     /************************* 是/否 自动升级 *************************/
     public void putIsAutoUpdate(boolean auto) {
-        editor.putBoolean(Keys.KEY_IS_AUTO_UPDATE, auto);
+        mEditor.putBoolean(Keys.KEY_IS_AUTO_UPDATE, auto);
         save();
     }
 
     public boolean getIsAutoUpdate() {
-        return settings.getBoolean(Keys.KEY_IS_AUTO_UPDATE, false);
+        return mSettings.getBoolean(Keys.KEY_IS_AUTO_UPDATE, false);
     }
 }

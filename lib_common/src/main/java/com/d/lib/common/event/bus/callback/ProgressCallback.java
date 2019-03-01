@@ -16,9 +16,9 @@ public interface ProgressCallback<T> extends SimpleCallback<T> {
     int DONE = 0;
     int ERROR = 1;
     int RUNNING = 2;
-    int PENDDING = 3;
+    int PENDING = 3;
 
-    @IntDef({DONE, ERROR, RUNNING, PENDDING})
+    @IntDef({DONE, ERROR, RUNNING, PENDING})
     @Target({ElementType.PARAMETER, ElementType.METHOD})
     @Retention(RetentionPolicy.SOURCE)
     @interface State {
@@ -31,5 +31,5 @@ public interface ProgressCallback<T> extends SimpleCallback<T> {
 
     void onPending();
 
-    void onCancle();
+    void onCancel();
 }

@@ -3,7 +3,7 @@ package com.d.music.transfer.activity;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.d.lib.common.component.loader.AbsFragmentActivity;
+import com.d.lib.common.component.loader.v4.AbsFragmentActivity;
 import com.d.lib.common.view.TitleLayout;
 import com.d.music.R;
 import com.d.music.transfer.fragment.TransferFragment;
@@ -55,9 +55,9 @@ public class TransferActivity extends AbsFragmentActivity {
     }
 
     public void setTabNumber(int position, String text, int visibility) {
-        if (indicator == null) {
+        if (mScrollTab == null) {
             return;
         }
-        indicator.setNumber(position, text, visibility);
+        mScrollTab.setNumber(position, text, visibility);
     }
 }

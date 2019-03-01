@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.d.lib.common.component.mvp.base.BaseFragmentActivity;
+import com.d.lib.common.component.mvp.app.v4.BaseFragmentActivity;
 import com.d.music.R;
 import com.d.music.online.fragment.DetailFragment;
 import com.d.music.utils.StatusBarCompat;

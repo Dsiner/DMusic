@@ -15,8 +15,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 public class GlideRoundTransform extends BitmapTransformation {
-    private float radius = 0f;
-    Matrix matrix = new Matrix();
+    private float mRadius = 0f;
+    private Matrix mMatrix = new Matrix();
 
     public GlideRoundTransform(Context context) {
         this(context, 7);
@@ -24,7 +24,7 @@ public class GlideRoundTransform extends BitmapTransformation {
 
     public GlideRoundTransform(Context context, int dp) {
         super(context);
-        this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
+        this.mRadius = Resources.getSystem().getDisplayMetrics().density * dp;
     }
 
     @Override
@@ -38,9 +38,9 @@ public class GlideRoundTransform extends BitmapTransformation {
         int y = (toTransform.getHeight() - size) / 2;
         float out = outWidth;
         float scale = out / size;
-        matrix.reset();
-        matrix.postScale(scale, scale);
-        Bitmap squared = Bitmap.createBitmap(toTransform, x, y, size, size, matrix, true);
+        mMatrix.reset();
+        mMatrix.postScale(scale, scale);
+        Bitmap squared = Bitmap.createBitmap(toTransform, x, y, size, size, mMatrix, true);
         if (result == null) {
             result = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);
         }
@@ -49,7 +49,7 @@ public class GlideRoundTransform extends BitmapTransformation {
         paint.setShader(new BitmapShader(squared, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
         paint.setAntiAlias(true);
         RectF rect = new RectF(1, 1, out - 1, out - 1);
-        canvas.drawRoundRect(rect, radius, radius, paint);
+        canvas.drawRoundRect(rect, mRadius, mRadius, paint);
         squared.recycle();
         return result;
     }

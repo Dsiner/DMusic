@@ -1,6 +1,6 @@
 package com.d.music.online.fragment;
 
-import com.d.lib.common.component.loader.AbsLazyFragment;
+import com.d.lib.common.component.loader.v4.AbsLazyFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.music.R;
@@ -33,8 +33,8 @@ public class RadioFragment extends AbsLazyFragment<RadioModel, RadioPresenter> {
 
     @Override
     protected void initList() {
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
         super.initList();
     }
 

@@ -26,7 +26,7 @@ public class UserData extends AbstractPreference {
 
     public UserBean getUserBean() {
         if (userBean == null) {
-            String json = settings.getString(Keys.KEY_USER_JSON, "");
+            String json = mSettings.getString(Keys.KEY_USER_JSON, "");
             if (!TextUtils.isEmpty(json)) {
                 userBean = Util.getGsonIns().fromJson(json, UserBean.class);
             } else {
@@ -41,12 +41,12 @@ public class UserData extends AbstractPreference {
             return;
         }
         userBean = bean;
-        editor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(bean));
+        mEditor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(bean));
         save();
     }
 
     public void saveUserBean() {
-        editor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(userBean));
+        mEditor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(userBean));
         save();
     }
 

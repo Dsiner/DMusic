@@ -10,18 +10,18 @@ import android.widget.EditText;
  * Created by D on 2017/9/6.
  */
 public abstract class AbsKeyboardManager {
-    protected EditText commonInput;
-    protected KeyboardHelper.OnKeyboardEventListener listener;
+    protected EditText mCommonInput;
+    protected KeyboardHelper.OnKeyboardEventListener mListener;
 
     public AbsKeyboardManager(EditText commonInput) {
-        this.commonInput = commonInput;
+        this.mCommonInput = commonInput;
     }
 
     /**
      * 弹起键盘输入
      */
     public void requestEdit(boolean delay) {
-        KeyboardHelper.showKeyboard(commonInput, delay);
+        KeyboardHelper.showKeyboard(mCommonInput, delay);
     }
 
     /**
@@ -31,15 +31,15 @@ public abstract class AbsKeyboardManager {
      */
     public void dismissEdit(boolean close) {
         if (close) {
-            KeyboardHelper.hideKeyboard(commonInput);
+            KeyboardHelper.hideKeyboard(mCommonInput);
         }
-        commonInput.clearFocus();
+        mCommonInput.clearFocus();
     }
 
     /**
      * 手动滚动底部EditText，以避免被软键盘遮盖
      *
-     * @param rect       rect
+     * @param rect       Rect
      * @param scrollRoot 目标EditText or 父布局 的父布局
      * @param scroll     目标EditText or 父布局
      */
@@ -49,13 +49,13 @@ public abstract class AbsKeyboardManager {
         }
         int[] location = new int[2];
         scroll.getLocationInWindow(location);
-        int srollHeight = (location[1] + scroll.getHeight()) - rect.bottom;
-        if (srollHeight > 0) {
-            scrollRoot.scrollTo(0, srollHeight);
+        int scrollHeight = (location[1] + scroll.getHeight()) - rect.bottom;
+        if (scrollHeight > 0) {
+            scrollRoot.scrollTo(0, scrollHeight);
         }
     }
 
     public void setOnKeyboardEventListener(KeyboardHelper.OnKeyboardEventListener l) {
-        this.listener = l;
+        this.mListener = l;
     }
 }

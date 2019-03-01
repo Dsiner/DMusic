@@ -58,10 +58,10 @@ public class SongTransferFragment extends TransferFragment {
     @Override
     protected void initList() {
         initHead();
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
         if (type == TYPE_SONG) {
-            xrvList.addHeaderView(header);
+            mXrvList.addHeaderView(header);
         }
         super.initList();
     }

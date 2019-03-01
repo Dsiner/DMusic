@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 public class GlideCircleTransform extends BitmapTransformation {
-    Matrix matrix = new Matrix();
+    private Matrix mMatrix = new Matrix();
 
     public GlideCircleTransform(Context context) {
         super(context);
@@ -30,9 +30,9 @@ public class GlideCircleTransform extends BitmapTransformation {
         int y = (toTransform.getHeight() - size) / 2;
         float out = outWidth;
         float scale = out / size;
-        matrix.reset();
-        matrix.postScale(scale, scale);
-        Bitmap squared = Bitmap.createBitmap(toTransform, x, y, size, size, matrix, true);
+        mMatrix.reset();
+        mMatrix.postScale(scale, scale);
+        Bitmap squared = Bitmap.createBitmap(toTransform, x, y, size, size, mMatrix, true);
         if (result == null) {
             result = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);
         }

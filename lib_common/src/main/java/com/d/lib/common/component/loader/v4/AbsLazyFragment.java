@@ -1,4 +1,4 @@
-package com.d.lib.common.component.loader;
+package com.d.lib.common.component.loader.v4;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +9,16 @@ import com.d.lib.common.component.mvp.MvpBasePresenter;
  * Auto-Loader - ViewPager Fragment
  * Created by D on 2017/8/23.
  */
-public abstract class AbsLazyFragment<M, P extends MvpBasePresenter> extends AbsFragment<M, P> {
-    protected boolean isVisibleToUser;
-    protected boolean isLazyLoaded;
-    protected boolean isPrepared;
+public abstract class AbsLazyFragment<M, P extends MvpBasePresenter>
+        extends AbsFragment<M, P> {
+
+    protected boolean mIsVisibleToUser;
+    protected boolean mIsLazyLoaded;
+    protected boolean mIsPrepared;
 
     @Override
     protected void init() {
-        isPrepared = true;
+        mIsPrepared = true;
     }
 
     @Override
@@ -31,19 +33,19 @@ public abstract class AbsLazyFragment<M, P extends MvpBasePresenter> extends Abs
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (getUserVisibleHint()) {
-            this.isVisibleToUser = true;
+            this.mIsVisibleToUser = true;
             onVisible();
         } else {
-            this.isVisibleToUser = false;
+            this.mIsVisibleToUser = false;
             onInvisible();
         }
     }
 
     protected void onVisible() {
-        if (isLazyLoaded || !isPrepared || !isVisibleToUser) {
+        if (mIsLazyLoaded || !mIsPrepared || !mIsVisibleToUser) {
             return;
         }
-        isLazyLoaded = true;//仅仅懒加载加载一次
+        mIsLazyLoaded = true; // Just lazy loading once
         initList();
         getData();
     }

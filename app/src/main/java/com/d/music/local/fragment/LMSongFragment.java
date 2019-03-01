@@ -70,9 +70,9 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
         header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         header.setVisibility(View.GONE);
         header.setOnHeaderListener(this);
-        xrvList.addHeaderView(header);
-        xrvList.setCanRefresh(false);
-        xrvList.setCanLoadMore(false);
+        mXrvList.addHeaderView(header);
+        mXrvList.setCanRefresh(false);
+        mXrvList.setCanLoadMore(false);
         super.initList();
     }
 
@@ -97,17 +97,17 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
         }
         if (isSubPull != p.getIsSubPull()) {
             isSubPull = !isSubPull;
-            ((SongAdapter) adapter).setSubPull(isSubPull);
+            ((SongAdapter) mAdapter).setSubPull(isSubPull);
             if (!isSubPull) {
-                mPresenter.subPullUp(adapter.getDatas());
+                mPresenter.subPullUp(mAdapter.getDatas());
             }
         }
     }
 
     @Override
     public void setSong(List<MusicModel> models) {
-        commonLoader.setData(models);
-        notifyDataCountChanged(commonLoader.getDatas().size());
+        mCommonLoader.setData(models);
+        notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
     private void notifyDataCountChanged(int count) {
@@ -118,7 +118,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     public void onPlayAll() {
-        List<MusicModel> datas = commonLoader.getDatas();
+        List<MusicModel> datas = mCommonLoader.getDatas();
         if (datas != null && datas.size() > 0) {
             MediaControler.getIns(mContext).init(datas, 0, true);
         }
@@ -131,14 +131,14 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     public void onChange(int index, String c) {
-        sortUtil.onChange(index, c, xrvList);
+        sortUtil.onChange(index, c, mXrvList);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !isLazyLoaded) {
+                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
             return;
         }
         setSong(event.list);

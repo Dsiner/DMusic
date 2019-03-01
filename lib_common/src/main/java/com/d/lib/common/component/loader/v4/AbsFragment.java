@@ -1,11 +1,13 @@
-package com.d.lib.common.component.loader;
+package com.d.lib.common.component.loader.v4;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.d.lib.common.R;
+import com.d.lib.common.component.loader.CommonLoader;
+import com.d.lib.common.component.loader.IAbsView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.common.component.mvp.base.BaseFragment;
+import com.d.lib.common.component.mvp.app.v4.BaseFragment;
 import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.DSLayout;
 import com.d.lib.xrv.XRecyclerView;
@@ -17,12 +19,13 @@ import java.util.List;
  * Auto-Loader - Fragment
  * Created by D on 2017/8/23.
  */
-public abstract class AbsFragment<M, P extends MvpBasePresenter> extends BaseFragment<P>
+public abstract class AbsFragment<M, P extends MvpBasePresenter>
+        extends BaseFragment<P>
         implements IAbsView<M>, View.OnClickListener {
-    protected XRecyclerView xrvList;
 
-    protected CommonAdapter<M> adapter;
-    protected CommonLoader<M> commonLoader;
+    protected XRecyclerView mXrvList;
+    protected CommonAdapter<M> mAdapter;
+    protected CommonLoader<M> mCommonLoader;
 
     @Override
     public void onClick(View v) {
@@ -45,7 +48,7 @@ public abstract class AbsFragment<M, P extends MvpBasePresenter> extends BaseFra
     @Override
     protected void bindView(View rootView) {
         super.bindView(rootView);
-        xrvList = ViewHelper.findView(rootView, R.id.xrv_list);
+        mXrvList = ViewHelper.findView(rootView, R.id.xrv_list);
 
         ViewHelper.setOnClick(rootView, this, R.id.btn_dsl);
     }
@@ -62,57 +65,57 @@ public abstract class AbsFragment<M, P extends MvpBasePresenter> extends BaseFra
     }
 
     protected void initList() {
-        adapter = getAdapter();
-        xrvList.showAsList();
-        xrvList.setAdapter(adapter);
-        commonLoader = new CommonLoader<M>(xrvList, adapter);
+        mAdapter = getAdapter();
+        mXrvList.showAsList();
+        mXrvList.setAdapter(mAdapter);
+        mCommonLoader = new CommonLoader<M>(mXrvList, mAdapter);
         // Number of data per page
-        commonLoader.setPageCount(CommonLoader.PAGE_COUNT);
-        commonLoader.setOnLoaderListener(new CommonLoader.OnLoaderListener() {
+        mCommonLoader.setPageCount(CommonLoader.PAGE_COUNT);
+        mCommonLoader.setOnLoaderListener(new CommonLoader.OnLoaderListener() {
             @Override
             public void onRefresh() {
-                onLoad(commonLoader.page);
+                onLoad(mCommonLoader.page);
             }
 
             @Override
             public void onLoadMore() {
-                onLoad(commonLoader.page);
+                onLoad(mCommonLoader.page);
             }
 
             @Override
             public void loadSuccess() {
-                dslDs.setState(DSLayout.GONE);
-                xrvList.setVisibility(View.VISIBLE);
+                mDslDs.setState(DSLayout.GONE);
+                mXrvList.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void noContent() {
-                dslDs.setState(DSLayout.STATE_EMPTY);
+                mDslDs.setState(DSLayout.STATE_EMPTY);
             }
 
             @Override
             public void loadError(boolean isEmpty) {
-                dslDs.setState(isEmpty ? DSLayout.STATE_NET_ERROR : DSLayout.GONE);
+                mDslDs.setState(isEmpty ? DSLayout.STATE_NET_ERROR : DSLayout.GONE);
             }
         });
     }
 
     @Override
     public void getData() {
-        commonLoader.page = 1;
-        xrvList.setVisibility(View.GONE);
-        dslDs.setState(DSLayout.STATE_LOADING);
-        onLoad(commonLoader.page);
+        mCommonLoader.page = 1;
+        mXrvList.setVisibility(View.GONE);
+        mDslDs.setState(DSLayout.STATE_LOADING);
+        onLoad(mCommonLoader.page);
     }
 
     @Override
     public void setData(List<M> datas) {
-        commonLoader.setData(datas);
+        mCommonLoader.setData(datas);
     }
 
     @Override
     public void loadError() {
-        commonLoader.loadError();
+        mCommonLoader.loadError();
     }
 
     /**

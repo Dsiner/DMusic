@@ -72,7 +72,7 @@ import java.lang.ref.WeakReference;
  */
 public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
     protected Context mContext;
-    private WeakReference<V> viewRef;
+    private WeakReference<V> mViewRef;
 
     public MvpBasePresenter(Context context) {
         if (context instanceof Application) {
@@ -85,7 +85,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
     @UiThread
     @Override
     public void attachView(V view) {
-        viewRef = new WeakReference<V>(view);
+        mViewRef = new WeakReference<V>(view);
     }
 
     /**
@@ -98,7 +98,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
     @UiThread
     @Nullable
     public V getView() {
-        return viewRef == null ? null : viewRef.get();
+        return mViewRef == null ? null : mViewRef.get();
     }
 
     /**
@@ -107,15 +107,15 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
      */
     @UiThread
     public boolean isViewAttached() {
-        return viewRef != null && viewRef.get() != null;
+        return mViewRef != null && mViewRef.get() != null;
     }
 
     @UiThread
     @Override
     public void detachView(boolean retainInstance) {
-        if (viewRef != null) {
-            viewRef.clear();
-            viewRef = null;
+        if (mViewRef != null) {
+            mViewRef.clear();
+            mViewRef = null;
         }
     }
 }

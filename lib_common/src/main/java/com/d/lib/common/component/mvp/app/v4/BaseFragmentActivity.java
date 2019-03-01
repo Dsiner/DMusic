@@ -1,4 +1,4 @@
-package com.d.lib.common.component.mvp.base;
+package com.d.lib.common.component.mvp.app.v4;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,19 +14,21 @@ import com.d.lib.common.view.dialog.AlertDialogFactory;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.feng.skin.manager.base.BaseSkinActivity;
+import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
 
 /**
- * BaseActivity
+ * BaseFragmentActivity
  * Created by D on 2017/4/27.
  */
-public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinActivity implements MvpView {
-    protected Context mContext;
+public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
+        extends BaseSkinFragmentActivity implements MvpView {
+
     protected Activity mActivity;
+    protected Context mContext;
     protected T mPresenter;
-    protected DSLayout dslDs;
-    private AlertDialog loadingDlg;
-    private Unbinder unbinder;
+    protected DSLayout mDslDs;
+    private AlertDialog mLoadingDlg;
+    private Unbinder mUnbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +38,10 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutRes());
         if (getDSLayoutRes() != 0) {
-            dslDs = (DSLayout) findViewById(getDSLayoutRes());
+            mDslDs = (DSLayout) findViewById(getDSLayoutRes());
         }
         bindView();
-        unbinder = ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(getMvpView());
@@ -52,16 +54,17 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         if (mPresenter != null) {
             mPresenter.detachView(false);
         }
-        if (unbinder != null) {
-            unbinder.unbind();
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+            mUnbinder = null;
         }
         super.onDestroy();
     }
 
     @Override
     public void setState(int state) {
-        if (dslDs != null) {
-            dslDs.setState(state);
+        if (mDslDs != null) {
+            mDslDs.setState(state);
         }
     }
 
@@ -69,11 +72,11 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
      * Show loading dialog
      */
     public void showLoading() {
-        if (loadingDlg == null) {
-            loadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
+        if (mLoadingDlg == null) {
+            mLoadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
         }
-        if (!loadingDlg.isShowing()) {
-            loadingDlg.show();
+        if (!mLoadingDlg.isShowing()) {
+            mLoadingDlg.show();
         }
     }
 
@@ -81,8 +84,8 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
      * Dismiss loading dialog
      */
     public void closeLoading() {
-        if (loadingDlg != null && loadingDlg.isShowing()) {
-            loadingDlg.dismiss();
+        if (mLoadingDlg != null && mLoadingDlg.isShowing()) {
+            mLoadingDlg.dismiss();
         }
     }
 
@@ -102,9 +105,13 @@ public abstract class BaseActivity<T extends MvpBasePresenter> extends BaseSkinA
         return 0;
     }
 
-    public abstract T getPresenter();
+    public T getPresenter() {
+        return null;
+    }
 
-    protected abstract MvpView getMvpView();
+    protected MvpView getMvpView() {
+        return null;
+    }
 
     protected void bindView() {
     }

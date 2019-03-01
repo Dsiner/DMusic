@@ -71,7 +71,7 @@
         android:background="@color/color_popup_more_line" />
 
     <TextView
-        android:id="@+id/tv_cancle"
+        android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
