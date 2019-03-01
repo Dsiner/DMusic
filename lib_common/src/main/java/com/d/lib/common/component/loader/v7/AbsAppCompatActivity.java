@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.d.lib.common.R;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.v7.BaseAppCompatActivity;
 import com.d.lib.common.utils.ViewHelper;
 import com.d.lib.common.view.TitleLayout;
@@ -36,6 +37,16 @@ public abstract class AbsAppCompatActivity<T extends MvpBasePresenter>
         if (resId == R.id.iv_title_left) {
             finish();
         }
+    }
+
+    @Override
+    public T getPresenter() {
+        return null;
+    }
+
+    @Override
+    protected MvpView getMvpView() {
+        return null;
     }
 
     @Override
