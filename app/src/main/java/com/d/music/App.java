@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.d.lib.aster.Aster;
 import com.d.lib.common.component.cache.Cache;
 import com.d.lib.common.component.netstate.NetCompat;
 import com.d.lib.common.component.repeatclick.ClickFast;
@@ -14,6 +15,7 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.utils.log.ULog;
 import com.d.lib.permissioncompat.support.PermissionSupport;
 import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.music.component.aster.AppAsterModule;
 import com.d.music.component.media.controler.MediaControler;
 import com.d.music.component.service.MusicService;
 import com.d.music.component.skin.SkinUtil;
@@ -55,10 +57,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
-        // Asynchronous initialization
-        initAsync();
         // Debug switch
         ULog.setDebug(true);
+        // Asynchronous initialization
+        initAsync();
         // Initialize the database
         AppDBUtil.getIns(getContext());
         // Anti-double-click interval setting
@@ -67,6 +69,8 @@ public class App extends Application {
         SkinUtil.initSkin(getContext());
         // Network monitoring
         NetCompat.init(getContext());
+        // Network request
+        Aster.init(getContext(), new AppAsterModule());
         // Runtime permission
         initPermission();
         // Cache

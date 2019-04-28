@@ -1,4 +1,4 @@
-package com.d.music.api;
+package com.d.music.component.aster;
 
 /**
  * API
@@ -6,7 +6,7 @@ package com.d.music.api;
  */
 public interface API {
     // Base API
-    String API_BASE = "https://www.baidu.com/";
+    String API_BASE = "http://musicapi.qianqian.com/";
 
     String BASE_URL_NETEASE = "https://netease.api.zzsun.cc/";
 

@@ -8,7 +8,7 @@ import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.AsyncCallback;
 import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.music.api.API;
+import com.d.music.component.aster.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.model.ArtistSongsRespModel;
 import com.d.music.online.model.BillSongsModel;

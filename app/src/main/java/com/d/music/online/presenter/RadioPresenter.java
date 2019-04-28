@@ -7,7 +7,7 @@ import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.SimpleCallback;
-import com.d.music.api.API;
+import com.d.music.component.aster.API;
 import com.d.music.online.model.RadioModel;
 import com.d.music.online.model.RadioRespModel;
 

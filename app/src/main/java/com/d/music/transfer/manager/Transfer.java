@@ -14,7 +14,7 @@ import com.d.lib.taskscheduler.callback.Function;
 import com.d.lib.taskscheduler.callback.Observer;
 import com.d.lib.taskscheduler.callback.Task;
 import com.d.lib.taskscheduler.schedule.Schedulers;
-import com.d.music.api.API;
+import com.d.music.component.aster.API;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
