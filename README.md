@@ -27,6 +27,12 @@
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution
 
+## Download
+- [Download apk](https://github.com/Dsiner/Resouce/raw/master/app/DMusic/release/com.d.music_release.apk)
+- QR Code:
+
+![QR Code](https://github.com/Dsiner/Resouce/blob/master/app/DMusic/release/dmusic_download_qr.png)
+
 ## Licence
 
 ```txt
