@@ -184,8 +184,15 @@
     public static int e(...);
 }
 
+# Model
+-keep class * extends com.d.lib.common.component.mvp.model.BaseModel {*;}
+-keep class * extends com.d.lib.common.component.mvp.model.BaseRespModel {*;}
+-keep class com.d.music.local.model.** {*;}
+-keep class com.d.music.online.model.** {*;}
+-keep class com.d.music.setting.model.** {*;}
+
 # SharedPreferences
--keep public class * extends com.d.lib.common.data.preference.AbstractPreference
+-keep class * extends com.d.lib.common.data.preference.AbstractPreference
 
 # --------------- 处理Model类 ---------------
 
@@ -242,3 +249,11 @@
 -keepclassmembers class ** {
     public void onEvent*(**);
 }
+
+# ----- GreenDAO v2 -----
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+-keep class com.d.music.data.database.greendao.bean.** {*;}
+-keep class com.d.music.data.database.greendao.dao.** {*;}
