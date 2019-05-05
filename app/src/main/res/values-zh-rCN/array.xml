@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="module_setting_timing_values">
+        <item>10分钟</item>
+        <item>20分钟</item>
+        <item>30分钟</item>
+        <item>1小时</item>
+        <item>1.5小时</item>
+        <item>自定义</item>
+    </string-array>
+</resources>
