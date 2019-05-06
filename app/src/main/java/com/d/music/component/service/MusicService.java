@@ -2,6 +2,7 @@ package com.d.music.component.service;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
@@ -52,12 +54,16 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/4/29.
  */
 public class MusicService extends Service {
+    private static final String NOTIFICATION_ID = "com.d.music";
+    private static final String NOTIFICATION_NAME = "com.d.music.MusicService";
+    private static final int NOTIFICATION_UNIQUE_ID = 6671;
+
     private static boolean mIsRunning;
 
     private MediaControler mControl;
     private MusicBinder mBinder;
     private NotificationManager mManager;
-    private int mNotification_ID;
+
     private ControlBroadcast mBroadcast;
 
     public static boolean isRunning() {
@@ -116,7 +122,6 @@ public class MusicService extends Service {
         filter.addAction(Constants.PlayFlag.PLAYER_RELOAD);
         registerReceiver(mBroadcast, filter);
 
-        mNotification_ID = 6671;
         mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         loadMusic();
@@ -177,41 +182,47 @@ public class MusicService extends Service {
         } else {
             intent = new Intent(this, MainActivity.class);
         }
-        PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            Notification.Builder builder = new Notification.Builder(this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                builder.setPriority(Notification.PRIORITY_HIGH);
-            }
-            builder.setSmallIcon(R.drawable.module_common_ic_launcher); // 设置图标
-            builder.setTicker(""); // 手机状态栏的提示
-            builder.setContentIntent(pintent); // 点击后的意图
-
-            RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
-            builder.setContent(rv);
-            Notification notification;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                notification = builder.build(); // 4.1以上
-            } else {
-                notification = builder.getNotification();
-            }
-            mManager.notify(mNotification_ID, notification);
-            startForeground(mNotification_ID, notification); // 自定义的notification_ID不能为0
-        } else {
-            // API Level >= 4 (Android 1.6) && API Level < 16 (Android 4.1)
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.module_common_ic_launcher)
-                    .setTicker("")
-                    .setWhen(System.currentTimeMillis());
-
-            RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
-            builder.setContent(rv);
-            Notification notification;
-            notification = builder.getNotification();
-            mManager.notify(mNotification_ID, notification);
-            startForeground(mNotification_ID, notification); // 自定义的notification_ID不能为0
+        NotificationChannel notificationChannel = getNotificationChannel(this,
+                NOTIFICATION_ID, NOTIFICATION_NAME);
+        NotificationCompat.Builder builder = getNotification(this, notificationChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
         }
+        builder.setSmallIcon(R.drawable.module_common_ic_launcher) // 设置图标
+                .setTicker("") // 手机状态栏的提示
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0)); // 点击后的意图
+
+        RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
+        builder.setContent(rv);
+        Notification notification = builder.build();
+        mManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+        startForeground(NOTIFICATION_UNIQUE_ID, notification); // 自定义的notification_ID不能为0
+    }
+
+    @Nullable
+    private NotificationChannel getNotificationChannel(Context context, String id, String name) {
+        NotificationChannel channel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+        return channel;
+    }
+
+    private NotificationCompat.Builder getNotification(Context context,
+                                                       @Nullable NotificationChannel channel) {
+        NotificationCompat.Builder builder;
+        if (channel != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new NotificationCompat.Builder(context, channel.getId());
+        } else {
+            builder = new NotificationCompat.Builder(context, "");
+        }
+        return builder;
     }
 
     @android.support.annotation.NonNull
@@ -257,8 +268,8 @@ public class MusicService extends Service {
      * 取消通知栏
      */
     public void cancelNotification() {
-        // Can not work beacauseof "startForeground"!
-        mManager.cancel(mNotification_ID);
+        // Can not work because of "startForeground"!
+        mManager.cancel(NOTIFICATION_UNIQUE_ID);
     }
 
     public class MusicBinder extends Binder {
@@ -266,7 +277,7 @@ public class MusicService extends Service {
             updateNotification(bitmap, title, name, playStatus);
         }
 
-        public MediaControler getinstanceMusicControlUtils() {
+        public MediaControler getInstanceMusicControlUtils() {
             return mControl;
         }
     }

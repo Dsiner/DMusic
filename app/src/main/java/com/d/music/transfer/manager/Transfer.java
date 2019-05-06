@@ -1,25 +1,29 @@
 package com.d.music.transfer.manager;
 
+import android.media.MediaScannerConnection;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.d.lib.common.component.cache.base.ExpireLruCache;
-import com.d.lib.common.utils.log.ULog;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.ProgressCallback;
 import com.d.lib.aster.callback.SimpleCallback;
+import com.d.lib.common.component.cache.base.ExpireLruCache;
+import com.d.lib.common.utils.log.ULog;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.taskscheduler.callback.Function;
 import com.d.lib.taskscheduler.callback.Observer;
 import com.d.lib.taskscheduler.callback.Task;
 import com.d.lib.taskscheduler.schedule.Schedulers;
+import com.d.music.App;
 import com.d.music.component.aster.API;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.online.model.SongInfoRespModel;
 import com.d.music.utils.FileUtil;
+
+import java.io.File;
 
 /**
  * Transfer
@@ -295,6 +299,12 @@ public class Transfer {
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
                         FileUtil.renameFile(path + cache, path + name);
+                        File file = new File(path + name);
+                        if (file.exists()) {
+                            MediaScannerConnection.scanFile(App.getContext(),
+                                    new String[]{file.getAbsolutePath()}, null, null);
+                        }
+
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_DONE;
@@ -369,6 +379,12 @@ public class Transfer {
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
                         FileUtil.renameFile(path + cache, path + name);
+                        File file = new File(path + name);
+                        if (file.exists()) {
+                            MediaScannerConnection.scanFile(App.getContext(),
+                                    new String[]{file.getAbsolutePath()}, null, null);
+                        }
+
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_DONE;
