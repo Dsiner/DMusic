@@ -93,7 +93,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
                 break;
             case R.id.rlyt_collection:
                 // 我的收藏
-                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.COLLECTION_MUSIC, "我的收藏"));
+                MainActivity.getManger().replace(SongFragment.getInstance(AppDB.COLLECTION_MUSIC,
+                        mContext.getResources().getString(R.string.module_common_my_collection)));
                 break;
             case R.id.rlyt_online:
                 // 音乐馆

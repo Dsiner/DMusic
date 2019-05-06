@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
-                android:text="加入歌单"
+                android:text="@string/module_common_add_to_list"
                 android:textColor="@color/lib_pub_color_main"
                 android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
-                android:text="删除"
+                android:text="@string/module_common_delete"
                 android:textColor="@color/lib_pub_color_main"
                 android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lib_pub_dimen_item_margin_top"
-                android:text="撤销操作"
+                android:text="@string/module_common_undo"
                 android:textColor="@color/lib_pub_color_main"
                 android:textSize="@dimen/lib_pub_dimen_text_small"
                 skin:enable="true" />

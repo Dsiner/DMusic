@@ -13,13 +13,14 @@
     <string name="module_common_select_all">Select all</string>
     <string name="module_common_inverse_selection">Inverse</string>
     <string name="module_common_please_select">Please choose first</string>
-    <string name="module_common_selected_left"> (Selected</string>
-    <string name="module_common_selected_right">)</string>
+    <string name="module_common_selected_with_parentheses"> (%dSelected)</string>
     <string name="module_common_song_unit_format">%d</string>
+    <string name="module_common_song_unit_format_with_parentheses">(%d)</string>
 
     <string name="module_common_stick">Stick</string>
-    <string name="module_common_collected">Collected</string>
     <string name="module_common_collect">Collect</string>
+    <string name="module_common_collected">Collected</string>
+    <string name="module_common_collect_cancelled">Collection cancelled</string>
     <string name="module_common_setting">Setting</string>
     <string name="module_common_close">Close</string>
     <string name="module_common_sweep">Sweep</string>
@@ -58,6 +59,11 @@
     <string name="module_common_tips_mode_switch">Mode switching will take effect after restart, will it be closed immediately?</string>
     <string name="module_common_close_now">Close now</string>
     <string name="module_common_not_now">Not yet</string>
+
+    <string name="module_common_play_all_repeat">All Repeat</string>
+    <string name="module_common_play_order">Order</string>
+    <string name="module_common_play_shuffle">Shuffle</string>
+    <string name="module_common_play_single_cycle">Single Cycle</string>
 
     <!-- Module_Local -->
     <string name="module_common_local_song">Local song</string>
@@ -118,6 +124,7 @@
     <string name="module_common_set_ring">Set ring</string>
     <string name="module_common_set_lrc">Set lrc</string>
     <string name="module_common_delete">Delete</string>
+    <string name="module_common_undo">Undo</string>
     <string name="module_common_edit">Edit</string>
     <string name="module_common_download">Download</string>
     <string name="module_common_search_lrc">Search lrc</string>

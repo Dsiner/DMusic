@@ -13,13 +13,14 @@
     <string name="module_common_select_all">全选</string>
     <string name="module_common_inverse_selection">反选</string>
     <string name="module_common_please_select">请先选择</string>
-    <string name="module_common_selected_left"> (已选</string>
-    <string name="module_common_selected_right">)</string>
+    <string name="module_common_selected_with_parentheses"> (已选%d)</string>
     <string name="module_common_song_unit_format">%d首</string>
+    <string name="module_common_song_unit_format_with_parentheses">(%d首)</string>
 
     <string name="module_common_stick">置顶</string>
-    <string name="module_common_collected">已收藏</string>
     <string name="module_common_collect">收藏</string>
+    <string name="module_common_collected">已收藏</string>
+    <string name="module_common_collect_cancelled">已取消收藏</string>
     <string name="module_common_setting">设置</string>
     <string name="module_common_close">关闭</string>
     <string name="module_common_sweep">清空</string>
@@ -58,6 +59,11 @@
     <string name="module_common_tips_mode_switch">模式切换将于重启后生效,是否立即关闭？</string>
     <string name="module_common_close_now">立即关闭</string>
     <string name="module_common_not_now">暂不</string>
+
+    <string name="module_common_play_all_repeat">列表循环</string>
+    <string name="module_common_play_order">顺序播放</string>
+    <string name="module_common_play_shuffle">随机播放</string>
+    <string name="module_common_play_single_cycle">单曲循环</string>
 
     <!-- Module_Local -->
     <string name="module_common_local_song">本地歌曲</string>
@@ -118,6 +124,7 @@
     <string name="module_common_set_ring">设为铃声</string>
     <string name="module_common_set_lrc">设置歌词</string>
     <string name="module_common_delete">删除</string>
+    <string name="module_common_undo">撤销</string>
     <string name="module_common_edit">编辑</string>
     <string name="module_common_download">下载</string>
     <string name="module_common_search_lrc">歌词搜索</string>

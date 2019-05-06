@@ -45,9 +45,14 @@ public class Constants {
         public static final int PLAY_MODE_SHUFFLE = 2; // 随机播放
         public static final int PLAY_MODE_SINGLE_CYCLE = 3; // 单曲循环
 
-        public static final int[] PLAY_MODE_DRAWABLE = {R.drawable.module_play_ic_play_all_repeat, R.drawable.module_play_ic_play_order,
-                R.drawable.module_play_ic_play_shuffle, R.drawable.module_play_ic_play_single_cycle};
-        public static final String[] PLAY_MODE = {"列表循环", "顺序播放", "随机播放", "单曲循环"};
+        public static final int[] PLAY_MODE_DRAWABLE = {R.drawable.module_play_ic_play_all_repeat,
+                R.drawable.module_play_ic_play_order,
+                R.drawable.module_play_ic_play_shuffle,
+                R.drawable.module_play_ic_play_single_cycle};
+        public static final int[] PLAY_MODE = {R.string.module_common_play_all_repeat,
+                R.string.module_common_play_order,
+                R.string.module_common_play_shuffle,
+                R.string.module_common_play_single_cycle};
     }
 
     /**

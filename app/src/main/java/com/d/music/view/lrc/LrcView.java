@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class LrcView extends View implements ILrcView,
         com.d.music.component.cache.listener.LrcView {
-    private final String DEFAULT_TEXT = "畅音乐，享自由";
+    private final String DEFAULT_TEXT;
     /***移动一句歌词的持续时间***/
     private final int DURATION_AUTO_SCROLL = 1500;
     /***停止触摸 如果View需要滚动的持续时间***/
@@ -132,6 +132,7 @@ public class LrcView extends View implements ILrcView,
 
     public LrcView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        DEFAULT_TEXT = context.getResources().getString(R.string.module_common_stroke_default);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LrcView);
         mColorText = typedArray.getColor(R.styleable.LrcView_lrcTextColor, Color.parseColor("#4577B7"));
         mColorTextCur = typedArray.getColor(R.styleable.LrcView_lrcCurTextColor, Color.parseColor("#FF4081"));

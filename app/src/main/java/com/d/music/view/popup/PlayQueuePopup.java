@@ -55,10 +55,12 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
         adapter = new PlayQueueAdapter(mContext, models, R.layout.module_play_adapter_play_queue, this);
         lrvList.setAdapter(adapter);
 
-        int playMode = p.getPlayMode();
-        tvCount.setText("(" + (models != null ? models.size() : 0) + "首)");
+        final int playMode = p.getPlayMode();
+        final int count = models != null ? models.size() : 0;
+        tvCount.setText(count > 0 ? String.format(mContext.getResources().getString(
+                R.string.module_common_song_unit_format_with_parentheses), count) : "");
         ivPlayMode.setBackgroundResource(Constants.PlayMode.PLAY_MODE_DRAWABLE[playMode]);
-        tvPlayMode.setText(Constants.PlayMode.PLAY_MODE[playMode]);
+        tvPlayMode.setText(mContext.getResources().getString(Constants.PlayMode.PLAY_MODE[playMode]));
 
         mRootView.setOnClickListener(this);
         llytQueue.setOnClickListener(this);
@@ -73,7 +75,7 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
             playMode = 0;
         }
         ivPlayMode.setBackgroundResource(Constants.PlayMode.PLAY_MODE_DRAWABLE[playMode]);
-        tvPlayMode.setText(Constants.PlayMode.PLAY_MODE[playMode]);
+        tvPlayMode.setText(mContext.getResources().getString(Constants.PlayMode.PLAY_MODE[playMode]));
         p.putPlayMode(playMode);
         return playMode;
     }
@@ -85,7 +87,8 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
 
     @Override
     public void onCountChange(int count) {
-        tvCount.setText("(" + count + "首)");
+        tvCount.setText(count > 0 ? String.format(mContext.getResources().getString(
+                R.string.module_common_song_unit_format_with_parentheses), count) : "");
         if (listener != null) {
             listener.onCountChange(count);
         }
@@ -101,15 +104,18 @@ public class PlayQueuePopup extends AbstractPopup implements View.OnClickListene
             case R.id.tv_quit:
                 dismiss();
                 break;
+
             case R.id.llyt_queue:
-                //do nothing
+                // Do nothing
                 break;
+
             case R.id.flyt_play_mode:
                 int playMode = changeMode();
                 if (listener != null) {
                     listener.onPlayModeChange(playMode);
                 }
                 break;
+
             case R.id.tv_delete_all:
                 if (models == null || models.size() <= 0) {
                     return;

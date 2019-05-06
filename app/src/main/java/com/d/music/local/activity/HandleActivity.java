@@ -146,8 +146,8 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     }
 
     private void setCount(int count) {
-        String mark = count > 0 ? getResources().getString(R.string.module_common_selected_left)
-                + count + getResources().getString(R.string.module_common_selected_right) : "";
+        String mark = count > 0 ? String.format(mContext.getResources().getString(
+                R.string.module_common_selected_with_parentheses), count) : "";
         tlTitle.setText(R.id.tv_title_title, title + mark);
     }
 

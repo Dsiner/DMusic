@@ -44,7 +44,9 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         holder.setText(R.id.tv_title, item.artistName);
         holder.setChecked(R.id.cb_more, item.exIsChecked);
         holder.setViewVisibility(R.id.llyt_more_cover, item.exIsChecked ? View.VISIBLE : View.GONE);
-        holder.setText(R.id.tv_collect, item.isCollected ? "已收藏" : "收藏");
+        holder.setText(R.id.tv_collect, item.isCollected
+                ? mContext.getResources().getString(R.string.module_common_collected)
+                : mContext.getResources().getString(R.string.module_common_collect));
         holder.setViewOnClickListener(R.id.llyt_song, new OnClickFastListener() {
             @Override
             public void onFastClick(View v) {
@@ -58,11 +60,13 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                     OperationDialog.getOperationDialog(mContext, OperationDialog.TYPE_NORMAL, "",
                             Arrays.asList(new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_ADDLIST, false),
                                     new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_FAV, false)
-                                            .item(item.isCollected ? "已收藏" : "收藏"),
+                                            .item(item.isCollected
+                                                    ? mContext.getResources().getString(R.string.module_common_collected)
+                                                    : mContext.getResources().getString(R.string.module_common_collect)),
                                     new OperationDialog.Bean().with(mContext, OperationDialog.Bean.TYPE_INFO, false)),
                             new AbsSheetDialog.OnItemClickListener<OperationDialog.Bean>() {
                                 @Override
-                                public void onClick(Dialog dlg, int position, OperationDialog.Bean bean) {
+                                public void onClick(Dialog dlg, int index, OperationDialog.Bean bean) {
                                     if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
                                         Operater.addToList(mContext, type, item);
                                     } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
@@ -108,13 +112,15 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         Operater.collect(mContext, type, item, true);
         // Status "item.isCollected" is changed
         if (type == AppDB.COLLECTION_MUSIC && !item.isCollected) {
-            mDatas.remove(position);
+            mDatas.remove(item);
             notifyDataSetChanged();
             if (listener != null) {
                 listener.onChange(mDatas.size());
             }
         } else {
-            holder.setText(R.id.tv_collect, item.isCollected ? "已收藏" : "收藏");
+            holder.setText(R.id.tv_collect, item.isCollected
+                    ? mContext.getResources().getString(R.string.module_common_collected)
+                    : mContext.getResources().getString(R.string.module_common_collect));
             // 将下拉菜单收回
             pullUp(item, holder);
         }

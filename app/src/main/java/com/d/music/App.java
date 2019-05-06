@@ -93,6 +93,7 @@ public class App extends Application {
     }
 
     private void initPermission() {
+        PermissionSupport.setLevel(PermissionSupport.SUPPORT_LEVEL_M_XIAOMI);
         PermissionSupport.setPool(new com.d.lib.permissioncompat.support.threadpool.ThreadPool() {
             @Override
             public void executeMain(Runnable r) {

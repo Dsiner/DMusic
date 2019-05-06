@@ -3,6 +3,7 @@ package com.d.music.component.operation;
 import android.content.Context;
 
 import com.d.lib.common.utils.Util;
+import com.d.music.R;
 import com.d.music.component.media.SyncManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.db.AppDB;
@@ -46,9 +47,9 @@ public class Operater {
             return;
         }
         if (model.isCollected) {
-            Util.toast(context, "已收藏");
+            Util.toast(context, context.getResources().getString(R.string.module_common_collected));
         } else {
-            Util.toast(context, "已取消收藏");
+            Util.toast(context, context.getResources().getString(R.string.module_common_collect_cancelled));
         }
     }
 
