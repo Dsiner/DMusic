@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.aster.callback.ProgressCallback;
+import com.d.lib.common.view.dialog.AbsSheetDialog;
 import com.d.lib.xrv.adapter.CommonAdapter;
 import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.lib.xrv.adapter.MultiItemTypeSupport;
@@ -24,6 +24,7 @@ import com.d.music.transfer.manager.operation.Operater;
 import com.d.music.view.CircleProgressBar;
 import com.d.music.view.dialog.OperationDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -130,7 +131,7 @@ public class TransferAdapter extends CommonAdapter<TransferModel> {
     private void coverMV(final int position, final CommonHolder holder, final TransferModel item) {
         coverMedia(position, holder, item);
         final String mvUrl = HitTarget.secondPassMV(item) ?
-                Constants.Path.mv + item.songName + Transfer.PREFIX_MV : item.songUrl;
+                Constants.Path.mv + File.separator + item.songName + Transfer.PREFIX_MV : item.songUrl;
         Glide.with(mContext).load(mvUrl)
                 .apply(new RequestOptions().dontAnimate())
                 .into((ImageView) holder.getView(R.id.iv_cover));

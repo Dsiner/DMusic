@@ -282,7 +282,7 @@ public class Transfer {
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
-                        ULog.d("dsiner_request--> onProgresss download: " + currentLength + " total: " + totalLength);
+                        ULog.d("dsiner_request--> onProgress download: " + currentLength + " total: " + totalLength);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
@@ -298,8 +298,9 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + cache, path + name);
-                        File file = new File(path + name);
+                        FileUtil.renameFile(path + File.separator + cache,
+                                path + File.separator + name);
+                        File file = new File(path + File.separator + name);
                         if (file.exists()) {
                             MediaScannerConnection.scanFile(App.getContext(),
                                     new String[]{file.getAbsolutePath()}, null, null);
@@ -320,7 +321,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + cache);
+                        FileUtil.deleteFile(path + File.separator + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
@@ -362,7 +363,7 @@ public class Transfer {
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
-                        ULog.d("dsiner_request--> onProgresss download: " + currentLength + " total: " + totalLength);
+                        ULog.d("dsiner_request--> onProgress download: " + currentLength + " total: " + totalLength);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_PROGRESS;
@@ -378,8 +379,9 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + cache, path + name);
-                        File file = new File(path + name);
+                        FileUtil.renameFile(path + File.separator + cache,
+                                path + File.separator + name);
+                        File file = new File(path + File.separator + name);
                         if (file.exists()) {
                             MediaScannerConnection.scanFile(App.getContext(),
                                     new String[]{file.getAbsolutePath()}, null, null);
@@ -400,7 +402,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + cache);
+                        FileUtil.deleteFile(path + File.separator + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
@@ -512,13 +514,14 @@ public class Transfer {
 
                     @Override
                     public void onProgress(long currentLength, long totalLength) {
-                        ULog.d("dsiner_request--> onProgresss --> download: " + currentLength + " total: " + totalLength);
+                        ULog.d("dsiner_request--> onProgress --> download: " + currentLength + " total: " + totalLength);
                     }
 
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + cache, path + name);
+                        FileUtil.renameFile(path + File.separator + cache,
+                                path + File.separator + name);
                         if (callback != null) {
                             callback.onSuccess(model);
                         }
@@ -527,7 +530,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + cache);
+                        FileUtil.deleteFile(path + File.separator + cache);
                         if (callback != null) {
                             callback.onError(e);
                         }
