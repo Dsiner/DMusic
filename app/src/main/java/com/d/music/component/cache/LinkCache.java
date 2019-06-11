@@ -38,18 +38,18 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         if (isFinishing() || view == null) {
             return;
         }
-        if (mKey == null || TextUtils.isEmpty(mKey.songId)) {
+        if (mKey == null || TextUtils.isEmpty(mKey.id)) {
             // Just error
             // TODO: @dsiner 2018/10/10
             return;
         }
         setTarget(view);
         Object tag = view.getTag(getTag());
-        if (tag != null && tag instanceof String && TextUtils.equals((String) tag, mKey.songId)) {
+        if (tag != null && tag instanceof String && TextUtils.equals((String) tag, mKey.id)) {
             // Not refresh
             // return;
         }
-        view.setTag(getTag(), mKey.songId);
+        view.setTag(getTag(), mKey.id);
         LinkCacheManager.getIns(getContext()).load(getContext(), mKey,
                 new CacheListener<String>() {
                     @Override
@@ -91,7 +91,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
                             return true;
                         }
                         Object tag = getTarget().getTag(getTag());
-                        return tag == null || !(tag instanceof String) || !TextUtils.equals((String) tag, mKey.songId);
+                        return tag == null || !(tag instanceof String) || !TextUtils.equals((String) tag, mKey.id);
                     }
                 });
     }
@@ -100,7 +100,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         if (isFinishing() || view == null) {
             return;
         }
-        if (mKey == null || TextUtils.isEmpty(mKey.songId)) {
+        if (mKey == null || TextUtils.isEmpty(mKey.id)) {
             // Just error
             if (l != null) {
                 l.onError(new CacheException("Url must not be empty!"));
@@ -109,11 +109,11 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         }
         setTarget(view);
         Object tag = view.getTag(getTag());
-        if (tag != null && tag instanceof String && TextUtils.equals((String) tag, mKey.songId)) {
+        if (tag != null && tag instanceof String && TextUtils.equals((String) tag, mKey.id)) {
             // Not refresh
             // return;
         }
-        view.setTag(getTag(), mKey.songId);
+        view.setTag(getTag(), mKey.id);
         LinkCacheManager.getIns(getContext()).load(getContext(), mKey,
                 new CacheListener<String>() {
                     @Override
@@ -151,7 +151,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
                             return true;
                         }
                         Object tag = getTarget().getTag(getTag());
-                        return tag == null || !(tag instanceof String) || !TextUtils.equals((String) tag, mKey.songId);
+                        return tag == null || !(tag instanceof String) || !TextUtils.equals((String) tag, mKey.id);
                     }
                 });
     }
@@ -161,7 +161,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         if (isFinishing()) {
             return;
         }
-        if (TextUtils.isEmpty(mKey.songId)) {
+        if (TextUtils.isEmpty(mKey.id)) {
             // Just error
             if (l != null) {
                 l.onError(new CacheException("Url must not be empty!"));

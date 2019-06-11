@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.d.lib.aster.callback.SimpleCallback;
 import com.d.lib.common.component.cache.base.CacheManager;
 import com.d.lib.common.component.cache.base.ExpireLruCache;
 import com.d.lib.common.component.cache.listener.CacheListener;
 import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
-import com.d.lib.aster.callback.SimpleCallback;
 import com.d.music.component.media.HitTarget;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
