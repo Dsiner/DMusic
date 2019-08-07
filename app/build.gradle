@@ -18,18 +18,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    def Properties keystoreProperties
+    def keystorePropsFile = file('../keystores/keystore.properties')
+    keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropsFile))
+
     signingConfigs {
         release {
-            storeFile file('../key/key')
-            keyAlias 'dsiner'
-            keyPassword '123456'
-            storePassword '123456'
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
         debug {
-            storeFile file('../key/key')
-            keyAlias 'dsiner'
-            keyPassword '123456'
-            storePassword '123456'
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
@@ -42,12 +47,9 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // Proguard
-            minifyEnabled true
-            // ZipAlign optimization
-            zipAlignEnabled true
-            // Remove useless resource files
-            shrinkResources true
+            minifyEnabled true // Proguard
+            zipAlignEnabled true // ZipAlign optimization
+            shrinkResources true // Remove useless resource files
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
