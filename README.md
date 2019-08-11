@@ -26,6 +26,7 @@
 
 ## Contributors
 - [Imrul Kayes](https://github.com/saifulfrank) Logo design contribution
+- [Harry](https://github.com/HarryHeights) Privacy Policy and contributors guide document
 
 ## Download
 - [Download apk](https://github.com/Dsiner/Resouce/raw/master/app/DMusic/release/com.d.music_release.apk)
