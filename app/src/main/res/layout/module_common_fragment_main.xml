@@ -128,7 +128,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
-        android:padding="@dimen/lib_pub_dimen_margin">
+        android:padding="@dimen/lib_pub_dimen_margin"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rlyt_online"

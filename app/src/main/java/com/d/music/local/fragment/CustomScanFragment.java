@@ -68,7 +68,9 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         switch (view.getId()) {
             case R.id.llyt_dir:
             case R.id.llyt_scan_now:
-                PermissionCompat.with(mActivity).requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
+                PermissionCompat.with(mActivity)
+                        .requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribeOn(PermissionSchedulers.io())
                         .observeOn(PermissionSchedulers.mainThread())
                         .requestPermissions(new PermissionCallback<Permission>() {

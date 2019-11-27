@@ -222,11 +222,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements IMainVi
     }
 
     private void scanAll() {
-        PermissionCompat.with(getActivity()).
-                requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.INTERNET)
+        PermissionCompat.with(getActivity())
+                .requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribeOn(PermissionSchedulers.io())
                 .observeOn(PermissionSchedulers.mainThread())
                 .requestPermissions(new PermissionCallback<Permission>() {

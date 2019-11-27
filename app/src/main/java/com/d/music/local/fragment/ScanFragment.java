@@ -52,8 +52,9 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
         switch (view.getId()) {
             case R.id.btn_full_scan:
             case R.id.btn_custom_scan:
-                PermissionCompat.with(mActivity).
-                        requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE)
+                PermissionCompat.with(mActivity)
+                        .requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribeOn(PermissionSchedulers.io())
                         .observeOn(PermissionSchedulers.mainThread())
                         .requestPermissions(new PermissionCallback<Permission>() {
