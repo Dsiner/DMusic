@@ -14,7 +14,7 @@ import com.d.lib.common.utils.Util;
 import com.d.lib.common.view.dialog.AbstractDialog;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.component.service.MusicService;
+import com.d.music.component.service.NotificationService;
 
 /**
  * TimingDialog
@@ -99,9 +99,9 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
                 if (minute <= 0) {
                     App.exit();
                 } else {
-                    MusicService.startService(mContext.getApplicationContext());
-                    MusicService.timing(mContext.getApplicationContext(), false, 0);
-                    MusicService.timing(mContext.getApplicationContext(), true, minute * 60 * 1000);
+                    NotificationService.startService(mContext.getApplicationContext());
+                    NotificationService.timing(mContext.getApplicationContext(), false, 0);
+                    NotificationService.timing(mContext.getApplicationContext(), true, minute * 60 * 1000);
                     dismiss();
                     if (listener != null) {
                         listener.onSubmit(minute);

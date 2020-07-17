@@ -12,7 +12,7 @@ import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
 import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.music.component.service.MusicService;
+import com.d.music.component.service.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
 
     private void gotoMain() {
         // 开启Service服务
-        MusicService.startService(getApplicationContext());
+        NotificationService.startService(getApplicationContext());
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

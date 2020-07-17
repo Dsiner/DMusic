@@ -17,7 +17,7 @@ import com.d.lib.permissioncompat.support.PermissionSupport;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.component.aster.AppAsterModule;
 import com.d.music.component.media.controler.MediaControler;
-import com.d.music.component.service.MusicService;
+import com.d.music.component.service.NotificationService;
 import com.d.music.component.skin.SkinUtil;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.util.AppDBUtil;
@@ -148,14 +148,14 @@ public class App extends Application {
      */
     public static void exit() {
         Context context = getContext();
-        MusicService.timing(context, false, 0);
+        NotificationService.timing(context, false, 0);
         Preferences.getIns(context).putSleepType(0);
         // Save current playback position
         Preferences.getIns(context).putLastPlayPosition(MediaControler.getIns(context).getPosition());
         // Stop music playback
         MediaControler.getIns(context).onDestroy();
         // Stop the service
-        context.stopService(new Intent(context, MusicService.class));
+        context.stopService(new Intent(context, NotificationService.class));
 
         Util.exit(context, 1);
     }

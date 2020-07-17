@@ -50,12 +50,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * MusicService
+ * NotificationService
  * Created by D on 2017/4/29.
  */
-public class MusicService extends Service {
+public class NotificationService extends Service {
     private static final String NOTIFICATION_ID = "com.d.music";
-    private static final String NOTIFICATION_NAME = "com.d.music.MusicService";
+    private static final String NOTIFICATION_NAME = "NotificationService";
     private static final int NOTIFICATION_UNIQUE_ID = 6671;
 
     private static boolean mIsRunning;
@@ -75,7 +75,7 @@ public class MusicService extends Service {
             return;
         }
         // 开启service服务
-        Intent intent = new Intent(context, MusicService.class);
+        Intent intent = new Intent(context, NotificationService.class);
         context.startService(intent);
     }
 
@@ -186,12 +186,11 @@ public class MusicService extends Service {
         NotificationChannel notificationChannel = getNotificationChannel(this,
                 NOTIFICATION_ID, NOTIFICATION_NAME);
         NotificationCompat.Builder builder = getNotification(this, notificationChannel);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            builder.setPriority(Notification.PRIORITY_HIGH);
-        }
-        builder.setSmallIcon(R.drawable.module_common_ic_launcher) // 设置图标
+        builder.setSmallIcon(R.mipmap.ic_launcher) // 设置图标
                 .setTicker("") // 手机状态栏的提示
                 .setWhen(System.currentTimeMillis())
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0)); // 点击后的意图
 
         RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
@@ -328,7 +327,8 @@ public class MusicService extends Service {
     private void updateNotification(int status) {
         switch (status) {
             case Constants.PlayStatus.PLAY_STATUS_STOP:
-                updateNotification(null, mControl.getSongName(), mControl.getArtistName(), status);
+                updateNotification(null, mControl.getSongName(),
+                        mControl.getArtistName(), status);
                 // 取消通知栏
                 cancelNotification();
                 break;
@@ -336,7 +336,8 @@ public class MusicService extends Service {
             case Constants.PlayStatus.PLAY_STATUS_PAUSE:
                 // 正在播放/暂停
                 // 更新Notification的显示
-                updateNotification(null, mControl.getSongName(), mControl.getArtistName(), status);
+                updateNotification(null, mControl.getSongName(),
+                        mControl.getArtistName(), status);
                 break;
         }
     }

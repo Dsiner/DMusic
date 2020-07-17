@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 
-import com.d.music.component.service.MusicService;
+import com.d.music.component.service.NotificationService;
 import com.d.music.data.Constants;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.play.activity.PlayActivity;
@@ -40,7 +40,7 @@ public class SplashActivity extends Activity {
             if (theActivity != null && !theActivity.isFinishing() && !theActivity.isBackPressed) {
                 switch (msg.what) {
                     case 1:
-                        MusicService.startService(theActivity.getApplicationContext());
+                        NotificationService.startService(theActivity.getApplicationContext());
                         theActivity.startActivity(new Intent(theActivity, MainActivity.class));
                         theActivity.finish();
                         break;
@@ -64,22 +64,22 @@ public class SplashActivity extends Activity {
             finish();
             return;
         }
-        if (!MusicService.isRunning()) {
+        if (!NotificationService.isRunning()) {
             // 第一次启动
             Constants.PlayerMode.mode = p.getPlayerMode();
         }
         switch (Constants.PlayerMode.mode) {
             case Constants.PlayerMode.PLAYER_MODE_MINIMALIST:
-                MusicService.startService(getApplicationContext());
+                NotificationService.startService(getApplicationContext());
                 PlayActivity.openActivity(SplashActivity.this);
                 finish();
                 break;
             case Constants.PlayerMode.PLAYER_MODE_NOTIFICATION:
-                MusicService.startService(getApplicationContext());
+                NotificationService.startService(getApplicationContext());
                 finish();
                 break;
             default:
-                if (!MusicService.isRunning()) {
+                if (!NotificationService.isRunning()) {
                     // 第一次启动
                     initView();
                     handler.sendEmptyMessageDelayed(1, delayTime);

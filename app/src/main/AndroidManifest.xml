@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup,name,icon,theme,label">
 
-        <service android:name="com.d.music.component.service.MusicService" />
+        <service android:name="com.d.music.component.service.NotificationService" />
 
         <activity
             android:name="com.d.music.SplashActivity"

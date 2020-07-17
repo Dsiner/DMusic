@@ -12,7 +12,7 @@ import com.d.lib.common.component.repeatclick.ClickFast;
 import com.d.lib.xrv.LRecyclerView;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.component.service.MusicService;
+import com.d.music.component.service.NotificationService;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.setting.adapter.TimingAdapter;
 import com.d.music.setting.model.RadioModel;
@@ -54,7 +54,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
                 if (sleepType < 0 || sleepType > 6) {
                     return;
                 }
-                MusicService.startService(getApplicationContext());
+                NotificationService.startService(getApplicationContext());
                 long time = 0;
                 switch (sleepType) {
                     case 0:
@@ -76,8 +76,8 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
                         time = 90 * 60 * 1000;
                         break;
                 }
-                MusicService.timing(getApplicationContext(), false, 0);
-                MusicService.timing(getApplicationContext(), time > 0, time);
+                NotificationService.timing(getApplicationContext(), false, 0);
+                NotificationService.timing(getApplicationContext(), time > 0, time);
                 p.putSleepType(sleepType);
                 finish();
                 break;
