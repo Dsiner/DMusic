@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import java.io.File;
 
@@ -20,19 +20,19 @@ public class HitTarget {
     public static String hitLrc(@NonNull MusicModel model) {
         final String filePostfix = Transfer.PREFIX_LRC;
         String tempPath = "";
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = model.lrcUrl;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = model.fileFolder + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
-            tempPath = Constants.Path.lyric + File.separator + model.songName + filePostfix;
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
+            tempPath = Constants.Path.LYRIC + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
-            tempPath = Constants.Path.cache + File.separator + model.songName + filePostfix;
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
+            tempPath = Constants.Path.CACHE + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = "";
         }
         return tempPath;
@@ -43,19 +43,19 @@ public class HitTarget {
         final String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix
                 : Transfer.PREFIX_SONG;
         String tempPath = "";
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = model.songUrl;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = model.fileFolder + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
-            tempPath = Constants.Path.download + File.separator + model.songName + filePostfix;
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
+            tempPath = Constants.Path.DOWNLOAD + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
-            tempPath = Constants.Path.cache + File.separator + model.songName + filePostfix;
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
+            tempPath = Constants.Path.CACHE + File.separator + model.songName + filePostfix;
         }
-        if (TextUtils.isEmpty(tempPath) || !FileUtil.isFileExist(tempPath)) {
+        if (TextUtils.isEmpty(tempPath) || !FileUtils.isFileExist(tempPath)) {
             tempPath = "";
         }
         return tempPath;
@@ -64,14 +64,14 @@ public class HitTarget {
     public static boolean secondPassSong(@NonNull MusicModel model) {
         final String filePostfix = !TextUtils.isEmpty(model.filePostfix) ? "." + model.filePostfix
                 : Transfer.PREFIX_SONG;
-        final String oldPath = Constants.Path.cache + File.separator + model.songName + filePostfix;
-        final String destPath = Constants.Path.download + File.separator + model.songName + filePostfix;
-        if (!TextUtils.isEmpty(destPath) && FileUtil.isFileExist(destPath)) {
+        final String oldPath = Constants.Path.CACHE + File.separator + model.songName + filePostfix;
+        final String destPath = Constants.Path.DOWNLOAD + File.separator + model.songName + filePostfix;
+        if (!TextUtils.isEmpty(destPath) && FileUtils.isFileExist(destPath)) {
             return true;
         }
-        if (!TextUtils.isEmpty(oldPath) && FileUtil.isFileExist(oldPath)) {
+        if (!TextUtils.isEmpty(oldPath) && FileUtils.isFileExist(oldPath)) {
             // File movement only
-            FileUtil.renameFile(oldPath, destPath);
+            FileUtils.renameFile(oldPath, destPath);
             return true;
         }
         return false;
@@ -82,7 +82,7 @@ public class HitTarget {
             return false;
         }
         final String filePostfix = Transfer.PREFIX_MV;
-        final String destPath = Constants.Path.mv + File.separator + model.songName + filePostfix;
-        return !TextUtils.isEmpty(destPath) && FileUtil.isFileExist(destPath);
+        final String destPath = Constants.Path.MV + File.separator + model.songName + filePostfix;
+        return !TextUtils.isEmpty(destPath) && FileUtils.isFileExist(destPath);
     }
 }

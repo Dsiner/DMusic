@@ -1,8 +1,9 @@
 package com.d.music.online.fragment;
 
-import com.d.lib.common.component.loader.v4.AbsLazyFragment;
+import com.d.lib.common.component.loader.v4.BaseLazyLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.online.adapter.RadioAdapter;
 import com.d.music.online.model.RadioModel;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * RadioFragment
  * Created by D on 2018/8/11.
  */
-public class RadioFragment extends AbsLazyFragment<RadioModel, RadioPresenter> {
+public class RadioFragment extends BaseLazyLoaderFragment<RadioModel, RadioPresenter> {
 
     @Override
     public RadioPresenter getPresenter() {
@@ -33,8 +34,8 @@ public class RadioFragment extends AbsLazyFragment<RadioModel, RadioPresenter> {
 
     @Override
     protected void initList() {
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
         super.initList();
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 import de.greenrobot.dao.AbstractDao;
 
-import static com.d.music.data.database.greendao.db.AppDB.TRANSFER;
+import static com.d.music.data.database.greendao.db.AppDatabase.TRANSFER;
 
 /**
  * OpTransfer

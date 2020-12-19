@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.common.view.DSLayout;
+import com.d.lib.common.widget.DSLayout;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.taskscheduler.callback.Observer;
 import com.d.lib.taskscheduler.callback.Task;
@@ -34,8 +34,8 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
             @Override
             public List<List<TransferModel>> run() {
                 return type == TransferFragment.TYPE_MV ?
-                        TransferManager.getIns().optMV().pipe().lists()
-                        : TransferManager.getIns().optSong().pipe().lists();
+                        TransferManager.getInstance().optMV().pipe().lists()
+                        : TransferManager.getInstance().optSong().pipe().lists();
             }
         }).subscribeOn(Schedulers.mainThread())
                 .observeOn(Schedulers.mainThread())
@@ -61,8 +61,8 @@ public class TransferPresenter extends MvpBasePresenter<ITransferView> {
     @NonNull
     public List<TransferModel> getDatas(int type) {
         List<List<TransferModel>> lists = type == TransferFragment.TYPE_MV ?
-                TransferManager.getIns().optMV().pipe().lists()
-                : TransferManager.getIns().optSong().pipe().lists();
+                TransferManager.getInstance().optMV().pipe().lists()
+                : TransferManager.getInstance().optSong().pipe().lists();
         return getDatas(lists);
     }
 

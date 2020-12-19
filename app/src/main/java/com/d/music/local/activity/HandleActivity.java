@@ -11,29 +11,28 @@ import android.widget.TextView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.view.TitleLayout;
-import com.d.lib.xrv.itemtouchhelper.OnStartDragListener;
-import com.d.lib.xrv.itemtouchhelper.SimpleItemTouchHelperCallback;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ToastUtils;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.widget.TitleLayout;
+import com.d.lib.pulllayout.rv.itemtouchhelper.OnStartDragListener;
+import com.d.lib.pulllayout.rv.itemtouchhelper.SimpleItemTouchHelperCallback;
 import com.d.music.R;
 import com.d.music.component.media.SyncManager;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.MusicModelEvent;
 import com.d.music.event.eventbus.SortTypeEvent;
 import com.d.music.local.adapter.HandleAdapter;
-import com.d.music.utils.StatusBarCompat;
-import com.d.music.view.popup.AddToListPopup;
+import com.d.music.widget.popup.AddToListPopup;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
@@ -41,106 +40,111 @@ import cn.feng.skin.manager.loader.SkinManager;
  * Created by D on 2017/4/28.
  */
 public class HandleActivity extends BaseActivity<MvpBasePresenter>
-        implements MvpView, OnStartDragListener, HandleAdapter.OnChangeListener {
-    public final static String ARG_TYPE = "type";
-    public final static String ARG_TITLE = "title";
+        implements MvpView, View.OnClickListener, OnStartDragListener {
 
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
-    @BindView(R.id.tv_title_right)
-    TextView tvRight;
-    @BindView(R.id.rv_list)
-    RecyclerView rvList;
+    public static final String EXTRA_TYPE = "type";
+    public static final String EXTRA_TITLE = "title";
 
-    private int type;
-    private String title = "";
-    private List<MusicModel> models;
-    private List<MusicModel> modelsFav;
-    private HandleAdapter adapter;
-    private ItemTouchHelper itemTouchHelper;
+    TitleLayout tl_title;
+    TextView tv_title_right;
+    RecyclerView rv_list;
 
-    public static void startActivity(Context context, int type, String title) {
+    private int mType;
+    private String mTitle = "";
+    private List<MusicModel> mModelsFav;
+    private HandleAdapter mHandleAdapter;
+    private ItemTouchHelper mItemTouchHelper;
+
+    public static void openActivity(Context context, int type, String title) {
         Intent intent = new Intent(context, HandleActivity.class);
-        intent.putExtra(ARG_TYPE, type);
-        intent.putExtra(ARG_TITLE, title);
+        intent.putExtra(EXTRA_TYPE, type);
+        intent.putExtra(EXTRA_TITLE, title);
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.llyt_add_to_list,
-            R.id.llyt_delete, R.id.llyt_revoke})
+    @Override
     public void onClick(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
+
+        final List<MusicModel> datas = new ArrayList<>(mHandleAdapter.getDatas());
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
+
             case R.id.tv_title_right:
-                final boolean isAll = !((boolean) tvRight.getTag());
-                tvRight.setTag(isAll);
+                final boolean isAll = !((boolean) tv_title_right.getTag());
+                tv_title_right.setTag(isAll);
                 int count = 0;
-                for (MusicModel model : models) {
+                for (MusicModel model : datas) {
                     model.exIsSortChecked = isAll || !model.exIsSortChecked;
                     if (model.exIsSortChecked) {
                         count++;
                     }
                 }
                 setCount(count);
-                tvRight.setText(isAll ? getResources().getString(R.string.module_common_inverse_selection)
+                tv_title_right.setText(isAll ? getResources().getString(R.string.module_common_inverse_selection)
                         : getResources().getString(R.string.module_common_select_all));
-                adapter.setCount(count);
-                adapter.notifyDataSetChanged();
+                mHandleAdapter.setCount(count);
+                mHandleAdapter.setDatas(datas);
+                mHandleAdapter.notifyDataSetChanged();
                 break;
+
             case R.id.llyt_add_to_list:
-                if (adapter.getCount() <= 0) {
-                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select));
+                if (mHandleAdapter.getCount() <= 0) {
+                    ToastUtils.toast(mContext, getResources().getString(R.string.module_common_please_select));
                     return;
                 }
-                List<MusicModel> list = new ArrayList<>();
-                for (MusicModel musicModel : models) {
+                final List<MusicModel> list = new ArrayList<>();
+                for (MusicModel musicModel : datas) {
                     if (musicModel.exIsSortChecked) {
                         list.add(musicModel);
                     }
                 }
-                new AddToListPopup(this, type, list).show();
+                new AddToListPopup(this, mType, list).show();
                 break;
+
             case R.id.llyt_delete:
-                int c = adapter.getCount();
+                int c = mHandleAdapter.getCount();
                 if (c <= 0) {
-                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select));
+                    ToastUtils.toast(mContext, getResources().getString(R.string.module_common_please_select));
                     return;
                 }
-                showLoading();
-                for (int i = models.size() - 1; i >= 0; i--) {
-                    MusicModel m = models.get(i);
+                showLoadingDialog();
+                for (int i = datas.size() - 1; i >= 0; i--) {
+                    MusicModel m = datas.get(i);
                     if (m.exIsSortChecked) {
-                        models.remove(m);
-                        if (type == AppDB.COLLECTION_MUSIC) {
-                            modelsFav.add(m);
+                        datas.remove(m);
+                        if (mType == AppDatabase.COLLECTION_MUSIC) {
+                            mModelsFav.add(m);
                         }
                         c--;
                     }
                 }
                 setCount(c);
-                adapter.setCount(0);
-                adapter.notifyDataSetChanged();
-                closeLoading();
+                mHandleAdapter.setCount(0);
+                mHandleAdapter.setDatas(datas);
+                mHandleAdapter.notifyDataSetChanged();
+                dismissLoadingDialog();
                 break;
+
             case R.id.llyt_revoke:
-                showLoading();
-                models.clear();
-                models.addAll(Constants.Heap.models);
-                for (MusicModel model : models) {
+                showLoadingDialog();
+                datas.clear();
+                datas.addAll(Constants.Heap.sModels);
+                for (MusicModel model : datas) {
                     model.exIsSortChecked = false;
                 }
-                if (type == AppDB.COLLECTION_MUSIC) {
-                    modelsFav.clear();
+                if (mType == AppDatabase.COLLECTION_MUSIC) {
+                    mModelsFav.clear();
                 }
                 setCount(0);
-                adapter.setCount(0);
-                adapter.notifyDataSetChanged();
-                closeLoading();
+                mHandleAdapter.setCount(0);
+                mHandleAdapter.setDatas(datas);
+                mHandleAdapter.notifyDataSetChanged();
+                dismissLoadingDialog();
                 break;
         }
     }
@@ -148,7 +152,7 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     private void setCount(int count) {
         String mark = count > 0 ? String.format(mContext.getResources().getString(
                 R.string.module_common_selected_with_parentheses), count) : "";
-        tlTitle.setText(R.id.tv_title_title, title + mark);
+        tl_title.setText(R.id.tv_title_title, mTitle + mark);
     }
 
     @Override
@@ -167,74 +171,92 @@ public class HandleActivity extends BaseActivity<MvpBasePresenter>
     }
 
     @Override
+    protected void bindView() {
+        tl_title = findViewById(R.id.tl_title);
+        tv_title_right = findViewById(R.id.tv_title_right);
+        rv_list = findViewById(R.id.rv_list);
+
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left,
+                R.id.tv_title_right,
+                R.id.llyt_add_to_list,
+                R.id.llyt_delete,
+                R.id.llyt_revoke);
+    }
+
+    @Override
     protected void init() {
-        StatusBarCompat.compat(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        StatusBarCompat.setStatusBarColor(HandleActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         initTitle();
 
-        models = new ArrayList<>();
-        modelsFav = new ArrayList<>();
-        models.addAll(Constants.Heap.models);
-        adapter = new HandleAdapter(mContext, models, R.layout.module_local_adapter_handler);
-        adapter.setOnStartDragListener(this);
-        adapter.setOnChangeListener(this);
-        rvList.setHasFixedSize(true);
-        rvList.setLayoutManager(new LinearLayoutManager(this));
-        rvList.setAdapter(adapter);
+        mModelsFav = new ArrayList<>();
+        mHandleAdapter = new HandleAdapter(mContext,
+                new ArrayList<>(Constants.Heap.sModels),
+                R.layout.module_local_adapter_handler);
+        mHandleAdapter.setOnStartDragListener(this);
+        mHandleAdapter.setOnChangeListener(new HandleAdapter.OnChangeListener() {
+            @Override
+            public void onDelete(MusicModel model) {
+                if (mType == AppDatabase.COLLECTION_MUSIC) {
+                    mModelsFav.add(model);
+                }
+            }
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(rvList);
+            @Override
+            public void onCountChange(int count) {
+                setCount(count);
+            }
+        });
+
+        rv_list.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_list.setLayoutManager(layoutManager);
+        rv_list.setAdapter(mHandleAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mHandleAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rv_list);
     }
 
     private void initTitle() {
         Intent intent = getIntent();
         if (intent != null) {
-            type = intent.getIntExtra(ARG_TYPE, 0);
-            title = intent.getStringExtra(ARG_TITLE);
+            mType = intent.getIntExtra(EXTRA_TYPE, 0);
+            mTitle = intent.getStringExtra(EXTRA_TITLE);
         }
-        tlTitle.setText(R.id.tv_title_title, title);
-        tvRight.setTag(false);
-        tvRight.setText(getResources().getString(R.string.module_common_select_all));
+        tl_title.setText(R.id.tv_title_title, mTitle);
+        tv_title_right.setTag(false);
+        tv_title_right.setText(getResources().getString(R.string.module_common_select_all));
     }
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        itemTouchHelper.startDrag(viewHolder);
-    }
-
-    @Override
-    public void onDelete(MusicModel model) {
-        if (type == AppDB.COLLECTION_MUSIC) {
-            modelsFav.add(model);
-        }
-    }
-
-    @Override
-    public void onCountChange(int count) {
-        setCount(count);
+        mItemTouchHelper.startDrag(viewHolder);
     }
 
     @Override
     public void finish() {
-        EventBus.getDefault().post(new MusicModelEvent(type, models));
+        EventBus.getDefault().post(new MusicModelEvent(mType,
+                new ArrayList<>(mHandleAdapter.getDatas())));
         // 按自定义排序
-        EventBus.getDefault().post(new SortTypeEvent(type, AppDB.ORDER_TYPE_CUSTOM));
-        if (type == AppDB.COLLECTION_MUSIC) {
-            SyncManager.unCollected(getApplicationContext(), modelsFav);
+        EventBus.getDefault().post(new SortTypeEvent(mType, AppDatabase.ORDER_TYPE_CUSTOM));
+        if (mType == AppDatabase.COLLECTION_MUSIC) {
+            SyncManager.unCollected(getApplicationContext(), mModelsFav);
         }
         super.finish();
     }
 
-    @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-    }
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+//    }
 
     @Override
     protected void onDestroy() {
-        if (Constants.Heap.models != null) {
-            Constants.Heap.models.clear();
+        if (Constants.Heap.sModels != null) {
+            Constants.Heap.sModels.clear();
         }
         super.onDestroy();
     }

@@ -58,6 +58,10 @@ public class MVInfoModel extends MVDetailModel {
     public String commentThreadId;
     public List<ArtistsBean> artists;
 
+    public MVInfoModel() {
+        this.view_type = TYPE_INFO;
+    }
+
     public static TransferModel convertToTransfer(MVInfoModel model) {
         TransferModel transferModel = new TransferModel();
         transferModel.transferId = transferModel.id
@@ -86,10 +90,6 @@ public class MVInfoModel extends MVDetailModel {
             url = model.brs._$240;
         }
         return !TextUtils.isEmpty(url) ? url : "";
-    }
-
-    public MVInfoModel() {
-        this.view_type = TYPE_INFO;
     }
 
     public static class BrsBean {

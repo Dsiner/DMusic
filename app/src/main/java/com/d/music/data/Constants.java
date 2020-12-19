@@ -15,14 +15,18 @@ import java.util.List;
 public class Constants {
 
     public static class Path {
-        private final static String path = Environment.getExternalStorageDirectory().getPath() + "/DMusic";
-        public final static String glide_cache = "/image_cache";
-        public final static String log = path + "/log";
-        public final static String cache = path + "/cache";
-        public final static String download = path + "/download";
-        public final static String song = path + "/song";
-        public final static String mv = path + "/mv";
-        public final static String lyric = path + "/lyric";
+        public static final String NAME = "DMusic";
+
+        public static final String glide_cache = "/image_cache";
+
+        public static final String PATH = Environment.getExternalStorageDirectory().getPath()
+                + "/" + NAME;
+        public static final String LOG = PATH + "/log";
+        public static final String CACHE = PATH + "/cache";
+        public static final String DOWNLOAD = PATH + "/download";
+        public static final String SONG = PATH + "/song";
+        public static final String MV = PATH + "/mv";
+        public static final String LYRIC = PATH + "/lyric";
     }
 
     /**
@@ -33,7 +37,7 @@ public class Constants {
         public static final int PLAYER_MODE_MINIMALIST = 1; // 极简模式
         public static final int PLAYER_MODE_NOTIFICATION = 2; // 通知栏模式
 
-        public static int mode = PLAYER_MODE_NORMAL; // 当前播放器模式
+        public static int sPlayerMode = PLAYER_MODE_NORMAL; // 当前播放器模式
     }
 
     /**
@@ -86,6 +90,6 @@ public class Constants {
      */
     public static class Heap {
         // 歌曲排序, 管理用
-        public static List<MusicModel> models = new ArrayList<>();
+        public static List<MusicModel> sModels = new ArrayList<>();
     }
 }

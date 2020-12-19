@@ -14,38 +14,12 @@ public class MusicModelDao extends AbstractMusicDao {
 
     public static final String TABLENAME = "MUSIC_MODEL";
 
-    /**
-     * Properties of entity MusicModel.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties {
-        public final static Property Id = CommonProperties.Id;
-        public final static Property Type = CommonProperties.Type;
-        public final static Property Seq = CommonProperties.Seq;
-        public final static Property SongId = CommonProperties.SongId;
-        public final static Property SongName = CommonProperties.SongName;
-        public final static Property SongUrl = CommonProperties.SongUrl;
-        public final static Property ArtistId = CommonProperties.ArtistId;
-        public final static Property ArtistName = CommonProperties.ArtistName;
-        public final static Property AlbumId = CommonProperties.AlbumId;
-        public final static Property AlbumName = CommonProperties.AlbumName;
-        public final static Property AlbumUrl = CommonProperties.AlbumUrl;
-        public final static Property LrcName = CommonProperties.LrcName;
-        public final static Property LrcUrl = CommonProperties.LrcUrl;
-        public final static Property FileDuration = CommonProperties.FileDuration;
-        public final static Property FileSize = CommonProperties.FileSize;
-        public final static Property FilePostfix = CommonProperties.FilePostfix;
-        public final static Property FileFolder = CommonProperties.FileFolder;
-        public final static Property IsCollected = CommonProperties.IsCollected;
-        public final static Property TimeStamp = CommonProperties.TimeStamp;
+    public MusicModelDao(DaoConfig config) {
+        super(config);
     }
 
     ;
 
-
-    public MusicModelDao(DaoConfig config) {
-        super(config);
-    }
 
     public MusicModelDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
@@ -84,5 +58,31 @@ public class MusicModelDao extends AbstractMusicDao {
     public static void dropTable(SQLiteDatabase db, boolean ifExists) {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"" + TABLENAME + "\"";
         db.execSQL(sql);
+    }
+
+    /**
+     * Properties of entity MusicModel.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties {
+        public static final Property Id = CommonProperties.Id;
+        public static final Property Type = CommonProperties.Type;
+        public static final Property Seq = CommonProperties.Seq;
+        public static final Property SongId = CommonProperties.SongId;
+        public static final Property SongName = CommonProperties.SongName;
+        public static final Property SongUrl = CommonProperties.SongUrl;
+        public static final Property ArtistId = CommonProperties.ArtistId;
+        public static final Property ArtistName = CommonProperties.ArtistName;
+        public static final Property AlbumId = CommonProperties.AlbumId;
+        public static final Property AlbumName = CommonProperties.AlbumName;
+        public static final Property AlbumUrl = CommonProperties.AlbumUrl;
+        public static final Property LrcName = CommonProperties.LrcName;
+        public static final Property LrcUrl = CommonProperties.LrcUrl;
+        public static final Property FileDuration = CommonProperties.FileDuration;
+        public static final Property FileSize = CommonProperties.FileSize;
+        public static final Property FilePostfix = CommonProperties.FilePostfix;
+        public static final Property FileFolder = CommonProperties.FileFolder;
+        public static final Property IsCollected = CommonProperties.IsCollected;
+        public static final Property TimeStamp = CommonProperties.TimeStamp;
     }
 }

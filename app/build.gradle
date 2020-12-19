@@ -18,10 +18,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    def Properties keystoreProperties
-    def keystorePropsFile = file('../keystores/keystore.properties')
-    keystoreProperties = new Properties()
-    keystoreProperties.load(new FileInputStream(keystorePropsFile))
+    def Properties keystoreProperties = new Properties()
+    def keystoreInputStream = new FileInputStream(file('../keystores/keystore.properties'))
+    keystoreProperties.load(keystoreInputStream)
+    keystoreInputStream.close()
 
     signingConfigs {
         release {
@@ -30,6 +30,7 @@ android {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
         }
+
         debug {
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
@@ -46,6 +47,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
+
         release {
             minifyEnabled true // Proguard
             zipAlignEnabled true // ZipAlign optimization
@@ -61,11 +63,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib_common')
     implementation project(':lib_commenplayer')
 
@@ -77,7 +79,7 @@ dependencies {
     implementation rootProject.ext.dependencies.eventbus
     implementation rootProject.ext.dependencies.greendao
     implementation rootProject.ext.dependencies.tinypinyin
-    annotationProcessor rootProject.ext.dependencies.butterknife_compiler
+    implementation rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glide_compiler
 
     implementation rootProject.ext.dependencies.aster
@@ -86,4 +88,5 @@ dependencies {
     implementation rootProject.ext.dependencies.aster_adapter_retrofit
 
     implementation rootProject.ext.dependencies.slidelayout
+
 }

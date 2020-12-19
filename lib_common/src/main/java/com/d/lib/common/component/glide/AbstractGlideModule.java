@@ -14,7 +14,7 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.util.log.ULog;
 
 import java.io.InputStream;
 import java.security.cert.CertificateException;
@@ -37,8 +37,8 @@ public abstract class AbstractGlideModule extends AppGlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_RGB_565))
                 .setDiskCache(new ExternalCacheDiskCacheFactory(context, getCachePath(), 1024 * 1024 * 1024))
-                .setMemoryCache(new LruResourceCache(3 * 1024 * 1024))
-                .setBitmapPool(new LruBitmapPool(3 * 1024 * 1024));
+                .setMemoryCache(new LruResourceCache(6 * 1024 * 1024))
+                .setBitmapPool(new LruBitmapPool(6 * 1024 * 1024));
     }
 
     @NonNull

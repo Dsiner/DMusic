@@ -4,16 +4,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
-import com.d.lib.common.component.repeatclick.OnClickFastListener;
-import com.d.lib.common.view.dialog.AbsSheetDialog;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.common.component.quickclick.OnAvailableClickListener;
+import com.d.lib.common.widget.dialog.AbsSheetDialog;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
-import com.d.music.component.operation.Operater;
+import com.d.music.component.media.controler.MediaControl;
+import com.d.music.component.operation.MoreOperator;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.view.dialog.OperationDialog;
+import com.d.music.data.database.greendao.db.AppDatabase;
+import com.d.music.widget.dialog.OperationDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +34,8 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
 
     @Override
     public void convert(final int position, final CommonHolder holder, final MusicModel item) {
-        holder.setViewVisibility(R.id.llyt_section, item.exIsLetter ? View.VISIBLE : View.GONE);
-        holder.setViewVisibility(R.id.v_right_space, item.exLetter != null ? View.VISIBLE : View.GONE);
+        holder.setVisibility(R.id.llyt_section, item.exIsLetter ? View.VISIBLE : View.GONE);
+        holder.setVisibility(R.id.v_right_space, item.exLetter != null ? View.VISIBLE : View.GONE);
         if (item.exIsLetter) {
             holder.setText(R.id.tv_letter, item.exLetter);
         }
@@ -43,17 +43,17 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
         holder.setText(R.id.tv_list_name, item.songName);
         holder.setText(R.id.tv_title, item.artistName);
         holder.setChecked(R.id.cb_more, item.exIsChecked);
-        holder.setViewVisibility(R.id.llyt_more_cover, item.exIsChecked ? View.VISIBLE : View.GONE);
+        holder.setVisibility(R.id.llyt_more_cover, item.exIsChecked ? View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_collect, item.isCollected
                 ? mContext.getResources().getString(R.string.module_common_collected)
                 : mContext.getResources().getString(R.string.module_common_collect));
-        holder.setViewOnClickListener(R.id.llyt_song, new OnClickFastListener() {
+        holder.setOnClickListener(R.id.llyt_song, new OnAvailableClickListener() {
             @Override
-            public void onFastClick(View v) {
-                MediaControler.getIns(mContext).init(mDatas, position, true);
+            public void onAvailableClick(View v) {
+                MediaControl.getInstance(mContext).init(mDatas, position, true);
             }
         });
-        holder.setViewOnClickListener(R.id.flyt_more, new View.OnClickListener() {
+        holder.setOnClickListener(R.id.flyt_more, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isSubPull) {
@@ -68,11 +68,11 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                                 @Override
                                 public void onClick(Dialog dlg, int index, OperationDialog.Bean bean) {
                                     if (bean.type == OperationDialog.Bean.TYPE_ADDLIST) {
-                                        Operater.addToList(mContext, type, item);
+                                        MoreOperator.addToList(mContext, type, item);
                                     } else if (bean.type == OperationDialog.Bean.TYPE_FAV) {
                                         collect(item, holder, position);
                                     } else if (bean.type == OperationDialog.Bean.TYPE_INFO) {
-                                        Operater.showInfo(mContext, item);
+                                        MoreOperator.showInfo(mContext, item);
                                     }
                                 }
 
@@ -84,34 +84,34 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
                 } else {
                     item.exIsChecked = !item.exIsChecked;
                     holder.setChecked(R.id.cb_more, item.exIsChecked);
-                    holder.setViewVisibility(R.id.llyt_more_cover, item.exIsChecked ? View.VISIBLE : View.GONE);
+                    holder.setVisibility(R.id.llyt_more_cover, item.exIsChecked ? View.VISIBLE : View.GONE);
                 }
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_collect, new OnClickFastListener() {
+        holder.setOnClickListener(R.id.llyt_collect, new OnAvailableClickListener() {
             @Override
-            public void onFastClick(View v) {
+            public void onAvailableClick(View v) {
                 collect(item, holder, position);
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_add_to_list, new OnClickFastListener() {
+        holder.setOnClickListener(R.id.llyt_add_to_list, new OnAvailableClickListener() {
             @Override
-            public void onFastClick(View v) {
-                Operater.addToList(mContext, type, item);
+            public void onAvailableClick(View v) {
+                MoreOperator.addToList(mContext, type, item);
             }
         });
-        holder.setViewOnClickListener(R.id.llyt_info, new OnClickFastListener() {
+        holder.setOnClickListener(R.id.llyt_info, new OnAvailableClickListener() {
             @Override
-            public void onFastClick(View v) {
-                Operater.showInfo(mContext, item);
+            public void onAvailableClick(View v) {
+                MoreOperator.showInfo(mContext, item);
             }
         });
     }
 
     private void collect(MusicModel item, CommonHolder holder, int position) {
-        Operater.collect(mContext, type, item, true);
+        MoreOperator.collect(mContext, type, item, true);
         // Status "item.isCollected" is changed
-        if (type == AppDB.COLLECTION_MUSIC && !item.isCollected) {
+        if (type == AppDatabase.COLLECTION_MUSIC && !item.isCollected) {
             mDatas.remove(item);
             notifyDataSetChanged();
             if (listener != null) {
@@ -129,14 +129,14 @@ public class SongAdapter extends CommonAdapter<MusicModel> {
     private void pullUp(final MusicModel item, final CommonHolder holder) {
         item.exIsChecked = false;
         holder.setChecked(R.id.cb_more, false);
-        holder.setViewVisibility(R.id.llyt_more_cover, View.GONE);
-    }
-
-    public interface OnDataChangedListener {
-        void onChange(int count);
+        holder.setVisibility(R.id.llyt_more_cover, View.GONE);
     }
 
     public void setOnDataChangedListener(OnDataChangedListener l) {
         this.listener = l;
+    }
+
+    public interface OnDataChangedListener {
+        void onChange(int count);
     }
 }

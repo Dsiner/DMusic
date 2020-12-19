@@ -7,7 +7,7 @@
     android:background="@color/lib_pub_color_bg_sub"
     android:orientation="vertical">
 
-    <com.d.music.view.TitleLayout
+    <com.d.music.widget.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -129,7 +129,7 @@
         android:layout_height="100dp"
         android:orientation="horizontal"
         android:padding="@dimen/lib_pub_dimen_margin"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rlyt_online"
@@ -207,7 +207,7 @@
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         skin:enable="true" />
 
-    <com.d.lib.xrv.LRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

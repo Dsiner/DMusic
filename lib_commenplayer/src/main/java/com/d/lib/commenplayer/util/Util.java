@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class Util {
-    public final static int SEEKBAR_MAX = 1000;
+    public static final int SEEKBAR_MAX = 1000;
 
     private static int SCREEN_WIDTH; // 屏幕宽度
     private static int SCREEN_HEIGHT; // 屏幕宽度

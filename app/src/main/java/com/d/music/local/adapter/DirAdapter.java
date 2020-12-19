@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.d.lib.common.component.repeatclick.OnClickFastListener;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.common.component.quickclick.OnAvailableClickListener;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.local.model.FileModel;
 
@@ -31,19 +31,19 @@ public class DirAdapter extends CommonAdapter<FileModel> {
                         : R.color.lib_pub_color_text_main));
         holder.setText(R.id.tv_music_count, String.format(mContext.getResources().getString(R.string.module_common_song_unit_format),
                 item.count));
-        holder.setViewVisibility(R.id.tv_music_count, View.GONE);
+        holder.setVisibility(R.id.tv_music_count, View.GONE);
         holder.setChecked(R.id.cb_check, item.isChecked);
-        holder.setViewVisibility(R.id.flyt_selected, item.isEmptyDir ? View.INVISIBLE : View.VISIBLE);
-        holder.setViewOnClickListener(R.id.ll_dir_sub, new OnClickFastListener() {
+        holder.setVisibility(R.id.flyt_selected, item.isEmptyDir ? View.INVISIBLE : View.VISIBLE);
+        holder.setOnClickListener(R.id.ll_dir_sub, new OnAvailableClickListener() {
             @Override
-            public void onFastClick(View v) {
+            public void onAvailableClick(View v) {
                 String p = item.absolutePath;
                 if (listener != null) {
                     listener.onPath(p);
                 }
             }
         });
-        holder.setViewOnClickListener(R.id.flyt_selected, new View.OnClickListener() {
+        holder.setOnClickListener(R.id.flyt_selected, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 item.isChecked = !item.isChecked;
@@ -52,11 +52,11 @@ public class DirAdapter extends CommonAdapter<FileModel> {
         });
     }
 
-    public interface OnPathListener {
-        void onPath(String path);
-    }
-
     public void setOnPathListener(OnPathListener listener) {
         this.listener = listener;
+    }
+
+    public interface OnPathListener {
+        void onPath(String path);
     }
 }

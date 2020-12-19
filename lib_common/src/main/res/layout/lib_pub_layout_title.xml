@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.d.lib.common.view.trans.TransImageView
+    <com.d.lib.common.widget.trans.TransImageView
         android:id="@+id/iv_title_left"
         android:layout_width="@dimen/lib_pub_dimen_title_height"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_alignParentLeft="true"
-        android:padding="2.5dp"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-    <com.d.lib.common.view.trans.TransTextView
+    <com.d.lib.common.widget.trans.TransTextView
         android:id="@+id/tv_title_left"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -22,16 +21,15 @@
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         android:visibility="gone" />
 
-    <com.d.lib.common.view.trans.TransImageView
+    <com.d.lib.common.widget.trans.TransImageView
         android:id="@+id/iv_title_right"
         android:layout_width="@dimen/lib_pub_dimen_title_height"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:layout_alignParentRight="true"
-        android:padding="2.5dp"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-    <com.d.lib.common.view.trans.TransTextView
+    <com.d.lib.common.widget.trans.TransTextView
         android:id="@+id/tv_title_right"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/lib_pub_dimen_title_height"

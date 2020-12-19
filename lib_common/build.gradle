@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 27
 
     resourcePrefix 'lib_pub_'
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 11
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         consumerProguardFiles 'consumer-proguard-rules.pro'
@@ -16,10 +16,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -32,36 +28,33 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    api files('libs/android-skin-loader-lib.jar')
-    api rootProject.ext.dependencies.glide
-    api rootProject.ext.dependencies.glide_integration
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // ----- Support -----
-    api rootProject.ext.dependencies.support_v4
-    api rootProject.ext.dependencies.support_appcompat_v7
-    api rootProject.ext.dependencies.support_design
-    api rootProject.ext.dependencies.support_recyclerview_v7
+    api 'com.android.support:support-v4:27.1.1'
+    api 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.android.support:recyclerview-v7:27.1.1'
+    api 'com.android.support:design:27.1.1'
 
-    // ----- Common -----
-    api rootProject.ext.dependencies.gson
-    api rootProject.ext.dependencies.nineoldandroids
+    // ----- Google -----
+    api "com.google.code.gson:gson:2.8.5"
 
     // ----- Component -----
-    // View binding
-    api rootProject.ext.dependencies.butterknife
     // Image loading
-    api rootProject.ext.dependencies.glide
-    api rootProject.ext.dependencies.glide_integration
-    annotationProcessor rootProject.ext.dependencies.glide_compiler
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    api 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     // Pull down refresh, load more
-    api rootProject.ext.dependencies.xrv
+    api 'com.dsiner.lib:pulllayout:1.0.2'
+    // Network request
+    api 'com.dsiner.lib:aster:2.0.9'
+    api 'com.dsiner.lib:aster-adapter-okhttp3:2.0.9'
     // Runtime permissions
-    api rootProject.ext.dependencies.permissioncompat
+    api 'com.dsiner.lib:permissioncompat:1.0.2'
     // Thread pool management
-    api rootProject.ext.dependencies.taskscheduler
+    api 'com.dsiner.lib:taskscheduler:1.0.1'
 }

@@ -1,8 +1,8 @@
 package com.d.music.online.fragment;
 
-import com.d.lib.common.component.loader.v4.AbsLazyFragment;
+import com.d.lib.common.component.loader.v4.BaseLazyLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.music.R;
 import com.d.music.online.adapter.MVAdapter;
 import com.d.music.online.model.MVModel;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * MVFragment
  * Created by D on 2018/8/11.
  */
-public class MVFragment extends AbsLazyFragment<MVModel, MVPresenter> {
+public class MVFragment extends BaseLazyLoaderFragment<MVModel, MVPresenter> {
 
     @Override
     public MVPresenter getPresenter() {

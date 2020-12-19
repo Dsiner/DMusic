@@ -11,21 +11,21 @@
         android:layout_height="210dp"
         android:background="@color/lib_pub_color_black" />
 
-    <com.d.lib.common.view.TitleLayout
+    <com.d.lib.common.widget.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
         android:background="@color/lib_pub_color_trans"
         app:lib_pub_tl_leftDrawable="@drawable/lib_pub_ic_title_back" />
 
-    <com.d.lib.common.view.DSLayout
+    <com.d.lib.common.widget.DSLayout
         android:id="@+id/dsl_ds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/player" />
 
-    <com.d.lib.xrv.XRecyclerView
-        android:id="@+id/xrv_list"
+    <com.d.lib.pulllayout.rv.PullRecyclerView
+        android:id="@+id/pull_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/player" />

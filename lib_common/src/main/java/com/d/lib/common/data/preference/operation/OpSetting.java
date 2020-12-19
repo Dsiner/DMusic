@@ -14,13 +14,13 @@ public class OpSetting extends AbstractOp {
         super(settings, editor);
     }
 
-    /************************* 是/否 自动升级 *************************/
+    /************************* Yes / No Whether auto upgrade *************************/
     public void putIsAutoUpdate(boolean auto) {
-        mEditor.putBoolean(Keys.KEY_IS_AUTO_UPDATE, auto);
+        mEditor.putBoolean(Keys.KEY_IS_AUTO_UPGRADE, auto);
         save();
     }
 
     public boolean getIsAutoUpdate() {
-        return mSettings.getBoolean(Keys.KEY_IS_AUTO_UPDATE, false);
+        return mSettings.getBoolean(Keys.KEY_IS_AUTO_UPGRADE, false);
     }
 }

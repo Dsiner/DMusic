@@ -6,39 +6,38 @@ import android.widget.EditText;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
 import com.d.music.R;
 import com.d.music.data.preferences.Preferences;
-import com.d.music.utils.StatusBarCompat;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * KoanActivity
  * Created by D on 2017/6/13.
  */
-public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @BindView(R.id.et_signature)
-    EditText etSignature;
-    @BindView(R.id.et_stroke)
-    EditText etStroke;
+public class KoanActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener {
+    EditText et_signature;
+    EditText et_stroke;
 
-    private Preferences p;
+    private Preferences mPreferences;
 
-    @OnClick({R.id.iv_title_left, R.id.tv_title_right})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
+
             case R.id.tv_title_right:
-                p.putSignature(etSignature.getText().toString().trim());
-                p.putStroke(etStroke.getText().toString().trim());
+                mPreferences.putSignature(et_signature.getText().toString().trim());
+                mPreferences.putStroke(et_stroke.getText().toString().trim());
                 finish();
                 break;
         }
@@ -60,17 +59,27 @@ public class KoanActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     }
 
     @Override
-    protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
-        p = Preferences.getIns(getApplicationContext());
-        etSignature.setText(p.getSignature());
-        etStroke.setText(p.getStroke());
-        etSignature.setSelection(etSignature.getText().length());
+    protected void bindView() {
+        super.bindView();
+        et_signature = findViewById(R.id.et_signature);
+        et_stroke = findViewById(R.id.et_stroke);
+
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left, R.id.tv_title_right);
     }
 
     @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+    protected void init() {
+        StatusBarCompat.setStatusBarColor(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+        mPreferences = Preferences.getInstance(getApplicationContext());
+        et_signature.setText(mPreferences.getSignature());
+        et_stroke.setText(mPreferences.getStroke());
+        et_signature.setSelection(et_signature.getText().length());
     }
+
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+//    }
 }

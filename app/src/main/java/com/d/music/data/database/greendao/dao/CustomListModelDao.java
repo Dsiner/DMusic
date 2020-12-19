@@ -19,25 +19,12 @@ public class CustomListModelDao extends AbstractDao<CustomListModel, Long> {
 
     public static final String TABLENAME = "CUSTOM_LIST_MODEL";
 
-    /**
-     * Properties of entity CustomListModel.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Count = new Property(2, Long.class, "count", false, "COUNT");
-        public final static Property Seq = new Property(3, Integer.class, "seq", false, "SEQ");
-        public final static Property SortType = new Property(4, Integer.class, "sortType", false, "SORT_TYPE");
-        public final static Property Pointer = new Property(5, Integer.class, "pointer", false, "POINTER");
+    public CustomListModelDao(DaoConfig config) {
+        super(config);
     }
 
     ;
 
-
-    public CustomListModelDao(DaoConfig config) {
-        super(config);
-    }
 
     public CustomListModelDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
@@ -167,6 +154,19 @@ public class CustomListModelDao extends AbstractDao<CustomListModel, Long> {
     @Override
     protected boolean isEntityUpdateable() {
         return true;
+    }
+
+    /**
+     * Properties of entity CustomListModel.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties {
+        public static final Property Id = new Property(0, Long.class, "id", true, "_id");
+        public static final Property Name = new Property(1, String.class, "name", false, "NAME");
+        public static final Property Count = new Property(2, Long.class, "count", false, "COUNT");
+        public static final Property Seq = new Property(3, Integer.class, "seq", false, "SEQ");
+        public static final Property SortType = new Property(4, Integer.class, "sortType", false, "SORT_TYPE");
+        public static final Property Pointer = new Property(5, Integer.class, "pointer", false, "POINTER");
     }
 
 }

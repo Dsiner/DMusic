@@ -19,43 +19,12 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
 
     public static final String TABLENAME = "TRANSFER_MODEL";
 
-    /**
-     * Properties of entity TransferModel.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties {
-        public final static Property TransferId = new Property(0, String.class, "transferId", true, "TRANSFER_ID");
-        public final static Property TransferType = new Property(1, Integer.class, "transferType", false, "TRANSFER_TYPE");
-        public final static Property TransferState = new Property(2, Integer.class, "transferState", false, "TRANSFER_STATE");
-        public final static Property TransferCurrentLength = new Property(3, Long.class, "transferCurrentLength", false, "TRANSFER_CURRENT_LENGTH");
-        public final static Property TransferTotalLength = new Property(4, Long.class, "transferTotalLength", false, "TRANSFER_TOTAL_LENGTH");
-        public final static Property Id = new Property(5, String.class, "id", false, "ID");
-        public final static Property Type = new Property(6, Integer.class, "type", false, "TYPE");
-        public final static Property Seq = new Property(7, Integer.class, "seq", false, "SEQ");
-        public final static Property SongId = new Property(8, String.class, "songId", false, "SONG_ID");
-        public final static Property SongName = new Property(9, String.class, "songName", false, "SONG_NAME");
-        public final static Property SongUrl = new Property(10, String.class, "songUrl", false, "SONG_URL");
-        public final static Property ArtistId = new Property(11, String.class, "artistId", false, "ARTIST_ID");
-        public final static Property ArtistName = new Property(12, String.class, "artistName", false, "ARTIST_NAME");
-        public final static Property AlbumId = new Property(13, String.class, "albumId", false, "ALBUM_ID");
-        public final static Property AlbumName = new Property(14, String.class, "albumName", false, "ALBUM_NAME");
-        public final static Property AlbumUrl = new Property(15, String.class, "albumUrl", false, "ALBUM_URL");
-        public final static Property LrcName = new Property(16, String.class, "lrcName", false, "LRC_NAME");
-        public final static Property LrcUrl = new Property(17, String.class, "lrcUrl", false, "LRC_URL");
-        public final static Property FileDuration = new Property(18, Long.class, "fileDuration", false, "FILE_DURATION");
-        public final static Property FileSize = new Property(19, Long.class, "fileSize", false, "FILE_SIZE");
-        public final static Property FilePostfix = new Property(20, String.class, "filePostfix", false, "FILE_POSTFIX");
-        public final static Property FileFolder = new Property(21, String.class, "fileFolder", false, "FILE_FOLDER");
-        public final static Property IsCollected = new Property(22, Boolean.class, "isCollected", false, "IS_COLLECTED");
-        public final static Property TimeStamp = new Property(23, Long.class, "timeStamp", false, "TIME_STAMP");
+    public TransferModelDao(DaoConfig config) {
+        super(config);
     }
 
     ;
 
-
-    public TransferModelDao(DaoConfig config) {
-        super(config);
-    }
 
     public TransferModelDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
@@ -328,6 +297,37 @@ public class TransferModelDao extends AbstractDao<TransferModel, String> {
     @Override
     protected boolean isEntityUpdateable() {
         return true;
+    }
+
+    /**
+     * Properties of entity TransferModel.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties {
+        public static final Property TransferId = new Property(0, String.class, "transferId", true, "TRANSFER_ID");
+        public static final Property TransferType = new Property(1, Integer.class, "transferType", false, "TRANSFER_TYPE");
+        public static final Property TransferState = new Property(2, Integer.class, "transferState", false, "TRANSFER_STATE");
+        public static final Property TransferCurrentLength = new Property(3, Long.class, "transferCurrentLength", false, "TRANSFER_CURRENT_LENGTH");
+        public static final Property TransferTotalLength = new Property(4, Long.class, "transferTotalLength", false, "TRANSFER_TOTAL_LENGTH");
+        public static final Property Id = new Property(5, String.class, "id", false, "ID");
+        public static final Property Type = new Property(6, Integer.class, "type", false, "TYPE");
+        public static final Property Seq = new Property(7, Integer.class, "seq", false, "SEQ");
+        public static final Property SongId = new Property(8, String.class, "songId", false, "SONG_ID");
+        public static final Property SongName = new Property(9, String.class, "songName", false, "SONG_NAME");
+        public static final Property SongUrl = new Property(10, String.class, "songUrl", false, "SONG_URL");
+        public static final Property ArtistId = new Property(11, String.class, "artistId", false, "ARTIST_ID");
+        public static final Property ArtistName = new Property(12, String.class, "artistName", false, "ARTIST_NAME");
+        public static final Property AlbumId = new Property(13, String.class, "albumId", false, "ALBUM_ID");
+        public static final Property AlbumName = new Property(14, String.class, "albumName", false, "ALBUM_NAME");
+        public static final Property AlbumUrl = new Property(15, String.class, "albumUrl", false, "ALBUM_URL");
+        public static final Property LrcName = new Property(16, String.class, "lrcName", false, "LRC_NAME");
+        public static final Property LrcUrl = new Property(17, String.class, "lrcUrl", false, "LRC_URL");
+        public static final Property FileDuration = new Property(18, Long.class, "fileDuration", false, "FILE_DURATION");
+        public static final Property FileSize = new Property(19, Long.class, "fileSize", false, "FILE_SIZE");
+        public static final Property FilePostfix = new Property(20, String.class, "filePostfix", false, "FILE_POSTFIX");
+        public static final Property FileFolder = new Property(21, String.class, "fileFolder", false, "FILE_FOLDER");
+        public static final Property IsCollected = new Property(22, Boolean.class, "isCollected", false, "IS_COLLECTED");
+        public static final Property TimeStamp = new Property(23, Long.class, "timeStamp", false, "TIME_STAMP");
     }
 
 }

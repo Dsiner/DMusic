@@ -7,7 +7,7 @@
     android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
-    <com.d.music.view.TitleLayout
+    <com.d.music.widget.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_koan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -36,7 +36,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
                 android:background="@color/lib_pub_color_bg_sub"
@@ -45,7 +45,7 @@
                 app:lib_pub_rl_text="@string/module_common_night_mode"
                 app:lib_pub_rl_toggleVisibility="gone" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_skin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -56,7 +56,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_sleep"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -67,7 +67,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_auto_play"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -78,7 +78,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_player_mode"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -95,7 +95,7 @@
                 android:layout_marginTop="@dimen/lib_pub_dimen_margin"
                 android:background="@color/lib_pub_color_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_sub"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -106,7 +106,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_add"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -117,7 +117,7 @@
 
             <include layout="@layout/lib_pub_layout_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_rotate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -127,7 +127,7 @@
                 app:lib_pub_rl_text="@string/module_common_avatar_cover_auto_rotation"
                 app:lib_pub_rl_toggleVisibility="visible" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_shake"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -137,7 +137,7 @@
                 app:lib_pub_rl_text="@string/module_common_shake_the_phone_to_cut_songs"
                 app:lib_pub_rl_toggleVisibility="visible" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_mode_menu"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
@@ -154,7 +154,7 @@
                 android:layout_marginTop="@dimen/lib_pub_dimen_margin"
                 android:background="@color/lib_pub_color_line" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"
                 android:background="@color/lib_pub_color_bg_sub"
@@ -163,7 +163,7 @@
                 app:lib_pub_rl_text="@string/module_common_help_center"
                 app:lib_pub_rl_toggleVisibility="gone" />
 
-            <com.d.lib.common.view.RowLayout
+            <com.d.lib.common.widget.RowLayout
                 android:id="@+id/rl_about"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/lib_pub_dimen_row_height"

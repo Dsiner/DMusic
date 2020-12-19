@@ -4,49 +4,56 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.d.lib.common.data.preference.AbstractPreference;
-import com.d.lib.common.utils.Util;
+import com.d.lib.common.util.GsonUtils;
 
 public class UserData extends AbstractPreference {
-    private static UserData instance = null;
+    private volatile static UserData INSTANCE = null;
 
-    private UserBean userBean;
+    private UserBean mUserBean;
 
     private interface Keys {
         String KEY_USER_JSON = "key_user_json";
     }
 
     private UserData(Context context) {
-        super(context);
+        super(context, "UserData");
         getUserBean();
     }
 
-    public static UserData getIns(Context context) {
-        return instance == null ? (instance = new UserData(context)) : instance;
+    public static UserData getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (UserData.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new UserData(context);
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     public UserBean getUserBean() {
-        if (userBean == null) {
+        if (mUserBean == null) {
             String json = mSettings.getString(Keys.KEY_USER_JSON, "");
             if (!TextUtils.isEmpty(json)) {
-                userBean = Util.getGsonIns().fromJson(json, UserBean.class);
+                mUserBean = GsonUtils.getInstance().fromJson(json, UserBean.class);
             } else {
-                userBean = new UserBean();
+                mUserBean = new UserBean();
             }
         }
-        return userBean;
+        return mUserBean;
     }
 
     public void saveUserBean(UserBean bean) {
         if (bean == null) {
             return;
         }
-        userBean = bean;
-        mEditor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(bean));
+        mUserBean = bean;
+        mEditor.putString(Keys.KEY_USER_JSON, GsonUtils.getInstance().toJson(bean));
         save();
     }
 
     public void saveUserBean() {
-        mEditor.putString(Keys.KEY_USER_JSON, Util.getGsonIns().toJson(userBean));
+        mEditor.putString(Keys.KEY_USER_JSON, GsonUtils.getInstance().toJson(mUserBean));
         save();
     }
 

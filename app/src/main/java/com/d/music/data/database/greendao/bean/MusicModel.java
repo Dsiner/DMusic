@@ -10,17 +10,9 @@ import com.d.lib.common.component.mvp.model.BaseModel;
  * Entity mapped to table "MUSIC_MODEL".
  */
 public class MusicModel extends BaseModel {
-    public final static int TYPE_LOCAL = 10;
-    public final static int TYPE_BAIDU = 11;
-    public final static int TYPE_NETEASE = 12;
-
-    public static class Channel {
-        public final static int CHANNEL_TYPE_NONE = 100;
-        public final static int CHANNEL_TYPE_BILL = 101;
-        public final static int CHANNEL_TYPE_RADIO = 102;
-        public final static int CHANNEL_TYPE_MV = 103;
-    }
-
+    public static final int TYPE_LOCAL = 10;
+    public static final int TYPE_BAIDU = 11;
+    public static final int TYPE_NETEASE = 12;
     // Transfer type + Type + Id
     public String id = "";
     public Integer type = TYPE_LOCAL;
@@ -56,10 +48,6 @@ public class MusicModel extends BaseModel {
     // Extra properties: Is it the first section?
     public boolean exIsLetter;
 
-    public static String generateId(int type, int channel, String id) {
-        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
-    }
-
     public MusicModel() {
     }
 
@@ -87,6 +75,10 @@ public class MusicModel extends BaseModel {
         this.fileFolder = fileFolder;
         this.isCollected = isCollected;
         this.timeStamp = timeStamp;
+    }
+
+    public static String generateId(int type, int channel, String id) {
+        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
     }
 
     public String getId() {
@@ -239,6 +231,13 @@ public class MusicModel extends BaseModel {
 
     public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public static class Channel {
+        public static final int CHANNEL_TYPE_NONE = 100;
+        public static final int CHANNEL_TYPE_BILL = 101;
+        public static final int CHANNEL_TYPE_RADIO = 102;
+        public static final int CHANNEL_TYPE_MV = 103;
     }
 
 }

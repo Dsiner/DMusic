@@ -1,7 +1,7 @@
 package com.d.lib.common.component.mvp.app.v4;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,27 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpBaseView;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.view.DSLayout;
-import com.d.lib.common.view.dialog.AlertDialogFactory;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.d.lib.common.widget.DSLayout;
+import com.d.lib.common.widget.dialog.AlertDialogFactory;
 
 /**
  * BaseFragment
  * Created by D on 2017/4/27.
  */
 public abstract class BaseFragment<T extends MvpBasePresenter>
-        extends Fragment implements MvpView {
+        extends Fragment implements MvpBaseView {
 
     protected Context mContext;
     protected Activity mActivity;
     protected T mPresenter;
     protected View mRootView;
     protected DSLayout mDslDs;
-    private AlertDialog mLoadingDlg;
-    private Unbinder mUnbinder;
+    protected Dialog mLoadingDlg;
+    protected boolean mIsPrepared;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public abstract class BaseFragment<T extends MvpBasePresenter>
                 mDslDs = (DSLayout) mRootView.findViewById(getDSLayoutRes());
             }
             bindView(mRootView);
-            mUnbinder = ButterKnife.bind(this, mRootView);
+            mIsPrepared = true;
             init();
         } else {
             if (mRootView.getParent() != null) {
@@ -62,7 +60,6 @@ public abstract class BaseFragment<T extends MvpBasePresenter>
                 mDslDs = (DSLayout) mRootView.findViewById(getDSLayoutRes());
             }
             bindView(mRootView);
-            mUnbinder = ButterKnife.bind(this, mRootView);
         }
         return mRootView;
     }
@@ -80,10 +77,6 @@ public abstract class BaseFragment<T extends MvpBasePresenter>
         if (mPresenter != null) {
             mPresenter.detachView(false);
         }
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-            mUnbinder = null;
-        }
         super.onDestroyView();
     }
 
@@ -99,10 +92,8 @@ public abstract class BaseFragment<T extends MvpBasePresenter>
         }
     }
 
-    /**
-     * Show loading dialog
-     */
-    public void showLoading() {
+    @Override
+    public void showLoadingDialog() {
         if (mLoadingDlg == null) {
             mLoadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
         }
@@ -111,10 +102,8 @@ public abstract class BaseFragment<T extends MvpBasePresenter>
         }
     }
 
-    /**
-     * Dismiss loading dialog
-     */
-    public void closeLoading() {
+    @Override
+    public void dismissLoadingDialog() {
         if (mLoadingDlg != null && mLoadingDlg.isShowing()) {
             mLoadingDlg.dismiss();
         }

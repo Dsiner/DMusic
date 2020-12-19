@@ -17,6 +17,35 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 public class DaoMaster extends AbstractDaoMaster {
     public static final int SCHEMA_VERSION = 1;
 
+    public DaoMaster(SQLiteDatabase db) {
+        super(db, SCHEMA_VERSION);
+        registerDaoClass(MusicModelDao.class);
+        registerDaoClass(LocalAllMusicDao.class);
+        registerDaoClass(CollectionMusicDao.class);
+        registerDaoClass(CustomListModelDao.class);
+        registerDaoClass(CustomMusic0Dao.class);
+        registerDaoClass(CustomMusic1Dao.class);
+        registerDaoClass(CustomMusic2Dao.class);
+        registerDaoClass(CustomMusic3Dao.class);
+        registerDaoClass(CustomMusic4Dao.class);
+        registerDaoClass(CustomMusic5Dao.class);
+        registerDaoClass(CustomMusic6Dao.class);
+        registerDaoClass(CustomMusic7Dao.class);
+        registerDaoClass(CustomMusic8Dao.class);
+        registerDaoClass(CustomMusic9Dao.class);
+        registerDaoClass(CustomMusic10Dao.class);
+        registerDaoClass(CustomMusic11Dao.class);
+        registerDaoClass(CustomMusic12Dao.class);
+        registerDaoClass(CustomMusic13Dao.class);
+        registerDaoClass(CustomMusic14Dao.class);
+        registerDaoClass(CustomMusic15Dao.class);
+        registerDaoClass(CustomMusic16Dao.class);
+        registerDaoClass(CustomMusic17Dao.class);
+        registerDaoClass(CustomMusic18Dao.class);
+        registerDaoClass(CustomMusic19Dao.class);
+        registerDaoClass(TransferModelDao.class);
+    }
+
     /**
      * Creates underlying database table using DAOs.
      */
@@ -79,6 +108,14 @@ public class DaoMaster extends AbstractDaoMaster {
         TransferModelDao.dropTable(db, ifExists);
     }
 
+    public DaoSession newSession() {
+        return new DaoSession(db, IdentityScopeType.Session, daoConfigMap);
+    }
+
+    public DaoSession newSession(IdentityScopeType type) {
+        return new DaoSession(db, type, daoConfigMap);
+    }
+
     public static abstract class OpenHelper extends SQLiteOpenHelper {
 
         public OpenHelper(Context context, String name, CursorFactory factory) {
@@ -106,43 +143,6 @@ public class DaoMaster extends AbstractDaoMaster {
             dropAllTables(db, true);
             onCreate(db);
         }
-    }
-
-    public DaoMaster(SQLiteDatabase db) {
-        super(db, SCHEMA_VERSION);
-        registerDaoClass(MusicModelDao.class);
-        registerDaoClass(LocalAllMusicDao.class);
-        registerDaoClass(CollectionMusicDao.class);
-        registerDaoClass(CustomListModelDao.class);
-        registerDaoClass(CustomMusic0Dao.class);
-        registerDaoClass(CustomMusic1Dao.class);
-        registerDaoClass(CustomMusic2Dao.class);
-        registerDaoClass(CustomMusic3Dao.class);
-        registerDaoClass(CustomMusic4Dao.class);
-        registerDaoClass(CustomMusic5Dao.class);
-        registerDaoClass(CustomMusic6Dao.class);
-        registerDaoClass(CustomMusic7Dao.class);
-        registerDaoClass(CustomMusic8Dao.class);
-        registerDaoClass(CustomMusic9Dao.class);
-        registerDaoClass(CustomMusic10Dao.class);
-        registerDaoClass(CustomMusic11Dao.class);
-        registerDaoClass(CustomMusic12Dao.class);
-        registerDaoClass(CustomMusic13Dao.class);
-        registerDaoClass(CustomMusic14Dao.class);
-        registerDaoClass(CustomMusic15Dao.class);
-        registerDaoClass(CustomMusic16Dao.class);
-        registerDaoClass(CustomMusic17Dao.class);
-        registerDaoClass(CustomMusic18Dao.class);
-        registerDaoClass(CustomMusic19Dao.class);
-        registerDaoClass(TransferModelDao.class);
-    }
-
-    public DaoSession newSession() {
-        return new DaoSession(db, IdentityScopeType.Session, daoConfigMap);
-    }
-
-    public DaoSession newSession(IdentityScopeType type) {
-        return new DaoSession(db, type, daoConfigMap);
     }
 
 }

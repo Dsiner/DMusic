@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.util.SparseArray;
 
-import com.d.lib.common.component.cache.listener.CacheListener;
-import com.d.lib.common.utils.Util;
+import com.d.lib.common.util.ToastUtils;
 import com.d.music.R;
 import com.d.music.component.cache.LinkCache;
 import com.d.music.component.cache.SongCache;
+import com.d.music.component.cache.listener.CacheListener;
 import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.lang.ref.WeakReference;
@@ -23,13 +23,13 @@ import java.util.List;
  * Created by D on 2018/8/22.
  */
 public class Player {
-    public final static int STATE_PLAY = 0;
-    public final static int STATE_START = 1;
-    public final static int STATE_PAUSE = 2;
-    public final static int STATE_SEEKTO = 3;
-    public final static int STATE_PREV = 4;
-    public final static int STATE_NEXT = 5;
-    public final static int STATE_STOP = 6;
+    public static final int STATE_PLAY = 0;
+    public static final int STATE_START = 1;
+    public static final int STATE_PAUSE = 2;
+    public static final int STATE_SEEKTO = 3;
+    public static final int STATE_PREV = 4;
+    public static final int STATE_NEXT = 5;
+    public static final int STATE_STOP = 6;
 
     /**
      * Map used to store Player' tags.
@@ -39,7 +39,13 @@ public class Player {
     private List<Action> mActions = new ArrayList<>();
     private MediaPlayerManager mMediaPlayerManager;
     private Presenter mPresenter;
-    private MediaPlayerManager.OnMediaPlayerListener mListener;
+    private MediaPlayerManager.OnMediaPlayerListener mOnMediaPlayerListener;
+
+    public Player(Context context) {
+        this.mContext = context.getApplicationContext();
+        this.mMediaPlayerManager = MediaPlayerManager.getInstance();
+        this.mPresenter = new Presenter(context.getApplicationContext(), this);
+    }
 
     public Object getTag(int key) {
         if (mKeyedTags != null) return mKeyedTags.get(key);
@@ -71,32 +77,6 @@ public class Player {
 
     public MediaPlayerManager getMediaManager() {
         return mMediaPlayerManager;
-    }
-
-    public static class Action {
-        public int action;
-        public MusicModel model;
-        public int msec;
-
-        public Action(int action) {
-            this.action = action;
-        }
-
-        public Action(int action, MusicModel model) {
-            this.action = action;
-            this.model = model;
-        }
-
-        public Action(int action, int msec) {
-            this.action = action;
-            this.msec = msec;
-        }
-    }
-
-    public Player(Context context) {
-        this.mContext = context.getApplicationContext();
-        this.mMediaPlayerManager = MediaPlayerManager.getIns();
-        this.mPresenter = new Presenter(context.getApplicationContext(), this);
     }
 
     @UiThread
@@ -160,8 +140,8 @@ public class Player {
                 if (mActions.size() > 1) {
                     return;
                 }
-                if (mListener != null) {
-                    mListener.onLoading(mMediaPlayerManager.getMediaPlayer(), url);
+                if (mOnMediaPlayerListener != null) {
+                    mOnMediaPlayerListener.onLoading(mMediaPlayerManager.getMediaPlayer(), url);
                 }
             }
 
@@ -171,8 +151,8 @@ public class Player {
                     return;
                 }
                 mMediaPlayerManager.start();
-                if (mListener != null) {
-                    mListener.onPrepared(mp, url);
+                if (mOnMediaPlayerListener != null) {
+                    mOnMediaPlayerListener.onPrepared(mp, url);
                 }
             }
 
@@ -181,22 +161,22 @@ public class Player {
                 if (pop()) {
                     return;
                 }
-                if (mListener != null) {
-                    mListener.onError(mp, url);
+                if (mOnMediaPlayerListener != null) {
+                    mOnMediaPlayerListener.onError(mp, url);
                 }
             }
 
             @Override
             public void onCompletion(MediaPlayer mp, String url) {
-                if (mListener != null) {
-                    mListener.onCompletion(mp, url);
+                if (mOnMediaPlayerListener != null) {
+                    mOnMediaPlayerListener.onCompletion(mp, url);
                 }
             }
 
             @Override
             public void onCancel(MediaPlayer mp) {
-                if (mListener != null) {
-                    mListener.onCancel(mp);
+                if (mOnMediaPlayerListener != null) {
+                    mOnMediaPlayerListener.onCancel(mp);
                 }
             }
         });
@@ -225,22 +205,42 @@ public class Player {
     }
 
     public void setOnMediaPlayerListener(MediaPlayerManager.OnMediaPlayerListener l) {
-        mListener = l;
+        mOnMediaPlayerListener = l;
+    }
+
+    public static class Action {
+        public int action;
+        public MusicModel model;
+        public int msec;
+
+        public Action(int action) {
+            this.action = action;
+        }
+
+        public Action(int action, MusicModel model) {
+            this.action = action;
+            this.model = model;
+        }
+
+        public Action(int action, int msec) {
+            this.action = action;
+            this.msec = msec;
+        }
     }
 
     public static class Presenter {
         private Context mContext;
         private WeakReference<Player> mViewRef;
 
+        Presenter(Context context, Player player) {
+            this.mContext = context.getApplicationContext();
+            this.mViewRef = new WeakReference<>(player);
+        }
+
         @UiThread
         @Nullable
         public Player getView() {
             return mViewRef == null ? null : mViewRef.get();
-        }
-
-        Presenter(Context context, Player player) {
-            this.mContext = context.getApplicationContext();
-            this.mViewRef = new WeakReference<>(player);
         }
 
         private void playLink(@NonNull final MusicModel model, final boolean next) {
@@ -276,10 +276,10 @@ public class Player {
                     if (getView().pop()) {
                         return;
                     }
-                    if (getView().mListener != null) {
-                        getView().mListener.onError(getView().mMediaPlayerManager.getMediaPlayer(), "");
+                    if (getView().mOnMediaPlayerListener != null) {
+                        getView().mOnMediaPlayerListener.onError(getView().mMediaPlayerManager.getMediaPlayer(), "");
                     }
-                    Util.toast(mContext, mContext.getResources().getString(R.string.lib_pub_net_error));
+                    ToastUtils.toast(mContext, mContext.getResources().getString(R.string.lib_pub_net_error));
                 }
             });
         }

@@ -6,9 +6,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
-import com.d.lib.xrv.itemtouchhelper.ItemTouchHelperViewHolder;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.itemtouchhelper.ItemTouchHelperViewHolder;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
 
@@ -20,22 +20,22 @@ import java.util.List;
  * Created by D on 2017/6/3.
  */
 public class HandleAdapter extends CommonAdapter<MusicModel> {
-    private int count = 0;
-    private OnChangeListener listener;
+    private int mCount = 0;
+    private OnChangeListener mOnChangeListener;
 
     public HandleAdapter(Context context, List<MusicModel> datas, int layoutId) {
         super(context, datas, layoutId);
+    }
+
+    public int getCount() {
+        return mCount;
     }
 
     public void setCount(int count) {
         if (count < 0) {
             count = 0;
         }
-        this.count = count;
-    }
-
-    public int getCount() {
-        return count;
+        this.mCount = count;
     }
 
     @Override
@@ -49,18 +49,20 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
                 item.exIsSortChecked = !item.exIsSortChecked;
                 holder.setChecked(R.id.cb_check, item.exIsSortChecked);
                 if (item.exIsSortChecked) {
-                    count++;
+                    mCount++;
                 } else {
-                    count--;
+                    mCount--;
                 }
-                submitCount(count);
+                submitCount(mCount);
             }
         });
         holder.getView(R.id.flyt_handler).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN && getItemCount() > 1 && startDragListener != null) {
-                    startDragListener.onStartDrag(holder);
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        && getItemCount() > 1
+                        && mStartDragListener != null) {
+                    mStartDragListener.onStartDrag(holder);
                     return true;
                 }
                 return false;
@@ -70,7 +72,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onItemSelected() {
                 holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler_press);
-                holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle_press);
+                holder.setBackgroundResource(R.id.cb_check, R.drawable.module_local_selector_toggle_press);
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_dgray));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(0.6f);
@@ -80,7 +82,7 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
             @Override
             public void onItemClear() {
                 holder.setImageResource(R.id.iv_handler, R.drawable.module_local_ic_sort_handler);
-                holder.setBackground(R.id.cb_check, R.drawable.module_local_selector_toggle);
+                holder.setBackgroundResource(R.id.cb_check, R.drawable.module_local_selector_toggle);
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     holder.itemView.setAlpha(1f);
@@ -92,15 +94,15 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
     @Override
     public void onItemDismiss(int position) {
         MusicModel model = mDatas.get(position);
-        if (model.exIsSortChecked && count > 0) {
-            count--;
+        if (model.exIsSortChecked && mCount > 0) {
+            mCount--;
         }
-        if (listener != null) {
-            listener.onDelete(model);
+        if (mOnChangeListener != null) {
+            mOnChangeListener.onDelete(model);
         }
         mDatas.remove(position);
         notifyItemRemoved(position);
-        submitCount(count);
+        submitCount(mCount);
     }
 
     @Override
@@ -117,18 +119,18 @@ public class HandleAdapter extends CommonAdapter<MusicModel> {
     }
 
     private void submitCount(int count) {
-        if (listener != null) {
-            listener.onCountChange(count);
+        if (mOnChangeListener != null) {
+            mOnChangeListener.onCountChange(count);
         }
+    }
+
+    public void setOnChangeListener(OnChangeListener listener) {
+        this.mOnChangeListener = listener;
     }
 
     public interface OnChangeListener {
         void onDelete(MusicModel model);
 
         void onCountChange(int count);
-    }
-
-    public void setOnChangeListener(OnChangeListener listener) {
-        this.listener = listener;
     }
 }

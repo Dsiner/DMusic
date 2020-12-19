@@ -1,6 +1,6 @@
 package com.d.music.online.fragment;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -9,15 +9,17 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.common.component.loader.v4.AbsFragment;
+import com.d.lib.common.component.loader.v4.BaseLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.ViewHelper;
-import com.d.lib.common.view.TitleLayout;
-import com.d.lib.common.view.dialog.AlertDialogFactory;
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.widget.TitleLayout;
+import com.d.lib.common.widget.dialog.AlertDialogFactory;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.util.RefreshableCompat;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.adapter.DetailAdapter;
@@ -26,31 +28,27 @@ import com.d.music.online.model.RadioSongsRespModel;
 import com.d.music.online.presenter.MusicPresenter;
 import com.d.music.online.view.IMusicView;
 import com.d.music.transfer.manager.TransferManager;
-import com.d.music.view.SongHeaderView;
+import com.d.music.widget.SongHeaderView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * DetailFragment
  * Created by D on 2018/8/12.
  */
-public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> implements IMusicView {
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
-    @BindView(R.id.iv_cover)
-    ImageView ivCover;
+public class DetailFragment extends BaseLoaderFragment<MusicModel, MusicPresenter>
+        implements IMusicView, View.OnClickListener {
+    TitleLayout tl_title;
+    ImageView iv_cover;
 
-    private int type;
-    private String channel, title, cover;
-    private SongHeaderView header;
+    private int mType;
+    private String mChannel, mTitle, mCover;
+    private SongHeaderView songHeaderView;
 
-    @OnClick({R.id.iv_title_left})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
@@ -81,15 +79,24 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     }
 
     @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        tl_title = rootView.findViewById(R.id.tl_title);
+        iv_cover = rootView.findViewById(R.id.iv_cover);
+
+        ViewHelper.setOnClickListener(rootView, this, R.id.iv_title_left);
+    }
+
+    @Override
     protected void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            type = bundle.getInt(DetailActivity.ARG_TYPE, DetailActivity.TYPE_BILL);
-            channel = bundle.getString(DetailActivity.ARG_CHANNEL);
-            title = bundle.getString(DetailActivity.ARG_TITLE);
-            cover = bundle.getString(DetailActivity.ARG_COVER);
+            mType = bundle.getInt(DetailActivity.EXTRA_TYPE, DetailActivity.TYPE_BILL);
+            mChannel = bundle.getString(DetailActivity.EXTRA_CHANNEL);
+            mTitle = bundle.getString(DetailActivity.EXTRA_TITLE);
+            mCover = bundle.getString(DetailActivity.EXTRA_COVER);
         }
-        tlTitle.setText(R.id.tv_title_title, !TextUtils.isEmpty(title) ? title
+        tl_title.setText(R.id.tv_title_title, !TextUtils.isEmpty(mTitle) ? mTitle
                 : getResources().getString(R.string.module_common_music));
         super.init();
     }
@@ -97,24 +104,24 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     @Override
     protected void initList() {
         initHead();
-        mXrvList.setCanRefresh(false);
-        if (type == DetailActivity.TYPE_RADIO) {
-            mXrvList.setCanLoadMore(false);
+        ((Pullable) mPullList).setCanPullDown(false);
+        if (mType == DetailActivity.TYPE_RADIO) {
+            ((Pullable) mPullList).setCanPullUp(false);
         }
-        mXrvList.addHeaderView(header);
+        RefreshableCompat.addHeaderView(mPullList, songHeaderView);
         super.initList();
     }
 
     private void initHead() {
-        header = new SongHeaderView(mContext);
-        header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
-        header.setVisibility(R.id.flyt_header_song_download, View.VISIBLE);
-        header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
-        header.setVisibility(View.GONE);
-        header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
+        songHeaderView = new SongHeaderView(mContext);
+        songHeaderView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
+        songHeaderView.setVisibility(R.id.flyt_header_song_download, View.VISIBLE);
+        songHeaderView.setVisibility(R.id.flyt_header_song_handler, View.GONE);
+        songHeaderView.setVisibility(View.GONE);
+        songHeaderView.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
             @Override
             public void onPlayAll() {
-                MediaControler.getIns(mContext).init(mCommonLoader.getDatas(), 0, true);
+                MediaControl.getInstance(mContext).init(mCommonLoader.getDatas(), 0, true);
             }
 
             @Override
@@ -122,40 +129,41 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
             }
         });
-        ViewHelper.setOnClick(header, R.id.flyt_header_song_download, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final List<MusicModel> datas = mCommonLoader.getDatas();
-                AlertDialogFactory.createFactory(mContext)
-                        .getAlertDialog(mContext.getResources().getString(R.string.module_common_tips),
-                                mContext.getResources().getString(R.string.module_common_traffic_prompt),
-                                mContext.getResources().getString(R.string.lib_pub_ok),
-                                mContext.getResources().getString(R.string.lib_pub_cancel),
-                                new AlertDialogFactory.OnClickListener() {
-                                    @Override
-                                    public void onClick(AlertDialog dlg, View v) {
-                                        TransferManager.getIns().optSong().add(datas);
-                                    }
-                                }, null);
-            }
-        });
+        ViewHelper.setOnClickListener(songHeaderView,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final List<MusicModel> datas = mCommonLoader.getDatas();
+                        AlertDialogFactory.createFactory(mContext)
+                                .getAlertDialog(mContext.getResources().getString(R.string.module_common_tips),
+                                        mContext.getResources().getString(R.string.module_common_traffic_prompt),
+                                        mContext.getResources().getString(R.string.lib_pub_ok),
+                                        mContext.getResources().getString(R.string.lib_pub_cancel),
+                                        new AlertDialogFactory.OnClickListener() {
+                                            @Override
+                                            public void onClick(Dialog dlg, View v) {
+                                                TransferManager.getInstance().optSong().add(datas);
+                                            }
+                                        }, null);
+                    }
+                }, R.id.flyt_header_song_download);
     }
 
     @Override
     protected void onLoad(int page) {
-        if (type == DetailActivity.TYPE_ARTIST) {
-            mPresenter.getArtistSongs(channel, page);
-        } else if (type == DetailActivity.TYPE_BILL) {
-            mPresenter.getBillSongs(channel, page);
-        } else if (type == DetailActivity.TYPE_RADIO) {
-            mPresenter.getRadioSongs(channel, page);
+        if (mType == DetailActivity.TYPE_ARTIST) {
+            mPresenter.getArtistSongs(mChannel, page);
+        } else if (mType == DetailActivity.TYPE_BILL) {
+            mPresenter.getBillSongs(mChannel, page);
+        } else if (mType == DetailActivity.TYPE_RADIO) {
+            mPresenter.getRadioSongs(mChannel, page);
         }
     }
 
     @Override
     public void setInfo(BillSongsRespModel info) {
-        if (!TextUtils.isEmpty(cover)) {
-            setCover(cover);
+        if (!TextUtils.isEmpty(mCover)) {
+            setCover(mCover);
             return;
         }
         if (info == null || info.billboard == null || info.billboard.pic_s260 == null) {
@@ -166,8 +174,8 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
 
     @Override
     public void setInfo(RadioSongsRespModel info) {
-        if (!TextUtils.isEmpty(cover)) {
-            setCover(cover);
+        if (!TextUtils.isEmpty(mCover)) {
+            setCover(mCover);
             return;
         }
         if (info == null || info.result == null || info.result.songlist == null
@@ -179,11 +187,11 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
     }
 
     @Override
-    public void setData(List<MusicModel> datas) {
-        if (type == DetailActivity.TYPE_ARTIST) {
-            setCover(cover);
+    public void loadSuccess(List<MusicModel> datas) {
+        if (mType == DetailActivity.TYPE_ARTIST) {
+            setCover(mCover);
         }
-        super.setData(datas);
+        super.loadSuccess(datas);
         notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
@@ -191,11 +199,11 @@ public class DetailFragment extends AbsFragment<MusicModel, MusicPresenter> impl
         Glide.with(mContext)
                 .load(url)
                 .apply(new RequestOptions().dontAnimate())
-                .into(ivCover);
+                .into(iv_cover);
     }
 
     private void notifyDataCountChanged(int count) {
-        header.setSongCount(count);
-        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
+        songHeaderView.setSongCount(count);
+        songHeaderView.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 }

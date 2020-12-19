@@ -19,15 +19,15 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
-import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.util.log.ULog;
 import com.d.music.App;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicInfoEvent;
 import com.d.music.play.activity.PlayActivity;
@@ -60,11 +60,11 @@ public class NotificationService extends Service {
 
     private static boolean mIsRunning;
 
-    private MediaControler mControl;
-    private MusicBinder mBinder;
-    private NotificationManager mManager;
+    private MediaControl mMediaControl;
+    private MusicBinder mMusicBinder;
+    private NotificationManager mNotificationManager;
 
-    private ControlBroadcast mBroadcast;
+    private ControlBroadcast mControlBroadcast;
 
     public static boolean isRunning() {
         return mIsRunning;
@@ -102,7 +102,7 @@ public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return mMusicBinder;
     }
 
     @Override
@@ -110,9 +110,9 @@ public class NotificationService extends Service {
         super.onCreate();
         mIsRunning = true;
         EventBus.getDefault().register(this);
-        mControl = MediaControler.getIns(getApplicationContext());
-        mBinder = new MusicBinder();
-        mBroadcast = new ControlBroadcast();
+        mMediaControl = MediaControl.getInstance(getApplicationContext());
+        mMusicBinder = new MusicBinder();
+        mControlBroadcast = new ControlBroadcast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_PLAY_PAUSE);
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_PREV);
@@ -120,9 +120,9 @@ public class NotificationService extends Service {
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_EXIT);
         filter.addAction(Constants.PlayFlag.PLAYER_CONTROL_TIMING);
         filter.addAction(Constants.PlayFlag.PLAYER_RELOAD);
-        registerReceiver(mBroadcast, filter);
+        registerReceiver(mControlBroadcast, filter);
 
-        mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         loadMusic();
     }
@@ -131,7 +131,7 @@ public class NotificationService extends Service {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = AppDBUtil.getIns(getApplicationContext()).optMusic().queryAll(AppDB.MUSIC);
+                List<MusicModel> list = DBManager.getInstance(getApplicationContext()).optMusic().queryAll(AppDatabase.MUSIC);
                 if (list == null) {
                     list = new ArrayList<>();
                 }
@@ -147,10 +147,10 @@ public class NotificationService extends Service {
 
                     @Override
                     public void onNext(List<MusicModel> list) {
-                        Preferences p = Preferences.getIns(getApplicationContext());
-                        boolean play = Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION
+                        Preferences p = Preferences.getInstance(getApplicationContext());
+                        boolean play = Constants.PlayerMode.sPlayerMode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION
                                 || (p.getIsAutoPlay() && list.size() > 0);
-                        mControl.init(list, p.getLastPlayPosition(), play);
+                        mMediaControl.init(list, p.getLastPlayPosition(), play);
                     }
 
                     @Override
@@ -175,9 +175,9 @@ public class NotificationService extends Service {
      */
     private void updateNotification(Bitmap bitmap, String songName, String artistName, int status) {
         Intent intent;
-        if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION) {
+        if (Constants.PlayerMode.sPlayerMode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION) {
             intent = new Intent(this, ModeActivity.class);
-        } else if (Constants.PlayerMode.mode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
+        } else if (Constants.PlayerMode.sPlayerMode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
             intent = new Intent(this, PlayActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
@@ -196,7 +196,7 @@ public class NotificationService extends Service {
         RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
         builder.setContent(rv);
         Notification notification = builder.build();
-        mManager.notify(NOTIFICATION_UNIQUE_ID, notification);
+        mNotificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
         startForeground(NOTIFICATION_UNIQUE_ID, notification); // 自定义的notification_ID不能为0
     }
 
@@ -268,7 +268,43 @@ public class NotificationService extends Service {
      */
     public void cancelNotification() {
         // Can not work because of "startForeground"!
-        mManager.cancel(NOTIFICATION_UNIQUE_ID);
+        mNotificationManager.cancel(NOTIFICATION_UNIQUE_ID);
+    }
+
+    private void updateNotification(int status) {
+        switch (status) {
+            case Constants.PlayStatus.PLAY_STATUS_STOP:
+                updateNotification(null, mMediaControl.getSongName(),
+                        mMediaControl.getArtistName(), status);
+                // 取消通知栏
+                cancelNotification();
+                break;
+
+            case Constants.PlayStatus.PLAY_STATUS_PLAYING:
+            case Constants.PlayStatus.PLAY_STATUS_PAUSE:
+                // 正在播放/暂停
+                // 更新Notification的显示
+                updateNotification(null, mMediaControl.getSongName(),
+                        mMediaControl.getArtistName(), status);
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onEventMainThread(MusicInfoEvent event) {
+        if (event != null && mIsRunning && event.isUpdateNotif) {
+            updateNotification(event.status); // 正在播放
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        unregisterReceiver(mControlBroadcast);
+        mIsRunning = false;
+        stopForeground(true);
+        super.onDestroy();
     }
 
     public class MusicBinder extends Binder {
@@ -276,8 +312,8 @@ public class NotificationService extends Service {
             updateNotification(bitmap, title, name, playStatus);
         }
 
-        public MediaControler getInstanceMusicControlUtils() {
-            return mControl;
+        public MediaControl getInstanceMusicControlUtils() {
+            return mMediaControl;
         }
     }
 
@@ -297,65 +333,37 @@ public class NotificationService extends Service {
                     ULog.d("flags" + flag + "");
                     switch (flag) {
                         case Constants.PlayFlag.PLAY_FLAG_PLAY_PAUSE:
-                            if (mControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
-                                mControl.pause();
-                            } else if (mControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
-                                mControl.start();
+                            if (mMediaControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PLAYING) {
+                                mMediaControl.pause();
+                            } else if (mMediaControl.getStatus() == Constants.PlayStatus.PLAY_STATUS_PAUSE) {
+                                mMediaControl.start();
                             }
                             break;
+
                         case Constants.PlayFlag.PLAY_FLAG_NEXT:
-                            mControl.next();
+                            mMediaControl.next();
                             break;
+
                         case Constants.PlayFlag.PLAY_FLAG_PRE:
-                            mControl.prev();
+                            mMediaControl.prev();
                             break;
+
                         case Constants.PlayFlag.PLAY_FLAG_EXIT:
-                            App.exit(); // 退出应用
+                            // 退出应用
+                            App.exit();
                             break;
                     }
                     break;
+
                 case Constants.PlayFlag.PLAYER_CONTROL_TIMING:
                     App.exit(); // 退出应用
                     break;
+
                 case Constants.PlayFlag.PLAYER_RELOAD:
-                    updateNotification(Constants.PlayStatus.PLAY_STATUS_PLAYING); // 正在播放
+                    // 正在播放
+                    updateNotification(Constants.PlayStatus.PLAY_STATUS_PLAYING);
                     break;
             }
         }
-    }
-
-    private void updateNotification(int status) {
-        switch (status) {
-            case Constants.PlayStatus.PLAY_STATUS_STOP:
-                updateNotification(null, mControl.getSongName(),
-                        mControl.getArtistName(), status);
-                // 取消通知栏
-                cancelNotification();
-                break;
-            case Constants.PlayStatus.PLAY_STATUS_PLAYING:
-            case Constants.PlayStatus.PLAY_STATUS_PAUSE:
-                // 正在播放/暂停
-                // 更新Notification的显示
-                updateNotification(null, mControl.getSongName(),
-                        mControl.getArtistName(), status);
-                break;
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
-    public void onEventMainThread(MusicInfoEvent event) {
-        if (event != null && mIsRunning && event.isUpdateNotif) {
-            updateNotification(event.status); // 正在播放
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        unregisterReceiver(mBroadcast);
-        mIsRunning = false;
-        stopForeground(true);
-        super.onDestroy();
     }
 }

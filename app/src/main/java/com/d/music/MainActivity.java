@@ -13,10 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.lib.common.component.mvp.app.v4.BaseFragmentActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.log.ULog;
-import com.d.lib.common.view.BadgeView;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.util.log.ULog;
+import com.d.lib.common.widget.BadgeView;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicInfoEvent;
 import com.d.music.local.fragment.MainFragment;
@@ -27,69 +29,72 @@ import com.d.music.setting.activity.SleepActivity;
 import com.d.music.transfer.activity.TransferActivity;
 import com.d.music.transfer.manager.TransferDataObservable;
 import com.d.music.transfer.manager.TransferManager;
-import com.d.music.utils.StatusBarCompat;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * MainActivity
  * Created by D on 2017/4/28.
  */
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements View.OnClickListener {
     @SuppressLint("StaticFieldLeak")
-    private static FManger fManger;
+    private static FManger sFManger;
 
-    @BindView(R.id.tv_song_name)
-    TextView tvSongName;
-    @BindView(R.id.tv_singer)
-    TextView tvSinger;
-    @BindView(R.id.tv_stroke)
-    TextView tvStroke;
-    @BindView(R.id.llyt_menu_exit)
-    LinearLayout llytExit;
-    @BindView(R.id.iv_play)
-    ImageView ivPlay;
-    @BindView(R.id.flyt_menu)
-    FrameLayout flytMenu;
-    @BindView(R.id.dl_drawer)
-    DrawerLayout dlDrawer;
-    @BindView(R.id.bv_badge)
-    BadgeView bvBadge;
+    TextView tv_song_name;
+    TextView tv_singer;
+    TextView tv_stroke;
+    LinearLayout llyt_menu_exit;
+    ImageView iv_play;
+    FrameLayout flyt_menu;
+    DrawerLayout dl_drawer;
+    BadgeView bv_badge;
 
-    private TransferDataObservable observable;
+    private TransferDataObservable mTransferDataObservable;
 
-    @OnClick({R.id.iv_play, R.id.flyt_menu, R.id.llyt_menu_transfer, R.id.llyt_menu_sleep,
-            R.id.llyt_menu_skin, R.id.llyt_menu_setting, R.id.llyt_menu_exit})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    /**
+     * GetManger
+     */
+    public static FManger getManger() {
+        if (sFManger == null) {
+            return new FManger(null, null);
+        }
+        return sFManger;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
             case R.id.iv_play:
                 PlayActivity.openActivity(MainActivity.this);
                 break;
+
             case R.id.flyt_menu:
-                dlDrawer.openDrawer(GravityCompat.END);
+                dl_drawer.openDrawer(GravityCompat.END);
                 break;
+
             case R.id.llyt_menu_transfer:
                 startActivity(new Intent(MainActivity.this, TransferActivity.class));
                 break;
+
             case R.id.llyt_menu_sleep:
                 startActivity(new Intent(MainActivity.this, SleepActivity.class));
                 break;
+
             case R.id.llyt_menu_skin:
                 startActivity(new Intent(MainActivity.this, SkinActivity.class));
                 break;
+
             case R.id.llyt_menu_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
+
             case R.id.llyt_menu_exit:
                 App.exit();
                 break;
@@ -110,111 +115,117 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
+    protected void bindView() {
+        tv_song_name = findViewById(R.id.tv_song_name);
+        tv_singer = findViewById(R.id.tv_singer);
+        tv_stroke = findViewById(R.id.tv_stroke);
+        llyt_menu_exit = findViewById(R.id.llyt_menu_exit);
+        iv_play = findViewById(R.id.iv_play);
+        flyt_menu = findViewById(R.id.flyt_menu);
+        dl_drawer = findViewById(R.id.dl_drawer);
+        bv_badge = findViewById(R.id.bv_badge);
+
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_play, R.id.flyt_menu,
+                R.id.llyt_menu_transfer, R.id.llyt_menu_sleep,
+                R.id.llyt_menu_skin, R.id.llyt_menu_setting,
+                R.id.llyt_menu_exit);
+    }
+
+    @Override
     protected void init() {
         if (App.toFinish(getIntent())) {
             finish();
             return;
         }
-        StatusBarCompat.compat(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        StatusBarCompat.setStatusBarColor(MainActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
         EventBus.getDefault().register(this);
         initMenu();
         initTransfer();
     }
 
     private void initMenu() {
-        fManger = new FManger(dlDrawer, getSupportFragmentManager());
-        fManger.replace(new MainFragment());
-        dlDrawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
-        dlDrawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+        sFManger = new FManger(dl_drawer, getSupportFragmentManager());
+        sFManger.replace(new MainFragment());
+        dl_drawer.setScrimColor(getResources().getColor(R.color.lib_pub_color_trans));
+        dl_drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                View content = dlDrawer.getChildAt(0);
+                View content = dl_drawer.getChildAt(0);
                 float scale = 1 - slideOffset;
                 float rightScale = 0.8f + scale * 0.2f;
                 float leftScale = 1 - 0.3f * scale;
 
-                ViewHelper.setScaleX(drawerView, leftScale);
-                ViewHelper.setScaleY(drawerView, leftScale);
+                drawerView.setScaleX(leftScale);
+                drawerView.setScaleY(leftScale);
 
-                ViewHelper.setTranslationX(content, -drawerView.getMeasuredWidth() * slideOffset);
-                ViewHelper.setPivotX(content, content.getMeasuredWidth());
-                ViewHelper.setPivotY(content, content.getMeasuredHeight() / 2);
+                content.setTranslationX(-drawerView.getMeasuredWidth() * slideOffset);
+                content.setPivotX(content.getMeasuredWidth());
+                content.setPivotY(content.getMeasuredHeight() / 2);
                 content.invalidate();
-                ViewHelper.setScaleX(content, rightScale);
-                ViewHelper.setScaleY(content, rightScale);
+                content.setScaleX(rightScale);
+                content.setScaleY(rightScale);
             }
         });
     }
 
     private void initTransfer() {
-        bvBadge.setVisibility(TransferManager.getIns().getCount() > 0 ? View.VISIBLE : View.GONE);
-        observable = new TransferDataObservable() {
+        bv_badge.setVisibility(TransferManager.getInstance().getCount() > 0 ? View.VISIBLE : View.GONE);
+        mTransferDataObservable = new TransferDataObservable() {
             @Override
             public void notifyDataSetChanged(int count) {
                 ULog.d("dsiner --> TransferDataObservable: " + count);
-                bvBadge.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                bv_badge.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
             }
         };
-        TransferManager.getIns().register(observable);
+        TransferManager.getInstance().register(mTransferDataObservable);
     }
+
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+//    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        tvSongName.setText(MediaControler.getIns(mContext).getSongName());
-        tvSinger.setText(MediaControler.getIns(mContext).getArtistName());
-        Preferences p = Preferences.getIns(getApplicationContext());
-        flytMenu.setVisibility(p.getIsShowMenuIcon() ? View.VISIBLE : View.GONE);
-        tvStroke.setText(p.getSignature());
-    }
-
-    @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        // 沉浸式状态栏
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        tv_song_name.setText(MediaControl.getInstance(mContext).getSongName());
+        tv_singer.setText(MediaControl.getInstance(mContext).getArtistName());
+        Preferences p = Preferences.getInstance(getApplicationContext());
+        flyt_menu.setVisibility(p.getIsShowMenuIcon() ? View.VISIBLE : View.GONE);
+        tv_stroke.setText(p.getSignature());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEventMainThread(MusicInfoEvent event) {
-        if (event != null && tvSongName != null && tvSinger != null) {
-            tvSongName.setText(event.songName);
-            tvSinger.setText(event.artistName);
+        if (event != null && tv_song_name != null && tv_singer != null) {
+            tv_song_name.setText(event.songName);
+            tv_singer.setText(event.artistName);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (fManger.getBackStackEntryCount() <= 1) {
+        if (sFManger.getBackStackEntryCount() <= 1) {
             finish();
         } else {
-            fManger.popBackStack();
+            sFManger.popBackStack();
         }
     }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        TransferManager.getIns().unregister(observable);
+        TransferManager.getInstance().unregister(mTransferDataObservable);
         releaseResource();
         super.onDestroy();
     }
 
     private void releaseResource() {
-        fManger = null;
+        sFManger = null;
     }
-
-    /**
-     * GetManger
-     */
-    public static FManger getManger() {
-        if (fManger == null) {
-            return new FManger(null, null);
-        }
-        return fManger;
-    }
-
 
     public static class FManger {
         private DrawerLayout drawer;

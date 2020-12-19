@@ -1,8 +1,9 @@
 package com.d.music.local.fragment;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.music.R;
-import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.MusicModelEvent;
 import com.d.music.local.adapter.FolderAdapter;
 import com.d.music.local.model.FolderModel;
@@ -27,8 +28,8 @@ public class LMFolderFragment extends AbstractLMFragment<FolderModel> {
     @Override
     protected void initList() {
         super.initList();
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
     }
 
     @Override
@@ -38,14 +39,14 @@ public class LMFolderFragment extends AbstractLMFragment<FolderModel> {
 
     @Override
     public void setFolder(List<FolderModel> models) {
-        mCommonLoader.setData(models);
+        mCommonLoader.loadSuccess(models);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
+                || event.type != AppDatabase.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
             return;
         }
         mPresenter.getFolder();

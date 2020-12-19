@@ -14,16 +14,16 @@ import java.util.List;
  * Entity mapped to table "TRANSFER_MODEL".
  */
 public class TransferModel extends MusicModel {
-    public final static int TRANSFER_TYPE_NONE = 100;
-    public final static int TRANSFER_TYPE_SONG = 101;
-    public final static int TRANSFER_TYPE_MV = 102;
-    public final static int TRANSFER_TYPE_HEAD_NOT = 103;
-    public final static int TRANSFER_TYPE_HEAD_DONE = 104;
+    public static final int TRANSFER_TYPE_NONE = 100;
+    public static final int TRANSFER_TYPE_SONG = 101;
+    public static final int TRANSFER_TYPE_MV = 102;
+    public static final int TRANSFER_TYPE_HEAD_NOT = 103;
+    public static final int TRANSFER_TYPE_HEAD_DONE = 104;
 
-    public final static int TRANSFER_STATE_PROGRESS = 0;
-    public final static int TRANSFER_STATE_PENDDING = 1;
-    public final static int TRANSFER_STATE_ERROR = 2;
-    public final static int TRANSFER_STATE_DONE = 3;
+    public static final int TRANSFER_STATE_PROGRESS = 0;
+    public static final int TRANSFER_STATE_PENDDING = 1;
+    public static final int TRANSFER_STATE_ERROR = 2;
+    public static final int TRANSFER_STATE_DONE = 3;
 
     public String transferId = "";
     public Integer transferType = TRANSFER_TYPE_NONE;
@@ -38,41 +38,6 @@ public class TransferModel extends MusicModel {
     public float transferSpeed;
     // Extra properties: Transmission ProgressCallback
     public ProgressCallback progressCallback;
-
-    public void setProgressCallback(ProgressCallback l) {
-        progressCallback = l;
-    }
-
-    public static String generateId(@NonNull MusicModel model) {
-        if (model instanceof TransferModel) {
-            return ((TransferModel) model).transferId;
-        }
-        return generateId(model.type, Channel.CHANNEL_TYPE_NONE, model.songId);
-    }
-
-    public static String generateId(int type, int channel, String id) {
-        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
-    }
-
-    public static List<MusicModel> convertTo(@NonNull List<TransferModel> datas) {
-        List<MusicModel> list = new ArrayList<>();
-        for (TransferModel model : datas) {
-            if (model == null) {
-                continue;
-            }
-            list.add(convertTo(model));
-        }
-        return list;
-    }
-
-    public static MusicModel convertTo(@NonNull TransferModel model) {
-        return new MusicModel(model.id, model.type, model.seq, model.songId, model.songName, model.songUrl,
-                model.artistId, model.artistName,
-                model.albumId, model.albumName, model.albumUrl,
-                model.lrcName, model.lrcUrl,
-                model.fileDuration, model.fileSize, model.filePostfix, model.fileFolder,
-                model.isCollected, model.timeStamp);
-    }
 
     public TransferModel() {
     }
@@ -116,6 +81,41 @@ public class TransferModel extends MusicModel {
         this.fileFolder = fileFolder;
         this.isCollected = isCollected;
         this.timeStamp = timeStamp;
+    }
+
+    public static String generateId(@NonNull MusicModel model) {
+        if (model instanceof TransferModel) {
+            return ((TransferModel) model).transferId;
+        }
+        return generateId(model.type, Channel.CHANNEL_TYPE_NONE, model.songId);
+    }
+
+    public static String generateId(int type, int channel, String id) {
+        return "" + type + channel + (!TextUtils.isEmpty(id) ? id : "");
+    }
+
+    public static List<MusicModel> convertTo(@NonNull List<TransferModel> datas) {
+        List<MusicModel> list = new ArrayList<>();
+        for (TransferModel model : datas) {
+            if (model == null) {
+                continue;
+            }
+            list.add(convertTo(model));
+        }
+        return list;
+    }
+
+    public static MusicModel convertTo(@NonNull TransferModel model) {
+        return new MusicModel(model.id, model.type, model.seq, model.songId, model.songName, model.songUrl,
+                model.artistId, model.artistName,
+                model.albumId, model.albumName, model.albumUrl,
+                model.lrcName, model.lrcUrl,
+                model.fileDuration, model.fileSize, model.filePostfix, model.fileFolder,
+                model.isCollected, model.timeStamp);
+    }
+
+    public void setProgressCallback(ProgressCallback l) {
+        progressCallback = l;
     }
 
     public String getTransferId() {

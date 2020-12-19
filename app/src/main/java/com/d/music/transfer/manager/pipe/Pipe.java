@@ -14,15 +14,13 @@ import java.util.List;
  * Created by D on 2018/10/10.
  */
 public abstract class Pipe {
-    private final static int LIMIT_DEFAULT = 3;
-
-    private int mLimit = LIMIT_DEFAULT;
-    private List<List<TransferModel>> mArray = new ArrayList<>();
-    protected List<TransferModel> mList = new ArrayList<>();
-
+    private static final int LIMIT_DEFAULT = 3;
     public List<TransferModel> mDownloadingQueue = new ArrayList<>();
     public List<TransferModel> mDownloading = new ArrayList<>();
     public List<TransferModel> mDownloaded = new ArrayList<>();
+    protected List<TransferModel> mList = new ArrayList<>();
+    private int mLimit = LIMIT_DEFAULT;
+    private List<List<TransferModel>> mArray = new ArrayList<>();
 
     public abstract void init();
 

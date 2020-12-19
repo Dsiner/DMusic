@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.model.SingerModel;
@@ -33,7 +33,7 @@ public class SingerAdapter extends CommonAdapter<SingerModel> {
         holder.setText(R.id.tv_singer, "" + item.name);
         holder.setText(R.id.tv_score, mContext.getResources().getString(R.string.module_common_heat)
                 + "?");
-        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DetailActivity.openActivity(mContext, DetailActivity.TYPE_ARTIST,

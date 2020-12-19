@@ -3,10 +3,10 @@ package com.d.music.play.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.database.greendao.bean.MusicModel;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class SearchAdapter extends CommonAdapter<MusicModel> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaControler.getIns(mContext).cut(item);
+                MediaControl.getInstance(mContext).cut(item);
             }
         });
     }

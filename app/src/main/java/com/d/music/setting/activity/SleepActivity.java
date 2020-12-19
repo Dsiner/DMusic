@@ -1,6 +1,8 @@
 package com.d.music.setting.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,89 +10,92 @@ import android.widget.TextView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.xrv.LRecyclerView;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.component.service.NotificationService;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.setting.adapter.TimingAdapter;
 import com.d.music.setting.model.RadioModel;
-import com.d.music.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * SleepActivity
  * Created by D on 2017/6/13.
  */
-public class SleepActivity extends BaseActivity<MvpBasePresenter> implements MvpView, TimingAdapter.OnChangeListener {
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.iv_check)
-    ImageView ivCheck;
-    @BindView(R.id.lrv_list)
-    LRecyclerView lrvList;
+public class SleepActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener, TimingAdapter.OnChangeListener {
+    TextView tv_content;
+    ImageView iv_check;
+    RecyclerView rv_list;
 
-    private Preferences p;
-    private TimingAdapter adapter;
-    private int sleepType;
+    private Preferences mPreferences;
+    private TimingAdapter mTimingAdapter;
+    private int mSleepType;
 
-    @OnClick({R.id.iv_title_left, R.id.tv_title_right, R.id.rlyt_first})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
+
             case R.id.tv_title_right:
-                if (sleepType < 0 || sleepType > 6) {
+                if (mSleepType < 0 || mSleepType > 6) {
                     return;
                 }
                 NotificationService.startService(getApplicationContext());
                 long time = 0;
-                switch (sleepType) {
+                switch (mSleepType) {
                     case 0:
                         time = 0;
                         break;
+
                     case 1:
                         time = 10 * 60 * 1000;
                         break;
+
                     case 2:
                         time = 20 * 60 * 1000;
                         break;
+
                     case 3:
                         time = 30 * 60 * 1000;
                         break;
+
                     case 4:
                         time = 60 * 60 * 1000;
                         break;
+
                     case 5:
                         time = 90 * 60 * 1000;
                         break;
                 }
                 NotificationService.timing(getApplicationContext(), false, 0);
                 NotificationService.timing(getApplicationContext(), time > 0, time);
-                p.putSleepType(sleepType);
+                mPreferences.putSleepType(mSleepType);
                 finish();
                 break;
+
             case R.id.rlyt_first:
-                if (sleepType == 0) {
+                if (mSleepType == 0) {
                     return;
                 }
-                ivCheck.setVisibility(View.VISIBLE);
-                adapter.setIndex(-1);
-                if (sleepType - 1 >= 0 && sleepType - 1 < adapter.getDatas().size()) {
-                    adapter.getDatas().get(sleepType - 1).isChecked = false;
+                iv_check.setVisibility(View.VISIBLE);
+                mTimingAdapter.setIndex(-1);
+                if (mSleepType - 1 >= 0 && mSleepType - 1 < mTimingAdapter.getDatas().size()) {
+                    mTimingAdapter.getDatas().get(mSleepType - 1).isChecked = false;
                 }
-                adapter.notifyDataSetChanged();
+                mTimingAdapter.notifyDataSetChanged();
                 break;
         }
     }
@@ -119,21 +124,35 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
     }
 
     @Override
+    protected void bindView() {
+        super.bindView();
+        tv_content = findViewById(R.id.tv_content);
+        iv_check = findViewById(R.id.iv_check);
+        rv_list = findViewById(R.id.rv_list);
+
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left, R.id.tv_title_right,
+                R.id.rlyt_first);
+    }
+
+    @Override
     protected void init() {
         if (App.toFinish(getIntent())) {
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-        p = Preferences.getIns(getApplicationContext());
-        sleepType = p.getSleepType();
-        tvContent.setText(getResources().getString(R.string.module_common_close));
-        ivCheck.setVisibility(sleepType == 0 ? View.VISIBLE : View.GONE);
-        adapter = new TimingAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
-        adapter.setIndex(sleepType - 1);
-        adapter.setOnChangeListener(this);
-        lrvList.showAsList();
-        lrvList.setAdapter(adapter);
+        StatusBarCompat.setStatusBarColor(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        mPreferences = Preferences.getInstance(getApplicationContext());
+        mSleepType = mPreferences.getSleepType();
+        tv_content.setText(getResources().getString(R.string.module_common_close));
+        iv_check.setVisibility(mSleepType == 0 ? View.VISIBLE : View.GONE);
+        mTimingAdapter = new TimingAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
+        mTimingAdapter.setIndex(mSleepType - 1);
+        mTimingAdapter.setOnChangeListener(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_list.setLayoutManager(layoutManager);
+        rv_list.setAdapter(mTimingAdapter);
     }
 
     private List<RadioModel> getDatas() {
@@ -142,7 +161,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
         for (int i = 0; i < 6; i++) {
             RadioModel model = new RadioModel();
             model.content = values[i];
-            model.isChecked = (sleepType == i + 1);
+            model.isChecked = (mSleepType == i + 1);
             datas.add(model);
         }
         return datas;
@@ -150,13 +169,13 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter> implements Mvp
 
     @Override
     public void onChange(int index) {
-        sleepType = index + 1;
-        ivCheck.setVisibility(View.GONE);
+        mSleepType = index + 1;
+        iv_check.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-    }
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+//    }
 }

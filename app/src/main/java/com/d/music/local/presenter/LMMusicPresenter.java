@@ -4,15 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.common.utils.log.ULog;
-import com.d.lib.common.view.DSLayout;
+import com.d.lib.common.util.log.ULog;
+import com.d.lib.common.widget.DSLayout;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.local.model.AlbumModel;
 import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.view.sort.SortUtil;
+import com.d.music.widget.sort.SortUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +36,14 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
         super(context);
     }
 
-    public void getSong(final int type, final SortUtil sortUtil) {
+    public void getSong(final int type, final SortUtils sortUtil) {
         if (getView() != null) {
             getView().setState(DSLayout.STATE_LOADING);
         }
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = AppDBUtil.getIns(mContext).optMusic()
+                List<MusicModel> list = DBManager.getInstance(mContext).optMusic()
                         .queryAll(type);
                 if (list == null) {
                     list = new ArrayList<>();
@@ -90,7 +90,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<SingerModel>> e) throws Exception {
                 List<SingerModel> list = new ArrayList<>();
-                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                Cursor cursor = DBManager.getInstance(mContext).optMusic()
                         .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ARTIST_NAME");
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
@@ -149,7 +149,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<AlbumModel>> e) throws Exception {
                 List<AlbumModel> list = new ArrayList<>();
-                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                Cursor cursor = DBManager.getInstance(mContext).optMusic()
                         .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY ALBUM_NAME");
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
@@ -212,7 +212,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<FolderModel>> e) throws Exception {
                 List<FolderModel> list = new ArrayList<>();
-                Cursor cursor = AppDBUtil.getIns(mContext).optMusic()
+                Cursor cursor = DBManager.getInstance(mContext).optMusic()
                         .queryBySQL("SELECT *,COUNT(*) FROM LOCAL_ALL_MUSIC GROUP BY FILE_FOLDER");
                 if (cursor != null && cursor.moveToFirst()) {
                     do {

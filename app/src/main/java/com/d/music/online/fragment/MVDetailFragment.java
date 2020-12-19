@@ -10,16 +10,17 @@ import com.d.lib.commenplayer.listener.IPlayerListener;
 import com.d.lib.commenplayer.listener.IRenderView;
 import com.d.lib.commenplayer.listener.OnNetListener;
 import com.d.lib.commenplayer.ui.ControlLayout;
-import com.d.lib.common.component.loader.v4.AbsFragment;
+import com.d.lib.common.component.loader.v4.BaseLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.netstate.NetCompat;
-import com.d.lib.common.component.netstate.NetState;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.view.DSLayout;
-import com.d.lib.common.view.TitleLayout;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
+import com.d.lib.common.component.network.NetworkCompat;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.util.ScreenUtils;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.widget.DSLayout;
+import com.d.lib.common.widget.TitleLayout;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
 import com.d.music.online.activity.MVDetailActivity;
 import com.d.music.online.adapter.MVDetailAdapter;
@@ -32,29 +33,27 @@ import com.d.music.online.view.IMVDetailView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  * MVDetailFragment
  * Created by D on 2018/8/12.
  */
-public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresenter> implements IMVDetailView {
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
-    @BindView(R.id.player)
+public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetailPresenter>
+        implements IMVDetailView {
+    TitleLayout tl_title;
     CommenPlayer player;
 
-    private long id;
-    private boolean ignoreNet;
-    private int height916;
+    private long mId;
+    private boolean mIgnoreNet;
+    private int mHeight916;
 
-    @OnClick({R.id.iv_title_left})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_title_left:
                 getActivity().finish();
@@ -109,20 +108,29 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
     }
 
     @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        tl_title = rootView.findViewById(R.id.tl_title);
+        player = rootView.findViewById(R.id.player);
+
+        ViewHelper.setOnClickListener(rootView, this, R.id.iv_title_left);
+    }
+
+    @Override
     protected void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            id = bundle.getLong(MVDetailActivity.ARG_ID, 0);
+            mId = bundle.getLong(MVDetailActivity.EXTRA_ID, 0);
         }
         super.init();
-        height916 = (int) (Util.getScreenSize(mActivity)[0] * 9f / 16f);
+        mHeight916 = (int) (ScreenUtils.getScreenSize(mActivity)[0] * 9f / 16f);
         initPlayer();
     }
 
     private void initPlayer() {
         ViewGroup.LayoutParams lp = player.getLayoutParams();
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        lp.height = height916;
+        lp.height = mHeight916;
         player.setLayoutParams(lp);
 
         player.setLive(false);
@@ -130,7 +138,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
         player.setOnNetListener(new OnNetListener() {
             @Override
             public void onIgnoreMobileNet() {
-                ignoreNet = true;
+                mIgnoreNet = true;
             }
         }).setOnPlayerListener(new IPlayerListener() {
             @Override
@@ -145,7 +153,8 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
             @Override
             public void onPrepared(IMediaPlayer mp) {
-                if (!ignoreNet && NetCompat.getStatus() == NetState.CONNECTED_MOBILE) {
+                if (!mIgnoreNet
+                        && NetworkCompat.isMobileDataType(NetworkCompat.getType())) {
                     player.pause();
                     player.getControl().setState(ControlLayout.STATE_MOBILE_NET);
                 } else {
@@ -178,8 +187,8 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
 
     @Override
     protected void initList() {
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
         super.initList();
     }
 
@@ -187,16 +196,16 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
     protected void onLoad(int page) {
         mDslDs.setState(DSLayout.GONE);
         if (page == 1) {
-            mPresenter.getMvDetailInfo(id);
-            mPresenter.getSimilarMV(id);
+            mPresenter.getMvDetailInfo(mId);
+            mPresenter.getSimilarMV(mId);
         }
-        mPresenter.getMVComment(id, page);
+        mPresenter.getMVComment(mId, page);
     }
 
     @Override
     public void setInfo(MVDetailModel info) {
         mDslDs.setState(DSLayout.GONE);
-        mXrvList.setVisibility(View.VISIBLE);
+        mPullList.setVisibility(View.VISIBLE);
         mCommonLoader.addTop(info);
         player.play(MVInfoModel.getUrl((MVInfoModel) info));
     }
@@ -207,7 +216,7 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
             return;
         }
         mDslDs.setState(DSLayout.GONE);
-        mXrvList.setVisibility(View.VISIBLE);
+        mPullList.setVisibility(View.VISIBLE);
         List<MVDetailModel> datas = mCommonLoader.getDatas();
         if (datas.size() > 0 && datas.get(0) != null && datas.get(0) instanceof MVInfoModel) {
             mCommonLoader.addData(1, similar);
@@ -217,9 +226,9 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
     }
 
     @Override
-    public void setData(List<MVDetailModel> datas) {
+    public void loadSuccess(List<MVDetailModel> datas) {
         mDslDs.setState(DSLayout.GONE);
-        mXrvList.setVisibility(View.VISIBLE);
+        mPullList.setVisibility(View.VISIBLE);
         mCommonLoader.addData(datas);
     }
 
@@ -247,11 +256,11 @@ public class MVDetailFragment extends AbsFragment<MVDetailModel, MVDetailPresent
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             player.setLayoutParams(lp);
-            tlTitle.setVisibility(View.GONE);
+            tl_title.setVisibility(View.GONE);
         } else {
-            lp.height = height916;
+            lp.height = mHeight916;
             player.setLayoutParams(lp);
-            tlTitle.setVisibility(View.VISIBLE);
+            tl_title.setVisibility(View.VISIBLE);
         }
         if (player != null) {
             player.onConfigurationChanged(newConfig);

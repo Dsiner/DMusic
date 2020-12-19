@@ -12,7 +12,7 @@
         android:textColor="@color/lib_pub_color_text_sub"
         android:textSize="@dimen/lib_pub_dimen_text_small" />
 
-    <com.d.music.view.flowlayout.FlowLayout
+    <com.d.music.widget.flowlayout.FlowLayout
         android:id="@+id/fl_flow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

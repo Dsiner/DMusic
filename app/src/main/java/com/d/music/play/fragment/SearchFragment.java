@@ -3,21 +3,24 @@ package com.d.music.play.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
-import com.d.lib.common.component.loader.v4.AbsFragment;
+import com.d.lib.common.component.loader.v4.BaseLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.utils.Util;
-import com.d.lib.common.utils.ViewHelper;
-import com.d.lib.common.utils.keyboard.KeyboardHelper;
-import com.d.lib.common.view.ClearEditText;
-import com.d.lib.common.view.DSLayout;
-import com.d.lib.xrv.XRecyclerView;
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.common.util.GsonUtils;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.util.keyboard.KeyboardHelper;
+import com.d.lib.common.widget.ClearEditText;
+import com.d.lib.common.widget.DSLayout;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.Refreshable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.util.RefreshableCompat;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.preferences.Preferences;
@@ -26,44 +29,39 @@ import com.d.music.play.adapter.SearchAdapter;
 import com.d.music.play.adapter.SearchHistoryAdapter;
 import com.d.music.play.presenter.SearchPresenter;
 import com.d.music.play.view.ISearchView;
-import com.d.music.view.SearchHeaderView;
+import com.d.music.widget.SearchHeaderView;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * SearchFragment
  * Created by D on 2018/8/13.
  **/
-public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> implements ISearchView {
-    @BindView(R.id.cet_edit)
-    ClearEditText cetEdit;
-    @BindView(R.id.tv_search)
-    TextView tvSearch;
-    @BindView(R.id.llyt_float_search_history)
-    View layoutHistory;
-    @BindView(R.id.flyt_float_search)
-    View layoutSearch;
-    @BindView(R.id.xrv_list_history)
-    XRecyclerView xrvHistory;
+public class SearchFragment extends BaseLoaderFragment<MusicModel, SearchPresenter>
+        implements ISearchView {
 
-    private SearchHeaderView headerView;
-    private SearchHistoryAdapter historyAdapter;
-    private HistoryQueue historyQueue;
-    private String tag;
+    ClearEditText cet_edit;
+    TextView tv_search;
+    View llyt_float_search_history;
+    View flyt_float_search;
+    RecyclerView list_history;
+
+    private SearchHeaderView mSearchHeaderView;
+    private SearchHistoryAdapter mSearchHistoryAdapter;
+    private HistoryQueue mHistoryQueue;
+    private String mSearchTag;
 
     @Override
     public void onClick(View v) {
         int resId = v.getId();
         if (resId == R.id.tv_search) {
             if (getResources().getString(R.string.module_common_search)
-                    .equals(tvSearch.getText().toString())) {
-                search(cetEdit.getText().toString());
+                    .equals(tv_search.getText().toString())) {
+                search(cet_edit.getText().toString());
             } else if (getResources().getString(R.string.lib_pub_cancel)
-                    .equals(tvSearch.getText().toString())) {
+                    .equals(tv_search.getText().toString())) {
                 if (isSearching()) {
                     switchMode(false);
                 } else {
@@ -75,15 +73,15 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     private void search(String tag) {
         if (!TextUtils.isEmpty(tag)) {
-            cetEdit.setText(tag);
-            cetEdit.setSelection(cetEdit.getText().toString().length());
-            tvSearch.setText(getResources().getString(R.string.lib_pub_cancel));
+            cet_edit.setText(tag);
+            cet_edit.setSelection(cet_edit.getText().toString().length());
+            tv_search.setText(getResources().getString(R.string.lib_pub_cancel));
         }
 
         switchMode(true);
-        setData(new ArrayList<MusicModel>());
+        loadSuccess(new ArrayList<MusicModel>());
         getData();
-        KeyboardHelper.hideKeyboard(cetEdit);
+        KeyboardHelper.hideKeyboard(cet_edit);
     }
 
     @Override
@@ -110,21 +108,26 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     @Override
     protected void bindView(View rootView) {
         super.bindView(rootView);
-        ViewHelper.setOnClick(rootView, this, R.id.tv_search);
+        cet_edit = rootView.findViewById(R.id.cet_edit);
+        tv_search = rootView.findViewById(R.id.tv_search);
+        llyt_float_search_history = rootView.findViewById(R.id.llyt_float_search_history);
+        flyt_float_search = rootView.findViewById(R.id.flyt_float_search);
+        list_history = rootView.findViewById(R.id.pull_list_history);
+
+        ViewHelper.setOnClickListener(rootView, this, R.id.tv_search);
     }
 
     @Override
     protected void initList() {
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(true);
+        ((Pullable) mPullList).setCanPullDown(false);
         super.initList();
     }
 
     @Override
     protected void init() {
         super.init();
-        historyQueue = new HistoryQueue(mContext);
-        cetEdit.addTextChangedListener(new TextWatcher() {
+        mHistoryQueue = new HistoryQueue(mContext);
+        cet_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -137,7 +140,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvSearch.setText(s.toString().length() > 0
+                tv_search.setText(s.toString().length() > 0
                         ? getResources().getString(R.string.module_common_search)
                         : getResources().getString(R.string.lib_pub_cancel));
             }
@@ -147,15 +150,14 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     }
 
     private void initHistory() {
-        xrvHistory.setCanRefresh(false);
-        xrvHistory.setCanLoadMore(false);
-        headerView = new SearchHeaderView(mContext);
-        historyAdapter = new SearchHistoryAdapter(mContext, new ArrayList<String>(),
+        ((Pullable) list_history).setCanPullDown(false);
+        ((Pullable) list_history).setCanPullUp(false);
+        mSearchHeaderView = new SearchHeaderView(mContext);
+        mSearchHistoryAdapter = new SearchHistoryAdapter(mContext, new ArrayList<String>(),
                 R.layout.module_play_adapter_search_history);
-        xrvHistory.showAsList();
-        xrvHistory.addHeaderView(headerView);
-        xrvHistory.setAdapter(historyAdapter);
-        headerView.setOnHeaderListener(new SearchHeaderView.OnHeaderListener() {
+        RefreshableCompat.addHeaderView((Refreshable) list_history, mSearchHeaderView);
+        list_history.setAdapter(mSearchHistoryAdapter);
+        mSearchHeaderView.setOnHeaderListener(new SearchHeaderView.OnHeaderListener() {
             @Override
             public void onClick(View v, String tag) {
                 search(tag);
@@ -163,38 +165,38 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
             @Override
             public void onSweepHistory() {
-                historyQueue.clear();
-                historyAdapter.setDatas(historyQueue.list());
-                historyAdapter.notifyDataSetChanged();
+                mHistoryQueue.clear();
+                mSearchHistoryAdapter.setDatas(mHistoryQueue.list());
+                mSearchHistoryAdapter.notifyDataSetChanged();
             }
         });
 
-        String json = Preferences.getIns(mContext).getSearchHot();
+        String json = Preferences.getInstance(mContext).getSearchHot();
         if (!TextUtils.isEmpty(json)) {
-            List<SearchHotRespModel.HotsBean> datas = Util.getGsonIns().fromJson(json,
+            List<SearchHotRespModel.HotsBean> datas = GsonUtils.getInstance().fromJson(json,
                     new TypeToken<List<SearchHotRespModel.HotsBean>>() {
                     }.getType());
             if (datas != null && datas.size() > 0) {
-                headerView.setDatas(datas);
+                mSearchHeaderView.setDatas(datas);
             }
         }
 
-        historyAdapter.setOnClickListener(new SearchHistoryAdapter.OnClickListener() {
+        mSearchHistoryAdapter.setOnClickListener(new SearchHistoryAdapter.OnClickListener() {
             @Override
             public void onClick(int position, String item) {
-                historyQueue.put(item);
+                mHistoryQueue.put(item);
                 search(item);
             }
 
             @Override
             public void onDelete(int position, String item) {
-                historyQueue.delete(item);
-                historyAdapter.setDatas(historyQueue.list());
-                historyAdapter.notifyDataSetChanged();
+                mHistoryQueue.delete(item);
+                mSearchHistoryAdapter.setDatas(mHistoryQueue.list());
+                mSearchHistoryAdapter.notifyDataSetChanged();
             }
         });
-        historyAdapter.setDatas(historyQueue.list());
-        historyAdapter.notifyDataSetChanged();
+        mSearchHistoryAdapter.setDatas(mHistoryQueue.list());
+        mSearchHistoryAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -204,41 +206,41 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
     }
 
     private boolean isSearching() {
-        return layoutSearch.getVisibility() == View.VISIBLE;
+        return flyt_float_search.getVisibility() == View.VISIBLE;
     }
 
     private void switchMode(boolean searching) {
         if (!searching) {
-            cetEdit.setText("");
-            tag = "";
+            cet_edit.setText("");
+            mSearchTag = "";
         } else {
-            tag = cetEdit.getText().toString();
-            historyQueue.put(tag);
-            historyAdapter.setDatas(historyQueue.list());
-            historyAdapter.notifyDataSetChanged();
+            mSearchTag = cet_edit.getText().toString();
+            mHistoryQueue.put(mSearchTag);
+            mSearchHistoryAdapter.setDatas(mHistoryQueue.list());
+            mSearchHistoryAdapter.notifyDataSetChanged();
         }
-        layoutHistory.setVisibility(searching ? View.GONE : View.VISIBLE);
-        layoutSearch.setVisibility(searching ? View.VISIBLE : View.GONE);
+        llyt_float_search_history.setVisibility(searching ? View.GONE : View.VISIBLE);
+        flyt_float_search.setVisibility(searching ? View.VISIBLE : View.GONE);
     }
 
     @Override
     protected void onLoad(int page) {
-        if (TextUtils.isEmpty(tag)) {
+        if (TextUtils.isEmpty(mSearchTag)) {
             setState(DSLayout.STATE_EMPTY);
             return;
         }
         int start = page - 1;
         int count = 15;
-        mPresenter.search(tag, start, count);
+        mPresenter.search(mSearchTag, start, count);
     }
 
     @Override
     public void getSearchHotSuccess(List<SearchHotRespModel.HotsBean> datas) {
         if (datas.size() > 0) {
-            String json = Util.getGsonIns().toJson(datas);
-            Preferences.getIns(mContext).putSearchHot(json);
+            String json = GsonUtils.getInstance().toJson(datas);
+            Preferences.getInstance(mContext).putSearchHot(json);
         }
-        headerView.setDatas(datas);
+        mSearchHeaderView.setDatas(datas);
     }
 
     @Override
@@ -252,7 +254,7 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
     @Override
     public void onDestroyView() {
-        historyQueue.save();
+        mHistoryQueue.save();
         super.onDestroyView();
     }
 
@@ -267,9 +269,9 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
 
         private void init() {
             history = new ArrayList<>();
-            String json = Preferences.getIns(context).getSearchHistory();
+            String json = Preferences.getInstance(context).getSearchHistory();
             if (!TextUtils.isEmpty(json)) {
-                List<String> datas = Util.getGsonIns().fromJson(json,
+                List<String> datas = GsonUtils.getInstance().fromJson(json,
                         new TypeToken<List<String>>() {
                         }.getType());
                 if (datas != null && datas.size() > 0) {
@@ -300,8 +302,8 @@ public class SearchFragment extends AbsFragment<MusicModel, SearchPresenter> imp
         }
 
         void save() {
-            String json = Util.getGsonIns().toJson(history);
-            Preferences.getIns(context).putSearchHistory(json);
+            String json = GsonUtils.getInstance().toJson(history);
+            Preferences.getInstance(context).putSearchHistory(json);
         }
     }
 }

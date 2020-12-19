@@ -4,15 +4,15 @@ import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.component.media.media.MusicFactory;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.MusicModelEvent;
 import com.d.music.event.eventbus.RefreshEvent;
 import com.d.music.event.eventbus.SortTypeEvent;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.view.IScanView;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,7 +42,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
         Observable.create(new ObservableOnSubscribe<List<FileModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<FileModel>> e) throws Exception {
-                List<FileModel> list = FileUtil.getFiles(path, false);
+                List<FileModel> list = FileUtils.getFiles(path, false);
                 Collections.sort(list, new Comparator<FileModel>() {
                     @Override
                     public int compare(FileModel o1, FileModel o2) {
@@ -64,7 +64,7 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setDatas(list);
+                        getView().loadSuccess(list);
                     }
 
                     @Override
@@ -87,11 +87,11 @@ public class ScanPresenter extends MvpBasePresenter<IScanView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = MusicFactory.createFactory(mContext).query(paths);
-                AppDBUtil.getIns(mContext).optMusic().deleteAll(type);
-                AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(type, list);
-                AppDBUtil.getIns(mContext).optCustomList().updateCount(type, list.size());
-                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_TIME); // 默认按时间排序
-                EventBus.getDefault().post(new SortTypeEvent(type, AppDB.ORDER_TYPE_TIME));
+                DBManager.getInstance(mContext).optMusic().deleteAll(type);
+                DBManager.getInstance(mContext).optMusic().insertOrReplaceInTx(type, list);
+                DBManager.getInstance(mContext).optCustomList().updateCount(type, list.size());
+                DBManager.getInstance(mContext).optCustomList().updateortType(type, AppDatabase.ORDER_TYPE_TIME); // 默认按时间排序
+                EventBus.getDefault().post(new SortTypeEvent(type, AppDatabase.ORDER_TYPE_TIME));
 
                 // 更新首页自定义列表
                 EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST));

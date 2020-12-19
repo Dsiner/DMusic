@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.AsyncCallback;
-import com.d.lib.common.component.loader.CommonLoader;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.pulllayout.loader.CommonLoader;
 import com.d.music.component.aster.API;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.online.model.ArtistSongsRespModel;
@@ -72,7 +72,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(response);
+                        getView().loadSuccess(response);
                     }
 
                     @Override
@@ -124,7 +124,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                             return;
                         }
                         getView().setInfo(response);
-                        getView().setData(response.datas);
+                        getView().loadSuccess(response.datas);
                     }
 
                     @Override
@@ -176,7 +176,7 @@ public class MusicPresenter extends MvpBasePresenter<IMusicView> {
                             return;
                         }
                         getView().setInfo(response);
-                        getView().setData(response.datas);
+                        getView().loadSuccess(response.datas);
                     }
 
                     @Override

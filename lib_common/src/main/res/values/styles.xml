@@ -21,7 +21,17 @@
         <item name="android:background">@color/lib_pub_color_main</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/lib_pub_dimen_title_height</item>
+        <item name="lib_pub_tl_leftDrawablePadding">3dp</item>
+        <item name="lib_pub_tl_rightDrawablePadding">3dp</item>
+    </style>
+
+    <style name="lib_pub_title_back_style">
+        <item name="android:background">@color/lib_pub_color_main</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/lib_pub_dimen_title_height</item>
         <item name="lib_pub_tl_leftDrawable">@drawable/lib_pub_ic_title_back</item>
+        <item name="lib_pub_tl_leftDrawablePadding">3dp</item>
+        <item name="lib_pub_tl_rightDrawablePadding">3dp</item>
     </style>
 
     <style name="lib_pub_listview_style">

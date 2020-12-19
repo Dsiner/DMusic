@@ -4,21 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.d.lib.common.data.Constants;
-
 /**
  * AbstractPreference
  * Created by D on 2017/4/29.
  */
 public abstract class AbstractPreference {
-    private final static String PREFIX = Constants.PREFIX;
-
     protected SharedPreferences mSettings;
     protected SharedPreferences.Editor mEditor;
 
     @SuppressLint("CommitPrefEdits")
-    protected AbstractPreference(Context context) {
-        mSettings = context.getApplicationContext().getSharedPreferences(PREFIX + getClass().getSimpleName(), 0);
+    protected AbstractPreference(Context context, String name) {
+        mSettings = context.getApplicationContext()
+                .getSharedPreferences(name, 0);
         mEditor = mSettings.edit();
     }
 

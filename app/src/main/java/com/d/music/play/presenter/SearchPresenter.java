@@ -118,7 +118,7 @@ public class SearchPresenter extends MvpBasePresenter<ISearchView> {
                             return;
                         }
                         ULog.d("search--> onSuccess " + response.toString());
-                        getView().setData(response);
+                        getView().loadSuccess(response);
                     }
 
                     @Override

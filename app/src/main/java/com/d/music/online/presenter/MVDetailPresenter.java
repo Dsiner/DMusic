@@ -2,11 +2,11 @@ package com.d.music.online.presenter;
 
 import android.content.Context;
 
-import com.d.lib.common.component.loader.CommonLoader;
-import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.SimpleCallback;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.pulllayout.loader.CommonLoader;
 import com.d.music.component.aster.API;
 import com.d.music.online.model.MVCommentRespModel;
 import com.d.music.online.model.MVDetailModel;
@@ -97,7 +97,7 @@ public class MVDetailPresenter extends MvpBasePresenter<IMVDetailView> {
                         if (page == 1 && comments.size() > 0) {
                             comments.add(0, new MVDetailModel(MVDetailModel.TYPE_COMMENT_HEAD));
                         }
-                        getView().setData(comments);
+                        getView().loadSuccess(comments);
                     }
 
                     @Override

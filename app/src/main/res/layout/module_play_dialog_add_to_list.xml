@@ -47,14 +47,14 @@
             android:textSize="@dimen/lib_pub_dimen_text_main"
             skin:enable="true" />
 
-        <com.d.lib.xrv.LRecyclerView
-            android:id="@+id/lrv_list"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/tv_ok"
             android:layout_below="@+id/tv_title" />
 
-        <com.d.lib.common.view.loading.LoadingLayout
+        <com.d.lib.common.widget.loading.LoadingLayout
             android:id="@+id/ldl_loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,6 +1,5 @@
 package com.d.lib.common.component.glide;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -15,15 +14,10 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 public class GlideRoundTransform extends BitmapTransformation {
-    private float mRadius = 0f;
-    private Matrix mMatrix = new Matrix();
+    private float mRadius;
+    private final Matrix mMatrix = new Matrix();
 
-    public GlideRoundTransform(Context context) {
-        this(context, 7);
-    }
-
-    public GlideRoundTransform(Context context, int dp) {
-        super(context);
+    public GlideRoundTransform(int dp) {
         this.mRadius = Resources.getSystem().getDisplayMetrics().density * dp;
     }
 

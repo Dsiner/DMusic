@@ -10,12 +10,12 @@ import java.util.List;
 
 import de.greenrobot.dao.AbstractDao;
 
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_LIST;
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_MUSIC_COUNT;
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_MUSIC_INDEX;
-import static com.d.music.data.database.greendao.db.AppDB.ORDER_TYPE_CUSTOM;
-import static com.d.music.data.database.greendao.db.AppDB.ORDER_TYPE_NAME;
-import static com.d.music.data.database.greendao.db.AppDB.ORDER_TYPE_TIME;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_LIST;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_MUSIC_COUNT;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_MUSIC_INDEX;
+import static com.d.music.data.database.greendao.db.AppDatabase.ORDER_TYPE_CUSTOM;
+import static com.d.music.data.database.greendao.db.AppDatabase.ORDER_TYPE_NAME;
+import static com.d.music.data.database.greendao.db.AppDatabase.ORDER_TYPE_TIME;
 
 /**
  * CustomList操作

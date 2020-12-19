@@ -13,16 +13,13 @@
         android:gravity="center"
         android:padding="@dimen/lib_pub_dimen_margin"
         android:text=""
-        android:textColor="@color/lib_pub_color_text_sub"
+        android:textColor="@color/lib_pub_color_dialog_text_content"
         android:textSize="@dimen/lib_pub_dimen_text_sub"
         android:visibility="visible" />
 
-    <View
+    <include
         android:id="@+id/line_top"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/lib_pub_color_line" />
+        layout="@layout/lib_pub_layout_line" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"
@@ -34,12 +31,11 @@
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/lib_pub_dimen_dialog_item_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:background="@drawable/lib_pub_corner_dialog"
+        android:layout_marginBottom="6dp"
         android:gravity="center"
         android:text="@string/lib_pub_cancel"
         android:textColor="@color/lib_pub_color_main"

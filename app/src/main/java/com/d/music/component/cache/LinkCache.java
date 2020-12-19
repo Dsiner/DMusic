@@ -5,10 +5,10 @@ import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.d.lib.common.R;
-import com.d.lib.common.component.cache.base.AbstractCache;
-import com.d.lib.common.component.cache.exception.CacheException;
-import com.d.lib.common.component.cache.listener.CacheListener;
+import com.d.music.R;
+import com.d.music.component.cache.base.AbstractCache;
+import com.d.music.component.cache.exception.CacheException;
+import com.d.music.component.cache.listener.CacheListener;
 import com.d.music.component.cache.manager.LinkCacheManager;
 import com.d.music.component.cache.manager.LrcCacheManager;
 import com.d.music.component.media.controler.Player;
@@ -33,6 +33,24 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
         return new LinkCache(context);
     }
 
+    @SuppressWarnings("unused")
+    @UiThread
+    public static void clear(View view) {
+        if (view == null) {
+            return;
+        }
+        view.setTag(getTag(), "");
+    }
+
+    @SuppressWarnings("unused")
+    @UiThread
+    public static void release(Context context) {
+        if (context == null) {
+            return;
+        }
+        LrcCacheManager.getInstance(context).release();
+    }
+
     @Override
     public void into(final Player view) {
         if (isFinishing() || view == null) {
@@ -50,7 +68,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
             // return;
         }
         view.setTag(getTag(), mKey.id);
-        LinkCacheManager.getIns(getContext()).load(getContext(), mKey,
+        LinkCacheManager.getInstance(getContext()).load(getContext(), mKey,
                 new CacheListener<String>() {
                     @Override
                     public void onLoading() {
@@ -114,7 +132,7 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
             // return;
         }
         view.setTag(getTag(), mKey.id);
-        LinkCacheManager.getIns(getContext()).load(getContext(), mKey,
+        LinkCacheManager.getInstance(getContext()).load(getContext(), mKey,
                 new CacheListener<String>() {
                     @Override
                     public void onLoading() {
@@ -168,24 +186,6 @@ public class LinkCache extends AbstractCache<LinkCache, Player, MusicModel, Stri
             }
             return;
         }
-        LinkCacheManager.getIns(getContext()).load(getContext(), mKey, l);
-    }
-
-    @SuppressWarnings("unused")
-    @UiThread
-    public static void clear(View view) {
-        if (view == null) {
-            return;
-        }
-        view.setTag(getTag(), "");
-    }
-
-    @SuppressWarnings("unused")
-    @UiThread
-    public static void release(Context context) {
-        if (context == null) {
-            return;
-        }
-        LrcCacheManager.getIns(context).release();
+        LinkCacheManager.getInstance(getContext()).load(getContext(), mKey, l);
     }
 }

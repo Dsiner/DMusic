@@ -3,66 +3,60 @@ package com.d.music.local.fragment;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.lib.common.component.mvp.app.v4.BaseFragment;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.Util;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.util.ToastUtils;
+import com.d.lib.common.util.ViewHelper;
 import com.d.lib.permissioncompat.Permission;
 import com.d.lib.permissioncompat.PermissionCompat;
 import com.d.lib.permissioncompat.PermissionSchedulers;
 import com.d.lib.permissioncompat.callback.PermissionCallback;
-import com.d.lib.xrv.LRecyclerView;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.local.adapter.DirAdapter;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 扫描歌曲-自定义扫描
  * Created by D on 2017/4/29.
  */
-public class CustomScanFragment extends BaseFragment<ScanPresenter> implements IScanView, DirAdapter.OnPathListener {
-    public final static String ARG_TYPE = "type";
-
-    @BindView(R.id.llyt_dir)
-    LinearLayout llytDir;
-    @BindView(R.id.llyt_scan_now)
-    LinearLayout llytScanNow;
-    @BindView(R.id.tv_current_dir)
-    TextView tvCurrentDir;
-    @BindView(R.id.lrv_list)
-    LRecyclerView lrvList;
-
+public class CustomScanFragment extends BaseFragment<ScanPresenter>
+        implements IScanView, View.OnClickListener, DirAdapter.OnPathListener {
+    public static final String EXTRA_TYPE = "EXTRA_TYPE";
+    private final String rootPath = FileUtils.getRootPath();
+    LinearLayout llyt_dir;
+    LinearLayout llyt_scan_now;
+    TextView tv_current_dir;
+    RecyclerView rv_list;
     private int type;
-    private final String rootPath = FileUtil.getRootPath();
     private String curPath;
     private DirAdapter adapter;
     private List<FileModel> models;
 
     public static CustomScanFragment getInstance(int type) {
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_TYPE, type);
+        bundle.putInt(EXTRA_TYPE, type);
         CustomScanFragment fragment = new CustomScanFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    @OnClick({R.id.llyt_dir, R.id.llyt_scan_now})
-    public void OnClickLister(final View view) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(final View view) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (view.getId()) {
@@ -84,11 +78,11 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                                     sw(view.getId());
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     // Denied permission without ask never again
-                                    Util.toast(getActivity().getApplicationContext(), "Denied permission!");
+                                    ToastUtils.toast(getActivity().getApplicationContext(), "Denied permission!");
                                 } else {
                                     // Denied permission with ask never again
                                     // Need to go to the settings
-                                    Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
+                                    ToastUtils.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
                                 }
                             }
                         });
@@ -101,6 +95,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
             case R.id.llyt_dir:
                 onBackPressed();
                 break;
+
             case R.id.llyt_scan_now:
                 final List<String> paths = new ArrayList<>();
                 for (FileModel fileModel : models) {
@@ -109,10 +104,10 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
                     }
                 }
                 if (paths.size() <= 0) {
-                    Util.toast(mContext, getResources().getString(R.string.module_common_please_select_scan_path));
+                    ToastUtils.toast(mContext, getResources().getString(R.string.module_common_please_select_scan_path));
                     return;
                 }
-                showLoading();
+                showLoadingDialog();
                 mPresenter.scan(paths, type);
                 break;
         }
@@ -138,8 +133,19 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            type = bundle.getInt(ARG_TYPE);
+            type = bundle.getInt(EXTRA_TYPE);
         }
+    }
+
+    @Override
+    protected void bindView(View rootView) {
+        llyt_dir = rootView.findViewById(R.id.llyt_dir);
+        llyt_scan_now = rootView.findViewById(R.id.llyt_scan_now);
+        tv_current_dir = rootView.findViewById(R.id.tv_current_dir);
+        rv_list = rootView.findViewById(R.id.rv_list);
+
+        ViewHelper.setOnClickListener(rootView, this,
+                R.id.llyt_dir, R.id.llyt_scan_now);
     }
 
     @Override
@@ -147,7 +153,10 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
         models = new ArrayList<>();
         adapter = new DirAdapter(getActivity(), models, R.layout.module_local_adapter_dir);
         adapter.setOnPathListener(this);
-        lrvList.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_list.setLayoutManager(layoutManager);
+        rv_list.setAdapter(adapter);
     }
 
     @Override
@@ -157,7 +166,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     }
 
     @Override
-    public void setDatas(List<FileModel> models) {
+    public void loadSuccess(List<FileModel> models) {
         this.models = models;
         adapter.setDatas(this.models);
         adapter.notifyDataSetChanged();
@@ -165,7 +174,7 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
 
     @Override
     public void setMusics(List<MusicModel> models) {
-        closeLoading();
+        dismissLoadingDialog();
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
         }
@@ -174,13 +183,13 @@ public class CustomScanFragment extends BaseFragment<ScanPresenter> implements I
     @Override
     public void onPath(String path) {
         curPath = path;
-        tvCurrentDir.setText(curPath);
+        tv_current_dir.setText(curPath);
         mPresenter.getFileModels(curPath);
     }
 
     public boolean onBackPressed() {
         if (!TextUtils.equals(curPath, rootPath)) {
-            onPath(FileUtil.getParentPath(curPath));
+            onPath(FileUtils.getParentPath(curPath));
             return true;
         }
         return false;

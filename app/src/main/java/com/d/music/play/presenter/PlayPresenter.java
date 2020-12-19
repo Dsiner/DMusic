@@ -3,9 +3,9 @@ package com.d.music.play.presenter;
 import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.play.view.IPlayView;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class PlayPresenter extends MvpBasePresenter<IPlayView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                List<MusicModel> list = AppDBUtil.getIns(mContext).optMusic().queryAll(AppDB.MUSIC);
+                List<MusicModel> list = DBManager.getInstance(mContext).optMusic().queryAll(AppDatabase.MUSIC);
                 if (list == null) {
                     list = new ArrayList<>();
                 }

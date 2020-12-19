@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="lib_pub_TitleLayout">
+        <attr name="lib_pub_tl_layout" format="reference" />
         <attr name="lib_pub_tl_leftText" format="string" />
         <attr name="lib_pub_tl_leftDrawable" format="reference" />
+        <attr name="lib_pub_tl_leftDrawablePadding" format="dimension" />
         <attr name="lib_pub_tl_leftRes" format="reference" />
         <attr name="lib_pub_tl_rightText" format="string" />
         <attr name="lib_pub_tl_rightDrawable" format="reference" />
+        <attr name="lib_pub_tl_rightDrawablePadding" format="dimension" />
         <attr name="lib_pub_tl_rightRes" format="reference" />
         <attr name="lib_pub_tl_middleText" format="string" />
         <attr name="lib_pub_tl_middleDrawable" format="reference" />
+        <attr name="lib_pub_tl_middleDrawablePadding" format="dimension" />
         <attr name="lib_pub_tl_middleRes" format="reference" />
         <attr name="lib_pub_tl_menu" format="reference" />
     </declare-styleable>
@@ -146,5 +150,17 @@
             <enum name="repeat" value="1" />
             <enum name="mirror" value="2" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="lib_pub_DrawableTextView">
+        <attr name="lib_pub_DrawableTextView_center" format="boolean" />
+        <attr name="lib_pub_DrawableTextView_leftWidth" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_leftHeight" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_topWidth" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_topHeight" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_rightWidth" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_rightHeight" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_bottomWidth" format="dimension" />
+        <attr name="lib_pub_DrawableTextView_bottomHeight" format="dimension" />
     </declare-styleable>
 </resources>

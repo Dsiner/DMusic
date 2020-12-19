@@ -3,7 +3,7 @@
     <!-- Module_Common -->
     <dimen name="module_common_dimen_item_icon">18dp</dimen>
     <dimen name="module_common_dimen_item_local_icon">22dp</dimen>
-
+    <dimen name="lib_pub_dimen_item_margin_top">2dp</dimen>
 
     <!-- Module_Setting -->
 

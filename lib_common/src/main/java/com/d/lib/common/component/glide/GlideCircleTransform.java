@@ -1,6 +1,5 @@
 package com.d.lib.common.component.glide;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -13,11 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.security.MessageDigest;
 
 public class GlideCircleTransform extends BitmapTransformation {
-    private Matrix mMatrix = new Matrix();
-
-    public GlideCircleTransform(Context context) {
-        super(context);
-    }
+    private final Matrix mMatrix = new Matrix();
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {

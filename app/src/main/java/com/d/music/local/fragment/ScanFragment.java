@@ -7,8 +7,9 @@ import android.view.View;
 
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.v4.BaseFragment;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.utils.Util;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.util.ToastUtils;
+import com.d.lib.common.util.ViewHelper;
 import com.d.lib.permissioncompat.Permission;
 import com.d.lib.permissioncompat.PermissionCompat;
 import com.d.lib.permissioncompat.PermissionSchedulers;
@@ -19,34 +20,33 @@ import com.d.music.local.activity.ScanActivity;
 import com.d.music.local.model.FileModel;
 import com.d.music.local.presenter.ScanPresenter;
 import com.d.music.local.view.IScanView;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.OnClick;
 
 /**
  * 扫描首页
  * Created by D on 2017/4/29.
  */
-public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanView {
-    public final static String ARG_TYPE = "type";
+public class ScanFragment extends BaseFragment<ScanPresenter>
+        implements IScanView, View.OnClickListener {
+    public static final String EXTRA_TYPE = "type";
 
     private int type;
     private CustomScanFragment customScanFragment;
 
     public static ScanFragment getInstance(int type) {
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_TYPE, type);
+        bundle.putInt(EXTRA_TYPE, type);
         ScanFragment fragment = new ScanFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    @OnClick({R.id.btn_full_scan, R.id.btn_custom_scan})
-    public void OnClickLister(final View view) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(final View view) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (view.getId()) {
@@ -68,11 +68,11 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
                                     sw(view.getId());
                                 } else if (permission.shouldShowRequestPermissionRationale) {
                                     // Denied permission without ask never again
-                                    Util.toast(getActivity().getApplicationContext(), "Denied permission!");
+                                    ToastUtils.toast(getActivity().getApplicationContext(), "Denied permission!");
                                 } else {
                                     // Denied permission with ask never again
                                     // Need to go to the settings
-                                    Util.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
+                                    ToastUtils.toast(getActivity().getApplicationContext(), "Denied permission with ask never again!");
                                 }
                             }
                         });
@@ -101,8 +101,14 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            type = bundle.getInt(ARG_TYPE);
+            type = bundle.getInt(EXTRA_TYPE);
         }
+    }
+
+    @Override
+    protected void bindView(View rootView) {
+        ViewHelper.setOnClickListener(rootView, this,
+                R.id.btn_full_scan, R.id.btn_custom_scan);
     }
 
     @Override
@@ -114,8 +120,8 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
         switch (viewId) {
             case R.id.btn_full_scan:
                 List<String> paths = new ArrayList<>();
-                paths.add(FileUtil.getRootPath());
-                showLoading();
+                paths.add(FileUtils.getRootPath());
+                showLoadingDialog();
                 mPresenter.scan(paths, type);
                 return;
             case R.id.btn_custom_scan:
@@ -133,13 +139,13 @@ public class ScanFragment extends BaseFragment<ScanPresenter> implements IScanVi
     }
 
     @Override
-    public void setDatas(List<FileModel> models) {
+    public void loadSuccess(List<FileModel> models) {
 
     }
 
     @Override
     public void setMusics(List<MusicModel> models) {
-        closeLoading();
+        dismissLoadingDialog();
         if (getActivity() != null && !getActivity().isFinishing()) {
             getActivity().finish();
         }

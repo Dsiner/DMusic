@@ -6,10 +6,10 @@ package com.d.lib.common.component.mvp.model;
  */
 public class BaseRespModel extends BaseModel {
     public int status;
-    public String desc = "";
+    public String message = "";
 
     @Override
     public String toString() {
-        return "status: " + status + "\tdesc: " + desc;
+        return "status: " + status + " message: " + message;
     }
 }

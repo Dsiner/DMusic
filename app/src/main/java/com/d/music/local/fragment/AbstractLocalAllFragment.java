@@ -8,29 +8,25 @@ import android.view.View;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.v4.BaseFragment;
-import com.d.lib.common.view.tab.ScrollTab;
+import com.d.lib.common.widget.tab.ScrollTab;
 import com.d.music.R;
-import com.d.music.view.TitleLayout;
+import com.d.music.widget.TitleLayout;
 
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * 首页-本地歌曲
  * Created by D on 2017/4/29.
  */
-public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePresenter> implements MvpView, ViewPager.OnPageChangeListener {
-    @BindView(R.id.tl_title)
-    public TitleLayout tlTitle;
-    @BindView(R.id.indicator)
+public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePresenter>
+        implements MvpView, ViewPager.OnPageChangeListener {
+    public TitleLayout tl_title;
     public ScrollTab indicator;
-    @BindView(R.id.vp_page)
-    public ViewPager pager;
+    public ViewPager vp_page;
 
-    protected List<String> titles;
-    protected List<Fragment> fragments;
-    protected Fragment curFragment;
+    protected List<String> mTitles;
+    protected List<Fragment> mFragments;
+    protected Fragment mCurFragment;
 
     @Override
     protected int getLayoutRes() {
@@ -48,33 +44,41 @@ public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePrese
     }
 
     @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        tl_title = rootView.findViewById(R.id.tl_title);
+        indicator = rootView.findViewById(R.id.indicator);
+        vp_page = rootView.findViewById(R.id.vp_page);
+    }
+
+    @Override
     protected void init() {
-        titles = getTitles();
-        fragments = getFragments();
-        if (titles.size() != fragments.size()) {
+        mTitles = getTitles();
+        mFragments = getFragments();
+        if (mTitles.size() != mFragments.size()) {
             throw new RuntimeException("The size of titles is not equal size of fragments.");
         }
-        curFragment = fragments.get(0);
+        mCurFragment = mFragments.get(0);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public int getCount() {
-                return fragments.size();
+                return mFragments.size();
             }
 
             @Override
             public Fragment getItem(int arg0) {
-                return fragments.get(arg0);
+                return mFragments.get(arg0);
             }
         };
-        pager.setOffscreenPageLimit(fragments.size() - 1);
-        pager.setAdapter(fragmentPagerAdapter);
-        pager.addOnPageChangeListener(this);
-        indicator.setTitles(titles);
-        indicator.setViewPager(pager);
+        vp_page.setOffscreenPageLimit(mFragments.size() - 1);
+        vp_page.setAdapter(fragmentPagerAdapter);
+        vp_page.addOnPageChangeListener(this);
+        indicator.setTitles(mTitles);
+        indicator.setViewPager(vp_page);
         indicator.setOnTabListener(new ScrollTab.OnTabListener() {
             @Override
             public void onChange(int position, View v) {
-                pager.setCurrentItem(position, true);
+                vp_page.setCurrentItem(position, true);
             }
         });
     }
@@ -86,8 +90,8 @@ public abstract class AbstractLocalAllFragment extends BaseFragment<MvpBasePrese
 
     @Override
     public void onPageSelected(int position) {
-        if (position >= 0 && position < fragments.size()) {
-            curFragment = fragments.get(position);
+        if (position >= 0 && position < mFragments.size()) {
+            mCurFragment = mFragments.get(position);
         }
     }
 

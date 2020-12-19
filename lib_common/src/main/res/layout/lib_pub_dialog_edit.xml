@@ -8,7 +8,7 @@
 
     <include layout="@layout/lib_pub_dialog_gt_title" />
 
-    <com.d.lib.common.view.ClearEditText
+    <com.d.lib.common.widget.ClearEditText
         android:id="@+id/cet_edit"
         android:layout_width="match_parent"
         android:layout_height="40dp"

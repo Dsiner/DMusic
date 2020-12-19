@@ -6,14 +6,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.d.lib.aster.callback.SimpleCallback;
-import com.d.lib.common.component.cache.base.AbstractCacheManager;
-import com.d.lib.common.component.cache.base.ExpireQueue;
-import com.d.lib.common.component.cache.listener.CacheListener;
-import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
+import com.d.music.component.cache.base.AbstractCacheManager;
+import com.d.music.component.cache.base.ExpireQueue;
+import com.d.music.component.cache.listener.CacheListener;
+import com.d.music.component.cache.utils.threadpool.ThreadPool;
 import com.d.music.component.media.HitTarget;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 /**
  * Created by D on 2017/10/18.
@@ -22,17 +22,6 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
     private volatile static LrcCacheManager mInstance;
 
     private ExpireQueue<Bean> mExpireQueue;
-
-    public static LrcCacheManager getIns(Context context) {
-        if (mInstance == null) {
-            synchronized (LrcCacheManager.class) {
-                if (mInstance == null) {
-                    mInstance = new LrcCacheManager(context);
-                }
-            }
-        }
-        return mInstance;
-    }
 
     private LrcCacheManager(Context context) {
         super(context);
@@ -45,6 +34,17 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
                 error(value.key, new Exception("Expire!"), value.listener);
             }
         });
+    }
+
+    public static LrcCacheManager getInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (LrcCacheManager.class) {
+                if (mInstance == null) {
+                    mInstance = new LrcCacheManager(context);
+                }
+            }
+        }
+        return mInstance;
     }
 
     @NonNull
@@ -72,7 +72,7 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
     }
 
     private void absLoad(@NonNull final Bean item) {
-        ThreadPool.getIns().executeTask(new Runnable() {
+        ThreadPool.getInstance().executeTask(new Runnable() {
             @Override
             public void run() {
                 if (isDisk(item.key, item.listener)) {
@@ -101,7 +101,7 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
     }
 
     private void next(final Bean item) {
-        ThreadPool.getIns().executeMain(new Runnable() {
+        ThreadPool.getInstance().executeMain(new Runnable() {
             @Override
             public void run() {
                 mExpireQueue.remove(item);
@@ -122,7 +122,7 @@ public class LrcCacheManager extends AbstractCacheManager<MusicModel, String> {
     @Override
     protected boolean isLru(MusicModel key, CacheListener<String> listener) {
         final String path = HitTarget.hitLrc(key);
-        if (!TextUtils.isEmpty(path) && FileUtil.isFileExist(path)) {
+        if (!TextUtils.isEmpty(path) && FileUtils.isFileExist(path)) {
             success(key, path, listener);
             return true;
         }

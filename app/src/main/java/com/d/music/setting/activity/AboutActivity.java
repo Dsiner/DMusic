@@ -5,22 +5,23 @@ import android.view.View;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
 import com.d.music.R;
-import com.d.music.utils.StatusBarCompat;
 
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * AboutActivity
  * Created by D on 2017/6/13.
  */
-public class AboutActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
+public class AboutActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener {
 
-    @OnClick({R.id.iv_title_left})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
@@ -46,13 +47,20 @@ public class AboutActivity extends BaseActivity<MvpBasePresenter> implements Mvp
     }
 
     @Override
-    protected void init() {
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+    protected void bindView() {
+        super.bindView();
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left);
     }
 
     @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+    protected void init() {
+        StatusBarCompat.setStatusBarColor(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
     }
+
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));//沉浸式状态栏
+//    }
 }

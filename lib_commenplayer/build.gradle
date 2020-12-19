@@ -38,7 +38,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation rootProject.ext.dependencies.support_annotations
-    implementation rootProject.ext.dependencies.nineoldandroids
 
     // Required, enough for most devices.
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'

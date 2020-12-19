@@ -6,14 +6,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.d.lib.aster.callback.SimpleCallback;
-import com.d.lib.common.component.cache.base.CacheManager;
-import com.d.lib.common.component.cache.base.ExpireLruCache;
-import com.d.lib.common.component.cache.listener.CacheListener;
-import com.d.lib.common.component.cache.utils.threadpool.ThreadPool;
+import com.d.music.component.cache.base.CacheManager;
+import com.d.music.component.cache.base.ExpireLruCache;
+import com.d.music.component.cache.listener.CacheListener;
+import com.d.music.component.cache.utils.threadpool.ThreadPool;
 import com.d.music.component.media.HitTarget;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.transfer.manager.Transfer;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +27,13 @@ public class LinkCacheManager extends CacheManager {
     private ExpireLruCache<String, String> mLruCache;
     private HashMap<String, ArrayList<CacheListener<String>>> mHashMap;
 
-    public static LinkCacheManager getIns(Context context) {
+    private LinkCacheManager(Context context) {
+        super(context);
+        mLruCache = new ExpireLruCache<>(60, 2 * 60 * 60 * 1000);
+        mHashMap = new HashMap<>();
+    }
+
+    public static LinkCacheManager getInstance(Context context) {
         if (mInstance == null) {
             synchronized (LinkCacheManager.class) {
                 if (mInstance == null) {
@@ -38,12 +44,6 @@ public class LinkCacheManager extends CacheManager {
         return mInstance;
     }
 
-    private LinkCacheManager(Context context) {
-        super(context);
-        mLruCache = new ExpireLruCache<>(60, 2 * 60 * 60 * 1000);
-        mHashMap = new HashMap<>();
-    }
-
     public void load(final Context context, final MusicModel key, final CacheListener<String> listener) {
         if (isLoading(key, listener)) {
             return;
@@ -51,7 +51,7 @@ public class LinkCacheManager extends CacheManager {
         if (isLru(key, listener)) {
             return;
         }
-        ThreadPool.getIns().executeTask(new Runnable() {
+        ThreadPool.getInstance().executeTask(new Runnable() {
             @Override
             public void run() {
                 if (isDisk(key, listener)) {
@@ -63,7 +63,7 @@ public class LinkCacheManager extends CacheManager {
     }
 
     private void success(final MusicModel key, final String value, final CacheListener<String> l) {
-        ThreadPool.getIns().executeMain(new Runnable() {
+        ThreadPool.getInstance().executeMain(new Runnable() {
             @Override
             public void run() {
                 successImplementation(key, value);
@@ -85,7 +85,7 @@ public class LinkCacheManager extends CacheManager {
     }
 
     private void error(final MusicModel key, final Throwable e, final CacheListener<String> l) {
-        ThreadPool.getIns().executeMain(new Runnable() {
+        ThreadPool.getInstance().executeMain(new Runnable() {
             @Override
             public void run() {
                 errorImplementation(key, e);
@@ -146,7 +146,7 @@ public class LinkCacheManager extends CacheManager {
 
     private boolean isLru(MusicModel key, CacheListener<String> listener) {
         final String path = HitTarget.hitSong(key);
-        if (!TextUtils.isEmpty(path) && FileUtil.isFileExist(path)) {
+        if (!TextUtils.isEmpty(path) && FileUtils.isFileExist(path)) {
             success(key, path, listener);
             return true;
         }

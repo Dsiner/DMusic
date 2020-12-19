@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.CustomListModel;
-import com.d.music.data.database.greendao.util.AppDBUtil;
 import com.d.music.local.view.IMainView;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<CustomListModel>> e) throws Exception {
                 List<CustomListModel> list = new ArrayList<>();
-                List<CustomListModel> query = AppDBUtil.getIns(mContext).optCustomList().queryAll();
+                List<CustomListModel> query = DBManager.getInstance(mContext).optCustomList().queryAll();
                 if (query != null) {
                     list.addAll(query);
                 }
@@ -79,7 +79,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-                Cursor cursor = AppDBUtil.getIns(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM LOCAL_ALL_MUSIC");
+                Cursor cursor = DBManager.getInstance(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM LOCAL_ALL_MUSIC");
                 Integer count = 0;
                 if (cursor != null && cursor.moveToFirst()) {
                     int indexCount = cursor.getColumnIndex("COUNT(*)");
@@ -126,7 +126,7 @@ public class MainPresenter extends MvpBasePresenter<IMainView> {
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-                Cursor cursor = AppDBUtil.getIns(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM COLLECTION_MUSIC");
+                Cursor cursor = DBManager.getInstance(mContext).optMusic().queryBySQL("SELECT COUNT(*) FROM COLLECTION_MUSIC");
                 Integer count = 0;
                 if (cursor != null && cursor.moveToFirst()) {
                     int indexCount = cursor.getColumnIndex("COUNT(*)");

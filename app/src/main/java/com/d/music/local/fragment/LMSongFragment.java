@@ -2,21 +2,24 @@ package com.d.music.local.fragment;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.util.RefreshableCompat;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicModelEvent;
 import com.d.music.event.eventbus.RefreshEvent;
 import com.d.music.local.adapter.SongAdapter;
-import com.d.music.view.SongHeaderView;
-import com.d.music.view.sort.SideBar;
-import com.d.music.view.sort.SortUtil;
+import com.d.music.widget.SongHeaderView;
+import com.d.music.widget.sort.SideBar;
+import com.d.music.widget.sort.SortUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,26 +32,26 @@ import java.util.List;
  * Created by D on 2017/4/29.
  */
 public class LMSongFragment extends AbstractLMFragment<MusicModel> implements SongHeaderView.OnHeaderListener, SideBar.OnLetterChangedListener {
-    private Preferences p;
-    private SongHeaderView header;
-    private SortUtil sortUtil;
-    private boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
-    private boolean isSubPull; // 为了同步设置，需要重新刷新
+    private Preferences mPreferences;
+    private SongHeaderView songHeaderView;
+    private SortUtils mSortUtils;
+    private boolean mIsNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+    private boolean mIsSubPull; // 为了同步设置，需要重新刷新
 
     @Override
     protected void init() {
-        p = Preferences.getIns(getActivity().getApplicationContext());
-        isSubPull = p.getIsSubPull();
-        sortUtil = new SortUtil();
-        sbSideBar.setOnLetterChangedListener(this);
+        mPreferences = Preferences.getInstance(getActivity().getApplicationContext());
+        mIsSubPull = mPreferences.getIsSubPull();
+        mSortUtils = new SortUtils();
+        sb_sidebar.setOnLetterChangedListener(this);
         super.init();
     }
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
         SongAdapter adapter = new SongAdapter(mContext, new ArrayList<MusicModel>(),
-                R.layout.module_local_adapter_song, AppDB.LOCAL_ALL_MUSIC);
-        adapter.setSubPull(isSubPull);
+                R.layout.module_local_adapter_song, AppDatabase.LOCAL_ALL_MUSIC);
+        adapter.setSubPull(mIsSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override
             public void onChange(int count) {
@@ -60,19 +63,19 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     protected void onLoad(int page) {
-        mPresenter.getSong(AppDB.LOCAL_ALL_MUSIC, sortUtil);
+        mPresenter.getSong(AppDatabase.LOCAL_ALL_MUSIC, mSortUtils);
     }
 
     @Override
     protected void initList() {
-        header = new SongHeaderView(mContext);
-        header.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
-        header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
-        header.setVisibility(View.GONE);
-        header.setOnHeaderListener(this);
-        mXrvList.addHeaderView(header);
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
+        songHeaderView = new SongHeaderView(mContext);
+        songHeaderView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lib_pub_color_bg_sub));
+        songHeaderView.setVisibility(R.id.flyt_header_song_handler, View.GONE);
+        songHeaderView.setVisibility(View.GONE);
+        songHeaderView.setOnHeaderListener(this);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
+        RefreshableCompat.addHeaderView(mPullList, songHeaderView);
         super.initList();
     }
 
@@ -91,14 +94,14 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
     @Override
     public void onResume() {
         super.onResume();
-        if (isNeedReLoad) {
-            isNeedReLoad = false;
+        if (mIsNeedReLoad) {
+            mIsNeedReLoad = false;
             getData();
         }
-        if (isSubPull != p.getIsSubPull()) {
-            isSubPull = !isSubPull;
-            ((SongAdapter) mAdapter).setSubPull(isSubPull);
-            if (!isSubPull) {
+        if (mIsSubPull != mPreferences.getIsSubPull()) {
+            mIsSubPull = !mIsSubPull;
+            ((SongAdapter) mAdapter).setSubPull(mIsSubPull);
+            if (!mIsSubPull) {
                 mPresenter.subPullUp(mAdapter.getDatas());
             }
         }
@@ -106,21 +109,21 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     public void setSong(List<MusicModel> models) {
-        mCommonLoader.setData(models);
+        mCommonLoader.loadSuccess(models);
         notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
     private void notifyDataCountChanged(int count) {
-        header.setSongCount(count);
-        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
-        sbSideBar.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
+        songHeaderView.setSongCount(count);
+        songHeaderView.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
+        sb_sidebar.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void onPlayAll() {
         List<MusicModel> datas = mCommonLoader.getDatas();
         if (datas != null && datas.size() > 0) {
-            MediaControler.getIns(mContext).init(datas, 0, true);
+            MediaControl.getInstance(mContext).init(datas, 0, true);
         }
     }
 
@@ -131,14 +134,14 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
 
     @Override
     public void onChange(int index, String c) {
-        sortUtil.onChange(index, c, mXrvList);
+        mSortUtils.onChange(index, c, (RecyclerView) mPullList);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != AppDB.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
+                || event.type != AppDatabase.LOCAL_ALL_MUSIC || mPresenter == null || !mIsLazyLoaded) {
             return;
         }
         setSong(event.list);
@@ -150,7 +153,7 @@ public class LMSongFragment extends AbstractLMFragment<MusicModel> implements So
         if (event == null || getActivity() == null || getActivity().isFinishing()) {
             return;
         }
-        isNeedReLoad = true;
+        mIsNeedReLoad = true;
     }
 
     @Override

@@ -4,19 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/lib_pub_color_bg_main">
 
-    <com.d.lib.common.view.DSLayout
+    <com.d.lib.common.widget.DSLayout
         android:id="@+id/dsl_ds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tl_title" />
 
-    <com.d.lib.xrv.XRecyclerView
-        android:id="@+id/xrv_list"
+    <com.d.lib.pulllayout.rv.PullRecyclerView
+        android:id="@+id/pull_list"
         style="@style/listview_style"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.d.music.view.sort.SideBar
+    <com.d.music.widget.sort.SideBar
         android:id="@+id/sb_sidebar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

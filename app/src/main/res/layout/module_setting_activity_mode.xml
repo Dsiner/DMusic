@@ -7,7 +7,7 @@
     android:background="@color/lib_pub_color_bg_main"
     android:orientation="vertical">
 
-    <com.d.music.view.TitleLayout
+    <com.d.music.widget.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -17,8 +17,8 @@
         app:lib_pub_tl_rightText="@string/lib_pub_ok"
         skin:enable="true" />
 
-    <com.d.lib.xrv.LRecyclerView
-        android:id="@+id/lrv_list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

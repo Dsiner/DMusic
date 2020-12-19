@@ -3,9 +3,9 @@ package com.d.music.component.media;
 import android.content.Context;
 
 import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.RefreshEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,9 +34,9 @@ public class SyncManager {
                     if (item == null) {
                         continue;
                     }
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, false);
+                    DBManager.getInstance(context).optMusic().updateColleted(item.id, false);
                 }
-                EventBus.getDefault().post(new RefreshEvent(AppDB.COLLECTION_MUSIC, RefreshEvent.SYNC_COLLECTIONG));
+                EventBus.getDefault().post(new RefreshEvent(AppDatabase.COLLECTION_MUSIC, RefreshEvent.SYNC_COLLECTIONG));
             }
         });
     }
@@ -49,11 +49,11 @@ public class SyncManager {
             @Override
             public void run() {
                 if (item.isCollected) {
-                    AppDBUtil.getIns(context).optMusic().insertOrReplace(AppDB.COLLECTION_MUSIC, item);
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, true);
+                    DBManager.getInstance(context).optMusic().insertOrReplace(AppDatabase.COLLECTION_MUSIC, item);
+                    DBManager.getInstance(context).optMusic().updateColleted(item.id, true);
                 } else {
-                    AppDBUtil.getIns(context).optMusic().delete(AppDB.COLLECTION_MUSIC, item);
-                    AppDBUtil.getIns(context).optMusic().updateColleted(item.id, false);
+                    DBManager.getInstance(context).optMusic().delete(AppDatabase.COLLECTION_MUSIC, item);
+                    DBManager.getInstance(context).optMusic().updateColleted(item.id, false);
                 }
                 EventBus.getDefault().post(new RefreshEvent(type, RefreshEvent.SYNC_COLLECTIONG));
             }
@@ -86,8 +86,8 @@ public class SyncManager {
     }
 
     public static HashMap<String, MusicModel> getCollections(Context context) {
-        List<MusicModel> datas = AppDBUtil.getIns(context).optMusic()
-                .queryAll(AppDB.COLLECTION_MUSIC);
+        List<MusicModel> datas = DBManager.getInstance(context).optMusic()
+                .queryAll(AppDatabase.COLLECTION_MUSIC);
         if (datas == null || datas.size() <= 0) {
             return new HashMap<>();
         }

@@ -11,7 +11,7 @@ import java.util.List;
  * Created by D on 2017/4/30.
  */
 public interface IScanView extends MvpView {
-    void setDatas(List<FileModel> models);
+    void loadSuccess(List<FileModel> models);
 
     void setMusics(List<MusicModel> models);
 }

@@ -4,17 +4,17 @@
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
-    android:paddingBottom="6dp"
     android:paddingLeft="30dp"
+    android:paddingTop="6dp"
     android:paddingRight="30dp"
-    android:paddingTop="6dp">
+    android:paddingBottom="6dp">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Operation"
-        android:textColor="@color/lib_pub_color_text_sub"
+        android:textColor="@color/lib_pub_color_dialog_text_content"
         android:textSize="@dimen/lib_pub_dimen_text_small" />
 
     <TextView
@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
         android:text="Operation"
-        android:textColor="@color/lib_pub_color_text_sub"
+        android:textColor="@color/lib_pub_color_dialog_text_content"
         android:textSize="@dimen/lib_pub_dimen_text_small" />
 </LinearLayout>

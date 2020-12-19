@@ -58,7 +58,7 @@
                 android:src="@drawable/module_play_ic_img_album_cover" />
         </LinearLayout>
 
-        <com.d.music.view.lrc.LrcView
+        <com.d.music.widget.lrc.LrcView
             android:id="@+id/lrcv_lrc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

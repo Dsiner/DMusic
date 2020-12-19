@@ -8,8 +8,7 @@ import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.ProgressCallback;
 import com.d.lib.aster.callback.SimpleCallback;
-import com.d.lib.common.component.cache.base.ExpireLruCache;
-import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.util.log.ULog;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.lib.taskscheduler.callback.Function;
 import com.d.lib.taskscheduler.callback.Observer;
@@ -17,11 +16,12 @@ import com.d.lib.taskscheduler.callback.Task;
 import com.d.lib.taskscheduler.schedule.Schedulers;
 import com.d.music.App;
 import com.d.music.component.aster.API;
+import com.d.music.component.cache.base.ExpireLruCache;
 import com.d.music.data.Constants;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.online.model.SongInfoRespModel;
-import com.d.music.utils.FileUtil;
+import com.d.music.util.FileUtils;
 
 import java.io.File;
 
@@ -30,10 +30,10 @@ import java.io.File;
  * Created by D on 2018/10/10.
  */
 public class Transfer {
-    public final static String PREFIX_SONG = ".mp3";
-    public final static String PREFIX_MV = ".mp4";
-    public final static String PREFIX_LRC = ".lrc";
-    public final static String PREFIX_DOWNLOAD = ".download";
+    public static final String PREFIX_SONG = ".mp3";
+    public static final String PREFIX_MV = ".mp4";
+    public static final String PREFIX_LRC = ".lrc";
+    public static final String PREFIX_DOWNLOAD = ".download";
 
     public static <T extends MusicModel> void getInfo(@NonNull final T model, final SimpleCallback<T> callback) {
         getInfo(model.songId, new SimpleCallback<MusicModel>() {
@@ -87,7 +87,7 @@ public class Transfer {
                         model.albumName = song.albumName;
                         model.albumUrl = song.songPicSmall;
                         model.lrcUrl = song.lrcLink;
-                        model.fileFolder = Constants.Path.song;
+                        model.fileFolder = Constants.Path.SONG;
                         model.filePostfix = song.format;
 
                         if (callback != null) {
@@ -176,29 +176,29 @@ public class Transfer {
                                                                  OnTransferCallback<T> callback) {
         // Download song
         if (isCache) {
-            downloadSongSecondImp(Constants.Path.cache, model, callback);
+            downloadSongSecondImp(Constants.Path.CACHE, model, callback);
         } else {
-            downloadSongSecondImp(Constants.Path.song, model, callback);
+            downloadSongSecondImp(Constants.Path.SONG, model, callback);
         }
 
         if (withLrc) {
             // Download lrc
             if (isCache) {
-                downloadLrcSecondImp(Constants.Path.cache, model, null);
+                downloadLrcSecondImp(Constants.Path.CACHE, model, null);
             } else {
-                downloadLrcSecondImp(Constants.Path.lyric, model, null);
+                downloadLrcSecondImp(Constants.Path.LYRIC, model, null);
             }
         }
     }
 
     @SuppressWarnings("unused")
     public static <T extends MusicModel> void downloadSong(final T model, final OnTransferCallback<T> callback) {
-        downloadSongFirstImp(Constants.Path.song, model, callback);
+        downloadSongFirstImp(Constants.Path.SONG, model, callback);
     }
 
     @SuppressWarnings("unused")
     public static <T extends MusicModel> void downloadSongCache(final T model, final OnTransferCallback<T> callback) {
-        downloadSongFirstImp(Constants.Path.cache, model, callback);
+        downloadSongFirstImp(Constants.Path.CACHE, model, callback);
     }
 
     private static <T extends MusicModel> void downloadSongFirstImp(final String path, @NonNull final T model,
@@ -298,7 +298,7 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + File.separator + cache,
+                        FileUtils.renameFile(path + File.separator + cache,
                                 path + File.separator + name);
                         File file = new File(path + File.separator + name);
                         if (file.exists()) {
@@ -321,7 +321,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + File.separator + cache);
+                        FileUtils.deleteFile(path + File.separator + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
@@ -342,7 +342,7 @@ public class Transfer {
     }
 
     public static <T extends MusicModel> void downloadMV(@NonNull final T model, final OnTransferCallback<T> callback) {
-        final String path = Constants.Path.mv;
+        final String path = Constants.Path.MV;
         final String url = model.songUrl;
         final String name = model.songName + PREFIX_MV;
         final String cache = model.songName + PREFIX_MV + PREFIX_DOWNLOAD;
@@ -379,7 +379,7 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + File.separator + cache,
+                        FileUtils.renameFile(path + File.separator + cache,
                                 path + File.separator + name);
                         File file = new File(path + File.separator + name);
                         if (file.exists()) {
@@ -402,7 +402,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + File.separator + cache);
+                        FileUtils.deleteFile(path + File.separator + cache);
                         if (model instanceof TransferModel) {
                             TransferModel transferModel = (TransferModel) model;
                             transferModel.transferState = TransferModel.TRANSFER_STATE_ERROR;
@@ -425,13 +425,13 @@ public class Transfer {
     @SuppressWarnings("unused")
     public static <T extends MusicModel> void downloadLrc(@NonNull final T model,
                                                           final SimpleCallback<T> callback) {
-        downloadLrcFirstImp(Constants.Path.lyric, model, callback);
+        downloadLrcFirstImp(Constants.Path.LYRIC, model, callback);
     }
 
     @SuppressWarnings("unused")
     public static <T extends MusicModel> void downloadLrcCache(@NonNull final T model,
                                                                final SimpleCallback<T> callback) {
-        downloadLrcFirstImp(Constants.Path.cache, model, callback);
+        downloadLrcFirstImp(Constants.Path.CACHE, model, callback);
     }
 
     private static <T extends MusicModel> void downloadLrcFirstImp(final String path, @NonNull final T model,
@@ -520,7 +520,7 @@ public class Transfer {
                     @Override
                     public void onSuccess() {
                         ULog.d("dsiner_request--> onComplete");
-                        FileUtil.renameFile(path + File.separator + cache,
+                        FileUtils.renameFile(path + File.separator + cache,
                                 path + File.separator + name);
                         if (callback != null) {
                             callback.onSuccess(model);
@@ -530,7 +530,7 @@ public class Transfer {
                     @Override
                     public void onError(Throwable e) {
                         ULog.d("dsiner_request--> onError: " + e.getMessage());
-                        FileUtil.deleteFile(path + File.separator + cache);
+                        FileUtils.deleteFile(path + File.separator + cache);
                         if (callback != null) {
                             callback.onError(e);
                         }
@@ -554,16 +554,12 @@ public class Transfer {
     public static class Cache {
         private ExpireLruCache<String, Bean> mLruCache;
 
-        private static class Singleton {
-            private final static Cache INSTANCE = new Cache();
+        private Cache() {
+            mLruCache = new ExpireLruCache<>(30, 2 * 60 * 60 * 1000);
         }
 
         static Cache get() {
             return Singleton.INSTANCE;
-        }
-
-        private Cache() {
-            mLruCache = new ExpireLruCache<>(30, 2 * 60 * 60 * 1000);
         }
 
         public void put(String key, Bean bean) {
@@ -576,6 +572,10 @@ public class Transfer {
 
         public void release() {
             mLruCache.clear();
+        }
+
+        private static class Singleton {
+            private static final Cache INSTANCE = new Cache();
         }
 
         public static class Bean {
@@ -613,21 +613,6 @@ public class Transfer {
         private long lastLength;
         private long lastTime;
 
-        public float calculateSpeed(long current) {
-            currentLength = current;
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastTime >= MIN_DELAY_TIME || lastTime == 0) {
-                if (lastTime != 0 && currentTime - lastTime > 0 && currentLength - lastLength >= 0) {
-                    speed = 1f * (currentLength - lastLength) / ((currentTime - lastTime) / 1000);
-                } else {
-                    speed = 0;
-                }
-                lastLength = currentLength;
-                lastTime = currentTime;
-            }
-            return speed;
-        }
-
         public static String formatSpeed(float speed) {
             if (speed <= 0) {
                 return "0KB/S";
@@ -644,6 +629,21 @@ public class Transfer {
 
         public static String formatInfo(float currentLength, float totalLength) {
             return String.format("%.2fM/%.2fM", currentLength / MB, totalLength / MB);
+        }
+
+        public float calculateSpeed(long current) {
+            currentLength = current;
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastTime >= MIN_DELAY_TIME || lastTime == 0) {
+                if (lastTime != 0 && currentTime - lastTime > 0 && currentLength - lastLength >= 0) {
+                    speed = 1f * (currentLength - lastLength) / ((currentTime - lastTime) / 1000);
+                } else {
+                    speed = 0;
+                }
+                lastLength = currentLength;
+                lastTime = currentTime;
+            }
+            return speed;
         }
     }
 }

@@ -4,16 +4,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
+import com.d.lib.pulllayout.util.RefreshableCompat;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.activity.TransferActivity;
 import com.d.music.transfer.adapter.TransferAdapter;
 import com.d.music.transfer.manager.TransferManager;
-import com.d.music.transfer.manager.operation.Operater;
-import com.d.music.view.SongHeaderView;
+import com.d.music.transfer.manager.operation.TransferOperator;
+import com.d.music.widget.SongHeaderView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,13 @@ public class SongTransferFragment extends TransferFragment {
 
     @NonNull
     @Override
-    protected Operater getOperater() {
-        return TransferManager.getIns().optSong();
+    protected TransferOperator getOperator() {
+        return TransferManager.getInstance().optSong();
     }
 
     @Override
     protected CommonAdapter<TransferModel> getAdapter() {
-        return new TransferAdapter(mContext, new ArrayList<TransferModel>(), type,
+        return new TransferAdapter(mContext, new ArrayList<TransferModel>(), mType,
                 new MultiItemTypeSupport<TransferModel>() {
                     @Override
                     public int getLayoutId(int viewType) {
@@ -58,10 +60,10 @@ public class SongTransferFragment extends TransferFragment {
     @Override
     protected void initList() {
         initHead();
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
-        if (type == TYPE_SONG) {
-            mXrvList.addHeaderView(header);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
+        if (mType == TYPE_SONG) {
+            RefreshableCompat.addHeaderView(mPullList, header);
         }
         super.initList();
     }
@@ -74,8 +76,8 @@ public class SongTransferFragment extends TransferFragment {
         header.setOnHeaderListener(new SongHeaderView.OnHeaderListener() {
             @Override
             public void onPlayAll() {
-                MediaControler.getIns(mContext).
-                        init(TransferModel.convertTo(TransferManager.getIns().optSong().pipe().list()),
+                MediaControl.getInstance(mContext).
+                        init(TransferModel.convertTo(TransferManager.getInstance().optSong().pipe().list()),
                                 0, true);
             }
 
@@ -87,9 +89,9 @@ public class SongTransferFragment extends TransferFragment {
     }
 
     @Override
-    public void setData(List<TransferModel> datas) {
+    public void loadSuccess(List<TransferModel> datas) {
         header.setVisibility(datas.size() > 0 ? View.VISIBLE : View.GONE);
-        super.setData(datas);
+        super.loadSuccess(datas);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class SongTransferFragment extends TransferFragment {
         final int countDownloading = lists.get(0).size();
         final int countDownloaded = lists.get(1).size();
         final int count = countDownloading + countDownloaded;
-        ((TransferActivity) getActivity()).setTabNumber(type,
+        ((TransferActivity) getActivity()).setTabNumber(mType,
                 countDownloading > 0 ? "" + countDownloading : "",
                 countDownloading > 0 ? View.VISIBLE : View.GONE);
         header.setSongCount(count);

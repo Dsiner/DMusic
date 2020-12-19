@@ -17,6 +17,14 @@ import java.util.Map;
  */
 public class AppAsterModule extends OkHttpModule {
 
+    public static HeadersInterceptor.OnHeadInterceptor getOnHeadInterceptor(final Params params) {
+        return new HeadersInterceptor.OnHeadInterceptor() {
+            @Override
+            public void intercept(Map<String, String> heads) {
+            }
+        };
+    }
+
     @Override
     public void applyOptions(@NonNull Context context, @NonNull Config.Builder builder) {
         builder.baseUrl(API.API_BASE)
@@ -29,13 +37,5 @@ public class AppAsterModule extends OkHttpModule {
                 .log("AsterLog Back = ", Config.Level.BODY)
                 .debug(true)
                 .build();
-    }
-
-    public static HeadersInterceptor.OnHeadInterceptor getOnHeadInterceptor(final Params params) {
-        return new HeadersInterceptor.OnHeadInterceptor() {
-            @Override
-            public void intercept(Map<String, String> heads) {
-            }
-        };
     }
 }

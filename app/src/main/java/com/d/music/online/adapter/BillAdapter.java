@@ -6,8 +6,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.music.R;
 import com.d.music.online.activity.DetailActivity;
 import com.d.music.online.model.BillModel;
@@ -27,12 +27,12 @@ public class BillAdapter extends CommonAdapter<BillModel> {
 
     @Override
     public void convert(int position, CommonHolder holder, final BillModel item) {
-        holder.setViewVisibility(musics[0], View.GONE);
-        holder.setViewVisibility(musics[1], View.GONE);
-        holder.setViewVisibility(musics[2], View.GONE);
+        holder.setVisibility(musics[0], View.GONE);
+        holder.setVisibility(musics[1], View.GONE);
+        holder.setVisibility(musics[2], View.GONE);
         if (item.content != null && item.content.size() > 0) {
             for (int i = 0; i < item.content.size() && i < 3; i++) {
-                holder.setViewVisibility(musics[i], View.VISIBLE);
+                holder.setVisibility(musics[i], View.VISIBLE);
                 holder.setText(musics[i], (i + 1) + ". " + item.content.get(i).title + " - " + item.content.get(i).author);
             }
         }

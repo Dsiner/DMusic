@@ -5,7 +5,7 @@ import android.content.Context;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.SimpleCallback;
-import com.d.lib.common.component.loader.IAbsView;
+import com.d.lib.common.component.loader.MvpBaseLoaderView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.music.component.aster.API;
 import com.d.music.online.model.SingerModel;
@@ -15,7 +15,7 @@ import com.d.music.online.model.SingerRespModel;
  * SingerPresenter
  * Created by D on 2018/8/11.
  */
-public class SingerPresenter extends MvpBasePresenter<IAbsView<SingerModel>> {
+public class SingerPresenter extends MvpBasePresenter<MvpBaseLoaderView<SingerModel>> {
 
     public SingerPresenter(Context context) {
         super(context);
@@ -37,7 +37,7 @@ public class SingerPresenter extends MvpBasePresenter<IAbsView<SingerModel>> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(response.artist);
+                        getView().loadSuccess(response.artist);
                     }
 
                     @Override

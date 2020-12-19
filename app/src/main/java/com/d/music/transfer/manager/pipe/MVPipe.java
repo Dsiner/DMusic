@@ -2,8 +2,8 @@ package com.d.music.transfer.manager.pipe;
 
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.App;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.TransferModel;
-import com.d.music.data.database.greendao.util.AppDBUtil;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class MVPipe extends Pipe {
 
     @Override
     public void init() {
-        List<List<TransferModel>> lists = AppDBUtil.getIns(App.getContext()).optTransfer()
+        List<List<TransferModel>> lists = DBManager.getInstance(App.getContext()).optTransfer()
                 .queryAll(TransferModel.TRANSFER_TYPE_MV);
         mDownloading.addAll(lists.get(0));
         mDownloaded.addAll(lists.get(1));
@@ -32,7 +32,7 @@ public class MVPipe extends Pipe {
         TaskScheduler.executeSingle(new Runnable() {
             @Override
             public void run() {
-                AppDBUtil.getIns(App.getContext()).optTransfer().update(model);
+                DBManager.getInstance(App.getContext()).optTransfer().update(model);
             }
         });
     }
@@ -42,7 +42,7 @@ public class MVPipe extends Pipe {
         TaskScheduler.executeSingle(new Runnable() {
             @Override
             public void run() {
-                AppDBUtil.getIns(App.getContext()).optTransfer().insertOrReplace(model);
+                DBManager.getInstance(App.getContext()).optTransfer().insertOrReplace(model);
             }
         });
     }
@@ -52,7 +52,7 @@ public class MVPipe extends Pipe {
         TaskScheduler.executeSingle(new Runnable() {
             @Override
             public void run() {
-                AppDBUtil.getIns(App.getContext()).optTransfer().delete(model);
+                DBManager.getInstance(App.getContext()).optTransfer().delete(model);
             }
         });
     }

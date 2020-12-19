@@ -1,34 +1,33 @@
 package com.d.lib.common.component.mvp.app.v4;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpBaseView;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.view.DSLayout;
-import com.d.lib.common.view.dialog.AlertDialogFactory;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import cn.feng.skin.manager.base.BaseSkinFragmentActivity;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.keyboard.KeyboardHelper;
+import com.d.lib.common.widget.DSLayout;
+import com.d.lib.common.widget.dialog.AlertDialogFactory;
 
 /**
  * BaseFragmentActivity
  * Created by D on 2017/4/27.
  */
 public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
-        extends BaseSkinFragmentActivity implements MvpView {
+        extends FragmentActivity implements MvpBaseView {
 
     protected Activity mActivity;
     protected Context mContext;
     protected T mPresenter;
     protected DSLayout mDslDs;
-    private AlertDialog mLoadingDlg;
-    private Unbinder mUnbinder;
+    private Dialog mLoadingDlg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,12 +35,12 @@ public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
         mContext = this;
         mActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        StatusBarCompat.changeStatusBar(this, StatusBarCompat.STYLE_MAIN);
         setContentView(getLayoutRes());
         if (getDSLayoutRes() != 0) {
             mDslDs = (DSLayout) findViewById(getDSLayoutRes());
         }
         bindView();
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(getMvpView());
@@ -50,13 +49,15 @@ public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
     }
 
     @Override
+    public void finish() {
+        KeyboardHelper.hideKeyboard(this);
+        super.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         if (mPresenter != null) {
             mPresenter.detachView(false);
-        }
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-            mUnbinder = null;
         }
         super.onDestroy();
     }
@@ -68,10 +69,8 @@ public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
         }
     }
 
-    /**
-     * Show loading dialog
-     */
-    public void showLoading() {
+    @Override
+    public void showLoadingDialog() {
         if (mLoadingDlg == null) {
             mLoadingDlg = AlertDialogFactory.createFactory(mContext).getLoadingDialog();
         }
@@ -80,10 +79,8 @@ public abstract class BaseFragmentActivity<T extends MvpBasePresenter>
         }
     }
 
-    /**
-     * Dismiss loading dialog
-     */
-    public void closeLoading() {
+    @Override
+    public void dismissLoadingDialog() {
         if (mLoadingDlg != null && mLoadingDlg.isShowing()) {
             mLoadingDlg.dismiss();
         }

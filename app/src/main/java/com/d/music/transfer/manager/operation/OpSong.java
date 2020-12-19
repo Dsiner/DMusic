@@ -2,7 +2,7 @@ package com.d.music.transfer.manager.operation;
 
 import android.support.annotation.NonNull;
 
-import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.util.log.ULog;
 import com.d.music.component.media.HitTarget;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.bean.TransferModel;
@@ -15,7 +15,7 @@ import java.util.List;
  * OpSong
  * Created by D on 2018/10/12.
  */
-public class OpSong extends Operater {
+public class OpSong extends TransferOperator {
 
     public OpSong(@NonNull Pipe pipe) {
         super(pipe);

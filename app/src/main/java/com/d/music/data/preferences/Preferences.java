@@ -13,36 +13,11 @@ import com.d.music.R;
 public class Preferences extends AbstractPreference {
     private static Preferences instance;
 
-    public interface Keys {
-        String KEY_IS_FIRST = "key_is_first";
-
-        String KEY_IS_SKIN_LOADED = "key_is_skin_loaded";
-        String KEY_PLAYER_MODE = "key_player_mode";
-        String KEY_IS_AUTO_PLAY = "key_is_auto_play";
-        String KEY_LAST_PLAY_POSITION = "key_last_play_position";
-        String KEY_PLAY_MODE = "key_play_mode";
-        String KEY_IS_SETTING_SUB_PULL_DOWN = "key_is_setting_sub_pull_down";
-        String KEY_IS_SETTING_SHOW_ADD = "key_is_setting_show_add";
-
-        String KEY_IS_SETTING_ALBUM_ROTATE = "key_is_setting_album_rotate";
-        String KEY_IS_SETTING_SHAKE = "key_is_setting_shake";
-        String KEY_IS_SETTING_SHOW_MENU_ICON = "key_is_setting_show_menu_icon";
-        String KEY_SETTING_SIGNATURE = "key_setting_signature";
-        String KEY_SETTING_STROKE = "key_setting_stroke";
-
-        String KEY_SKIN_TYPE = "key_skin_type";
-        String KEY_SLEEP_TYPE = "key_sleep_type";
-        String KEY_SLEEP_TIMING = "key_sleep_timing";
-
-        String KEY_SEARCH_HOT = "key_search_hot";
-        String KEY_SEARCH_HISTORY = "key_search_history";
-    }
-
     private Preferences(Context context) {
-        super(context);
+        super(context, "Preferences");
     }
 
-    public static Preferences getIns(Context context) {
+    public static Preferences getInstance(Context context) {
         if (instance == null) {
             synchronized (Preferences.class) {
                 if (instance == null) {
@@ -53,13 +28,13 @@ public class Preferences extends AbstractPreference {
         return instance;
     }
 
-    /****************************** - Operation - ******************************/
-
     /************************* 是/否 第一次启动 *************************/
     public void putIsFirst(boolean b) {
         mEditor.putBoolean(Keys.KEY_IS_FIRST, b);
         save();
     }
+
+    /****************************** - Operation - ******************************/
 
     public boolean getIsFirst() {
         return mSettings.getBoolean(Keys.KEY_IS_FIRST, true);
@@ -241,5 +216,30 @@ public class Preferences extends AbstractPreference {
 
     public String getSearchHistory() {
         return mSettings.getString(Keys.KEY_SEARCH_HISTORY, "");
+    }
+
+    public interface Keys {
+        String KEY_IS_FIRST = "key_is_first";
+
+        String KEY_IS_SKIN_LOADED = "key_is_skin_loaded";
+        String KEY_PLAYER_MODE = "key_player_mode";
+        String KEY_IS_AUTO_PLAY = "key_is_auto_play";
+        String KEY_LAST_PLAY_POSITION = "key_last_play_position";
+        String KEY_PLAY_MODE = "key_play_mode";
+        String KEY_IS_SETTING_SUB_PULL_DOWN = "key_is_setting_sub_pull_down";
+        String KEY_IS_SETTING_SHOW_ADD = "key_is_setting_show_add";
+
+        String KEY_IS_SETTING_ALBUM_ROTATE = "key_is_setting_album_rotate";
+        String KEY_IS_SETTING_SHAKE = "key_is_setting_shake";
+        String KEY_IS_SETTING_SHOW_MENU_ICON = "key_is_setting_show_menu_icon";
+        String KEY_SETTING_SIGNATURE = "key_setting_signature";
+        String KEY_SETTING_STROKE = "key_setting_stroke";
+
+        String KEY_SKIN_TYPE = "key_skin_type";
+        String KEY_SLEEP_TYPE = "key_sleep_type";
+        String KEY_SLEEP_TIMING = "key_sleep_timing";
+
+        String KEY_SEARCH_HOT = "key_search_hot";
+        String KEY_SEARCH_HISTORY = "key_search_history";
     }
 }

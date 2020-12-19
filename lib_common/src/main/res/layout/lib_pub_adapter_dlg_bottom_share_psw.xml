@@ -37,7 +37,7 @@
         android:layout_height="1px"
         android:layout_weight="1" />
 
-    <com.d.lib.common.view.toggle.ToggleButton
+    <com.d.lib.common.widget.toggle.ToggleButton
         android:id="@+id/tbtn_toggle"
         android:layout_width="50dp"
         android:layout_height="28dp" />

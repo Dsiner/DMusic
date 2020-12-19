@@ -14,27 +14,27 @@ import java.lang.ref.WeakReference;
  * Created by D on 2017/9/11.
  */
 public class MediaPlayerManager {
-    private volatile static MediaPlayerManager manager;
+    private volatile static MediaPlayerManager INSTANCE;
 
-    private MediaPlayer mediaPlayer;
-    private String source;
-    private boolean isPrepared;
+    private MediaPlayer mMediaPlayer;
+    private String mSource;
+    private boolean mIsPrepared;
 
     private MediaPlayerManager() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setScreenOnWhilePlaying(true);
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setScreenOnWhilePlaying(true);
     }
 
-    public static MediaPlayerManager getIns() {
-        if (manager == null) {
+    public static MediaPlayerManager getInstance() {
+        if (INSTANCE == null) {
             synchronized (MediaPlayerManager.class) {
-                if (manager == null) {
-                    manager = new MediaPlayerManager();
+                if (INSTANCE == null) {
+                    INSTANCE = new MediaPlayerManager();
                 }
             }
         }
-        return manager;
+        return INSTANCE;
     }
 
     @UiThread
@@ -51,69 +51,69 @@ public class MediaPlayerManager {
     public void play(final Object obj, final String url, final OnMediaPlayerListener listener) {
         if (TextUtils.isEmpty(url)) {
             if (listener != null) {
-                listener.onError(mediaPlayer, url);
+                listener.onError(mMediaPlayer, url);
             }
             return;
         }
-        source = url;
+        mSource = url;
         if (listener != null) {
-            listener.onLoading(mediaPlayer, url);
+            listener.onLoading(mMediaPlayer, url);
         }
         final WeakReference<Object> weakRef = new WeakReference<>(obj);
         try {
-            isPrepared = false;
-            mediaPlayer.reset(); // 重置
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            mIsPrepared = false;
+            mMediaPlayer.reset(); // 重置
+            mMediaPlayer.setDataSource(url);
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    isPrepared = true;
+                    mIsPrepared = true;
                     if (listener != null) {
-                        listener.onPrepared(mediaPlayer, url);
+                        listener.onPrepared(mMediaPlayer, url);
                     }
                 }
             });
-            mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    isPrepared = false;
+                    mIsPrepared = false;
                     if (listener != null) {
-                        listener.onError(mediaPlayer, url);
+                        listener.onError(mMediaPlayer, url);
                     }
                     return false;
                 }
             });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     if (listener != null) {
-                        listener.onCompletion(mediaPlayer, url);
+                        listener.onCompletion(mMediaPlayer, url);
                     }
                 }
             });
-            mediaPlayer.prepareAsync();
+            mMediaPlayer.prepareAsync();
         } catch (Throwable e) {
             e.printStackTrace();
-            isPrepared = false;
-            mediaPlayer.reset(); // 重置
+            mIsPrepared = false;
+            mMediaPlayer.reset(); // 重置
             if (listener != null) {
-                listener.onError(mediaPlayer, url);
+                listener.onError(mMediaPlayer, url);
             }
         }
     }
 
     private boolean isDestroy(String url, WeakReference<Object> weakRef) {
-        return !TextUtils.equals(url, source) || mediaPlayer == null
+        return !TextUtils.equals(url, mSource) || mMediaPlayer == null
                 || weakRef == null || weakRef.get() == null
                 || weakRef.get() instanceof Activity && ((Activity) weakRef.get()).isFinishing();
     }
 
     public String getUrl() {
-        return source;
+        return mSource;
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        return mMediaPlayer.isPlaying();
     }
 
     public void seekTo(int msec) {
@@ -121,9 +121,9 @@ public class MediaPlayerManager {
             if (!isPrepared()) {
                 return;
             }
-            int duration = mediaPlayer.getDuration(); // 毫秒
+            int duration = mMediaPlayer.getDuration(); // 毫秒
             if (msec >= 0 && msec <= duration) {
-                mediaPlayer.seekTo(msec);
+                mMediaPlayer.seekTo(msec);
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -131,32 +131,32 @@ public class MediaPlayerManager {
     }
 
     private boolean isPrepared() {
-        return isPrepared;
+        return mIsPrepared;
     }
 
     public void start() {
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
+        if (!mMediaPlayer.isPlaying()) {
+            mMediaPlayer.start();
         }
     }
 
     public void pause() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
         }
     }
 
     public void stop() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
         }
-        mediaPlayer.stop();
+        mMediaPlayer.stop();
     }
 
 
     @NonNull
     public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
+        return mMediaPlayer;
     }
 
     public int getCurrentPosition() {
@@ -164,7 +164,7 @@ public class MediaPlayerManager {
             if (!isPrepared()) {
                 return 0;
             }
-            int position = mediaPlayer.getCurrentPosition();
+            int position = mMediaPlayer.getCurrentPosition();
             position = Math.max(position, 0);
             return position;
         } catch (Throwable e) {
@@ -178,7 +178,7 @@ public class MediaPlayerManager {
             if (!isPrepared()) {
                 return 0;
             }
-            int duration = mediaPlayer.getDuration();
+            int duration = mMediaPlayer.getDuration();
             duration = Math.max(duration, 0);
             return duration;
         } catch (Throwable e) {
@@ -188,17 +188,17 @@ public class MediaPlayerManager {
     }
 
     public void reset() {
-        isPrepared = false;
-        source = "";
-        mediaPlayer.reset(); // 重置
+        mIsPrepared = false;
+        mSource = "";
+        mMediaPlayer.reset(); // 重置
     }
 
     private void release() {
-        isPrepared = false;
-        source = "";
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
+        mIsPrepared = false;
+        mSource = "";
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
     }
 

@@ -26,10 +26,10 @@
         android:textColor="@color/lib_pub_color_text_main"
         android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
-    <com.d.lib.common.view.toggle.ToggleButton
+    <com.d.lib.common.widget.toggle.ToggleButton
         android:id="@+id/tb_layout_row_toggle"
-        android:layout_width="51dp"
-        android:layout_height="31dp"
+        android:layout_width="49dp"
+        android:layout_height="29dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:visibility="visible"

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
+    <include
         android:id="@+id/line_middle"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lib_pub_color_line" />
+        layout="@layout/lib_pub_layout_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,11 +24,11 @@
             android:textSize="@dimen/lib_pub_dimen_text_main"
             android:textStyle="normal" />
 
-        <View
+        <include
             android:id="@+id/line_bottom"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lib_pub_color_line" />
+            layout="@layout/lib_pub_layout_line"
+            android:layout_width="@dimen/lib_pub_dimen_line_height"
+            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/btn_ok"

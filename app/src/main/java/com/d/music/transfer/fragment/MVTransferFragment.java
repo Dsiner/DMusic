@@ -3,14 +3,14 @@ package com.d.music.transfer.fragment;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.activity.TransferActivity;
 import com.d.music.transfer.adapter.TransferAdapter;
 import com.d.music.transfer.manager.TransferManager;
-import com.d.music.transfer.manager.operation.Operater;
+import com.d.music.transfer.manager.operation.TransferOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +23,13 @@ public class MVTransferFragment extends TransferFragment {
 
     @NonNull
     @Override
-    protected Operater getOperater() {
-        return TransferManager.getIns().optMV();
+    protected TransferOperator getOperator() {
+        return TransferManager.getInstance().optMV();
     }
 
     @Override
     protected CommonAdapter<TransferModel> getAdapter() {
-        return new TransferAdapter(mContext, new ArrayList<TransferModel>(), type,
+        return new TransferAdapter(mContext, new ArrayList<TransferModel>(), mType,
                 new MultiItemTypeSupport<TransferModel>() {
                     @Override
                     public int getLayoutId(int viewType) {
@@ -54,7 +54,7 @@ public class MVTransferFragment extends TransferFragment {
     @Override
     public void notifyDataSetChanged(List<List<TransferModel>> lists) {
         final int countDownloading = lists.get(0).size();
-        ((TransferActivity) getActivity()).setTabNumber(type,
+        ((TransferActivity) getActivity()).setTabNumber(mType,
                 countDownloading > 0 ? "" + countDownloading : "",
                 countDownloading > 0 ? View.VISIBLE : View.GONE);
         super.notifyDataSetChanged(lists);

@@ -5,10 +5,10 @@ import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.d.lib.common.R;
-import com.d.lib.common.component.cache.base.AbstractCache;
-import com.d.lib.common.component.cache.exception.CacheException;
-import com.d.lib.common.component.cache.listener.CacheListener;
+import com.d.music.R;
+import com.d.music.component.cache.base.AbstractCache;
+import com.d.music.component.cache.exception.CacheException;
+import com.d.music.component.cache.listener.CacheListener;
 import com.d.music.component.cache.manager.LrcCacheManager;
 import com.d.music.component.cache.manager.SongCacheManager;
 import com.d.music.component.media.controler.Player;
@@ -33,6 +33,24 @@ public class SongCache extends AbstractCache<SongCache, Player, MusicModel, Stri
         return new SongCache(context);
     }
 
+    @SuppressWarnings("unused")
+    @UiThread
+    public static void clear(View view) {
+        if (view == null) {
+            return;
+        }
+        view.setTag(getTag(), "");
+    }
+
+    @SuppressWarnings("unused")
+    @UiThread
+    public static void release(Context context) {
+        if (context == null) {
+            return;
+        }
+        LrcCacheManager.getInstance(context.getApplicationContext()).release();
+    }
+
     @Override
     public void into(final Player view) {
         if (isFinishing() || view == null) {
@@ -50,7 +68,7 @@ public class SongCache extends AbstractCache<SongCache, Player, MusicModel, Stri
             return;
         }
         view.setTag(getTag(), mKey.id);
-        SongCacheManager.getIns(getContext()).load(getContext(), mKey,
+        SongCacheManager.getInstance(getContext()).load(getContext(), mKey,
                 new CacheListener<String>() {
                     @Override
                     public void onLoading() {
@@ -108,24 +126,6 @@ public class SongCache extends AbstractCache<SongCache, Player, MusicModel, Stri
             }
             return;
         }
-        SongCacheManager.getIns(getContext()).load(getContext(), mKey, l);
-    }
-
-    @SuppressWarnings("unused")
-    @UiThread
-    public static void clear(View view) {
-        if (view == null) {
-            return;
-        }
-        view.setTag(getTag(), "");
-    }
-
-    @SuppressWarnings("unused")
-    @UiThread
-    public static void release(Context context) {
-        if (context == null) {
-            return;
-        }
-        LrcCacheManager.getIns(context.getApplicationContext()).release();
+        SongCacheManager.getInstance(getContext()).load(getContext(), mKey, l);
     }
 }

@@ -4,17 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.component.loader.v4.AbsFragment;
+import com.d.lib.common.component.loader.v4.BaseLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.pulllayout.Pullable;
+import com.d.lib.pulllayout.rv.PullRecyclerView;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.music.MainActivity;
 import com.d.music.R;
-import com.d.music.component.media.controler.MediaControler;
+import com.d.music.component.media.controler.MediaControl;
 import com.d.music.data.Constants;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.event.eventbus.MusicModelEvent;
 import com.d.music.event.eventbus.RefreshEvent;
@@ -24,9 +27,9 @@ import com.d.music.local.activity.ScanActivity;
 import com.d.music.local.adapter.SongAdapter;
 import com.d.music.local.presenter.SongPresenter;
 import com.d.music.local.view.ISongView;
-import com.d.music.view.SongHeaderView;
-import com.d.music.view.TitleLayout;
-import com.d.music.view.dialog.MenuDialog;
+import com.d.music.widget.SongHeaderView;
+import com.d.music.widget.TitleLayout;
+import com.d.music.widget.dialog.MenuDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,35 +38,31 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * SongFragment
  * Created by D on 2017/4/30.
  */
-public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
-        implements ISongView, SongHeaderView.OnHeaderListener {
-    public final static String ARG_TYPE = "type";
-    public final static String ARG_TAB = "tab";
-    public final static String ARG_TITLE = "title";
+public class SongFragment extends BaseLoaderFragment<MusicModel, SongPresenter>
+        implements ISongView, View.OnClickListener, SongHeaderView.OnHeaderListener {
+    public static final String EXTRA_TYPE = "type";
+    public static final String EXTRA_TAB = "tab";
+    public static final String EXTRA_TITLE = "title";
 
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
+    TitleLayout tl_title;
 
-    private int type;
-    private int tab; // 本地歌曲tab(0-3)
-    private Preferences p;
-    private String title;
-    private SongHeaderView header;
-    private int orderType;
-    private boolean isNeedReLoad; // 为了同步收藏状态，需要重新加载数据
-    private boolean isSubPull; // 为了同步设置，需要重新刷新
+    private int mType;
+    private int mTab; // 本地歌曲tab(0-3)
+    private Preferences mPreferences;
+    private String mTitle;
+    private SongHeaderView mSongHeaderView;
+    private int mOrderType;
+    private boolean mIsNeedReLoad; // 为了同步收藏状态，需要重新加载数据
+    private boolean mIsSubPull; // 为了同步设置，需要重新刷新
 
     public static SongFragment getInstance(int type, String title) {
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_TITLE, title);
-        bundle.putInt(ARG_TYPE, type);
+        bundle.putString(EXTRA_TITLE, title);
+        bundle.putInt(EXTRA_TYPE, type);
         SongFragment fragment = new SongFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -71,17 +70,17 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     public static SongFragment getInstance(int type, int tab, String title) {
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_TYPE, type);
-        bundle.putInt(ARG_TAB, tab);
-        bundle.putString(ARG_TITLE, title);
+        bundle.putInt(EXTRA_TYPE, type);
+        bundle.putInt(EXTRA_TAB, tab);
+        bundle.putString(EXTRA_TITLE, title);
         SongFragment fragment = new SongFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    @OnClick({R.id.iv_title_left})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
@@ -118,19 +117,28 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
     }
 
     @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        tl_title = rootView.findViewById(R.id.tl_title);
+
+        ViewHelper.setOnClickListener(rootView, this,
+                R.id.iv_title_left);
+    }
+
+    @Override
     protected void init() {
         initTitle();
-        p = Preferences.getIns(getActivity().getApplicationContext());
-        isSubPull = p.getIsSubPull();
-        orderType = AppDBUtil.getIns(mContext.getApplicationContext()).optCustomList().querySoryType(type);
+        mPreferences = Preferences.getInstance(getActivity().getApplicationContext());
+        mIsSubPull = mPreferences.getIsSubPull();
+        mOrderType = DBManager.getInstance(mContext.getApplicationContext()).optCustomList().querySoryType(mType);
         super.init();
     }
 
     @Override
     protected CommonAdapter<MusicModel> getAdapter() {
         SongAdapter adapter = new SongAdapter(getActivity(), new ArrayList<MusicModel>(),
-                R.layout.module_local_adapter_song, type);
-        adapter.setSubPull(isSubPull);
+                R.layout.module_local_adapter_song, mType);
+        adapter.setSubPull(mIsSubPull);
         adapter.setOnDataChangedListener(new SongAdapter.OnDataChangedListener() {
             @Override
             public void onChange(int count) {
@@ -142,40 +150,40 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     @Override
     protected void initList() {
-        header = new SongHeaderView(mContext);
-        header.setVisibility(View.GONE);
-        if (type == AppDB.LOCAL_ALL_MUSIC) {
-            header.setVisibility(R.id.flyt_header_song_handler, View.GONE);
+        mSongHeaderView = new SongHeaderView(mContext);
+        mSongHeaderView.setVisibility(View.GONE);
+        if (mType == AppDatabase.LOCAL_ALL_MUSIC) {
+            mSongHeaderView.setVisibility(R.id.flyt_header_song_handler, View.GONE);
         }
-        header.setOnHeaderListener(this);
-        mXrvList.setCanRefresh(false);
-        mXrvList.setCanLoadMore(false);
-        mXrvList.addHeaderView(header);
+        mSongHeaderView.setOnHeaderListener(this);
+        ((Pullable) mPullList).setCanPullDown(false);
+        ((Pullable) mPullList).setCanPullUp(false);
+        ((PullRecyclerView) mPullList).addHeaderView(mSongHeaderView);
         super.initList();
     }
 
     @Override
     protected void onLoad(int page) {
-        mPresenter.getSong(type, tab, title, orderType);
+        mPresenter.getSong(mType, mTab, mTitle, mOrderType);
     }
 
     @Override
-    public void setData(List<MusicModel> datas) {
-        super.setData(datas);
+    public void loadSuccess(List<MusicModel> datas) {
+        super.loadSuccess(datas);
         notifyDataCountChanged(mCommonLoader.getDatas().size());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (isNeedReLoad) {
-            isNeedReLoad = false;
+        if (mIsNeedReLoad) {
+            mIsNeedReLoad = false;
             getData();
         }
-        if (isSubPull != p.getIsSubPull()) {
-            isSubPull = !isSubPull;
-            ((SongAdapter) mAdapter).setSubPull(isSubPull);
-            if (!isSubPull) {
+        if (mIsSubPull != mPreferences.getIsSubPull()) {
+            mIsSubPull = !mIsSubPull;
+            ((SongAdapter) mAdapter).setSubPull(mIsSubPull);
+            if (!mIsSubPull) {
                 mPresenter.subPullUp(mAdapter.getDatas());
             }
         }
@@ -183,49 +191,49 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
 
     private void initTitle() {
         Bundle bundle = getArguments();
-        title = getResources().getString(R.string.module_common_song);
+        mTitle = getResources().getString(R.string.module_common_song);
         if (bundle != null) {
-            type = bundle.getInt(ARG_TYPE);
-            tab = bundle.getInt(ARG_TAB);
-            title = bundle.getString(ARG_TITLE);
+            mType = bundle.getInt(EXTRA_TYPE);
+            mTab = bundle.getInt(EXTRA_TAB);
+            mTitle = bundle.getString(EXTRA_TITLE);
         }
-        tlTitle.setText(R.id.tv_title_title, title);
-        if (type == AppDB.LOCAL_ALL_MUSIC || type == AppDB.COLLECTION_MUSIC) {
-            tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
+        tl_title.setText(R.id.tv_title_title, mTitle);
+        if (mType == AppDatabase.LOCAL_ALL_MUSIC || mType == AppDatabase.COLLECTION_MUSIC) {
+            tl_title.setVisibility(R.id.iv_title_right, View.GONE);
         }
-        tlTitle.setOnMenuListener(new MenuDialog.OnMenuListener() {
+        tl_title.setOnMenuListener(new MenuDialog.OnMenuListener() {
             @Override
             public void onRefresh(View v) {
                 View name = v.findViewById(R.id.iv_sort_name_check);
                 View time = v.findViewById(R.id.iv_sort_time_check);
                 View custom = v.findViewById(R.id.iv_sort_custom_check);
                 if (name != null && time != null && custom != null) {
-                    name.setVisibility(orderType == AppDB.ORDER_TYPE_NAME ? View.VISIBLE : View.INVISIBLE);
-                    time.setVisibility(orderType == AppDB.ORDER_TYPE_TIME ? View.VISIBLE : View.INVISIBLE);
-                    custom.setVisibility(orderType == AppDB.ORDER_TYPE_CUSTOM ? View.VISIBLE : View.INVISIBLE);
+                    name.setVisibility(mOrderType == AppDatabase.ORDER_TYPE_NAME ? View.VISIBLE : View.INVISIBLE);
+                    time.setVisibility(mOrderType == AppDatabase.ORDER_TYPE_TIME ? View.VISIBLE : View.INVISIBLE);
+                    custom.setVisibility(mOrderType == AppDatabase.ORDER_TYPE_CUSTOM ? View.VISIBLE : View.INVISIBLE);
                 }
             }
 
             @Override
             public void onClick(View v) {
-                if (ClickFast.isFastDoubleClick()) {
+                if (QuickClick.isQuickClick()) {
                     return;
                 }
                 switch (v.getId()) {
                     case R.id.menu_sort_name:
-                        orderType = AppDB.ORDER_TYPE_NAME;
-                        mPresenter.getSong(type, AppDB.ORDER_TYPE_NAME);
+                        mOrderType = AppDatabase.ORDER_TYPE_NAME;
+                        mPresenter.getSong(mType, AppDatabase.ORDER_TYPE_NAME);
                         break;
                     case R.id.menu_sort_time:
-                        orderType = AppDB.ORDER_TYPE_TIME;
-                        mPresenter.getSong(type, AppDB.ORDER_TYPE_TIME);
+                        mOrderType = AppDatabase.ORDER_TYPE_TIME;
+                        mPresenter.getSong(mType, AppDatabase.ORDER_TYPE_TIME);
                         break;
                     case R.id.menu_sort_custom:
-                        orderType = AppDB.ORDER_TYPE_CUSTOM;
-                        mPresenter.getSong(type, AppDB.ORDER_TYPE_CUSTOM);
+                        mOrderType = AppDatabase.ORDER_TYPE_CUSTOM;
+                        mPresenter.getSong(mType, AppDatabase.ORDER_TYPE_CUSTOM);
                         break;
                     case R.id.menu_scan:
-                        ScanActivity.startActivity(getActivity(), type);
+                        ScanActivity.openActivity(getActivity(), mType);
                         break;
                 }
             }
@@ -233,15 +241,15 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
     }
 
     private void notifyDataCountChanged(int count) {
-        header.setSongCount(count);
-        header.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
+        mSongHeaderView.setSongCount(count);
+        mSongHeaderView.setVisibility(count <= 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void onPlayAll() {
         List<MusicModel> datas = mAdapter.getDatas();
         if (datas != null && datas.size() > 0) {
-            MediaControler.getIns(mContext).init(datas, 0, true);
+            MediaControl.getInstance(mContext).init(datas, 0, true);
         }
     }
 
@@ -251,43 +259,40 @@ public class SongFragment extends AbsFragment<MusicModel, SongPresenter>
         if (datas == null || datas.size() <= 0) {
             return;
         }
-        if (Constants.Heap.models == null) {
-            Constants.Heap.models = new ArrayList<>();
-        }
-        Constants.Heap.models.clear();
-        Constants.Heap.models.addAll(datas);
-        HandleActivity.startActivity(getActivity(), type, title);
+        Constants.Heap.sModels.clear();
+        Constants.Heap.sModels.addAll(datas);
+        HandleActivity.openActivity(getActivity(), mType, mTitle);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onEvent(MusicModelEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != type || mPresenter == null) {
+                || event.type != mType || mPresenter == null) {
             return;
         }
-        setData(event.list);
-        mPresenter.setSong(event.list, type);
+        loadSuccess(event.list);
+        mPresenter.setSong(event.list, mType);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     @SuppressWarnings("unused")
     public void onEventRefresh(RefreshEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type == type || event.event != RefreshEvent.SYNC_COLLECTIONG) {
+                || event.type == mType || event.event != RefreshEvent.SYNC_COLLECTIONG) {
             return;
         }
-        isNeedReLoad = true;
+        mIsNeedReLoad = true;
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     @SuppressWarnings("unused")
     public void onEventSortType(SortTypeEvent event) {
         if (event == null || getActivity() == null || getActivity().isFinishing()
-                || event.type != type) {
+                || event.type != mType) {
             return;
         }
-        orderType = event.orderType;
+        mOrderType = event.orderType;
     }
 
     @Override

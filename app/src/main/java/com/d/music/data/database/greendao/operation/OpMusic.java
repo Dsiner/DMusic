@@ -6,19 +6,19 @@ import android.database.Cursor;
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.d.music.data.database.greendao.dao.LocalAllMusicDao;
 import com.d.music.data.database.greendao.dao.MusicModelDao;
-import com.d.music.data.database.greendao.db.SQLUtil;
+import com.d.music.data.database.greendao.db.SQLUtils;
 
 import java.util.List;
 
 import de.greenrobot.dao.AbstractDao;
 
-import static com.d.music.data.database.greendao.db.AppDB.COLLECTION_MUSIC;
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_LIST;
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_MUSIC_COUNT;
-import static com.d.music.data.database.greendao.db.AppDB.CUSTOM_MUSIC_INDEX;
-import static com.d.music.data.database.greendao.db.AppDB.LOCAL_ALL_MUSIC;
-import static com.d.music.data.database.greendao.db.AppDB.MUSIC;
-import static com.d.music.data.database.greendao.db.AppDB.TABLE_INDEX_COUNT;
+import static com.d.music.data.database.greendao.db.AppDatabase.COLLECTION_MUSIC;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_LIST;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_MUSIC_COUNT;
+import static com.d.music.data.database.greendao.db.AppDatabase.CUSTOM_MUSIC_INDEX;
+import static com.d.music.data.database.greendao.db.AppDatabase.LOCAL_ALL_MUSIC;
+import static com.d.music.data.database.greendao.db.AppDatabase.MUSIC;
+import static com.d.music.data.database.greendao.db.AppDatabase.TABLE_INDEX_COUNT;
 
 /**
  * Music操作
@@ -179,7 +179,7 @@ public class OpMusic extends AbstractOp {
 
 
     public Cursor queryBySQL(String... sql) {
-        return SQLUtil.findBySQL(daos[LOCAL_ALL_MUSIC].getDatabase(), sql);
+        return SQLUtils.findBySQL(daos[LOCAL_ALL_MUSIC].getDatabase(), sql);
     }
 
     /**

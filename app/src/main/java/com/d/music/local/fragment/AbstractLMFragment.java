@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.d.lib.common.component.loader.v4.AbsLazyFragment;
+import com.d.lib.common.component.loader.v4.BaseLazyLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.model.BaseModel;
 import com.d.music.R;
@@ -14,26 +14,23 @@ import com.d.music.local.model.FolderModel;
 import com.d.music.local.model.SingerModel;
 import com.d.music.local.presenter.LMMusicPresenter;
 import com.d.music.local.view.ILMMusicView;
-import com.d.music.view.sort.SideBar;
+import com.d.music.widget.sort.SideBar;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * LazyLoad Fragment
  * Created by D on 2017/4/30.
  */
-public abstract class AbstractLMFragment<M extends BaseModel> extends AbsLazyFragment<M, LMMusicPresenter> implements ILMMusicView {
-    public final static int TYPE_SONG = 0;
-    public final static int TYPE_SINGER = 1;
-    public final static int TYPE_ALBUM = 2;
-    public final static int TYPE_FOLDER = 3;
+public abstract class AbstractLMFragment<M extends BaseModel> extends BaseLazyLoaderFragment<M, LMMusicPresenter> implements ILMMusicView {
+    public static final int TYPE_SONG = 0;
+    public static final int TYPE_SINGER = 1;
+    public static final int TYPE_ALBUM = 2;
+    public static final int TYPE_FOLDER = 3;
 
-    @BindView(R.id.sb_sidebar)
-    SideBar sbSideBar;
+    SideBar sb_sidebar;
 
     @Override
     protected int getLayoutRes() {
@@ -59,6 +56,12 @@ public abstract class AbstractLMFragment<M extends BaseModel> extends AbsLazyFra
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void bindView(View rootView) {
+        super.bindView(rootView);
+        sb_sidebar = rootView.findViewById(R.id.sb_sidebar);
     }
 
     @Override

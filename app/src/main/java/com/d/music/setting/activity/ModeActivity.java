@@ -1,54 +1,55 @@
 package com.d.music.setting.activity;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.view.dialog.AlertDialogFactory;
-import com.d.lib.xrv.LRecyclerView;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.widget.dialog.AlertDialogFactory;
 import com.d.music.App;
 import com.d.music.R;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.setting.adapter.ModeAdapter;
 import com.d.music.setting.model.RadioModel;
-import com.d.music.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * ModeActivity
  * Created by D on 2017/6/13.
  */
-public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpView {
-    @BindView(R.id.lrv_list)
-    LRecyclerView lrvList;
+public class ModeActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener {
+    RecyclerView rv_list;
 
-    private int index;
-    private Preferences p;
-    private ModeAdapter adapter;
+    private int mIndex;
+    private Preferences mPreferences;
+    private ModeAdapter mAdapter;
 
-    @OnClick({R.id.iv_title_left, R.id.tv_title_right})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
+
             case R.id.tv_title_right:
-                int mode = adapter.getIndex();
+                int mode = mAdapter.getIndex();
                 if (mode >= RadioModel.MODE_NORMAL && mode <= RadioModel.MODE_NOTIFICATION) {
-                    p.putPlayerMode(mode);
+                    mPreferences.putPlayerMode(mode);
                 }
                 AlertDialogFactory.createFactory(ModeActivity.this)
                         .getAlertDialog(getResources().getString(R.string.module_common_tips),
@@ -57,13 +58,13 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
                                 getResources().getString(R.string.module_common_not_now),
                                 new AlertDialogFactory.OnClickListener() {
                                     @Override
-                                    public void onClick(AlertDialog dlg, View v) {
+                                    public void onClick(Dialog dlg, View v) {
                                         dlg.dismiss();
                                         App.exit();
                                     }
                                 }, new AlertDialogFactory.OnClickListener() {
                                     @Override
-                                    public void onClick(AlertDialog dlg, View v) {
+                                    public void onClick(Dialog dlg, View v) {
                                         dlg.dismiss();
                                         finish();
                                     }
@@ -96,33 +97,44 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
     }
 
     @Override
+    protected void bindView() {
+        super.bindView();
+        rv_list = findViewById(R.id.rv_list);
+
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left, R.id.tv_title_right);
+    }
+
+    @Override
     protected void init() {
         if (App.toFinish(getIntent())) {
             finish();
             return;
         }
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-        p = Preferences.getIns(getApplicationContext());
-        index = p.getPlayerMode();
-        adapter = new ModeAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
-        adapter.setIndex(index);
-        lrvList.showAsList();
-        lrvList.setAdapter(adapter);
+        StatusBarCompat.setStatusBarColor(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        mPreferences = Preferences.getInstance(getApplicationContext());
+        mIndex = mPreferences.getPlayerMode();
+        mAdapter = new ModeAdapter(this, getDatas(), R.layout.module_setting_adapter_radio);
+        mAdapter.setIndex(mIndex);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_list.setLayoutManager(layoutManager);
+        rv_list.setAdapter(mAdapter);
     }
 
     private List<RadioModel> getDatas() {
         List<RadioModel> datas = new ArrayList<>();
         RadioModel model0 = new RadioModel();
         model0.content = getResources().getString(R.string.module_common_mode_normal);
-        model0.isChecked = index == RadioModel.MODE_NORMAL;
+        model0.isChecked = mIndex == RadioModel.MODE_NORMAL;
 
         RadioModel model1 = new RadioModel();
         model1.content = getResources().getString(R.string.module_common_mode_minimalist);
-        model1.isChecked = index == RadioModel.MODE_MINIMALIST;
+        model1.isChecked = mIndex == RadioModel.MODE_MINIMALIST;
 
         RadioModel model2 = new RadioModel();
         model2.content = getResources().getString(R.string.module_common_mode_notification);
-        model2.isChecked = index == RadioModel.MODE_NOTIFICATION;
+        model2.isChecked = mIndex == RadioModel.MODE_NOTIFICATION;
 
         datas.add(model0);
         datas.add(model1);
@@ -130,9 +142,9 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter> implements MvpV
         return datas;
     }
 
-    @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-    }
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+//    }
 }

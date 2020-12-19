@@ -1,5 +1,7 @@
 package com.d.lib.commenplayer.ui;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
@@ -18,17 +20,15 @@ import android.widget.TextView;
 import com.d.lib.commenplayer.R;
 import com.d.lib.commenplayer.listener.IMediaPlayerControl;
 import com.d.lib.commenplayer.util.Util;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ValueAnimator;
 
 import java.lang.ref.WeakReference;
 
 public class ControlLayout extends RelativeLayout {
-    public final static int STATE_LOADING = 0;
-    public final static int STATE_PREPARED = 1;
-    public final static int STATE_MOBILE_NET = 2;
-    public final static int STATE_COMPLETION = 3;
-    public final static int STATE_ERROR = 4;
+    public static final int STATE_LOADING = 0;
+    public static final int STATE_PREPARED = 1;
+    public static final int STATE_MOBILE_NET = 2;
+    public static final int STATE_COMPLETION = 3;
+    public static final int STATE_ERROR = 4;
 
     private final int TASK_STICK_TIME = 5000;
 

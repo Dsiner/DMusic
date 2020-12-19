@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
-import com.d.lib.common.utils.log.ULog;
+import com.d.lib.common.util.log.ULog;
 import com.d.music.component.media.SyncManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
 
@@ -19,10 +19,10 @@ import java.util.List;
  * Created by D on 2017/5/2.
  */
 public class MusicFactory {
-    private Context context;
+    private Context mContext;
 
     private MusicFactory(Context context) {
-        this.context = context;
+        this.mContext = context;
     }
 
     public static MusicFactory createFactory(Context context) {
@@ -34,7 +34,7 @@ public class MusicFactory {
         if (paths == null || paths.size() <= 0) {
             return new ArrayList<>();
         }
-        return Media.query(context, paths);
+        return Media.query(mContext, paths);
     }
 
     @Deprecated
@@ -42,7 +42,7 @@ public class MusicFactory {
         if (paths == null) {
             return null;
         }
-        List<MusicInfo> infos = Media.getMusicInfos(context);
+        List<MusicInfo> infos = Media.getMusicInfos(mContext);
         if (infos == null || infos.size() == 0) {
             return new ArrayList<>();
         }
@@ -55,7 +55,7 @@ public class MusicFactory {
 
     @Deprecated
     private void getMusic(@NonNull List<MusicInfo> infos, @NonNull List<MusicModel> list, @NonNull String path) {
-        HashMap<String, MusicModel> collections = SyncManager.getCollections(context);
+        HashMap<String, MusicModel> collections = SyncManager.getCollections(mContext);
         int size = infos.size();
         for (int i = 0; i < size; i++) {
             MusicInfo info = infos.get(i);

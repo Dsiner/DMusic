@@ -2,12 +2,12 @@ package com.d.music.online.presenter;
 
 import android.content.Context;
 
-import com.d.lib.common.component.loader.CommonLoader;
-import com.d.lib.common.component.loader.IAbsView;
-import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.callback.SimpleCallback;
+import com.d.lib.common.component.loader.MvpBaseLoaderView;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.pulllayout.loader.CommonLoader;
 import com.d.music.component.aster.API;
 import com.d.music.online.model.MVModel;
 import com.d.music.online.model.MVRespModel;
@@ -16,7 +16,7 @@ import com.d.music.online.model.MVRespModel;
  * MVPresenter
  * Created by D on 2018/8/11.
  */
-public class MVPresenter extends MvpBasePresenter<IAbsView<MVModel>> {
+public class MVPresenter extends MvpBasePresenter<MvpBaseLoaderView<MVModel>> {
 
     public MVPresenter(Context context) {
         super(context);
@@ -35,7 +35,7 @@ public class MVPresenter extends MvpBasePresenter<IAbsView<MVModel>> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(response.data);
+                        getView().loadSuccess(response.data);
                     }
 
                     @Override

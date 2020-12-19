@@ -10,15 +10,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lib_pub_color_bg_sub">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
             android:layout_marginLeft="@dimen/lib_pub_dimen_margin"
             android:layout_marginRight="@dimen/lib_pub_dimen_margin"
+            android:layout_marginBottom="@dimen/lib_pub_dimen_margin"
             android:orientation="vertical">
 
             <TextView
@@ -26,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lib_pub_dimen_margin"
-                android:textColor="@color/lib_pub_color_text_sub"
+                android:textColor="@color/lib_pub_color_dialog_text_content"
                 android:textSize="@dimen/lib_pub_dimen_text_sub" />
 
             <LinearLayout

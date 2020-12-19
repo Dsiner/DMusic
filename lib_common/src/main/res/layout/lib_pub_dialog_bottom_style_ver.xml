@@ -7,9 +7,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/lib_pub_corner_dialog"
         android:orientation="vertical">
 
@@ -20,10 +20,10 @@
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="6dp"
+        android:layout_height="@dimen/lib_pub_dimen_dialog_item_height"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/lib_pub_corner_dialog"
         android:gravity="center"
         android:text="@string/lib_pub_cancel"

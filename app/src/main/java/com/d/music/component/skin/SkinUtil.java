@@ -25,12 +25,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by D on 2017/6/17.
  */
 public class SkinUtil {
+    // 皮肤包总数目
+    public static final int SKIN_COUNT = 18;
     // dmusicskin_0、dmusicskin_1、dmusicskin_2...dmusicskin_n皮肤包如此命名
     private static final String SKIN_NAME = "dmusicskin_";
     // 皮肤包拼接后缀名
     private static final String SKIN_NAME_POSTFIX = ".skin";
-    // 皮肤包总数目
-    public static final int SKIN_COUNT = 18;
 
     public static void restoreDefaultTheme() {
         SkinManager.getInstance().restoreDefaultTheme();
@@ -41,7 +41,7 @@ public class SkinUtil {
      */
     public static void initSkin(final Context context) {
         SkinManager.getInstance().init(context.getApplicationContext());
-        final Preferences p = Preferences.getIns(context.getApplicationContext());
+        final Preferences p = Preferences.getInstance(context.getApplicationContext());
         if (p.getIsSkinLoaded()) {
             SkinManager.getInstance().load();
             return;
@@ -138,7 +138,7 @@ public class SkinUtil {
 
                 @Override
                 public void onSuccess() {
-                    Preferences.getIns(context).putSkinType(type);
+                    Preferences.getInstance(context).putSkinType(type);
                     if (callback != null) {
                         callback.onSuccess();
                     }
@@ -153,7 +153,7 @@ public class SkinUtil {
             });
         } else {
             SkinManager.getInstance().restoreDefaultTheme();
-            Preferences.getIns(context).putSkinType(type);
+            Preferences.getInstance(context).putSkinType(type);
             if (callback != null) {
                 callback.onSuccess();
             }

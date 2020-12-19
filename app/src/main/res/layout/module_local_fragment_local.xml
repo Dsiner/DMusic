@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.d.music.view.TitleLayout
+    <com.d.music.widget.TitleLayout
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lib_pub_dimen_title_height"
@@ -17,7 +17,7 @@
         app:lib_pub_tl_rightDrawable="@drawable/module_common_ic_title_more"
         skin:enable="true" />
 
-    <com.d.lib.common.view.tab.ScrollTab
+    <com.d.lib.common.widget.tab.ScrollTab
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"

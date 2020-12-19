@@ -6,7 +6,7 @@ import com.d.lib.common.event.bus.AbstractBus;
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.transfer.manager.operation.OpMV;
 import com.d.music.transfer.manager.operation.OpSong;
-import com.d.music.transfer.manager.operation.Operater;
+import com.d.music.transfer.manager.operation.TransferOperator;
 import com.d.music.transfer.manager.pipe.MVPipe;
 import com.d.music.transfer.manager.pipe.Pipe;
 import com.d.music.transfer.manager.pipe.SongPipe;
@@ -18,15 +18,7 @@ import java.util.List;
  * Created by D on 2018/10/9.
  */
 public class TransferManager extends AbstractBus<Pipe, TransferDataObservable> {
-    private Operater opSong, opMV;
-
-    private static class Singleton {
-        private final static TransferManager INSTANCE = new TransferManager();
-    }
-
-    public static TransferManager getIns() {
-        return Singleton.INSTANCE;
-    }
+    private TransferOperator mOpSong, mOpMV;
 
     private TransferManager() {
         TransferDataObservable observable = new TransferDataObservable() {
@@ -35,26 +27,30 @@ public class TransferManager extends AbstractBus<Pipe, TransferDataObservable> {
                 TransferManager.this.notifyDataSetChanged();
             }
         };
-        opSong = new OpSong(new SongPipe());
-        opMV = new OpMV(new MVPipe());
-        opSong.register(observable);
-        opMV.register(observable);
+        mOpSong = new OpSong(new SongPipe());
+        mOpMV = new OpMV(new MVPipe());
+        mOpSong.register(observable);
+        mOpMV.register(observable);
     }
 
-    public Operater optSong() {
-        return opSong;
+    public static TransferManager getInstance() {
+        return Singleton.INSTANCE;
     }
 
-    public Operater optMV() {
-        return opMV;
+    public TransferOperator optSong() {
+        return mOpSong;
+    }
+
+    public TransferOperator optMV() {
+        return mOpMV;
     }
 
     /**
      * Downloading count
      */
     public int getCount() {
-        return opSong.pipe().lists().get(0).size()
-                + opMV.pipe().lists().get(0).size();
+        return mOpSong.pipe().lists().get(0).size()
+                + mOpMV.pipe().lists().get(0).size();
     }
 
     @UiThread
@@ -65,5 +61,9 @@ public class TransferManager extends AbstractBus<Pipe, TransferDataObservable> {
                 l.notifyDataSetChanged(getCount());
             }
         }
+    }
+
+    private static class Singleton {
+        private static final TransferManager INSTANCE = new TransferManager();
     }
 }

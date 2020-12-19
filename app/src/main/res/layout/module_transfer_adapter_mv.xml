@@ -100,7 +100,7 @@
         android:src="@drawable/module_common_ic_more"
         android:visibility="gone" />
 
-    <com.d.music.view.CircleProgressBar
+    <com.d.music.widget.CircleProgressBar
         android:id="@+id/cpbar_bar"
         android:layout_width="26dp"
         android:layout_height="26dp"

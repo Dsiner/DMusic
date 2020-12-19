@@ -1,6 +1,6 @@
 package com.d.music.online.adapter;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.d.lib.common.component.glide.GlideCircleTransform;
-import com.d.lib.common.view.dialog.AlertDialogFactory;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
+import com.d.lib.common.widget.dialog.AlertDialogFactory;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
 import com.d.music.R;
 import com.d.music.online.model.MVCommentModel;
 import com.d.music.online.model.MVDetailModel;
@@ -30,28 +30,30 @@ import java.util.Locale;
  */
 public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
 
-    private GlideCircleTransform circleTransform;
-    private SimpleDateFormat dateFormat;
+    private GlideCircleTransform mCircleTransform;
+    private SimpleDateFormat mDateFormat;
 
     public MVDetailAdapter(Context context, List<MVDetailModel> datas, MultiItemTypeSupport<MVDetailModel> multiItemTypeSupport) {
         super(context, datas, multiItemTypeSupport);
-        circleTransform = new GlideCircleTransform(context);
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        mCircleTransform = new GlideCircleTransform();
+        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
     }
 
     @Override
     public void convert(final int position, final CommonHolder holder, final MVDetailModel item) {
-        switch (holder.mLayoutId) {
+        switch (holder.layoutId) {
             case R.layout.module_online_adapter_mv_detail_info:
                 if (item instanceof MVInfoModel) {
                     convertInfo(position, holder, (MVInfoModel) item);
                 }
                 break;
+
             case R.layout.module_online_adapter_mv_detail_similar:
                 if (item instanceof MVSimilarModel) {
                     convertSimilar(position, holder, (MVSimilarModel) item);
                 }
                 break;
+
             case R.layout.module_online_adapter_mv_detail_comment:
                 if (item instanceof MVCommentModel) {
                     convertComment(position, holder, (MVCommentModel) item);
@@ -71,7 +73,7 @@ public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
         holder.setText(R.id.tv_mv_info_comment_count, "" + item.commentCount);
         holder.setText(R.id.tv_mv_info_share_count, "" + item.shareCount);
 
-        holder.setViewOnClickListener(R.id.llyt_mv_info_sub_count, new View.OnClickListener() {
+        holder.setOnClickListener(R.id.llyt_mv_info_sub_count, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialogFactory.createFactory(mContext)
@@ -81,8 +83,8 @@ public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
                                 mContext.getResources().getString(R.string.lib_pub_cancel),
                                 new AlertDialogFactory.OnClickListener() {
                                     @Override
-                                    public void onClick(AlertDialog dlg, View v) {
-                                        TransferManager.getIns().optMV().add(MVInfoModel.convertToTransfer(item));
+                                    public void onClick(Dialog dlg, View v) {
+                                        TransferManager.getInstance().optMV().add(MVInfoModel.convertToTransfer(item));
                                     }
                                 }, null);
             }
@@ -101,11 +103,11 @@ public class MVDetailAdapter extends CommonAdapter<MVDetailModel> {
 
     private void convertComment(final int position, final CommonHolder holder, final MVCommentModel item) {
         holder.setText(R.id.tv_mv_comment_user, item.user.nickname);
-        holder.setText(R.id.tv_mv_comment_time, dateFormat.format(new Date(item.time)));
+        holder.setText(R.id.tv_mv_comment_time, mDateFormat.format(new Date(item.time)));
         holder.setText(R.id.tv_mv_comment_content, item.content);
         Glide.with(mContext)
                 .load(item.user.avatarUrl)
-                .apply(new RequestOptions().transform(circleTransform).dontAnimate())
+                .apply(new RequestOptions().transform(mCircleTransform).dontAnimate())
                 .into((ImageView) holder.getView(R.id.iv_mv_comment_cover));
     }
 }

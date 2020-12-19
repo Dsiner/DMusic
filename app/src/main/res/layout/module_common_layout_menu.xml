@@ -58,7 +58,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/module_setting_ic_menu_download" />
 
-            <com.d.lib.common.view.BadgeView
+            <com.d.lib.common.widget.BadgeView
                 android:id="@+id/bv_badge"
                 android:layout_width="9dp"
                 android:layout_height="9dp"

@@ -3,11 +3,11 @@ package com.d.music.local.presenter;
 import android.content.Context;
 
 import com.d.lib.common.component.mvp.MvpBasePresenter;
-import com.d.lib.common.view.DSLayout;
+import com.d.lib.common.widget.DSLayout;
 import com.d.lib.taskscheduler.TaskScheduler;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.MusicModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.local.fragment.AbstractLMFragment;
 import com.d.music.local.view.ISongView;
 
@@ -34,7 +34,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
     }
 
     public void getSong(final int type, final int tab, final String sortKey, final int orderType) {
-        if (type >= AppDB.CUSTOM_MUSIC_INDEX && type < AppDB.CUSTOM_MUSIC_INDEX + AppDB.CUSTOM_MUSIC_COUNT) {
+        if (type >= AppDatabase.CUSTOM_MUSIC_INDEX && type < AppDatabase.CUSTOM_MUSIC_INDEX + AppDatabase.CUSTOM_MUSIC_COUNT) {
             // 自定义歌曲
             getSong(type, orderType);
             return;
@@ -46,20 +46,20 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
                 List<MusicModel> list = null;
-                if (type == AppDB.LOCAL_ALL_MUSIC && tab > AbstractLMFragment.TYPE_SONG) {
+                if (type == AppDatabase.LOCAL_ALL_MUSIC && tab > AbstractLMFragment.TYPE_SONG) {
                     switch (tab) {
                         case AbstractLMFragment.TYPE_SINGER:
-                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllBySinger(sortKey);
+                            list = DBManager.getInstance(mContext).optMusic().queryLocalAllBySinger(sortKey);
                             break;
                         case AbstractLMFragment.TYPE_ALBUM:
-                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByAlbum(sortKey);
+                            list = DBManager.getInstance(mContext).optMusic().queryLocalAllByAlbum(sortKey);
                             break;
                         case AbstractLMFragment.TYPE_FOLDER:
-                            list = AppDBUtil.getIns(mContext).optMusic().queryLocalAllByFolder(sortKey);
+                            list = DBManager.getInstance(mContext).optMusic().queryLocalAllByFolder(sortKey);
                             break;
                     }
                 } else {
-                    list = AppDBUtil.getIns(mContext).optMusic().queryAll(type);
+                    list = DBManager.getInstance(mContext).optMusic().queryAll(type);
                 }
                 list = list != null ? list : new ArrayList<MusicModel>();
                 e.onNext(list);
@@ -78,7 +78,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(list);
+                        getView().loadSuccess(list);
                     }
 
                     @Override
@@ -106,8 +106,8 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<MusicModel>> e) throws Exception {
-                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, orderType);
-                List<MusicModel> list = AppDBUtil.getIns(mContext).optCustomList()
+                DBManager.getInstance(mContext).optCustomList().updateortType(type, orderType);
+                List<MusicModel> list = DBManager.getInstance(mContext).optCustomList()
                         .queryAllCustomMusic(type, orderType);
                 list = list != null ? list : new ArrayList<MusicModel>();
                 e.onNext(list);
@@ -126,7 +126,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(list);
+                        getView().loadSuccess(list);
                     }
 
                     @Override
@@ -151,10 +151,10 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                 for (MusicModel model : models) {
                     model.exIsSortChecked = false;
                 }
-                AppDBUtil.getIns(mContext).optMusic().deleteAll(type);
-                AppDBUtil.getIns(mContext).optMusic().insertOrReplaceInTx(type, models);
-                AppDBUtil.getIns(mContext).optCustomList().updateCount(type, models.size());
-                AppDBUtil.getIns(mContext).optCustomList().updateortType(type, AppDB.ORDER_TYPE_CUSTOM); // 按自定义排序
+                DBManager.getInstance(mContext).optMusic().deleteAll(type);
+                DBManager.getInstance(mContext).optMusic().insertOrReplaceInTx(type, models);
+                DBManager.getInstance(mContext).optCustomList().updateCount(type, models.size());
+                DBManager.getInstance(mContext).optCustomList().updateortType(type, AppDatabase.ORDER_TYPE_CUSTOM); // 按自定义排序
             }
         });
     }
@@ -191,7 +191,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
                         if (getView() == null) {
                             return;
                         }
-                        getView().setData(list);
+                        getView().loadSuccess(list);
                     }
 
                     @Override

@@ -13,23 +13,16 @@ import com.d.lib.common.data.preference.operation.OpSetting;
 public class Preferences extends AbstractPreference {
     private volatile static Preferences INSTANCE;
 
-    private OpSetting opSetting;
-    private OpOnline opOnline;
+    public final OpSetting opSetting;
+    public final OpOnline opOnline;
 
     private Preferences(Context context) {
-        super(context);
-        initOps();
-    }
-
-    /**
-     * Initialize operation handle
-     */
-    private void initOps() {
+        super(context, "Preferences");
         opSetting = new OpSetting(mSettings, mEditor);
         opOnline = new OpOnline(mSettings, mEditor);
     }
 
-    public static Preferences getIns(Context context) {
+    public static Preferences getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (Preferences.class) {
                 if (INSTANCE == null) {
@@ -39,17 +32,6 @@ public class Preferences extends AbstractPreference {
         }
         return INSTANCE;
     }
-
-    /****************************** - Setting - ******************************/
-    public OpSetting optSetting() {
-        return opSetting;
-    }
-
-    /****************************** - Online - ******************************/
-    public OpOnline optOnline() {
-        return opOnline;
-    }
-
 
     /****************************** - Operation - ******************************/
     public void clearUserData(String account) {

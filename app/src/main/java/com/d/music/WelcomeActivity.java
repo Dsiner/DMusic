@@ -1,6 +1,5 @@
 package com.d.music;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,31 +10,27 @@ import android.widget.ImageView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
+import com.d.lib.common.component.quickclick.QuickClick;
 import com.d.music.component.service.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * WelcomeActivity
  * Created by D on 2017/6/16.
  */
-public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements MvpView, View.OnClickListener {
-    @BindView(R.id.vp_page)
-    ViewPager page;
-    @BindView(R.id.iv_dot0)
-    ImageView ivDot0;
-    @BindView(R.id.iv_dot1)
-    ImageView ivDot1;
-    @BindView(R.id.iv_dot2)
-    ImageView ivDot2;
+public class WelcomeActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener {
+
+    ViewPager vp_page;
+    ImageView iv_dot0;
+    ImageView iv_dot1;
+    ImageView iv_dot2;
 
     @Override
     public void onClick(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
@@ -61,13 +56,22 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         return this;
     }
 
-    @SuppressLint("InflateParams")
+    @Override
+    protected void bindView() {
+        super.bindView();
+        vp_page = findViewById(R.id.vp_page);
+        iv_dot0 = findViewById(R.id.iv_dot0);
+        iv_dot1 = findViewById(R.id.iv_dot1);
+        iv_dot2 = findViewById(R.id.iv_dot2);
+    }
+
     @Override
     protected void init() {
         final LayoutInflater inflater = LayoutInflater.from(this);
         final View page0 = inflater.inflate(R.layout.module_common_welcome_page0, null);
         final View page1 = inflater.inflate(R.layout.module_common_welcome_page1, null);
         final View page2 = inflater.inflate(R.layout.module_common_welcome_page2, null);
+
         page2.findViewById(R.id.btn_start).setOnClickListener(this);
 
         final List<View> pages = new ArrayList<>();
@@ -76,7 +80,6 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
         pages.add(page2);
 
         PagerAdapter pagerAdapter = new PagerAdapter() {
-
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {
                 return arg0 == arg1;
@@ -98,8 +101,8 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
                 return pages.get(position);
             }
         };
-        page.setAdapter(pagerAdapter);
-        page.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        vp_page.setAdapter(pagerAdapter);
+        vp_page.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 invalidateDots(position);
@@ -113,17 +116,19 @@ public class WelcomeActivity extends BaseActivity<MvpBasePresenter> implements M
     private void invalidateDots(int position) {
         switch (position) {
             case 0:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
+                iv_dot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                iv_dot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
+
             case 1:
-                ivDot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
+                iv_dot0.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                iv_dot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                iv_dot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
+
             case 2:
-                ivDot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
-                ivDot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
+                iv_dot1.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel));
+                iv_dot2.setImageDrawable(getResources().getDrawable(R.drawable.module_common_dot_wel_cover));
                 break;
         }
     }

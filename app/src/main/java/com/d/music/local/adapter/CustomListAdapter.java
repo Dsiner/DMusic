@@ -5,21 +5,21 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.d.lib.common.component.repeatclick.OnClickFastListener;
+import com.d.lib.common.component.quickclick.OnAvailableClickListener;
+import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
+import com.d.lib.pulllayout.rv.adapter.CommonHolder;
+import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
 import com.d.lib.slidelayout.SlideLayout;
 import com.d.lib.slidelayout.SlideManager;
 import com.d.lib.taskscheduler.TaskScheduler;
-import com.d.lib.xrv.adapter.CommonAdapter;
-import com.d.lib.xrv.adapter.CommonHolder;
-import com.d.lib.xrv.adapter.MultiItemTypeSupport;
 import com.d.music.MainActivity;
 import com.d.music.R;
+import com.d.music.data.database.greendao.DBManager;
 import com.d.music.data.database.greendao.bean.CustomListModel;
-import com.d.music.data.database.greendao.db.AppDB;
-import com.d.music.data.database.greendao.util.AppDBUtil;
+import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.RefreshEvent;
 import com.d.music.local.fragment.SongFragment;
-import com.d.music.view.dialog.NewListDialog;
+import com.d.music.widget.dialog.NewListDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,7 +41,7 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
 
     @Override
     public void convert(final int position, CommonHolder holder, final CustomListModel item) {
-        if (holder.mLayoutId == R.layout.module_local_adapter_custom_list) {
+        if (holder.layoutId == R.layout.module_local_adapter_custom_list) {
             holder.setText(R.id.tv_list_name, item.name);
             holder.setText(R.id.tv_song_count, String.format(mContext.getResources().getString(
                     R.string.module_common_song_unit_format),
@@ -60,16 +60,16 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                     return manager.closeAll(layout);
                 }
             });
-            holder.setViewOnClickListener(R.id.tv_stick, new OnClickFastListener() {
+            holder.setOnClickListener(R.id.tv_stick, new OnAvailableClickListener() {
                 @Override
-                public void onFastClick(View v) {
+                public void onAvailableClick(View v) {
                     slSlide.setOpen(false, false);
                     stick(item);
                 }
             });
-            holder.setViewOnClickListener(R.id.tv_delete, new OnClickFastListener() {
+            holder.setOnClickListener(R.id.tv_delete, new OnAvailableClickListener() {
                 @Override
-                public void onFastClick(View v) {
+                public void onAvailableClick(View v) {
                     slSlide.close();
                     mDatas.remove(position);
                     notifyItemRemoved(position);
@@ -77,9 +77,9 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                     delete(item);
                 }
             });
-            holder.setViewOnClickListener(R.id.llyt_item, new OnClickFastListener() {
+            holder.setOnClickListener(R.id.llyt_item, new OnAvailableClickListener() {
                 @Override
-                public void onFastClick(View v) {
+                public void onAvailableClick(View v) {
                     if (slSlide.isOpen()) {
                         slSlide.close();
                         return;
@@ -87,7 +87,7 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                     MainActivity.getManger().replace(SongFragment.getInstance(item.pointer, item.name));
                 }
             });
-        } else if (holder.mLayoutId == R.layout.module_local_adapter_custom_list_add) {
+        } else if (holder.layoutId == R.layout.module_local_adapter_custom_list_add) {
             holder.itemView.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
@@ -95,9 +95,9 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                     return manager.closeAll(null);
                 }
             });
-            holder.itemView.setOnClickListener(new OnClickFastListener() {
+            holder.itemView.setOnClickListener(new OnAvailableClickListener() {
                 @Override
-                public void onFastClick(View v) {
+                public void onAvailableClick(View v) {
                     new NewListDialog(mContext).show();
                 }
             });
@@ -108,15 +108,15 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
         TaskScheduler.executeTask(new Runnable() {
             @Override
             public void run() {
-                AppDBUtil.getIns(mContext).optMusic().delete(AppDB.CUSTOM_LIST, item);
-                AppDBUtil.getIns(mContext).optMusic().deleteAll(item.pointer);
+                DBManager.getInstance(mContext).optMusic().delete(AppDatabase.CUSTOM_LIST, item);
+                DBManager.getInstance(mContext).optMusic().deleteAll(item.pointer);
             }
         });
     }
 
     private void stick(final CustomListModel item) {
-        item.seq = AppDBUtil.getIns(mContext).optCustomList().queryMinSeq() - 1;
-        AppDBUtil.getIns(mContext).optCustomList().insertOrReplace(item);
+        item.seq = DBManager.getInstance(mContext).optCustomList().queryMinSeq() - 1;
+        DBManager.getInstance(mContext).optCustomList().insertOrReplace(item);
         EventBus.getDefault().post(event);
     }
 

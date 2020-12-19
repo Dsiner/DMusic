@@ -7,60 +7,58 @@ import android.widget.TextView;
 import com.d.lib.common.component.mvp.MvpBasePresenter;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.mvp.app.BaseActivity;
-import com.d.lib.common.component.repeatclick.ClickFast;
-import com.d.lib.common.view.RowLayout;
-import com.d.lib.common.view.TitleLayout;
+import com.d.lib.common.component.quickclick.QuickClick;
+import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
+import com.d.lib.common.util.ViewHelper;
+import com.d.lib.common.widget.RowLayout;
+import com.d.lib.common.widget.TitleLayout;
 import com.d.music.R;
 import com.d.music.data.preferences.Preferences;
-import com.d.music.utils.StatusBarCompat;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.feng.skin.manager.loader.SkinManager;
 
 /**
  * SettingActivity
  * Created by D on 2017/6/13.
  */
-public class SettingActivity extends BaseActivity<MvpBasePresenter> implements MvpView, RowLayout.OnToggleListener {
-    @BindView(R.id.tl_title)
-    TitleLayout tlTitle;
-    @BindView(R.id.rl_mode_auto_play)
-    RowLayout rlModeAutoPlay;
-    @BindView(R.id.rl_mode_sub)
-    RowLayout rlModeSub;
-    @BindView(R.id.rl_mode_add)
-    RowLayout rlModeAdd;
-    @BindView(R.id.rl_mode_rotate)
-    RowLayout rlModeRotate;
-    @BindView(R.id.rl_mode_shake)
-    RowLayout rlModeShake;
-    @BindView(R.id.rl_mode_menu)
-    RowLayout rlModeMenu;
+public class SettingActivity extends BaseActivity<MvpBasePresenter>
+        implements MvpView, View.OnClickListener, RowLayout.OnToggleListener {
+    TitleLayout tl_title;
+    RowLayout rl_mode_auto_play;
+    RowLayout rl_mode_sub;
+    RowLayout rl_mode_add;
+    RowLayout rl_mode_rotate;
+    RowLayout rl_mode_shake;
+    RowLayout rl_mode_menu;
 
-    private Preferences p;
+    private Preferences mPreferences;
 
-    @OnClick({R.id.iv_title_left, R.id.rl_koan, R.id.rl_skin, R.id.rl_sleep, R.id.rl_player_mode, R.id.rl_about})
-    public void onClickListener(View v) {
-        if (ClickFast.isFastDoubleClick()) {
+    @Override
+    public void onClick(View v) {
+        if (QuickClick.isQuickClick()) {
             return;
         }
         switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
+
             case R.id.rl_koan:
                 startActivity(new Intent(SettingActivity.this, KoanActivity.class));
                 break;
+
             case R.id.rl_skin:
                 startActivity(new Intent(SettingActivity.this, SkinActivity.class));
                 break;
+
             case R.id.rl_sleep:
                 startActivity(new Intent(SettingActivity.this, SleepActivity.class));
                 break;
+
             case R.id.rl_player_mode:
                 startActivity(new Intent(SettingActivity.this, ModeActivity.class));
                 break;
+
             case R.id.rl_about:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));
                 break;
@@ -83,58 +81,76 @@ public class SettingActivity extends BaseActivity<MvpBasePresenter> implements M
     }
 
     @Override
-    protected void init() {
-        StatusBarCompat.compat(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-        initTitle();
-        p = Preferences.getIns(SettingActivity.this);
-        rlModeAutoPlay.setOpen(p.getIsAutoPlay());
-        rlModeSub.setOpen(p.getIsSubPull());
-        rlModeAdd.setOpen(p.getIsShowAdd());
-        rlModeRotate.setOpen(p.getIsAlbumRotate());
-        rlModeShake.setOpen(p.getIsShake());
-        rlModeMenu.setOpen(p.getIsShowMenuIcon());
+    protected void bindView() {
+        super.bindView();
+        tl_title = findViewById(R.id.tl_title);
+        rl_mode_auto_play = findViewById(R.id.rl_mode_auto_play);
+        rl_mode_sub = findViewById(R.id.rl_mode_sub);
+        rl_mode_add = findViewById(R.id.rl_mode_add);
+        rl_mode_rotate = findViewById(R.id.rl_mode_rotate);
+        rl_mode_shake = findViewById(R.id.rl_mode_shake);
+        rl_mode_menu = findViewById(R.id.rl_mode_menu);
 
-        rlModeAutoPlay.setOnToggleListener(this);
-        rlModeSub.setOnToggleListener(this);
-        rlModeAdd.setOnToggleListener(this);
-        rlModeRotate.setOnToggleListener(this);
-        rlModeShake.setOnToggleListener(this);
-        rlModeMenu.setOnToggleListener(this);
+        ViewHelper.setOnClickListener(this, this,
+                R.id.iv_title_left,
+                R.id.rl_koan, R.id.rl_skin,
+                R.id.rl_sleep, R.id.rl_player_mode,
+                R.id.rl_about);
+    }
+
+    @Override
+    protected void init() {
+        StatusBarCompat.setStatusBarColor(SettingActivity.this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+        initTitle();
+        mPreferences = Preferences.getInstance(SettingActivity.this);
+        rl_mode_auto_play.setOpen(mPreferences.getIsAutoPlay());
+        rl_mode_sub.setOpen(mPreferences.getIsSubPull());
+        rl_mode_add.setOpen(mPreferences.getIsShowAdd());
+        rl_mode_rotate.setOpen(mPreferences.getIsAlbumRotate());
+        rl_mode_shake.setOpen(mPreferences.getIsShake());
+        rl_mode_menu.setOpen(mPreferences.getIsShowMenuIcon());
+
+        rl_mode_auto_play.setOnToggleListener(this);
+        rl_mode_sub.setOnToggleListener(this);
+        rl_mode_add.setOnToggleListener(this);
+        rl_mode_rotate.setOnToggleListener(this);
+        rl_mode_shake.setOnToggleListener(this);
+        rl_mode_menu.setOnToggleListener(this);
     }
 
     private void initTitle() {
-        TextView tvTitle = (TextView) tlTitle.findViewById(R.id.tv_title_title);
+        TextView tvTitle = (TextView) tl_title.findViewById(R.id.tv_title_title);
         tvTitle.setText(getResources().getString(R.string.module_common_setting));
-        tlTitle.setVisibility(R.id.iv_title_right, View.GONE);
+        tl_title.setVisibility(R.id.iv_title_right, View.GONE);
     }
 
     @Override
     public void onToggle(View v, boolean isOpen) {
         switch (v.getId()) {
             case R.id.rl_mode_auto_play:
-                p.putIsAutoPlay(isOpen);
+                mPreferences.putIsAutoPlay(isOpen);
                 break;
             case R.id.rl_mode_sub:
-                p.putIsSubPull(isOpen);
+                mPreferences.putIsSubPull(isOpen);
                 break;
             case R.id.rl_mode_add:
-                p.putIsShowAdd(isOpen);
+                mPreferences.putIsShowAdd(isOpen);
                 break;
             case R.id.rl_mode_rotate:
-                p.putIsAlbumRotate(isOpen);
+                mPreferences.putIsAlbumRotate(isOpen);
                 break;
             case R.id.rl_mode_shake:
-                p.putIsShake(isOpen);
+                mPreferences.putIsShake(isOpen);
                 break;
             case R.id.rl_mode_menu:
-                p.putIsShowMenuIcon(isOpen);
+                mPreferences.putIsShowMenuIcon(isOpen);
                 break;
         }
     }
 
-    @Override
-    public void onThemeUpdate() {
-        super.onThemeUpdate();
-        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
-    }
+//    @Override
+//    public void onThemeUpdate() {
+//        super.onThemeUpdate();
+//        StatusBarCompat.compat(this, SkinManager.getInstance().getColor(R.color.lib_pub_color_main));
+//    }
 }
