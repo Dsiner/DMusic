@@ -17,7 +17,7 @@ public class Constants {
     public static class Path {
         public static final String NAME = "DMusic";
 
-        public static final String glide_cache = "/image_cache";
+        public static final String GLIDE_CACHE = "/image_cache";
 
         public static final String PATH = Environment.getExternalStorageDirectory().getPath()
                 + "/" + NAME;

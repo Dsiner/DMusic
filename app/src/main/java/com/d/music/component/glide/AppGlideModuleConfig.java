@@ -16,6 +16,6 @@ public class AppGlideModuleConfig extends AbstractGlideModule {
     @NonNull
     @Override
     protected String getCachePath() {
-        return Constants.Path.glide_cache;
+        return Constants.Path.GLIDE_CACHE;
     }
 }
