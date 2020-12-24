@@ -6,19 +6,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.d.lib.commenplayer.ui.TouchLayout
+    <com.d.lib.commenplayer.widget.TouchLayout
         android:id="@+id/tl_touch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.d.lib.commenplayer.ui.ControlLayout
+    <com.d.lib.commenplayer.widget.ControlLayout
         android:id="@+id/cl_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <FrameLayout
-        android:id="@+id/flyt_thumbnail"
+        android:id="@+id/fl_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">

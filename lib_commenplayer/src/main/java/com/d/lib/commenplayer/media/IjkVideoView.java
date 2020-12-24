@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2015 Bilibili
- * Copyright (C) 2015 Zhang Rui <bbcallen@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.d.lib.commenplayer.media;
 
 import android.app.Activity;
@@ -39,8 +22,10 @@ import java.util.Map;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl, IPlayerListener {
-    private static final int[] s_allAspectRatio = {
+public class IjkVideoView extends FrameLayout
+        implements MediaController.MediaPlayerControl, IPlayerListener {
+
+    private static final int[] ALL_ASPECT_RATIO = {
             IRenderView.AR_ASPECT_FIT_PARENT,
             IRenderView.AR_ASPECT_FILL_PARENT,
             IRenderView.AR_ASPECT_WRAP_CONTENT,
@@ -49,30 +34,75 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             IRenderView.AR_4_3_FIT_PARENT};
 
     private Activity mActivity;
-    private Uri uri;
-    private Map<String, String> headers;
-    private IMediaPlayer mediaPlayer = null;
+    private Uri mUri;
+    private Map<String, String> mHeaders;
+    private IMediaPlayer mMediaPlayer = null;
 
-    private IRenderView renderView;
-    private int videoWidth = 0;
-    private int videoHeight = 0;
-    private int videoSarNum;
-    private int videoSarDen;
-    private int surfaceWidth;
-    private int surfaceHeight;
-    private int videoRotationDegree;
+    private IRenderView mRenderView;
+    private int mVideoWidth = 0;
+    private int mVideoHeight = 0;
+    private int mVideoSarNum;
+    private int mVideoSarDen;
+    private int mSurfaceWidth;
+    private int mSurfaceHeight;
+    private int mVideoRotationDegree;
 
     //-------------------------
     // Extend: Aspect Ratio
     //-------------------------
-    private int currentAspectRatioIndex = 0;
-    private int currentAspectRatio = s_allAspectRatio[0];
+    private int mCurrentAspectRatioIndex = 0;
+    private int mCurrentAspectRatio = ALL_ASPECT_RATIO[0];
+    private boolean mIsLive = false;// is Live mode
+    private boolean mIsPause = false;
+    private int mPausePosition;
+    private IPlayerListener mPlayerListener;
+    private boolean mIsPlayerSupport;
 
-    private boolean isLive = false;// is Live mode
-    private boolean isPause = false;
-    private int pausePos;
-    private IPlayerListener listener;
-    private boolean playerSupport;
+    private IRenderView.IRenderCallback mSHCallback = new IRenderView.IRenderCallback() {
+        @Override
+        public void onSurfaceChanged(@NonNull IRenderView.ISurfaceHolder holder, int format, int w, int h) {
+            if (holder.getRenderView() != mRenderView) {
+                ULog.e("onSurfaceChanged: unmatched render callback");
+                return;
+            }
+            mSurfaceWidth = w;
+            mSurfaceHeight = h;
+            boolean isValidState = (getManager().mTargetState == MediaManager.STATE_PLAYING);
+            boolean hasValidSize = !mRenderView.shouldWaitForResize() || (mVideoWidth == w && mVideoHeight == h);
+            if (mMediaPlayer != null && isValidState && hasValidSize) {
+                if (getManager().mSeekWhenPrepared != 0) {
+                    seekTo(getManager().mSeekWhenPrepared);
+                }
+                start();
+            }
+        }
+
+        @Override
+        public void onSurfaceCreated(@NonNull IRenderView.ISurfaceHolder holder, int width, int height) {
+            if (holder.getRenderView() != mRenderView) {
+                ULog.e("onSurfaceCreated: unmatched render callback");
+                return;
+            }
+            if (mMediaPlayer != null) {
+                bindSurfaceHolder(mMediaPlayer, holder);
+            } else {
+                prepare();
+            }
+        }
+
+        @Override
+        public void onSurfaceDestroyed(@NonNull IRenderView.ISurfaceHolder holder) {
+            if (holder.getRenderView() != mRenderView) {
+                ULog.e("onSurfaceDestroyed: unmatched render callback");
+                return;
+            }
+            // after we return from this we can't use the surface any more
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setDisplay(null);
+            }
+        }
+    };
+
 
     public IjkVideoView(Context context) {
         super(context);
@@ -95,7 +125,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         try {
             IjkMediaPlayer.loadLibrariesOnce(null);
             IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-            playerSupport = true;
+            mIsPlayerSupport = true;
         } catch (Throwable e) {
             ULog.e("GiraffePlayer loadLibraries error" + e);
         }
@@ -121,34 +151,34 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     }
 
     public IRenderView getRenderView() {
-        return renderView;
+        return mRenderView;
     }
 
     private void addRenderView() {
         IRenderView renderView = Factory.initRenders(mActivity);
-        if (this.renderView != null) {
-            if (mediaPlayer != null) {
-                mediaPlayer.setDisplay(null);
+        if (this.mRenderView != null) {
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setDisplay(null);
             }
             removeAllViews();
-            this.renderView.removeRenderCallback(mSHCallback);
-            this.renderView = null;
+            this.mRenderView.removeRenderCallback(mSHCallback);
+            this.mRenderView = null;
         }
         if (renderView == null) {
             return;
         }
 
-        this.renderView = renderView;
-        if (videoWidth > 0 && videoHeight > 0) {
-            this.renderView.setVideoSize(videoWidth, videoHeight);
+        this.mRenderView = renderView;
+        if (mVideoWidth > 0 && mVideoHeight > 0) {
+            this.mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
         }
-        if (videoSarNum > 0 && videoSarDen > 0) {
-            this.renderView.setVideoSampleAspectRatio(videoSarNum, videoSarDen);
+        if (mVideoSarNum > 0 && mVideoSarDen > 0) {
+            this.mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
         }
-        this.renderView.setAspectRatio(currentAspectRatio);
-        this.renderView.setVideoRotation(videoRotationDegree);
-        this.renderView.addRenderCallback(mSHCallback);
-        View view = this.renderView.getView();
+        this.mRenderView.setAspectRatio(mCurrentAspectRatio);
+        this.mRenderView.setVideoRotation(mVideoRotationDegree);
+        this.mRenderView.addRenderCallback(mSHCallback);
+        View view = this.mRenderView.getView();
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER);
         view.setLayoutParams(lp);
         addView(view);
@@ -165,17 +195,17 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
      *                to disallow or allow cross domain redirection.
      */
     private void setVideoURI(Uri uri, Map<String, String> headers) {
-        this.uri = uri;
-        this.headers = headers;
+        this.mUri = uri;
+        this.mHeaders = headers;
         prepare();
     }
 
     private void prepare() {
-        if (uri == null) {
+        if (mUri == null) {
             // not ready for playback just yet, will try again later
             return;
         }
-        mediaPlayer = getManager().prepare(mActivity.getApplicationContext(), uri, headers, false);
+        mMediaPlayer = getManager().prepare(mActivity.getApplicationContext(), mUri, mHeaders, false);
         getManager().setListener(this);
         addRenderView();
     }
@@ -191,57 +221,12 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         holder.bindToMediaPlayer(mp);
     }
 
-    IRenderView.IRenderCallback mSHCallback = new IRenderView.IRenderCallback() {
-        @Override
-        public void onSurfaceChanged(@NonNull IRenderView.ISurfaceHolder holder, int format, int w, int h) {
-            if (holder.getRenderView() != renderView) {
-                ULog.e("onSurfaceChanged: unmatched render callback");
-                return;
-            }
-            surfaceWidth = w;
-            surfaceHeight = h;
-            boolean isValidState = (getManager().targetState == MediaManager.STATE_PLAYING);
-            boolean hasValidSize = !renderView.shouldWaitForResize() || (videoWidth == w && videoHeight == h);
-            if (mediaPlayer != null && isValidState && hasValidSize) {
-                if (getManager().seekWhenPrepared != 0) {
-                    seekTo(getManager().seekWhenPrepared);
-                }
-                start();
-            }
-        }
-
-        @Override
-        public void onSurfaceCreated(@NonNull IRenderView.ISurfaceHolder holder, int width, int height) {
-            if (holder.getRenderView() != renderView) {
-                ULog.e("onSurfaceCreated: unmatched render callback");
-                return;
-            }
-            if (mediaPlayer != null) {
-                bindSurfaceHolder(mediaPlayer, holder);
-            } else {
-                prepare();
-            }
-        }
-
-        @Override
-        public void onSurfaceDestroyed(@NonNull IRenderView.ISurfaceHolder holder) {
-            if (holder.getRenderView() != renderView) {
-                ULog.e("onSurfaceDestroyed: unmatched render callback");
-                return;
-            }
-            // after we return from this we can't use the surface any more
-            if (mediaPlayer != null) {
-                mediaPlayer.setDisplay(null);
-            }
-        }
-    };
-
     /**
      * release the media player in any state
      */
     public void release(boolean clearTargetState) {
         getManager().release(mActivity.getApplicationContext(), clearTargetState);
-        mediaPlayer = null;
+        mMediaPlayer = null;
     }
 
     @Override
@@ -304,8 +289,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mActivity == null || mActivity.isFinishing()) {
             return;
         }
-        if (listener != null) {
-            listener.onLoading();
+        if (mPlayerListener != null) {
+            mPlayerListener.onLoading();
         }
     }
 
@@ -314,8 +299,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mActivity == null || mActivity.isFinishing()) {
             return;
         }
-        if (listener != null) {
-            listener.onCompletion(mp);
+        if (mPlayerListener != null) {
+            mPlayerListener.onCompletion(mp);
         }
     }
 
@@ -325,17 +310,17 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             return;
         }
         setArgs(mp);
-        if (videoWidth != 0 && videoHeight != 0) {
-            if (renderView != null) {
-                renderView.setVideoSize(videoWidth, videoHeight);
-                renderView.setVideoSampleAspectRatio(videoSarNum, videoSarDen);
-                if (!renderView.shouldWaitForResize() || surfaceWidth == videoWidth && surfaceHeight == videoHeight) {
+        if (mVideoWidth != 0 && mVideoHeight != 0) {
+            if (mRenderView != null) {
+                mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
+                mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
+                if (!mRenderView.shouldWaitForResize() || mSurfaceWidth == mVideoWidth && mSurfaceHeight == mVideoHeight) {
                     // We didn't actually change the size (it was already at the size
                     // we need), so we won't get a "surface changed" callback, so
                     // start the video here instead of in the callback.
-                    if (getManager().targetState == MediaManager.STATE_PLAYING) {
+                    if (getManager().mTargetState == MediaManager.STATE_PLAYING) {
                         start();
-                    } else if (!isPlaying() && (getManager().seekWhenPrepared != 0
+                    } else if (!isPlaying() && (getManager().mSeekWhenPrepared != 0
                             || getCurrentPosition() > 0)) {
                         // Show the media controls when we're paused into a video and make 'em stick.
                     }
@@ -344,13 +329,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         } else {
             // We don't know the video size yet, but should start anyway.
             // The video size might be reported to us later.
-            if (getManager().targetState == MediaManager.STATE_PLAYING) {
+            if (getManager().mTargetState == MediaManager.STATE_PLAYING) {
                 start();
             }
         }
 
-        if (listener != null) {
-            listener.onPrepared(mp);
+        if (mPlayerListener != null) {
+            mPlayerListener.onPrepared(mp);
         }
     }
 
@@ -359,7 +344,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mActivity == null || mActivity.isFinishing()) {
             return false;
         }
-        return listener != null && listener.onError(mp, what, extra);
+        return mPlayerListener != null && mPlayerListener.onError(mp, what, extra);
     }
 
     @Override
@@ -370,15 +355,15 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
         switch (what) {
             case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
-                videoRotationDegree = extra;
+                mVideoRotationDegree = extra;
                 ULog.d("MEDIA_INFO_VIDEO_ROTATION_CHANGED: " + extra);
-                if (renderView != null) {
-                    renderView.setVideoRotation(extra);
+                if (mRenderView != null) {
+                    mRenderView.setVideoRotation(extra);
                 }
                 break;
             // case IMediaPlayer.MEDIA_INFO_...
         }
-        return listener == null || listener.onInfo(mp, what, extra);
+        return mPlayerListener == null || mPlayerListener.onInfo(mp, what, extra);
     }
 
     @Override
@@ -387,27 +372,27 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             return;
         }
         setArgs(mp);
-        if (videoWidth != 0 && videoHeight != 0) {
-            if (renderView != null) {
-                renderView.setVideoSize(videoWidth, videoHeight);
-                renderView.setVideoSampleAspectRatio(videoSarNum, videoSarDen);
+        if (mVideoWidth != 0 && mVideoHeight != 0) {
+            if (mRenderView != null) {
+                mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
+                mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
             }
             requestLayout();
         }
-        if (listener != null) {
-            listener.onVideoSizeChanged(mp, width, height, sarNum, sarDen);
+        if (mPlayerListener != null) {
+            mPlayerListener.onVideoSizeChanged(mp, width, height, sarNum, sarDen);
         }
     }
 
     private void setArgs(IMediaPlayer mp) {
-        videoWidth = mp.getVideoWidth();
-        videoHeight = mp.getVideoHeight();
-        videoSarNum = mp.getVideoSarNum();
-        videoSarDen = mp.getVideoSarDen();
+        mVideoWidth = mp.getVideoWidth();
+        mVideoHeight = mp.getVideoHeight();
+        mVideoSarNum = mp.getVideoSarNum();
+        mVideoSarDen = mp.getVideoSarDen();
     }
 
     public void setLive(boolean live) {
-        isLive = live;
+        mIsLive = live;
     }
 
     /**
@@ -436,21 +421,21 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     }
 
     public void onResume() {
-        if (isPause) {
-            isPause = false;
+        if (mIsPause) {
+            mIsPause = false;
             prepare();
-            seekTo(isLive ? 0 : pausePos);
+            seekTo(mIsLive ? 0 : mPausePosition);
             start();
             onLoading();
         }
     }
 
     public void onPause() {
-        isPause = true;
-        if (isLive) {
+        mIsPause = true;
+        if (mIsLive) {
             release(false);
         } else {
-            pausePos = getCurrentPosition();
+            mPausePosition = getCurrentPosition();
             getManager().pause();
         }
     }
@@ -460,27 +445,27 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     }
 
     public void setScaleType(int scaleType) {
-        if (renderView != null) {
-            for (int index : s_allAspectRatio) {
+        if (mRenderView != null) {
+            for (int index : ALL_ASPECT_RATIO) {
                 if (index == scaleType) {
-                    currentAspectRatioIndex = index;
+                    mCurrentAspectRatioIndex = index;
                 }
             }
-            renderView.setAspectRatio(scaleType);
+            mRenderView.setAspectRatio(scaleType);
         }
     }
 
     public int toggleAspectRatio() {
-        currentAspectRatioIndex++;
-        currentAspectRatioIndex %= s_allAspectRatio.length;
-        currentAspectRatio = s_allAspectRatio[currentAspectRatioIndex];
-        if (renderView != null) {
-            renderView.setAspectRatio(currentAspectRatio);
+        mCurrentAspectRatioIndex++;
+        mCurrentAspectRatioIndex %= ALL_ASPECT_RATIO.length;
+        mCurrentAspectRatio = ALL_ASPECT_RATIO[mCurrentAspectRatioIndex];
+        if (mRenderView != null) {
+            mRenderView.setAspectRatio(mCurrentAspectRatio);
         }
-        return currentAspectRatio;
+        return mCurrentAspectRatio;
     }
 
     public void setOnPlayerListener(IPlayerListener iPlayerListener) {
-        listener = iPlayerListener;
+        mPlayerListener = iPlayerListener;
     }
 }

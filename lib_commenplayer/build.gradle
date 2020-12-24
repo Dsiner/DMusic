@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 27
 
     resourcePrefix 'lib_player_'
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 11
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         consumerProguardFiles 'consumer-proguard-rules.pro'
@@ -16,10 +16,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -32,16 +28,22 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation rootProject.ext.dependencies.support_annotations
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    compileOnly 'com.android.support:support-annotations:27.1.1'
 
     // Required, enough for most devices.
-    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    api 'tv.danmaku.ijk.media:ijkplayer-java:0.7.6'
+    api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.7.6'
+
+    // Other ABIs: optional
+    api 'tv.danmaku.ijk.media:ijkplayer-armv5:0.7.6'
+    api 'tv.danmaku.ijk.media:ijkplayer-x86:0.7.6'
 
     // ExoPlayer as IMediaPlayer: optional experimental
-    api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
+    api 'tv.danmaku.ijk.media:ijkplayer-exo:0.7.6'
 }

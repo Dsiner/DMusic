@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2015 Bilibili
- * Copyright (C) 2015 Zhang Rui <bbcallen@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.d.lib.commenplayer.media;
 
 import android.annotation.TargetApi;
@@ -45,6 +28,7 @@ import tv.danmaku.ijk.media.player.ISurfaceTextureHost;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class TextureRenderView extends TextureView implements IRenderView {
     private MeasureHelper mMeasureHelper;
+    private SurfaceCallback mSurfaceCallback;
 
     public TextureRenderView(Context context) {
         super(context);
@@ -121,19 +105,49 @@ public class TextureRenderView extends TextureView implements IRenderView {
         requestLayout();
     }
 
+    //--------------------
+    // TextureViewHolder
+    //--------------------
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mMeasureHelper.doMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(mMeasureHelper.getMeasuredWidth(), mMeasureHelper.getMeasuredHeight());
     }
 
-    //--------------------
-    // TextureViewHolder
-    //--------------------
-
     public IRenderView.ISurfaceHolder getSurfaceHolder() {
         return new InternalSurfaceHolder(this, mSurfaceCallback.mSurfaceTexture, mSurfaceCallback);
     }
+
+    //-------------------------
+    // SurfaceHolder.Callback
+    //-------------------------
+
+    @Override
+    public void addRenderCallback(IRenderCallback callback) {
+        mSurfaceCallback.addRenderCallback(callback);
+    }
+
+    @Override
+    public void removeRenderCallback(IRenderCallback callback) {
+        mSurfaceCallback.removeRenderCallback(callback);
+    }
+
+    @Override
+    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
+        super.onInitializeAccessibilityEvent(event);
+        event.setClassName(TextureRenderView.class.getName());
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(TextureRenderView.class.getName());
+    }
+
+    //--------------------
+    // Accessibility
+    //--------------------
 
     private static final class InternalSurfaceHolder implements IRenderView.ISurfaceHolder {
         private TextureRenderView mTextureView;
@@ -196,22 +210,6 @@ public class TextureRenderView extends TextureView implements IRenderView {
             return new Surface(mSurfaceTexture);
         }
     }
-
-    //-------------------------
-    // SurfaceHolder.Callback
-    //-------------------------
-
-    @Override
-    public void addRenderCallback(IRenderCallback callback) {
-        mSurfaceCallback.addRenderCallback(callback);
-    }
-
-    @Override
-    public void removeRenderCallback(IRenderCallback callback) {
-        mSurfaceCallback.removeRenderCallback(callback);
-    }
-
-    private SurfaceCallback mSurfaceCallback;
 
     private static final class SurfaceCallback implements SurfaceTextureListener, ISurfaceTextureHost {
         private SurfaceTexture mSurfaceTexture;
@@ -351,21 +349,5 @@ public class TextureRenderView extends TextureView implements IRenderView {
             ULog.d("didDetachFromWindow()");
             mDidDetachFromWindow = true;
         }
-    }
-
-    //--------------------
-    // Accessibility
-    //--------------------
-
-    @Override
-    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
-        super.onInitializeAccessibilityEvent(event);
-        event.setClassName(TextureRenderView.class.getName());
-    }
-
-    @Override
-    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-        super.onInitializeAccessibilityNodeInfo(info);
-        info.setClassName(TextureRenderView.class.getName());
     }
 }

@@ -10,7 +10,6 @@ import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;
 import com.d.lib.slidelayout.SlideLayout;
-import com.d.lib.slidelayout.SlideManager;
 import com.d.lib.taskscheduler.TaskScheduler;
 import com.d.music.MainActivity;
 import com.d.music.R;
@@ -19,6 +18,7 @@ import com.d.music.data.database.greendao.bean.CustomListModel;
 import com.d.music.data.database.greendao.db.AppDatabase;
 import com.d.music.event.eventbus.RefreshEvent;
 import com.d.music.local.fragment.SongFragment;
+import com.d.music.util.SlideHelper;
 import com.d.music.widget.dialog.NewListDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,13 +30,13 @@ import java.util.List;
  * Created by D on 2017/5/6.
  */
 public class CustomListAdapter extends CommonAdapter<CustomListModel> {
-    private SlideManager manager;
-    private RefreshEvent event;
+    private SlideHelper mSlideHelper;
+    private RefreshEvent mRefreshEvent;
 
     public CustomListAdapter(Context context, List<CustomListModel> datas, MultiItemTypeSupport<CustomListModel> multiItemTypeSupport) {
         super(context, datas, multiItemTypeSupport);
-        manager = new SlideManager();
-        event = new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST);
+        mSlideHelper = new SlideHelper();
+        mRefreshEvent = new RefreshEvent(RefreshEvent.TYPE_INVALID, RefreshEvent.SYNC_CUSTOM_LIST);
     }
 
     @Override
@@ -50,14 +50,15 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
             slSlide.setOpen(item.exIsOpen, false);
             slSlide.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
                 @Override
-                public void onChange(SlideLayout layout, boolean isOpen) {
-                    item.exIsOpen = isOpen;
-                    manager.onChange(layout, isOpen);
+                public boolean onInterceptTouchEvent(SlideLayout layout) {
+                    mSlideHelper.closeAll(layout);
+                    return false;
                 }
 
                 @Override
-                public boolean closeAll(SlideLayout layout) {
-                    return manager.closeAll(layout);
+                public void onStateChanged(SlideLayout layout, boolean isOpen) {
+                    item.exIsOpen = isOpen;
+                    mSlideHelper.onStateChanged(layout, isOpen);
                 }
             });
             holder.setOnClickListener(R.id.tv_stick, new OnAvailableClickListener() {
@@ -92,7 +93,7 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    return manager.closeAll(null);
+                    return mSlideHelper.closeAll(null);
                 }
             });
             holder.itemView.setOnClickListener(new OnAvailableClickListener() {
@@ -117,12 +118,12 @@ public class CustomListAdapter extends CommonAdapter<CustomListModel> {
     private void stick(final CustomListModel item) {
         item.seq = DBManager.getInstance(mContext).optCustomList().queryMinSeq() - 1;
         DBManager.getInstance(mContext).optCustomList().insertOrReplace(item);
-        EventBus.getDefault().post(event);
+        EventBus.getDefault().post(mRefreshEvent);
     }
 
     public void closeAllF() {
-        if (manager != null) {
-            manager.closeAll(null);
+        if (mSlideHelper != null) {
+            mSlideHelper.closeAll(null);
         }
     }
 }

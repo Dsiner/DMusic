@@ -68,7 +68,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lib_common')
     implementation project(':lib_commenplayer')
 
     implementation rootProject.ext.dependencies.support_v4
@@ -79,14 +78,12 @@ dependencies {
     implementation rootProject.ext.dependencies.eventbus
     implementation rootProject.ext.dependencies.greendao
     implementation rootProject.ext.dependencies.tinypinyin
-    implementation rootProject.ext.dependencies.glide
-    annotationProcessor rootProject.ext.dependencies.glide_compiler
 
+    implementation rootProject.ext.dependencies.common
     implementation rootProject.ext.dependencies.aster
     implementation rootProject.ext.dependencies.aster_adapter_http
     implementation rootProject.ext.dependencies.aster_adapter_okhttp3
     implementation rootProject.ext.dependencies.aster_adapter_retrofit
-
     implementation rootProject.ext.dependencies.slidelayout
 
 }

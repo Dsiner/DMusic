@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import com.d.lib.commenplayer.CommenPlayer;
 import com.d.lib.commenplayer.listener.IPlayerListener;
 import com.d.lib.commenplayer.listener.IRenderView;
-import com.d.lib.commenplayer.listener.OnNetListener;
-import com.d.lib.commenplayer.ui.ControlLayout;
+import com.d.lib.commenplayer.listener.OnNetworkListener;
+import com.d.lib.commenplayer.widget.ControlLayout;
 import com.d.lib.common.component.loader.v4.BaseLoaderFragment;
 import com.d.lib.common.component.mvp.MvpView;
 import com.d.lib.common.component.network.NetworkCompat;
@@ -42,10 +42,10 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetailPresenter>
         implements IMVDetailView {
     TitleLayout tl_title;
-    CommenPlayer player;
+    CommenPlayer mPlayer;
 
     private long mId;
-    private boolean mIgnoreNet;
+    private boolean mIgnoreMobileData;
     private int mHeight916;
 
     @Override
@@ -84,12 +84,16 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
                 switch (viewType) {
                     case MVDetailModel.TYPE_INFO:
                         return R.layout.module_online_adapter_mv_detail_info;
+
                     case MVDetailModel.TYPE_SIMILAR_HEAD:
                         return R.layout.module_online_adapter_mv_detail_similar_head;
+
                     case MVDetailModel.TYPE_SIMILAR:
                         return R.layout.module_online_adapter_mv_detail_similar;
+
                     case MVDetailModel.TYPE_COMMENT_HEAD:
                         return R.layout.module_online_adapter_mv_detail_comment_head;
+
                     default:
                         return R.layout.module_online_adapter_mv_detail_comment;
                 }
@@ -111,7 +115,7 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     protected void bindView(View rootView) {
         super.bindView(rootView);
         tl_title = rootView.findViewById(R.id.tl_title);
-        player = rootView.findViewById(R.id.player);
+        mPlayer = rootView.findViewById(R.id.player);
 
         ViewHelper.setOnClickListener(rootView, this, R.id.iv_title_left);
     }
@@ -128,43 +132,43 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     }
 
     private void initPlayer() {
-        ViewGroup.LayoutParams lp = player.getLayoutParams();
+        ViewGroup.LayoutParams lp = mPlayer.getLayoutParams();
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
         lp.height = mHeight916;
-        player.setLayoutParams(lp);
+        mPlayer.setLayoutParams(lp);
 
-        player.setLive(false);
-        player.setScaleType(IRenderView.AR_MATCH_PARENT);
-        player.setOnNetListener(new OnNetListener() {
+        mPlayer.setLive(false);
+        mPlayer.setScaleType(IRenderView.AR_MATCH_PARENT);
+        mPlayer.setOnNetListener(new OnNetworkListener() {
             @Override
-            public void onIgnoreMobileNet() {
-                mIgnoreNet = true;
+            public void onIgnoreMobileData() {
+                mIgnoreMobileData = true;
             }
         }).setOnPlayerListener(new IPlayerListener() {
             @Override
             public void onLoading() {
-                player.getControl().setState(ControlLayout.STATE_LOADING);
+                mPlayer.getControl().setState(ControlLayout.STATE_LOADING);
             }
 
             @Override
             public void onCompletion(IMediaPlayer mp) {
-                player.getControl().setState(ControlLayout.STATE_COMPLETION);
+                mPlayer.getControl().setState(ControlLayout.STATE_COMPLETION);
             }
 
             @Override
             public void onPrepared(IMediaPlayer mp) {
-                if (!mIgnoreNet
+                if (!mIgnoreMobileData
                         && NetworkCompat.isMobileDataType(NetworkCompat.getType())) {
-                    player.pause();
-                    player.getControl().setState(ControlLayout.STATE_MOBILE_NET);
+                    mPlayer.pause();
+                    mPlayer.getControl().setState(ControlLayout.STATE_MOBILE_NET);
                 } else {
-                    player.getControl().setState(ControlLayout.STATE_PREPARED);
+                    mPlayer.getControl().setState(ControlLayout.STATE_PREPARED);
                 }
             }
 
             @Override
             public boolean onError(IMediaPlayer mp, int what, int extra) {
-                player.getControl().setState(ControlLayout.STATE_ERROR);
+                mPlayer.getControl().setState(ControlLayout.STATE_ERROR);
                 return false;
             }
 
@@ -207,7 +211,7 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
         mDslDs.setState(DSLayout.GONE);
         mPullList.setVisibility(View.VISIBLE);
         mCommonLoader.addTop(info);
-        player.play(MVInfoModel.getUrl((MVInfoModel) info));
+        mPlayer.play(MVInfoModel.getUrl((MVInfoModel) info));
     }
 
     @Override
@@ -235,15 +239,15 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     @Override
     public void onResume() {
         super.onResume();
-        if (player != null) {
-            player.onResume();
+        if (mPlayer != null) {
+            mPlayer.onResume();
         }
     }
 
     @Override
     public void onPause() {
-        if (player != null) {
-            player.onPause();
+        if (mPlayer != null) {
+            mPlayer.onPause();
         }
         super.onPause();
     }
@@ -251,30 +255,30 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewGroup.LayoutParams lp = player.getLayoutParams();
+        ViewGroup.LayoutParams lp = mPlayer.getLayoutParams();
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            player.setLayoutParams(lp);
+            mPlayer.setLayoutParams(lp);
             tl_title.setVisibility(View.GONE);
         } else {
             lp.height = mHeight916;
-            player.setLayoutParams(lp);
+            mPlayer.setLayoutParams(lp);
             tl_title.setVisibility(View.VISIBLE);
         }
-        if (player != null) {
-            player.onConfigurationChanged(newConfig);
+        if (mPlayer != null) {
+            mPlayer.onConfigurationChanged(newConfig);
         }
     }
 
     public boolean onBackPressed() {
-        return player != null && player.onBackPress();
+        return mPlayer != null && mPlayer.onBackPress();
     }
 
     @Override
     public void onDestroy() {
-        if (player != null) {
-            player.onDestroy();
+        if (mPlayer != null) {
+            mPlayer.onDestroy();
         }
         super.onDestroy();
     }

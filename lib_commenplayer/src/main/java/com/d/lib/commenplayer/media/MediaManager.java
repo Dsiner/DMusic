@@ -22,9 +22,12 @@ import java.util.Map;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
-public class MediaManager implements MediaController.MediaPlayerControl, IMediaPlayer.OnPreparedListener, IMediaPlayer.OnCompletionListener,
-        IMediaPlayer.OnBufferingUpdateListener, IMediaPlayer.OnSeekCompleteListener, IMediaPlayer.OnErrorListener,
-        IMediaPlayer.OnVideoSizeChangedListener, IMediaPlayer.OnInfoListener {
+public class MediaManager implements MediaController.MediaPlayerControl,
+        IMediaPlayer.OnPreparedListener, IMediaPlayer.OnCompletionListener,
+        IMediaPlayer.OnBufferingUpdateListener, IMediaPlayer.OnSeekCompleteListener,
+        IMediaPlayer.OnErrorListener, IMediaPlayer.OnVideoSizeChangedListener,
+        IMediaPlayer.OnInfoListener {
+
     // All possible internal states
     public static final int STATE_ERROR = -1;
     public static final int STATE_IDLE = 0;
@@ -34,47 +37,49 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
     public static final int STATE_PAUSED = 4;
     public static final int STATE_PLAYBACK_COMPLETED = 5;
 
-    private static MediaManager mManager;
-    private Settings settings;
-    private Handler handler;
-    private IMediaPlayer mediaPlayer;
-
+    private static MediaManager INSTANCE;
     // mCurrentState is a VideoView object's current state.
     // mTargetState is the state that a method caller intends to reach.
     // For instance, regardless the VideoView object's current state,
     // calling pause() intends to bring the object to a target state
     // of STATE_PAUSED.
-    public int currentState = STATE_IDLE;
-    public int targetState = STATE_IDLE;
-    public int seekWhenPrepared;  // Recording the seek position while preparing
-    private int currentBufferPercentage;
-    private IPlayerListener listener;
+    public int mCurrentState = STATE_IDLE;
+    public int mTargetState = STATE_IDLE;
+    public int mSeekWhenPrepared;  // Recording the seek position while preparing
+    private Settings mSettings;
+    private Handler mHandler;
+    private IMediaPlayer mMediaPlayer;
+    private int mCurrentBufferPercentage;
+    private IPlayerListener mPlayerListener;
 
-    public void setListener(IPlayerListener listener) {
-        this.listener = listener;
+    private MediaManager(Context context) {
+        mSettings = new Settings(context.getApplicationContext());
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static MediaManager instance(Context context) {
-        if (mManager == null) {
+        if (INSTANCE == null) {
             synchronized (MediaManager.class) {
-                mManager = new MediaManager(context.getApplicationContext());
+                INSTANCE = new MediaManager(context.getApplicationContext());
             }
         }
-        return mManager;
+        return INSTANCE;
     }
 
-    private MediaManager(Context context) {
-        settings = new Settings(context.getApplicationContext());
-        handler = new Handler(Looper.getMainLooper());
+    public void setListener(IPlayerListener listener) {
+        this.mPlayerListener = listener;
     }
 
-    public IMediaPlayer prepare(Context context, final Uri uri, final Map<String, String> heads, boolean looping) {
+    public IMediaPlayer prepare(final Context context,
+                                final Uri uri,
+                                final Map<String, String> heads,
+                                final boolean looping) {
         if (context == null || uri == null) {
             return null;
         }
-        currentState = STATE_PREPARING;
-        currentBufferPercentage = 0;
-        seekWhenPrepared = 0;
+        mCurrentState = STATE_PREPARING;
+        mCurrentBufferPercentage = 0;
+        mSeekWhenPrepared = 0;
         // We shouldn't clear the target state, because somebody might have
         // called start() previously
         release(context, false);
@@ -82,50 +87,53 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
         // AudioManager.AUDIOFOCUS_GAIN / AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
         am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         try {
-            mediaPlayer = Factory.createPlayer(context, settings.getPlayer());
-            if (mediaPlayer == null) {
+            mMediaPlayer = Factory.createPlayer(context, mSettings.getPlayer());
+            if (mMediaPlayer == null) {
                 return null;
             }
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             String scheme = uri.getScheme();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && settings.getUsingMediaDataSource()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && mSettings.getUsingMediaDataSource()
                     && (TextUtils.isEmpty(scheme) || scheme.equalsIgnoreCase("file"))) {
                 IMediaDataSource dataSource = new FileMediaDataSource(new File(uri.toString()));
-                mediaPlayer.setDataSource(dataSource);
+                mMediaPlayer.setDataSource(dataSource);
+
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                mediaPlayer.setDataSource(context, uri, heads);
+                mMediaPlayer.setDataSource(context, uri, heads);
+
             } else {
-                mediaPlayer.setDataSource(uri.toString());
+                mMediaPlayer.setDataSource(uri.toString());
             }
-            mediaPlayer.setLooping(looping);
-            mediaPlayer.setOnPreparedListener(this);
-            mediaPlayer.setOnCompletionListener(this);
-            mediaPlayer.setOnBufferingUpdateListener(this);
-            mediaPlayer.setScreenOnWhilePlaying(true);
-            mediaPlayer.setOnSeekCompleteListener(this);
-            mediaPlayer.setOnErrorListener(this);
-            mediaPlayer.setOnInfoListener(this);
-            mediaPlayer.setOnVideoSizeChangedListener(this);
-            mediaPlayer.prepareAsync();
-            return mediaPlayer;
+            mMediaPlayer.setLooping(looping);
+            mMediaPlayer.setOnPreparedListener(this);
+            mMediaPlayer.setOnCompletionListener(this);
+            mMediaPlayer.setOnBufferingUpdateListener(this);
+            mMediaPlayer.setScreenOnWhilePlaying(true);
+            mMediaPlayer.setOnSeekCompleteListener(this);
+            mMediaPlayer.setOnErrorListener(this);
+            mMediaPlayer.setOnInfoListener(this);
+            mMediaPlayer.setOnVideoSizeChangedListener(this);
+            mMediaPlayer.prepareAsync();
+            return mMediaPlayer;
         } catch (Exception e) {
             ULog.w("Unable to open content: " + uri + e);
-            onError(mediaPlayer, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
+            onError(mMediaPlayer, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
             e.printStackTrace();
             return null;
         }
     }
 
     public void release(Context context, boolean clearTargetState) {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-            mediaPlayer.release();
-            mediaPlayer = null;
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
-        currentState = STATE_IDLE;
+        mCurrentState = STATE_IDLE;
         if (clearTargetState) {
-            targetState = STATE_IDLE;
+            mTargetState = STATE_IDLE;
         }
         AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         am.abandonAudioFocus(null);
@@ -133,17 +141,17 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
 
     @Override
     public void onPrepared(final IMediaPlayer mp) {
-        currentState = STATE_PREPARED;
+        mCurrentState = STATE_PREPARED;
         // mSeekWhenPrepared may be changed after seekTo() call
-        if (seekWhenPrepared != 0) {
-            seekTo(seekWhenPrepared);
+        if (mSeekWhenPrepared != 0) {
+            seekTo(mSeekWhenPrepared);
         }
-        if (listener != null) {
-            handler.post(new Runnable() {
+        if (mPlayerListener != null) {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener != null)
-                        listener.onPrepared(mp);
+                    if (mPlayerListener != null)
+                        mPlayerListener.onPrepared(mp);
                 }
             });
         }
@@ -151,14 +159,14 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
 
     @Override
     public void onCompletion(final IMediaPlayer mp) {
-        currentState = STATE_PLAYBACK_COMPLETED;
-        targetState = STATE_PLAYBACK_COMPLETED;
-        if (listener != null) {
-            handler.post(new Runnable() {
+        mCurrentState = STATE_PLAYBACK_COMPLETED;
+        mTargetState = STATE_PLAYBACK_COMPLETED;
+        if (mPlayerListener != null) {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener != null)
-                        listener.onCompletion(mp);
+                    if (mPlayerListener != null)
+                        mPlayerListener.onCompletion(mp);
                 }
             });
         }
@@ -166,7 +174,7 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
 
     @Override
     public void onBufferingUpdate(IMediaPlayer mp, final int percent) {
-        currentBufferPercentage = percent;
+        mCurrentBufferPercentage = percent;
     }
 
     @Override
@@ -181,17 +189,17 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
         } else {
             ULog.d("onError:" + "Unknown");
         }
-        currentState = STATE_ERROR;
-        targetState = STATE_ERROR;
+        mCurrentState = STATE_ERROR;
+        mTargetState = STATE_ERROR;
         /* If an error handler has been supplied, use it and finish. */
-        if (listener != null) {
-            handler.post(new Runnable() {
+        if (mPlayerListener != null) {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener == null) {
+                    if (mPlayerListener == null) {
                         return;
                     }
-                    listener.onError(mp, what, extra);
+                    mPlayerListener.onError(mp, what, extra);
                 }
             });
             return true;
@@ -201,14 +209,14 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
 
     @Override
     public boolean onInfo(final IMediaPlayer mp, final int what, final int extra) {
-        if (listener != null) {
-            handler.post(new Runnable() {
+        if (mPlayerListener != null) {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener == null) {
+                    if (mPlayerListener == null) {
                         return;
                     }
-                    listener.onInfo(mp, what, extra);
+                    mPlayerListener.onInfo(mp, what, extra);
                 }
             });
             return true;
@@ -218,14 +226,14 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
 
     @Override
     public void onVideoSizeChanged(final IMediaPlayer mp, final int width, final int height, final int sarNum, final int sarDen) {
-        if (listener != null) {
-            handler.post(new Runnable() {
+        if (mPlayerListener != null) {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener == null) {
+                    if (mPlayerListener == null) {
                         return;
                     }
-                    listener.onVideoSizeChanged(mp, width, height, sarNum, sarDen);
+                    mPlayerListener.onVideoSizeChanged(mp, width, height, sarNum, sarDen);
                 }
             });
         }
@@ -234,25 +242,25 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
     @Override
     public void start() {
         if (isInPlaybackState()) {
-            mediaPlayer.start();
-            currentState = STATE_PLAYING;
+            mMediaPlayer.start();
+            mCurrentState = STATE_PLAYING;
         }
-        targetState = STATE_PLAYING;
+        mTargetState = STATE_PLAYING;
     }
 
     @Override
     public void pause() {
         if (isInPlaybackState()) {
-            mediaPlayer.pause();
-            currentState = STATE_PAUSED;
+            mMediaPlayer.pause();
+            mCurrentState = STATE_PAUSED;
         }
-        targetState = STATE_PAUSED;
+        mTargetState = STATE_PAUSED;
     }
 
     @Override
     public int getDuration() {
         if (isInPlaybackState()) {
-            return (int) mediaPlayer.getDuration();
+            return (int) mMediaPlayer.getDuration();
         }
         return -1;
     }
@@ -260,7 +268,7 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
     @Override
     public int getCurrentPosition() {
         if (isInPlaybackState()) {
-            return (int) mediaPlayer.getCurrentPosition();
+            return (int) mMediaPlayer.getCurrentPosition();
         }
         return 0;
     }
@@ -268,21 +276,21 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
     @Override
     public void seekTo(int msec) {
         if (isInPlaybackState()) {
-            mediaPlayer.seekTo(msec);
-            seekWhenPrepared = 0;
+            mMediaPlayer.seekTo(msec);
+            mSeekWhenPrepared = 0;
         } else {
-            seekWhenPrepared = msec;
+            mSeekWhenPrepared = msec;
         }
     }
 
     @Override
     public boolean isPlaying() {
-        return isInPlaybackState() && mediaPlayer.isPlaying();
+        return isInPlaybackState() && mMediaPlayer.isPlaying();
     }
 
     @Override
     public int getBufferPercentage() {
-        return currentBufferPercentage;
+        return mCurrentBufferPercentage;
     }
 
     @Override
@@ -306,9 +314,9 @@ public class MediaManager implements MediaController.MediaPlayerControl, IMediaP
     }
 
     private boolean isInPlaybackState() {
-        return (mediaPlayer != null
-                && currentState != STATE_ERROR
-                && currentState != STATE_IDLE
-                && currentState != STATE_PREPARING);
+        return (mMediaPlayer != null
+                && mCurrentState != STATE_ERROR
+                && mCurrentState != STATE_IDLE
+                && mCurrentState != STATE_PREPARING);
     }
 }

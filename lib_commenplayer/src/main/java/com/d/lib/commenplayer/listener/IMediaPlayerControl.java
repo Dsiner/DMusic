@@ -9,12 +9,12 @@ import android.widget.MediaController;
  */
 public interface IMediaPlayerControl extends MediaController.MediaPlayerControl {
 
+    boolean isLive();
+
     /**
      * Live mode
      */
     void setLive(boolean live);
-
-    boolean isLive();
 
     /**
      * Control
@@ -24,7 +24,7 @@ public interface IMediaPlayerControl extends MediaController.MediaPlayerControl 
     String getUrl();
 
     /**
-     * Ignore traffic alerts when mobile networks
+     * Ignore traffic alerts when mobile data
      */
     void ignoreMobileNet();
 

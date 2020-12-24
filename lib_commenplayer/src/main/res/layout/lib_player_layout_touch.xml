@@ -3,7 +3,7 @@
 
     <!-- Adjust progress -->
     <LinearLayout
-        android:id="@+id/llyt_player_adj_prg"
+        android:id="@+id/ll_player_adj_prg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,7 +34,7 @@
 
     <!-- Adjust brightness -->
     <LinearLayout
-        android:id="@+id/llyt_player_adj_brightness"
+        android:id="@+id/ll_player_adj_brightness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -62,7 +62,7 @@
 
     <!-- Adjust the sound -->
     <LinearLayout
-        android:id="@+id/llyt_player_adj_volume"
+        android:id="@+id/ll_player_adj_volume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

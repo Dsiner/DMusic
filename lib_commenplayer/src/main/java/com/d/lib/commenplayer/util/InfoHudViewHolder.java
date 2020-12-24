@@ -15,72 +15,10 @@ import tv.danmaku.ijk.media.player.MediaPlayerProxy;
  * 统计信息
  */
 public class InfoHudViewHolder {
+    private static final int MSG_UPDATE_HUD = 1;
     private IMediaPlayer mMediaPlayer;
     private long mLoadCost = 0;
     private long mSeekCost = 0;
-
-    public InfoHudViewHolder(Context context, TableLayout tableLayout) {
-    }
-
-    private void setRowValue(String id, String value) {
-        ULog.d("id:" + value);
-    }
-
-    public void setMediaPlayer(IMediaPlayer mp) {
-        mMediaPlayer = mp;
-        if (mMediaPlayer != null) {
-            mHandler.sendEmptyMessageDelayed(MSG_UPDATE_HUD, 500);
-        } else {
-            mHandler.removeMessages(MSG_UPDATE_HUD);
-        }
-    }
-
-    private static String formatedDurationMilli(long duration) {
-        if (duration >= 1000) {
-            return String.format(Locale.US, "%.2f sec", ((float) duration) / 1000);
-        } else {
-            return String.format(Locale.US, "%d msec", duration);
-        }
-    }
-
-    private static String formatedSpeed(long bytes, long elapsed_milli) {
-        if (elapsed_milli <= 0) {
-            return "0 B/s";
-        }
-
-        if (bytes <= 0) {
-            return "0 B/s";
-        }
-
-        float bytes_per_sec = ((float) bytes) * 1000.f / elapsed_milli;
-        if (bytes_per_sec >= 1000 * 1000) {
-            return String.format(Locale.US, "%.2f MB/s", ((float) bytes_per_sec) / 1000 / 1000);
-        } else if (bytes_per_sec >= 1000) {
-            return String.format(Locale.US, "%.1f KB/s", ((float) bytes_per_sec) / 1000);
-        } else {
-            return String.format(Locale.US, "%d B/s", (long) bytes_per_sec);
-        }
-    }
-
-    public void updateLoadCost(long time) {
-        mLoadCost = time;
-    }
-
-    public void updateSeekCost(long time) {
-        mSeekCost = time;
-    }
-
-    private static String formatedSize(long bytes) {
-        if (bytes >= 100 * 1000) {
-            return String.format(Locale.US, "%.2f MB", ((float) bytes) / 1000 / 1000);
-        } else if (bytes >= 100) {
-            return String.format(Locale.US, "%.1f KB", ((float) bytes) / 1000);
-        } else {
-            return String.format(Locale.US, "%d B", bytes);
-        }
-    }
-
-    private static final int MSG_UPDATE_HUD = 1;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -140,4 +78,65 @@ public class InfoHudViewHolder {
             }
         }
     };
+
+    public InfoHudViewHolder(Context context, TableLayout tableLayout) {
+    }
+
+    private static String formatedDurationMilli(long duration) {
+        if (duration >= 1000) {
+            return String.format(Locale.US, "%.2f sec", ((float) duration) / 1000);
+        } else {
+            return String.format(Locale.US, "%d msec", duration);
+        }
+    }
+
+    private static String formatedSpeed(long bytes, long elapsed_milli) {
+        if (elapsed_milli <= 0) {
+            return "0 B/s";
+        }
+
+        if (bytes <= 0) {
+            return "0 B/s";
+        }
+
+        float bytes_per_sec = ((float) bytes) * 1000.f / elapsed_milli;
+        if (bytes_per_sec >= 1000 * 1000) {
+            return String.format(Locale.US, "%.2f MB/s", ((float) bytes_per_sec) / 1000 / 1000);
+        } else if (bytes_per_sec >= 1000) {
+            return String.format(Locale.US, "%.1f KB/s", ((float) bytes_per_sec) / 1000);
+        } else {
+            return String.format(Locale.US, "%d B/s", (long) bytes_per_sec);
+        }
+    }
+
+    private static String formatedSize(long bytes) {
+        if (bytes >= 100 * 1000) {
+            return String.format(Locale.US, "%.2f MB", ((float) bytes) / 1000 / 1000);
+        } else if (bytes >= 100) {
+            return String.format(Locale.US, "%.1f KB", ((float) bytes) / 1000);
+        } else {
+            return String.format(Locale.US, "%d B", bytes);
+        }
+    }
+
+    private void setRowValue(String id, String value) {
+        ULog.d("id:" + value);
+    }
+
+    public void setMediaPlayer(IMediaPlayer mp) {
+        mMediaPlayer = mp;
+        if (mMediaPlayer != null) {
+            mHandler.sendEmptyMessageDelayed(MSG_UPDATE_HUD, 500);
+        } else {
+            mHandler.removeMessages(MSG_UPDATE_HUD);
+        }
+    }
+
+    public void updateLoadCost(long time) {
+        mLoadCost = time;
+    }
+
+    public void updateSeekCost(long time) {
+        mSeekCost = time;
+    }
 }

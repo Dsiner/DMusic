@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2015 Bilibili
- * Copyright (C) 2015 Zhang Rui <bbcallen@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.d.lib.commenplayer.media;
 
 import android.view.View;
@@ -43,8 +26,9 @@ public final class MeasureHelper {
     }
 
     public View getView() {
-        if (mWeakView == null)
+        if (mWeakView == null) {
             return null;
+        }
         return mWeakView.get();
     }
 
@@ -79,6 +63,7 @@ public final class MeasureHelper {
         if (mCurrentAspectRatio == IRenderView.AR_MATCH_PARENT) {
             width = widthMeasureSpec;
             height = heightMeasureSpec;
+
         } else if (mVideoWidth > 0 && mVideoHeight > 0) {
             int widthSpecMode = View.MeasureSpec.getMode(widthMeasureSpec);
             int widthSpecSize = View.MeasureSpec.getSize(widthMeasureSpec);
@@ -91,24 +76,29 @@ public final class MeasureHelper {
                 switch (mCurrentAspectRatio) {
                     case IRenderView.AR_16_9_FIT_PARENT:
                         displayAspectRatio = 16.0f / 9.0f;
-                        if (mVideoRotationDegree == 90 || mVideoRotationDegree == 270)
+                        if (mVideoRotationDegree == 90 || mVideoRotationDegree == 270) {
                             displayAspectRatio = 1.0f / displayAspectRatio;
+                        }
                         break;
+
                     case IRenderView.AR_4_3_FIT_PARENT:
                         displayAspectRatio = 4.0f / 3.0f;
-                        if (mVideoRotationDegree == 90 || mVideoRotationDegree == 270)
+                        if (mVideoRotationDegree == 90 || mVideoRotationDegree == 270) {
                             displayAspectRatio = 1.0f / displayAspectRatio;
+                        }
                         break;
+
                     case IRenderView.AR_ASPECT_FIT_PARENT:
                     case IRenderView.AR_ASPECT_FILL_PARENT:
                     case IRenderView.AR_ASPECT_WRAP_CONTENT:
                     default:
                         displayAspectRatio = (float) mVideoWidth / (float) mVideoHeight;
-                        if (mVideoSarNum > 0 && mVideoSarDen > 0)
+                        if (mVideoSarNum > 0 && mVideoSarDen > 0) {
                             displayAspectRatio = displayAspectRatio * mVideoSarNum / mVideoSarDen;
+                        }
                         break;
                 }
-                boolean shouldBeWider = displayAspectRatio > specAspectRatio;
+                final boolean shouldBeWider = displayAspectRatio > specAspectRatio;
 
                 switch (mCurrentAspectRatio) {
                     case IRenderView.AR_ASPECT_FIT_PARENT:
@@ -124,6 +114,7 @@ public final class MeasureHelper {
                             width = (int) (height * displayAspectRatio);
                         }
                         break;
+
                     case IRenderView.AR_ASPECT_FILL_PARENT:
                         if (shouldBeWider) {
                             // not high enough, fix height
@@ -135,6 +126,7 @@ public final class MeasureHelper {
                             height = (int) (width / displayAspectRatio);
                         }
                         break;
+
                     case IRenderView.AR_ASPECT_WRAP_CONTENT:
                     default:
                         if (shouldBeWider) {
@@ -148,7 +140,9 @@ public final class MeasureHelper {
                         }
                         break;
                 }
-            } else if (widthSpecMode == View.MeasureSpec.EXACTLY && heightSpecMode == View.MeasureSpec.EXACTLY) {
+
+            } else if (widthSpecMode == View.MeasureSpec.EXACTLY
+                    && heightSpecMode == View.MeasureSpec.EXACTLY) {
                 // the size is fixed
                 width = widthSpecSize;
                 height = heightSpecSize;
@@ -161,6 +155,7 @@ public final class MeasureHelper {
                     //Log.i("@@@", "image too tall, correcting");
                     height = width * mVideoHeight / mVideoWidth;
                 }
+
             } else if (widthSpecMode == View.MeasureSpec.EXACTLY) {
                 // only the width is fixed, adjust the height to match aspect ratio if possible
                 width = widthSpecSize;
@@ -169,6 +164,7 @@ public final class MeasureHelper {
                     // couldn't match aspect ratio within the constraints
                     height = heightSpecSize;
                 }
+
             } else if (heightSpecMode == View.MeasureSpec.EXACTLY) {
                 // only the height is fixed, adjust the width to match aspect ratio if possible
                 height = heightSpecSize;
@@ -177,6 +173,7 @@ public final class MeasureHelper {
                     // couldn't match aspect ratio within the constraints
                     width = widthSpecSize;
                 }
+
             } else {
                 // neither the width nor the height are fixed, try to use actual video size
                 width = mVideoWidth;

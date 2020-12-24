@@ -126,7 +126,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:gravity="center"
-            android:text="@string/lib_player_mobile_network_continue"
+            android:text="@string/lib_player_mobile_data_continue"
             android:textColor="#ffffff"
             android:textSize="14dp" />
 

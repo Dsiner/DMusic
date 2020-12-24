@@ -17,12 +17,12 @@ import com.d.lib.commenplayer.listener.IMediaPlayerControl;
 import com.d.lib.commenplayer.listener.IPlayerListener;
 import com.d.lib.commenplayer.listener.IRenderView;
 import com.d.lib.commenplayer.listener.OnAnimatorUpdateListener;
-import com.d.lib.commenplayer.listener.OnNetListener;
+import com.d.lib.commenplayer.listener.OnNetworkListener;
 import com.d.lib.commenplayer.media.IjkVideoView;
 import com.d.lib.commenplayer.media.TextureRenderView;
-import com.d.lib.commenplayer.ui.ControlLayout;
-import com.d.lib.commenplayer.ui.TouchLayout;
 import com.d.lib.commenplayer.util.Util;
+import com.d.lib.commenplayer.widget.ControlLayout;
+import com.d.lib.commenplayer.widget.TouchLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -31,53 +31,20 @@ import java.lang.ref.WeakReference;
  * Created by D on 2017/5/27.
  */
 public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
+    private final int TASK_LOOP_TIME = 1000;
     private Activity activity;
-    private IjkVideoView player;
-    private TouchLayout touchLayout;
-    private ControlLayout control;
-
+    private IjkVideoView ijkplayer;
+    private TouchLayout tl_touch;
+    private ControlLayout cl_control;
     private Handler handler = new Handler();
     private ProgressTask progressTask;
     private boolean progressTaskRunning;
     private boolean progressLock; // Progress lock
-    private final int TASK_LOOP_TIME = 1000;
-
     private boolean live;
     private String url;
     private boolean isPortrait = true; // true: vertical; false: horizontal
     private OnAnimatorUpdateListener animatorUpdateListener; // Stick floating layer, animation
-    private OnNetListener netListener;
-
-    private static class ProgressTask implements Runnable {
-        private final WeakReference<CommenPlayer> reference;
-
-        ProgressTask(CommenPlayer layout) {
-            this.reference = new WeakReference<>(layout);
-        }
-
-        @Override
-        public void run() {
-            CommenPlayer layout = reference.get();
-            if (layout == null || layout.getContext() == null || !layout.progressTaskRunning || layout.live) {
-                return;
-            }
-            if (!layout.progressLock) {
-                layout.progressTo(layout.getCurrentPosition(), layout.getBufferPercentage());
-            }
-            layout.handler.postDelayed(layout.progressTask, layout.TASK_LOOP_TIME);
-        }
-    }
-
-    public void reStartProgressTask() {
-        stopProgressTask();
-        progressTaskRunning = true;
-        handler.postDelayed(progressTask, 300);
-    }
-
-    public void stopProgressTask() {
-        progressTaskRunning = false;
-        handler.removeCallbacks(progressTask);
-    }
+    private OnNetworkListener netListener;
 
     public CommenPlayer(Context context) {
         super(context);
@@ -94,6 +61,17 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
         init(context);
     }
 
+    public void reStartProgressTask() {
+        stopProgressTask();
+        progressTaskRunning = true;
+        handler.postDelayed(progressTask, 300);
+    }
+
+    public void stopProgressTask() {
+        progressTaskRunning = false;
+        handler.removeCallbacks(progressTask);
+    }
+
     private void init(final Context context) {
         activity = (Activity) context;
         progressTask = new ProgressTask(this);
@@ -102,25 +80,19 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
     }
 
     protected void initView(View root) {
-        player = (IjkVideoView) root.findViewById(R.id.ijkplayer);
-        touchLayout = (TouchLayout) root.findViewById(R.id.tl_touch);
-        control = (ControlLayout) root.findViewById(R.id.cl_control);
-        touchLayout.setIMediaPlayerControl(this);
-        control.setIMediaPlayerControl(this);
+        ijkplayer = (IjkVideoView) root.findViewById(R.id.ijkplayer);
+        tl_touch = (TouchLayout) root.findViewById(R.id.tl_touch);
+        cl_control = (ControlLayout) root.findViewById(R.id.cl_control);
+        tl_touch.setIMediaPlayerControl(this);
+        cl_control.setIMediaPlayerControl(this);
     }
 
     public ControlLayout getControl() {
-        return control;
+        return cl_control;
     }
 
     public TouchLayout getTouch() {
-        return touchLayout;
-    }
-
-    @Override
-    public void setLive(boolean live) {
-        this.live = live;
-        player.setLive(live);
+        return tl_touch;
     }
 
     @Override
@@ -129,8 +101,14 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
     }
 
     @Override
+    public void setLive(boolean live) {
+        this.live = live;
+        ijkplayer.setLive(live);
+    }
+
+    @Override
     public void setScaleType(int scaleType) {
-        player.setScaleType(scaleType);
+        ijkplayer.setScaleType(scaleType);
     }
 
     @Override
@@ -143,12 +121,7 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
             return;
         }
         this.url = url;
-        player.play(url, pos);
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-        player.setVideoPath(url);
+        ijkplayer.play(url, pos);
     }
 
     @Override
@@ -156,21 +129,26 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+        ijkplayer.setVideoPath(url);
+    }
+
     @Override
     public void ignoreMobileNet() {
         if (netListener != null) {
-            netListener.onIgnoreMobileNet();
+            netListener.onIgnoreMobileData();
         }
     }
 
     @Override
     public void setPlayerVisibility(int visibility) {
-        player.setVisibility(visibility);
+        ijkplayer.setVisibility(visibility);
     }
 
     @Override
     public void toggleStick() {
-        control.toggleStick();
+        cl_control.toggleStick();
     }
 
     @Override
@@ -185,22 +163,22 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
 
     @Override
     public void progressTo(int position, int bufferPercentage) {
-        control.setProgress(position, getDuration(), bufferPercentage);
+        cl_control.setProgress(position, getDuration(), bufferPercentage);
     }
 
     @Override
     public void seekTo(int pos) {
-        player.seekTo(Math.max(pos, 0));
+        ijkplayer.seekTo(Math.max(pos, 0));
     }
 
     @Override
     public boolean isPlaying() {
-        return player.isPlaying();
+        return ijkplayer.isPlaying();
     }
 
     @Override
     public int getBufferPercentage() {
-        return player.getBufferPercentage();
+        return ijkplayer.getBufferPercentage();
     }
 
     @Override
@@ -225,49 +203,49 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
 
     @Override
     public void start() {
-        player.start();
+        ijkplayer.start();
     }
 
     @Override
     public void pause() {
-        player.pause();
+        ijkplayer.pause();
     }
 
     @Override
     public int getDuration() {
-        return player.getDuration();
+        return ijkplayer.getDuration();
     }
 
     @Override
     public int getCurrentPosition() {
-        return player.getCurrentPosition();
+        return ijkplayer.getCurrentPosition();
     }
 
     @Override
     public int toggleAspectRatio() {
-        return player.toggleAspectRatio();
+        return ijkplayer.toggleAspectRatio();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         isPortrait = newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE;
         if (isPortrait) {
-            Util.showSystemUIFource(activity, control, touchLayout);
+            Util.showSystemUIForce(activity, cl_control, tl_touch);
         } else {
-            Util.hideSystemUI(activity, control, touchLayout);
-            Util.showSystemUI(activity, control, touchLayout);
+            Util.hideSystemUI(activity, cl_control, tl_touch);
+            Util.showSystemUI(activity, cl_control, tl_touch);
         }
-        touchLayout.setVisibility(isPortrait ? GONE : VISIBLE);
-        control.onConfigurationChanged(isPortrait);
+        tl_touch.setVisibility(isPortrait ? GONE : VISIBLE);
+        cl_control.onConfigurationChanged(isPortrait);
         setScaleType(IRenderView.AR_ASPECT_FIT_PARENT);
     }
 
     @Override
     public void toggleSystemUI(boolean show) {
         if (show) {
-            Util.showSystemUI(activity, control, touchLayout);
+            Util.showSystemUI(activity, cl_control, tl_touch);
         } else {
-            Util.hideSystemUI(activity, control, touchLayout);
+            Util.hideSystemUI(activity, cl_control, tl_touch);
         }
     }
 
@@ -286,14 +264,14 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
 
     @Override
     public void onResume() {
-        player.onResume();
+        ijkplayer.onResume();
         reStartProgressTask();
     }
 
     @Override
     public void onPause() {
         stopProgressTask();
-        player.onPause();
+        ijkplayer.onPause();
     }
 
     @Override
@@ -307,11 +285,11 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
 
     @Override
     public void onDestroy() {
-        player.onDestroy();
+        ijkplayer.onDestroy();
     }
 
     public CommenPlayer setOnPlayerListener(IPlayerListener listener) {
-        this.player.setOnPlayerListener(listener);
+        this.ijkplayer.setOnPlayerListener(listener);
         return this;
     }
 
@@ -320,7 +298,7 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
         return this;
     }
 
-    public CommenPlayer setOnNetListener(OnNetListener listener) {
+    public CommenPlayer setOnNetListener(OnNetworkListener listener) {
         this.netListener = listener;
         return this;
     }
@@ -329,7 +307,7 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
      * Get a screenshot of the video
      */
     public Bitmap getSnapShot() {
-        IRenderView renderView = player.getRenderView();
+        IRenderView renderView = ijkplayer.getRenderView();
         if (renderView == null) {
             return null;
         }
@@ -337,6 +315,26 @@ public class CommenPlayer extends FrameLayout implements IMediaPlayerControl {
                 && renderView instanceof TextureRenderView) {
             return ((TextureRenderView) renderView).getBitmap();
         }
-        return Util.getFrame(activity, url, getCurrentPosition());
+        return Util.getFrameAtTime(activity, url, getCurrentPosition());
+    }
+
+    private static class ProgressTask implements Runnable {
+        private final WeakReference<CommenPlayer> reference;
+
+        ProgressTask(CommenPlayer layout) {
+            this.reference = new WeakReference<>(layout);
+        }
+
+        @Override
+        public void run() {
+            CommenPlayer layout = reference.get();
+            if (layout == null || layout.getContext() == null || !layout.progressTaskRunning || layout.live) {
+                return;
+            }
+            if (!layout.progressLock) {
+                layout.progressTo(layout.getCurrentPosition(), layout.getBufferPercentage());
+            }
+            layout.handler.postDelayed(layout.progressTask, layout.TASK_LOOP_TIME);
+        }
     }
 }

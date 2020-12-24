@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2015 Bilibili
- * Copyright (C) 2015 Zhang Rui <bbcallen@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.d.lib.commenplayer.media;
 
 import android.annotation.TargetApi;
@@ -43,6 +26,7 @@ import tv.danmaku.ijk.media.player.ISurfaceTextureHolder;
 
 public class SurfaceRenderView extends SurfaceView implements IRenderView {
     private MeasureHelper mMeasureHelper;
+    private SurfaceCallback mSurfaceCallback;
 
     public SurfaceRenderView(Context context) {
         super(context);
@@ -114,14 +98,47 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         requestLayout();
     }
 
+    //--------------------
+    // SurfaceViewHolder
+    //--------------------
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mMeasureHelper.doMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(mMeasureHelper.getMeasuredWidth(), mMeasureHelper.getMeasuredHeight());
     }
 
+    //-------------------------
+    // SurfaceHolder.Callback
+    //-------------------------
+
+    @Override
+    public void addRenderCallback(IRenderCallback callback) {
+        mSurfaceCallback.addRenderCallback(callback);
+    }
+
+    @Override
+    public void removeRenderCallback(IRenderCallback callback) {
+        mSurfaceCallback.removeRenderCallback(callback);
+    }
+
+    @Override
+    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
+        super.onInitializeAccessibilityEvent(event);
+        event.setClassName(SurfaceRenderView.class.getName());
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            info.setClassName(SurfaceRenderView.class.getName());
+        }
+    }
+
     //--------------------
-    // SurfaceViewHolder
+    // Accessibility
     //--------------------
 
     private static final class InternalSurfaceHolder implements IRenderView.ISurfaceHolder {
@@ -171,22 +188,6 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             return mSurfaceHolder.getSurface();
         }
     }
-
-    //-------------------------
-    // SurfaceHolder.Callback
-    //-------------------------
-
-    @Override
-    public void addRenderCallback(IRenderCallback callback) {
-        mSurfaceCallback.addRenderCallback(callback);
-    }
-
-    @Override
-    public void removeRenderCallback(IRenderCallback callback) {
-        mSurfaceCallback.removeRenderCallback(callback);
-    }
-
-    private SurfaceCallback mSurfaceCallback;
 
     private static final class SurfaceCallback implements SurfaceHolder.Callback {
         private SurfaceHolder mSurfaceHolder;
@@ -266,25 +267,6 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             for (IRenderCallback renderCallback : mRenderCallbackMap.keySet()) {
                 renderCallback.onSurfaceChanged(surfaceHolder, format, width, height);
             }
-        }
-    }
-
-    //--------------------
-    // Accessibility
-    //--------------------
-
-    @Override
-    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
-        super.onInitializeAccessibilityEvent(event);
-        event.setClassName(SurfaceRenderView.class.getName());
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    @Override
-    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-        super.onInitializeAccessibilityNodeInfo(info);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            info.setClassName(SurfaceRenderView.class.getName());
         }
     }
 }

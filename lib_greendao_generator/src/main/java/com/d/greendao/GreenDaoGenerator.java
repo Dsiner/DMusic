@@ -9,6 +9,7 @@ import de.greenrobot.daogenerator.Schema;
  * Created by D on 2017/4/27.
  */
 public class GreenDaoGenerator {
+
     public static void main(String[] args) throws Exception {
         // 正如你所见的，你创建了一个用于添加实体（Entity）的模式（Schema）对象。
         // 两个参数分别代表：数据库版本号与自动生成代码的包路径。

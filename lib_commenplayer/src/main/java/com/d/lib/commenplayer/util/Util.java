@@ -7,33 +7,29 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import com.d.lib.commenplayer.CommenPlayer;
-import com.d.lib.commenplayer.adapter.AdapterPlayer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 public class Util {
     public static final int SEEKBAR_MAX = 1000;
 
-    private static int SCREEN_WIDTH; // 屏幕宽度
-    private static int SCREEN_HEIGHT; // 屏幕宽度
-
-    private static int STATUS_BAR_HEIGHT = -1;
-    private static int NAVIGATION_BAR_HEIGHT = -1;
+    private static int SCREEN_WIDTH; // Screen width
+    private static int SCREEN_HEIGHT; // Screen height
 
     /**
-     * 获取屏幕宽度和高度
+     * Get screen width and height, in pixel.
      *
-     * @return int[]{SCREEN_WIDTH, SCREEN_HEIGHT}
+     * @return int[]{SCREEN_WIDTH, SCREEN_HEIGHT}, in pixel.
      */
     public static int[] getScreenSize(Activity activity) {
         if (SCREEN_WIDTH > 0 && SCREEN_HEIGHT > 0) {
@@ -49,11 +45,14 @@ public class Util {
     }
 
     /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     * Value of dp to value of px.
+     *
+     * @param dpValue The value of dp.
+     * @return value of px
      */
-    public static int dip2px(Context context, float dpValue) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return (int) (dpValue * (metrics.densityDpi / 160f));
+    public static int dp2px(@NonNull final Context context, final float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     public static String generateTime(int time) {
@@ -66,10 +65,7 @@ public class Util {
     }
 
     /**
-     * 获取SeekBar进度
-     *
-     * @param position 当前播放时间
-     * @param duration 播放总时间
+     * Get SeekBar progress
      */
     public static int getProgress(int position, int duration) {
         int progress = (int) (1.0f * Util.SEEKBAR_MAX * position / duration);
@@ -79,9 +75,9 @@ public class Util {
     }
 
     /**
-     * 获取SeekBar缓冲进度
+     * Get SeekBar buffer progress
      *
-     * @param bufferPercentage 缓冲进度bufferPercentage, 0-100
+     * @param bufferPercentage Buffer progress bufferPercentage, 0-100
      */
     public static int getSecondaryProgress(int bufferPercentage) {
         int secondaryProgress = (int) (1.0f * bufferPercentage / 100 * Util.SEEKBAR_MAX);
@@ -91,35 +87,16 @@ public class Util {
     }
 
     /**
-     * 获取当前播放位置
+     * Get current playback position
      *
-     * @param progress SeekBar当前进度
-     * @param duration 播放总时间
+     * @param progress SeekBar current progress
+     * @param duration Total playing time
      */
     public static int getPosition(int progress, int duration) {
         int position = (int) (1.0f * progress / Util.SEEKBAR_MAX * duration);
         position = Math.min(position, duration);
         position = Math.max(position, 0);
         return position;
-    }
-
-    public static void peelInject(CommenPlayer player, ViewGroup root) {
-        if (player == null || root == null || player.getParent() == root) {
-            return;
-        }
-        if (player.getParent() != null) {
-            if (player.getParent() instanceof AdapterPlayer) {
-                ((AdapterPlayer) player.getParent()).recycle(false);
-            } else {
-                ((ViewGroup) player.getParent()).removeView(player);
-            }
-        }
-        if (root instanceof AdapterPlayer) {
-            ((AdapterPlayer) root).inject();
-        } else {
-            root.removeView(player);
-            root.addView(player, 0);
-        }
     }
 
     public static int getScreenOrientation(Activity activity) {
@@ -139,33 +116,42 @@ public class Util {
                 case Surface.ROTATION_0:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                     break;
+
                 case Surface.ROTATION_90:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                     break;
+
                 case Surface.ROTATION_180:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
                     break;
+
                 case Surface.ROTATION_270:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
                     break;
+
                 default:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                     break;
             }
+
         } else {
             switch (rotation) {
                 case Surface.ROTATION_0:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                     break;
+
                 case Surface.ROTATION_90:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                     break;
+
                 case Surface.ROTATION_180:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
                     break;
+
                 case Surface.ROTATION_270:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
                     break;
+
                 default:
                     orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                     break;
@@ -187,40 +173,80 @@ public class Util {
         return ret;
     }
 
-    public static Bitmap getFrame(Context context, String url, int pos) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            return null;
-        }
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        Bitmap bitmap = null;
+    /**
+     * This method finds a representative frame at any time position if possible,
+     * and returns it as a bitmap. This is useful for generating a thumbnail
+     * for an input data source.
+     */
+    public static Bitmap getFrameAtTime(Context context, String uri) {
+        // Also can use ThumbnailUtils.createVideoThumbnail(url, MediaStore.Images.Thumbnails.MINI_KIND);
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         try {
-            retriever.setDataSource(url);
-            // 取得视频的长度(单位为毫秒)
-            // String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            // 获取时间点的缩略图
-            bitmap = retriever.getFrameAtTime(pos, MediaMetadataRetriever.OPTION_CLOSEST);
-            retriever.release();
-        } catch (Exception e) {
-            retriever.release();
-            ULog.d("Fail to get frame" + e.getMessage());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+                    && uri.contains("://")) {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-CN;"
+                        + " MW-KW-001 Build/JRO03C) AppleWebKit/533.1 (KHTML, like Gecko) "
+                        + "Version/4.0 UCBrowser/1.0.0.001 U4/0.8.0 Mobile Safari/533.1");
+                mmr.setDataSource(uri, headers);
+            } else {
+                mmr.setDataSource(context, Uri.parse(uri));
+            }
+            // Get the first frame picture
+            return mmr.getFrameAtTime();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (mmr != null) {
+                mmr.release();
+            }
         }
-        return bitmap;
     }
 
     /**
-     * 合成
+     * This method finds a representative frame close to the given time position by considering
+     * the given option if possible, and returns it as a bitmap.
+     *
+     * @param context the Context to use when resolving the Uri
+     * @param uri     the Content URI of the data you want to play
+     * @param timeUs  The time position where the frame will be retrieved.
+     * @return
      */
-    private static void drawBitmap(Bitmap bitmap, Bitmap bp, float left, float top) {
+    public static Bitmap getFrameAtTime(Context context, String uri, int timeUs) {
+        // Also can use ThumbnailUtils.createVideoThumbnail(url, MediaStore.Images.Thumbnails.MINI_KIND);
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+                    && uri.contains("://")) {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-CN;"
+                        + " MW-KW-001 Build/JRO03C) AppleWebKit/533.1 (KHTML, like Gecko) "
+                        + "Version/4.0 UCBrowser/1.0.0.001 U4/0.8.0 Mobile Safari/533.1");
+                mmr.setDataSource(uri, headers);
+            } else {
+                mmr.setDataSource(context, Uri.parse(uri));
+            }
+            // Get the first frame picture
+            return mmr.getFrameAtTime(timeUs, MediaMetadataRetriever.OPTION_CLOSEST);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (mmr != null) {
+                mmr.release();
+            }
+        }
+    }
+
+    private static void mergeBitmap(Bitmap bitmap, Bitmap bp, float left, float top) {
         Canvas cv = new Canvas(bitmap);
         cv.drawBitmap(bp, left, top, null);
-        cv.save(Canvas.ALL_SAVE_FLAG); // 保存
-        cv.restore(); // 存储
+        cv.save(Canvas.ALL_SAVE_FLAG);
+        cv.restore();
     }
 
-    /**
-     * 字符串转int
-     */
-    public static int parseInt(String str) {
+    public static int convertInt(String str) {
         if (TextUtils.isDigitsOnly(str)) {
             int result = 0;
             try {
@@ -234,47 +260,36 @@ public class Util {
     }
 
     /**
-     * 是否支持沉浸式状态栏
+     * Whether to support immersive status bar
      */
     public static boolean isSupportTranslucentStatusBar() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     /**
-     * 获取状态栏高度
+     * Get status bar height
      */
     public static int getStatusBarHeight(Context context) {
-        if (STATUS_BAR_HEIGHT != -1) {
-            return STATUS_BAR_HEIGHT;
-        }
         Class<?> c = null;
         Object obj = null;
         Field field = null;
-        int x = 0, sbar = 38; // 默认为38，貌似大部分是这样的
+        int x = 0, sbar = dp2px(context, 38); // The default is 38, which looks like most of them
         try {
             c = Class.forName("com.android.internal.R$dimen");
             obj = c.newInstance();
             field = c.getField("status_bar_height");
-            x = parseInt(field.get(obj).toString());
+            x = convertInt(field.get(obj).toString());
             sbar = context.getResources().getDimensionPixelSize(x);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        STATUS_BAR_HEIGHT = sbar;
         return sbar;
     }
 
     /**
-     * 获取导航栏高度
+     * Get navigation bar height
      */
     public static int getNavigationBarHeight(Context context) {
-        if (NAVIGATION_BAR_HEIGHT != -1) {
-            return NAVIGATION_BAR_HEIGHT;
-        }
-        if (!checkDeviceHasNavigationBar(context)) {
-            NAVIGATION_BAR_HEIGHT = 0;
-            return 0;
-        }
         Class<?> c = null;
         Object obj = null;
         Field field = null;
@@ -283,18 +298,17 @@ public class Util {
             c = Class.forName("com.android.internal.R$dimen");
             obj = c.newInstance();
             field = c.getField("navigation_bar_height");
-            x = parseInt(field.get(obj).toString());
+            x = convertInt(field.get(obj).toString());
             sbar = context.getResources().getDimensionPixelSize(x);
 
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        NAVIGATION_BAR_HEIGHT = sbar;
         return sbar;
     }
 
     /**
-     * 检查是否存在NavigationBar
+     * Check if NavigationBar is present
      */
     public static boolean checkDeviceHasNavigationBar(Context context) {
         boolean hasNavigationBar = false;
@@ -319,7 +333,7 @@ public class Util {
     }
 
     /**
-     * 隐藏状态栏&&导航栏
+     * Hide status bar && navigation bar
      */
     public static void hideSystemUI(Activity activity, View... views) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -346,7 +360,7 @@ public class Util {
     }
 
     /**
-     * 显示状态栏&&导航栏
+     * Show status bar && navigation bar
      */
     public static void showSystemUI(Activity activity, View... views) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -355,8 +369,9 @@ public class Util {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            // Some views can setFitsSystemWindows(true), setPadding(), 虚拟导航栏高度, ui处理
-            setFitsPadding(0, getStatusBarHeight(activity), getNavigationBarHeight(activity), 0, views);
+            // Some views can setFitsSystemWindows(false), setPadding()
+            setFitsPadding(0, getStatusBarHeight(activity),
+                    getNavigationBarHeight(activity), 0, views);
         } else {
             WindowManager.LayoutParams attrs = activity.getWindow().getAttributes();
             attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -367,9 +382,9 @@ public class Util {
     }
 
     /**
-     * 强制显示状态栏&&导航栏
+     * Force display of status bar && navigation bar
      */
-    public static void showSystemUIFource(Activity activity, View... views) {
+    public static void showSystemUIForce(Activity activity, View... views) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             // 4.1 above API level 16
             View decorView = activity.getWindow().getDecorView();

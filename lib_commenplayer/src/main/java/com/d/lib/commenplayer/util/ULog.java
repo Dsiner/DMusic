@@ -15,11 +15,11 @@ public class ULog {
      */
     private static boolean DEVELOP_MODE = true;
 
-    public static void setDebug(boolean debug) {
-        DEVELOP_MODE = debug;
+    private ULog() {
     }
 
-    private ULog() {
+    public static void setDebug(boolean debug) {
+        DEVELOP_MODE = debug;
     }
 
     public static void v(String message) {
