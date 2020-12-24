@@ -54,7 +54,7 @@ public class FrameCache extends AbstractCache<FrameCache, View, String, Drawable
         if (context == null) {
             return;
         }
-        FrameCacheManager.getIns(context.getApplicationContext()).release();
+        FrameCacheManager.getInstance(context.getApplicationContext()).release();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class FrameCache extends AbstractCache<FrameCache, View, String, Drawable
             return;
         }
         view.setTag(getTag(), mKey);
-        FrameCacheManager.getIns(getContext().getApplicationContext())
+        FrameCacheManager.getInstance(getContext().getApplicationContext())
                 .load(getContext().getApplicationContext(), mKey, new CacheListener<FrameBean>() {
                     @Override
                     public void onLoading() {
@@ -169,6 +169,6 @@ public class FrameCache extends AbstractCache<FrameCache, View, String, Drawable
             }
             return;
         }
-        FrameCacheManager.getIns(getContext()).load(getContext(), mKey, l);
+        FrameCacheManager.getInstance(getContext()).load(getContext(), mKey, l);
     }
 }

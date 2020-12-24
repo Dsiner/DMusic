@@ -24,7 +24,7 @@ public class DurationCacheManager extends AbstractCacheManager<String, Long> {
         mLruCache.setCount(180);
     }
 
-    public static DurationCacheManager getIns(Context context) {
+    public static DurationCacheManager getInstance(Context context) {
         if (instance == null) {
             synchronized (DurationCacheManager.class) {
                 if (instance == null) {

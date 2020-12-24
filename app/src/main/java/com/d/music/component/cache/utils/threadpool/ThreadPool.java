@@ -39,22 +39,22 @@ public abstract class ThreadPool {
         return new ThreadPool() {
             @Override
             public void executeMain(Runnable r) {
-                TaskManager.getIns().executeMain(r);
+                TaskManager.getInstance().executeMain(r);
             }
 
             @Override
             public void executeTask(Runnable r) {
-                TaskManager.getIns().executeTask(r);
+                TaskManager.getInstance().executeTask(r);
             }
 
             @Override
             public void executeDownload(Runnable r) {
-                TaskManager.getIns().executeDownload(r);
+                TaskManager.getInstance().executeDownload(r);
             }
 
             @Override
             public void executeNew(Runnable r) {
-                TaskManager.getIns().executeNew(r);
+                TaskManager.getInstance().executeNew(r);
             }
         };
     }

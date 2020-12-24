@@ -29,7 +29,7 @@ public class FrameCacheManager extends AbstractCacheManager<String, FrameBean> {
         mLruCache.setCount(12);
     }
 
-    public static FrameCacheManager getIns(Context context) {
+    public static FrameCacheManager getInstance(Context context) {
         if (instance == null) {
             synchronized (FrameCacheManager.class) {
                 if (instance == null) {

@@ -51,7 +51,7 @@ public class DurationCache extends AbstractCache<DurationCache, View, String, Lo
         if (context == null) {
             return;
         }
-        DurationCacheManager.getIns(context).release();
+        DurationCacheManager.getInstance(context).release();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class DurationCache extends AbstractCache<DurationCache, View, String, Lo
             return;
         }
         view.setTag(getTag(), mKey);
-        DurationCacheManager.getIns(getContext()).load(getContext(), mKey,
+        DurationCacheManager.getInstance(getContext()).load(getContext(), mKey,
                 new CacheListener<Long>() {
                     @Override
                     public void onLoading() {
@@ -154,6 +154,6 @@ public class DurationCache extends AbstractCache<DurationCache, View, String, Lo
             }
             return;
         }
-        DurationCacheManager.getIns(getContext()).load(getContext(), mKey, l);
+        DurationCacheManager.getInstance(getContext()).load(getContext(), mKey, l);
     }
 }

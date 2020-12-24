@@ -23,7 +23,7 @@ public class TaskManager {
         downloadThreadPool = Executors.newFixedThreadPool(3);
     }
 
-    static TaskManager getIns() {
+    static TaskManager getInstance() {
         return Singleton.INSTANCE;
     }
 
