@@ -7,7 +7,7 @@ import com.d.lib.aster.base.Config;
 import com.d.lib.aster.base.Params;
 import com.d.lib.aster.integration.okhttp3.OkHttpModule;
 import com.d.lib.aster.integration.okhttp3.interceptor.HeadersInterceptor;
-import com.d.lib.aster.utils.SSLUtil;
+import com.d.lib.aster.util.SSLUtils;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class AppAsterModule extends OkHttpModule {
                 .writeTimeout(10 * 1000)
                 .retryCount(0)
                 .retryDelayMillis(3 * 1000)
-                .sslSocketFactory(SSLUtil.getSslSocketFactory(null, null, null))
+                .sslSocketFactory(SSLUtils.getSslSocketFactory(null, null, null))
                 .log("AsterLog Back = ", Config.Level.BODY)
                 .debug(true)
                 .build();

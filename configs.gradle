@@ -37,13 +37,13 @@ ext {
             retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:2.3.0",
             retrofit_converter_scalars: "com.squareup.retrofit2:converter-scalars:2.3.0",
 
-            common                    : "com.dsiner.lib:common:1.2.0",
+            common                    : "com.dsiner.lib:common:1.2.1",
             slidelayout               : "com.dsiner.lib:slidelayout:1.0.4",
 
-            aster                     : 'com.dsiner.lib:aster:2.0.9',
-            aster_adapter_http        : 'com.dsiner.lib:aster-adapter-http:2.0.9',
-            aster_adapter_okhttp3     : 'com.dsiner.lib:aster-adapter-okhttp3:2.0.9',
-            aster_adapter_retrofit    : 'com.dsiner.lib:aster-adapter-retrofit:2.0.9'
+            aster                     : 'com.dsiner.lib:aster:2.1.0',
+            aster_adapter_http        : 'com.dsiner.lib:aster-adapter-http:2.1.0',
+            aster_adapter_okhttp3     : 'com.dsiner.lib:aster-adapter-okhttp3:2.1.0',
+            aster_adapter_retrofit    : 'com.dsiner.lib:aster-adapter-retrofit:2.1.0'
     ]
 
     classpaths = [

@@ -210,7 +210,7 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     public void setInfo(MVDetailModel info) {
         mDslDs.setState(DSLayout.GONE);
         mPullList.setVisibility(View.VISIBLE);
-        mCommonLoader.addTop(info);
+        mCommonLoader.add(0, info);
         mPlayer.play(MVInfoModel.getUrl((MVInfoModel) info));
     }
 
@@ -223,9 +223,9 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
         mPullList.setVisibility(View.VISIBLE);
         List<MVDetailModel> datas = mCommonLoader.getDatas();
         if (datas.size() > 0 && datas.get(0) != null && datas.get(0) instanceof MVInfoModel) {
-            mCommonLoader.addData(1, similar);
+            mCommonLoader.addAll(1, similar);
         } else {
-            mCommonLoader.addData(0, similar);
+            mCommonLoader.addAll(0, similar);
         }
     }
 
@@ -233,7 +233,7 @@ public class MVDetailFragment extends BaseLoaderFragment<MVDetailModel, MVDetail
     public void loadSuccess(List<MVDetailModel> datas) {
         mDslDs.setState(DSLayout.GONE);
         mPullList.setVisibility(View.VISIBLE);
-        mCommonLoader.addData(datas);
+        mCommonLoader.addAll(datas);
     }
 
     @Override
