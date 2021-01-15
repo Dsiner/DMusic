@@ -1,6 +1,6 @@
 package com.d.music.component.glide;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.d.lib.common.component.glide.AbstractGlideModule;

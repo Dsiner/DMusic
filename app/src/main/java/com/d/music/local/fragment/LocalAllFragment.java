@@ -1,7 +1,8 @@
 package com.d.music.local.fragment;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 import com.d.lib.common.component.quickclick.QuickClick;
 import com.d.lib.common.util.ViewHelper;

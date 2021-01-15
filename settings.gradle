@@ -1,5 +1,5 @@
+rootProject.name = "DMusic"
+
 include ':app'
 include ':lib_commenplayer'
 include ':lib_greendao_generator'
-
-

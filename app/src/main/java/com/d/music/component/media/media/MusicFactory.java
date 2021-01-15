@@ -3,7 +3,8 @@ package com.d.music.component.media.media;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.d.lib.common.util.log.ULog;
 import com.d.music.component.media.SyncManager;

@@ -1,11 +1,12 @@
 package com.d.music.widget.sort;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.d.music.data.database.greendao.bean.MusicModel;
 import com.github.promeg.pinyinhelper.Pinyin;

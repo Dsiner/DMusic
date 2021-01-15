@@ -2,11 +2,12 @@ package com.d.music.component.cache;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.annotation.UiThread;
 
 import com.d.music.R;
 import com.d.music.component.cache.base.AbstractCache;

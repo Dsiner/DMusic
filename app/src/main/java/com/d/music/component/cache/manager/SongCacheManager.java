@@ -1,9 +1,10 @@
 package com.d.music.component.cache.manager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.d.music.component.cache.base.AbstractCacheManager;
 import com.d.music.component.cache.base.ExpireQueue;

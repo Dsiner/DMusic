@@ -1,7 +1,8 @@
 package com.d.music.transfer.fragment;
 
-import android.support.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.lib.pulllayout.rv.adapter.MultiItemTypeSupport;

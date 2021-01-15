@@ -1,8 +1,9 @@
 package com.d.music.transfer.fragment;
 
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.d.lib.pulllayout.Pullable;
 import com.d.lib.pulllayout.rv.adapter.CommonAdapter;

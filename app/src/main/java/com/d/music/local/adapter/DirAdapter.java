@@ -1,8 +1,9 @@
 package com.d.music.local.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
+
+import androidx.core.content.ContextCompat;
 
 import com.d.lib.common.component.quickclick.OnAvailableClickListener;
 import com.d.lib.pulllayout.rv.adapter.CommonAdapter;

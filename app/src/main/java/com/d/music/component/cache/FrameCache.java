@@ -3,13 +3,14 @@ package com.d.music.component.cache;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.UiThread;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.UiThread;
+import androidx.core.content.ContextCompat;
 
 import com.d.music.R;
 import com.d.music.component.cache.base.AbstractCache;

@@ -1,6 +1,6 @@
 package com.d.music.component.cache.base;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * LinkLruCache

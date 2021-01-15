@@ -15,7 +15,11 @@ android {
             abiFilters "armeabi", "armeabi-v7a", "x86"
         }
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     def Properties keystoreProperties = new Properties()
@@ -64,16 +68,15 @@ android {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib_commenplayer')
 
-    implementation rootProject.ext.dependencies.support_v4
-    implementation rootProject.ext.dependencies.support_appcompat_v7
-    implementation rootProject.ext.dependencies.support_percent
-    implementation rootProject.ext.dependencies.support_constraint_layout
+    implementation rootProject.ext.dependencies.androidx_appcompat
+    implementation rootProject.ext.dependencies.androidx_percent
+    implementation rootProject.ext.dependencies.androidx_constraintlayout
 
     implementation rootProject.ext.dependencies.eventbus
     implementation rootProject.ext.dependencies.greendao

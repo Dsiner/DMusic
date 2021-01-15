@@ -1,25 +1,25 @@
 ext {
-    compileSdkVersion = 27
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
     minSdkVersion = 14
     targetSdkVersion = 27
     versionCode = 3
     versionName = "1.0.3"
 
     // Library Version
-    multidexVersion = "1.0.3"
-    supportVersion = '27.1.1'
+    androidXVersion = "1.0.0"
 
     dependencies = [
             android_skin_loader       : files('libs/android-skin-loader-lib.jar'),
-            support_multidex          : "com.android.support:multidex:${multidexVersion}",
-            support_v4                : "com.android.support:support-v4:${supportVersion}",
-            support_annotations       : "com.android.support:support-annotations:${supportVersion}",
-            support_design            : "com.android.support:design:${supportVersion}",
-            support_percent           : "com.android.support:percent:${supportVersion}",
-            support_appcompat_v7      : "com.android.support:appcompat-v7:${supportVersion}",
-            support_cardview_v7       : "com.android.support:cardview-v7:${supportVersion}",
-            support_recyclerview_v7   : "com.android.support:recyclerview-v7:${supportVersion}",
-            support_constraint_layout : "com.android.support.constraint:constraint-layout:1.1.3",
+
+            androidx_multidex         : "androidx.multidex:multidex:2.0.0",
+            androidx_appcompat        : "androidx.appcompat:appcompat:${androidXVersion}",
+            androidx_annotation       : "androidx.annotation:annotation:${androidXVersion}",
+            androidx_recyclerview     : "androidx.recyclerview:recyclerview:${androidXVersion}",
+            androidx_palette          : "androidx.palette:palette:${androidXVersion}",
+            androidx_percent          : "androidx.percentlayout:percentlayout:${androidXVersion}",
+            androidx_constraintlayout : "androidx.constraintlayout:constraintlayout:1.1.3",
+            androidx_material         : "com.google.android.material:material:${androidXVersion}",
             gson                      : "com.google.code.gson:gson:2.8.5",
 
             eventbus                  : "org.greenrobot:eventbus:3.0.0",
@@ -37,13 +37,15 @@ ext {
             retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:2.3.0",
             retrofit_converter_scalars: "com.squareup.retrofit2:converter-scalars:2.3.0",
 
-            common                    : "com.dsiner.lib:common:1.2.1",
+            common                    : "com.dsiner.lib:common:2.0.0",
             slidelayout               : "com.dsiner.lib:slidelayout:1.0.4",
 
             aster                     : 'com.dsiner.lib:aster:2.1.0',
             aster_adapter_http        : 'com.dsiner.lib:aster-adapter-http:2.1.0',
             aster_adapter_okhttp3     : 'com.dsiner.lib:aster-adapter-okhttp3:2.1.0',
-            aster_adapter_retrofit    : 'com.dsiner.lib:aster-adapter-retrofit:2.1.0'
+            aster_adapter_retrofit    : 'com.dsiner.lib:aster-adapter-retrofit:2.1.0',
+
+            leakcanary                : "com.squareup.leakcanary:leakcanary-android:2.4"
     ]
 
     classpaths = [

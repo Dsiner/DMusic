@@ -1,7 +1,8 @@
 package com.d.music.play.presenter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;

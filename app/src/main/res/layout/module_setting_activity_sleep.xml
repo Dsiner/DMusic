@@ -24,7 +24,7 @@
         android:layout_height="@dimen/lib_pub_dimen_row_height"
         android:background="@color/lib_pub_color_bg_sub" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

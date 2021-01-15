@@ -1,7 +1,7 @@
 package com.d.music.component.media.controler;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.d.music.data.database.greendao.bean.MusicModel;
 

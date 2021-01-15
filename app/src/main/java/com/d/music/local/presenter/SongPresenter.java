@@ -162,7 +162,7 @@ public class SongPresenter extends MvpBasePresenter<ISongView> {
     /**
      * 所有下拉菜单，收起
      */
-    public void subPullUp(@android.support.annotation.NonNull final List<MusicModel> datas) {
+    public void subPullUp(@androidx.annotation.NonNull final List<MusicModel> datas) {
         if (getView() != null) {
             getView().setState(DSLayout.STATE_LOADING);
         }

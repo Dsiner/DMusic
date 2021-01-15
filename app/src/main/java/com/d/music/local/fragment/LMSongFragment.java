@@ -1,9 +1,10 @@
 package com.d.music.local.fragment;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.d.lib.pulllayout.Pullable;
 import com.d.lib.pulllayout.rv.adapter.CommonAdapter;

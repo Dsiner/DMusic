@@ -1,6 +1,6 @@
 package com.d.music.component.cache.utils.threadpool;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Abstract thread pool, you can also implement it yourself,

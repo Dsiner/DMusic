@@ -1,7 +1,8 @@
 package com.d.music.component.cache.base;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.d.music.component.cache.listener.CacheListener;
 import com.d.music.component.cache.utils.threadpool.ThreadPool;

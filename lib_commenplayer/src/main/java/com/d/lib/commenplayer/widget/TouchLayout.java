@@ -3,9 +3,6 @@ package com.d.lib.commenplayer.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -17,6 +14,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.d.lib.commenplayer.R;
 import com.d.lib.commenplayer.listener.IMediaPlayerControl;

@@ -262,7 +262,7 @@ public class LMMusicPresenter extends MvpBasePresenter<ILMMusicView> {
                 });
     }
 
-    public void subPullUp(@android.support.annotation.NonNull final List<MusicModel> datas) {
+    public void subPullUp(@androidx.annotation.NonNull final List<MusicModel> datas) {
         if (getView() != null) {
             getView().setState(DSLayout.STATE_LOADING);
         }

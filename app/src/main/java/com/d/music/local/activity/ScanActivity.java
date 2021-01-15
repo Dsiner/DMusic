@@ -2,9 +2,10 @@ package com.d.music.local.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.d.lib.common.component.mvp.app.v4.BaseFragmentActivity;
 import com.d.lib.common.component.quickclick.QuickClick;

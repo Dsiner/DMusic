@@ -1,8 +1,9 @@
 package com.d.music.transfer.manager;
 
 import android.media.MediaScannerConnection;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.d.lib.aster.Aster;
 import com.d.lib.aster.base.Params;

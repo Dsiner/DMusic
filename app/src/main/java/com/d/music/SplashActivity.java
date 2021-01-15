@@ -6,9 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
+
+import androidx.annotation.Nullable;
 
 import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
 import com.d.music.component.service.NotificationService;

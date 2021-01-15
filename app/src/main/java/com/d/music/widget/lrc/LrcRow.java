@@ -1,7 +1,8 @@
 package com.d.music.widget.lrc;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.d.lib.common.util.log.ULog;
 

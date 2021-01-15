@@ -1,9 +1,10 @@
 package com.d.music.component.cache;
 
 import android.content.Context;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.annotation.UiThread;
 
 import com.d.music.R;
 import com.d.music.component.cache.base.AbstractCache;

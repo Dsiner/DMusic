@@ -14,10 +14,11 @@ import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.d.lib.common.util.log.ULog;
 import com.d.music.App;
@@ -224,7 +225,7 @@ public class NotificationService extends Service {
         return builder;
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private RemoteViews getRemoteViews(Bitmap bitmap, String songName, String artistName, int status) {
         RemoteViews rv = new RemoteViews(getPackageName(), R.layout.module_play_notification);
         if (bitmap != null) {

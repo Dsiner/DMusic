@@ -5,7 +5,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.d.lib.common.util.ToastUtils;
 import com.d.lib.taskscheduler.TaskScheduler;
@@ -82,7 +83,7 @@ public class MediaControl implements IMediaControl {
     }
 
     @Override
-    public void init(@android.support.annotation.NonNull final List<MusicModel> datas,
+    public void init(@androidx.annotation.NonNull final List<MusicModel> datas,
                      final int position, final boolean play) {
         Observable.create(new ObservableOnSubscribe<List<MusicModel>>() {
             @Override
@@ -125,7 +126,7 @@ public class MediaControl implements IMediaControl {
     }
 
     @Override
-    public void overLoad(@android.support.annotation.NonNull List<MusicModel> list) {
+    public void overLoad(@androidx.annotation.NonNull List<MusicModel> list) {
         mDatas.clear();
         mDatas.addAll(list);
         mPosition = (mPosition >= 0 && mPosition < mDatas.size()) ? mPosition : 0;
@@ -141,7 +142,7 @@ public class MediaControl implements IMediaControl {
         init(list, 0, true);
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     @Override
     public List<MusicModel> list() {
         return mDatas;

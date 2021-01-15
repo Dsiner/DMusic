@@ -1,6 +1,6 @@
 package com.d.music.transfer.manager.operation;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.d.lib.common.util.log.ULog;
 import com.d.music.component.media.HitTarget;

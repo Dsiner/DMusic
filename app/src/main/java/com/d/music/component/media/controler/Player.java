@@ -2,10 +2,11 @@ package com.d.music.component.media.controler;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.util.SparseArray;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 
 import com.d.lib.common.util.ToastUtils;
 import com.d.music.R;

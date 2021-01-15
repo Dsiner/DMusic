@@ -1,6 +1,6 @@
 package com.d.music.data.database.greendao.operation;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.d.music.data.database.greendao.bean.TransferModel;
 import com.d.music.data.database.greendao.dao.TransferModelDao;

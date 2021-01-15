@@ -1,8 +1,9 @@
 package com.d.music.online.activity;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 import com.d.lib.common.component.loader.v4.BasePagerFragmentActivity;
 import com.d.lib.common.component.quickclick.QuickClick;

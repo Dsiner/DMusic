@@ -1,6 +1,6 @@
 package com.d.music.transfer.manager;
 
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 import com.d.lib.common.event.bus.AbstractBus;
 import com.d.music.data.database.greendao.bean.TransferModel;

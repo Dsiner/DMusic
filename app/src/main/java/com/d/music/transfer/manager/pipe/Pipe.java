@@ -1,8 +1,9 @@
 package com.d.music.transfer.manager.pipe;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 
 import com.d.music.data.database.greendao.bean.TransferModel;
 

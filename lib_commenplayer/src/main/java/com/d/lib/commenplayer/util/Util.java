@@ -9,12 +9,13 @@ import android.graphics.Canvas;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -242,7 +243,7 @@ public class Util {
     private static void mergeBitmap(Bitmap bitmap, Bitmap bp, float left, float top) {
         Canvas cv = new Canvas(bitmap);
         cv.drawBitmap(bp, left, top, null);
-        cv.save(Canvas.ALL_SAVE_FLAG);
+        cv.save();
         cv.restore();
     }
 

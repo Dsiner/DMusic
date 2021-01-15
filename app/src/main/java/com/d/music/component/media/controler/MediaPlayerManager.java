@@ -3,9 +3,10 @@ package com.d.music.component.media.controler;
 import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 
 import java.lang.ref.WeakReference;
 
