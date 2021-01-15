@@ -61,7 +61,7 @@ public class ModeActivity extends BaseActivity<MvpBasePresenter>
                                     @Override
                                     public void onClick(Dialog dlg, View v) {
                                         dlg.dismiss();
-                                        App.exit();
+                                        App.Companion.exit();
                                     }
                                 }, new AlertDialogFactory.OnClickListener() {
                                     @Override

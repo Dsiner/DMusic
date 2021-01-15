@@ -351,13 +351,13 @@ public class NotificationService extends Service {
 
                         case Constants.PlayFlag.PLAY_FLAG_EXIT:
                             // 退出应用
-                            App.exit();
+                            App.Companion.exit();
                             break;
                     }
                     break;
 
                 case Constants.PlayFlag.PLAYER_CONTROL_TIMING:
-                    App.exit(); // 退出应用
+                    App.Companion.exit(); // 退出应用
                     break;
 
                 case Constants.PlayFlag.PLAYER_RELOAD:

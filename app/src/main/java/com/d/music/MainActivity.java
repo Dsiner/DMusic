@@ -97,7 +97,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 break;
 
             case R.id.llyt_menu_exit:
-                App.exit();
+                App.Companion.exit();
                 break;
         }
     }

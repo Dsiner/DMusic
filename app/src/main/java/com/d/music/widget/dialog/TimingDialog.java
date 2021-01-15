@@ -97,7 +97,7 @@ public class TimingDialog extends AbstractDialog implements View.OnClickListener
             case R.id.btn_ok:
                 long minute = verify(etTime.getText().toString().trim());
                 if (minute <= 0) {
-                    App.exit();
+                    App.Companion.exit();
                 } else {
                     NotificationService.startService(mContext.getApplicationContext());
                     NotificationService.timing(mContext.getApplicationContext(), false, 0);

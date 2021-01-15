@@ -366,7 +366,7 @@ public class PlayActivity extends BaseActivity<PlayPresenter>
                         } else if (bean.type == OperationDialog.Bean.TYPE_CHANGE_MODE) {
                             startActivity(new Intent(mContext, ModeActivity.class));
                         } else if (bean.type == OperationDialog.Bean.TYPE_EXIT) {
-                            App.exit();
+                            App.Companion.exit();
                         }
                     }
 
