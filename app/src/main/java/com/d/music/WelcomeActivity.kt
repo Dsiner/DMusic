@@ -11,7 +11,7 @@ import com.d.lib.common.component.mvp.MvpBasePresenter
 import com.d.lib.common.component.mvp.MvpView
 import com.d.lib.common.component.mvp.app.BaseActivity
 import com.d.lib.common.component.quickclick.QuickClick
-import com.d.music.component.service.NotificationService
+import com.d.music.component.service.MusicService
 import java.util.*
 
 /**
@@ -115,7 +115,7 @@ class WelcomeActivity : BaseActivity<MvpBasePresenter<*>>(), MvpView, View.OnCli
 
     private fun gotoMain() {
         // 开启Service服务
-        NotificationService.startService(applicationContext)
+        MusicService.startService(applicationContext)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

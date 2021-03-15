@@ -16,7 +16,7 @@ import com.d.lib.common.component.statusbarcompat.StatusBarCompat;
 import com.d.lib.common.util.ViewHelper;
 import com.d.music.App;
 import com.d.music.R;
-import com.d.music.component.service.NotificationService;
+import com.d.music.component.service.MusicService;
 import com.d.music.data.preferences.Preferences;
 import com.d.music.setting.adapter.TimingAdapter;
 import com.d.music.setting.model.RadioModel;
@@ -54,7 +54,7 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter>
                 if (mSleepType < 0 || mSleepType > 6) {
                     return;
                 }
-                NotificationService.startService(getApplicationContext());
+                MusicService.startService(getApplicationContext());
                 long time = 0;
                 switch (mSleepType) {
                     case 0:
@@ -81,8 +81,8 @@ public class SleepActivity extends BaseActivity<MvpBasePresenter>
                         time = 90 * 60 * 1000;
                         break;
                 }
-                NotificationService.timing(getApplicationContext(), false, 0);
-                NotificationService.timing(getApplicationContext(), time > 0, time);
+                MusicService.timing(getApplicationContext(), false, 0);
+                MusicService.timing(getApplicationContext(), time > 0, time);
                 mPreferences.putSleepType(mSleepType);
                 finish();
                 break;

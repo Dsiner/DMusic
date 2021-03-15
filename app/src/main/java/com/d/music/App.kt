@@ -16,7 +16,7 @@ import com.d.lib.taskscheduler.TaskScheduler
 import com.d.music.component.aster.AppAsterModule
 import com.d.music.component.cache.Cache
 import com.d.music.component.media.controler.MediaControl
-import com.d.music.component.service.NotificationService
+import com.d.music.component.service.MusicService
 import com.d.music.component.skin.SkinUtil
 import com.d.music.data.Constants
 import com.d.music.data.database.greendao.DBManager
@@ -136,14 +136,14 @@ class App : Application() {
          */
         fun exit() {
             val context = context
-            NotificationService.timing(context, false, 0)
+            MusicService.timing(context, false, 0)
             Preferences.getInstance(context).putSleepType(0)
             // Save current playback position
             Preferences.getInstance(context).putLastPlayPosition(MediaControl.getInstance(context).position)
             // Stop music playback
             MediaControl.getInstance(context).onDestroy()
             // Stop the service
-            context.stopService(Intent(context, NotificationService::class.java))
+            context.stopService(Intent(context, MusicService::class.java))
             AppUtils.exit(context, 1)
         }
 

@@ -51,12 +51,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * NotificationService
+ * MusicService
  * Created by D on 2017/4/29.
  */
-public class NotificationService extends Service {
+public class MusicService extends Service {
     private static final String NOTIFICATION_ID = "com.d.music";
-    private static final String NOTIFICATION_NAME = "NotificationService";
+    private static final String NOTIFICATION_NAME = "MusicService";
     private static final int NOTIFICATION_UNIQUE_ID = 6671;
 
     private static boolean mIsRunning;
@@ -75,9 +75,20 @@ public class NotificationService extends Service {
         if (context == null || mIsRunning) {
             return;
         }
-        // 开启service服务
-        Intent intent = new Intent(context, NotificationService.class);
-        context.startService(intent);
+        final Intent foregroundService = new Intent(context, MusicService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(foregroundService);
+        } else {
+            context.startService(foregroundService);
+        }
+    }
+
+    public static void stopService(Context context) {
+        if (context == null) {
+            return;
+        }
+        final Intent foregroundService = new Intent(context, MusicService.class);
+        context.stopService(foregroundService);
     }
 
     /**
@@ -125,7 +136,23 @@ public class NotificationService extends Service {
 
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            updateNotification(null, "", "", Constants.PlayStatus.PLAY_STATUS_PAUSE);
+        }
         loadMusic();
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            updateNotification(null, "", "", Constants.PlayStatus.PLAY_STATUS_PAUSE);
+        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void loadMusic() {
@@ -175,7 +202,7 @@ public class NotificationService extends Service {
      * @param status:     无/播放/暂停
      */
     private void updateNotification(Bitmap bitmap, String songName, String artistName, int status) {
-        Intent intent;
+        final Intent intent;
         if (Constants.PlayerMode.sPlayerMode == Constants.PlayerMode.PLAYER_MODE_NOTIFICATION) {
             intent = new Intent(this, ModeActivity.class);
         } else if (Constants.PlayerMode.sPlayerMode == Constants.PlayerMode.PLAYER_MODE_MINIMALIST) {
@@ -184,19 +211,18 @@ public class NotificationService extends Service {
             intent = new Intent(this, MainActivity.class);
         }
 
-        NotificationChannel notificationChannel = getNotificationChannel(this,
-                NOTIFICATION_ID, NOTIFICATION_NAME);
-        NotificationCompat.Builder builder = getNotification(this, notificationChannel);
-        builder.setSmallIcon(R.mipmap.ic_launcher) // 设置图标
-                .setTicker("") // 手机状态栏的提示
-                .setWhen(System.currentTimeMillis())
-                .setOngoing(true)
+        final NotificationCompat.Builder builder = getNotification(this,
+                getNotificationChannel(this,
+                        NOTIFICATION_ID, NOTIFICATION_NAME));
+        final RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContent(rv)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0)); // 点击后的意图
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOngoing(true)
+                .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0));
 
-        RemoteViews rv = getRemoteViews(bitmap, songName, artistName, status);
-        builder.setContent(rv);
-        Notification notification = builder.build();
+        final Notification notification = builder.build();
         mNotificationManager.notify(NOTIFICATION_UNIQUE_ID, notification);
         startForeground(NOTIFICATION_UNIQUE_ID, notification); // 自定义的notification_ID不能为0
     }
@@ -304,6 +330,7 @@ public class NotificationService extends Service {
         EventBus.getDefault().unregister(this);
         unregisterReceiver(mControlBroadcast);
         mIsRunning = false;
+        // 移除通知
         stopForeground(true);
         super.onDestroy();
     }
@@ -321,7 +348,7 @@ public class NotificationService extends Service {
     private class ControlBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            final String action = intent.getAction();
             if (TextUtils.isEmpty(action)) {
                 return;
             }
@@ -357,7 +384,8 @@ public class NotificationService extends Service {
                     break;
 
                 case Constants.PlayFlag.PLAYER_CONTROL_TIMING:
-                    App.Companion.exit(); // 退出应用
+                    // 退出应用
+                    App.Companion.exit();
                     break;
 
                 case Constants.PlayFlag.PLAYER_RELOAD:

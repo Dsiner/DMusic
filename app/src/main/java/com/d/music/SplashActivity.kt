@@ -9,8 +9,7 @@ import android.os.Message
 import android.view.View
 import android.view.Window
 import com.d.lib.common.component.statusbarcompat.StatusBarCompat
-import com.d.music.SplashActivity
-import com.d.music.component.service.NotificationService
+import com.d.music.component.service.MusicService
 import com.d.music.data.Constants
 import com.d.music.data.preferences.Preferences
 import com.d.music.play.activity.PlayActivity
@@ -38,21 +37,21 @@ class SplashActivity : Activity() {
             finish()
             return
         }
-        if (!NotificationService.isRunning()) {
+        if (!MusicService.isRunning()) {
             // 第一次启动
             Constants.PlayerMode.sPlayerMode = preferences.playerMode
         }
         when (Constants.PlayerMode.sPlayerMode) {
             Constants.PlayerMode.PLAYER_MODE_MINIMALIST -> {
-                NotificationService.startService(applicationContext)
+                MusicService.startService(applicationContext)
                 PlayActivity.openActivity(this@SplashActivity)
                 finish()
             }
             Constants.PlayerMode.PLAYER_MODE_NOTIFICATION -> {
-                NotificationService.startService(applicationContext)
+                MusicService.startService(applicationContext)
                 finish()
             }
-            else -> if (!NotificationService.isRunning()) {
+            else -> if (!MusicService.isRunning()) {
                 // 第一次启动
                 initView()
                 handler.sendEmptyMessageDelayed(1, mDelayTime.toLong())
@@ -85,7 +84,7 @@ class SplashActivity : Activity() {
             if (theActivity != null && !theActivity.isFinishing && !theActivity.mIsBackPressed) {
                 when (msg.what) {
                     1 -> {
-                        NotificationService.startService(theActivity.applicationContext)
+                        MusicService.startService(theActivity.applicationContext)
                         theActivity.startActivity(Intent(theActivity, MainActivity::class.java))
                         theActivity.finish()
                     }
