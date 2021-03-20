@@ -36,7 +36,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compileOnly 'androidx.annotation:annotation:1.0.0'
+    compileOnly rootProject.ext.dependencies.androidx_annotation
 
     // Required, enough for most devices.
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.7.6'

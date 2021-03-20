@@ -2,6 +2,10 @@
 <resources>
     <!-- Module_Common -->
     <string name="module_common_app_name">畅听音乐</string>
+    <string name="module_common_app_name_dev">畅听音乐开发版</string>
+    <string name="module_common_app_name_test">畅听音乐测试版</string>
+    <string name="module_common_app_name_pre">畅听音乐预发布版</string>
+
     <string name="module_common_dmusic">畅听</string>
     <string name="module_common_welcome_start">开启畅听之旅</string>
     <string name="module_common_local_music">本地音乐</string>

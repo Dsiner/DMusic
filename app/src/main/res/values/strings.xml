@@ -2,6 +2,10 @@
 <resources>
     <!-- Module_Common -->
     <string name="module_common_app_name">DMusic</string>
+    <string name="module_common_app_name_dev">DMusic Dev</string>
+    <string name="module_common_app_name_test">DMusic Test</string>
+    <string name="module_common_app_name_pre">DMusic Pre</string>
+
     <string name="module_common_dmusic">DMusic</string>
     <string name="module_common_welcome_start">Open a listening tour</string>
     <string name="module_common_local_music">Local</string>

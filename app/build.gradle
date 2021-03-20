@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
+def appNameValue = "DMusic"
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -14,6 +16,7 @@ android {
         versionName rootProject.ext.versionName
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        flavorDimensions "default"
         ndk {
             // Select the .so library of the corresponding cpu type to be added
             abiFilters "armeabi", "armeabi-v7a", "x86"
@@ -27,8 +30,15 @@ android {
     }
 
     def Properties keystoreProperties = new Properties()
-    def keystoreInputStream = new FileInputStream(file('../keystores/keystore.properties'))
-    keystoreProperties.load(keystoreInputStream)
+    def keystorePropsFile = file('../keystores/keystore.properties')
+    def keystoreInputStream
+    if (keystorePropsFile.canRead()) {
+        keystoreInputStream = new FileInputStream(keystorePropsFile)
+        keystoreProperties.load(keystoreInputStream)
+    } else {
+        keystoreInputStream = new FileInputStream(file('../keystores_debug/keystore.properties'))
+        keystoreProperties.load(keystoreInputStream)
+    }
     keystoreInputStream.close()
 
     signingConfigs {
@@ -65,12 +75,80 @@ android {
         }
     }
 
+    productFlavors {
+        Dev { applicationId defaultConfig.applicationId + ".dev" }
+        Test { applicationId defaultConfig.applicationId + ".test" }
+        Pre { applicationId defaultConfig.applicationId + ".pre" }
+        Final {}
+        productFlavors.all { flavor ->
+            def FLAVOR_APPLICATION_ID
+            def FLAVOR_APP_NAME
+            if ("Dev".equals(name)) {
+                FLAVOR_APPLICATION_ID = defaultConfig.applicationId + ".dev"
+                FLAVOR_APP_NAME = "@string/module_common_app_name_" + name.toString().toLowerCase()
+
+            } else if ("Test".equals(name)) {
+                FLAVOR_APPLICATION_ID = defaultConfig.applicationId + ".test"
+                FLAVOR_APP_NAME = "@string/module_common_app_name_" + name.toString().toLowerCase()
+
+            } else if ("Pre".equals(name)) {
+                FLAVOR_APPLICATION_ID = defaultConfig.applicationId + ".pre"
+                FLAVOR_APP_NAME = "@string/module_common_app_name_" + name.toString().toLowerCase()
+
+            } else {
+                FLAVOR_APPLICATION_ID = defaultConfig.applicationId
+                FLAVOR_APP_NAME = "@string/module_common_app_name"
+            }
+
+            flavor.manifestPlaceholders = [
+                    FLAVOR_ENV_NAME_VALUE: name,
+                    FLAVOR_APPLICATION_ID: FLAVOR_APPLICATION_ID,
+                    FLAVOR_APP_NAME      : FLAVOR_APP_NAME
+            ]
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.zipAlignEnabled) {
+            variant.outputs.all { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    def fileName = "${appNameValue}" +
+                            "_${variant.productFlavors[0].name}" +
+                            "_release" +
+                            "_v${defaultConfig.versionName}_${defaultConfig.versionCode}.apk"
+                    outputFileName = fileName
+                }
+            }
+        }
+    }
+
+    gradle.taskGraph.afterTask { Task task, TaskState state ->
+        println "------------------------------------------------------"
+        println "> " + task.name;
+        if (task.project.name.equals(this.project.name)
+                && task.name.contains("Release")
+                && task.name.contains("assemble")) {
+            println "------------------------------------------------------"
+            println "> gradle.taskGraph.afterTask " + task.name;
+            copy {
+                from "build/outputs/mapping"
+                into "build/outmap/${appNameValue}_release_v${defaultConfig.versionName}_${defaultConfig.versionCode}"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 
     lintOptions {
